@@ -1,5 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
+import theme from './Theme';
 
 const GlobalStyle = createGlobalStyle`
     ${reset};
@@ -8,6 +9,11 @@ const GlobalStyle = createGlobalStyle`
       margin: 0;
       padding: 0;
       box-sizing:border-box;
+      font-family: NanumBarunGothic, sans-serif;
+    }
+    
+    body {
+        margin: 0 ${theme.margin.margin_browser};
     }
 `;
 
