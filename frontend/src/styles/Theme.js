@@ -23,6 +23,7 @@ const margin = {
 };
 
 const colors = {
+  white: '#ffffff',
   black: '#000000',
   red: '#ff0000',
   blue: '#2d9cdb',

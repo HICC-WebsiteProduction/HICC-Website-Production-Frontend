@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
+import Header from '../components/Header';
 
 function Main() {
   return (
     <MainContainer>
-      <p>Welcome!</p>
+      <Header></Header>
     </MainContainer>
   );
 }
