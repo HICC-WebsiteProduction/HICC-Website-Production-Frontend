@@ -12,7 +12,7 @@ export default function SearchWindow() {
       <MagnifyingGlass>
         <FontAwesomeIcon icon={faMagnifyingGlass} />
       </MagnifyingGlass>
-      <Input type="text" placeholder="검색어를 입력하세요."></Input>
+      <Input type="text" placeholder="검색어를 입력하세요." />
     </SearchContainer>
   );
 }

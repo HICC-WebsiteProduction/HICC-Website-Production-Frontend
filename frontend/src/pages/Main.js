@@ -5,7 +5,7 @@ import Header from '../components/Header';
 function Main() {
   return (
     <MainContainer>
-      <Header></Header>
+      <Header />
     </MainContainer>
   );
 }
