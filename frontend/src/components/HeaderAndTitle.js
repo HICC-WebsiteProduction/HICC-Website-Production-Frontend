@@ -5,8 +5,8 @@ import Title from './Title';
 export default function HeaderAndTitle(props) {
   return (
     <div>
-      <Header></Header>
-      <Title titleName={props.titleName}></Title>
+      <Header />
+      <Title titleName={props.titleName} />
     </div>
   );
 }

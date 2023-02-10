@@ -12,9 +12,9 @@ const pixelToRem = size => `${size / 16}rem`;
 export default function Header() {
   return (
     <HeaderContainer>
-      <Logo></Logo>
+      <Logo />
       <UserContainer>
-        <SearchWindow></SearchWindow>
+        <SearchWindow />
         <BellIcon>
           <FontAwesomeIcon icon={faBell} size="2x" />
         </BellIcon>
