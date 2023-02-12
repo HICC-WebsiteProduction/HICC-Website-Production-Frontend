@@ -53,9 +53,7 @@ function Manage(props) {
         <ManageTabPageItem className="hidden-page">
           회원 정보 컴포넌트
         </ManageTabPageItem>
-        <UmbrellaRentWindow className="hidden-page">
-          우산 대여 컴포넌트
-        </UmbrellaRentWindow>
+        <UmbrellaRentWindow className="hidden-page" />
         <ManageTabPageItem className="hidden-page">
           사물함 대여 컴포넌트
         </ManageTabPageItem>

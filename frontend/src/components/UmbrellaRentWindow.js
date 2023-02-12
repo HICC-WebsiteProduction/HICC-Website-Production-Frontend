@@ -11,6 +11,7 @@ function UmbrellaRentWindow(props) {
       <RentListContainer>
         <RentHeader>
           <tr>
+            <td></td>
             <td>우산 번호</td>
             <td>사용자 이름</td>
             <td>value</td>
@@ -30,33 +31,55 @@ function UmbrellaRentWindow(props) {
 export default UmbrellaRentWindow;
 
 const UmbrellaRentContainer = styled.div`
-  *
+  border: 4px solid rgb(0, 0, 0);
+  width: 100%;
+`;
+
+const RentListContainer = styled.table`
+  border: 4px dotted rgb(50, 50, 50);
+  width: 100%;
+
+  tr {
+    height: ${pixelToRem(50)};
+  }
+
+  td {
+    text-align: center;
+    vertical-align: middle;
+
+    font-size: ${pixelToRem(20)};
+  }
 `;
 
 const RentHeader = styled.thead`
-  *
+  font-weight: bold;
+  background: lightgray;
 `;
 
 const RentList = styled.tbody`
   *
 `;
 
-const RentListContainer = styled.table`
-  *
-`;
-
 function RentInfo(props) {
+  const debugChecked = data => {
+    let button = data.target;
+    console.log(button.checked);
+  };
   return (
     <RentPresenter>
       <td>1</td>
+      <td>1</td>
       <td>Guardian_demoN</td>
       <td>
-        <SliderButton />
+        <SliderButton onClick={debugChecked} />
       </td>
     </RentPresenter>
   );
 }
 
 const RentPresenter = styled.tr`
-  *
+  height: ${pixelToRem(30)};
+  :nth-child(2n) {
+    background: rgb(220, 220, 220);
+  }
 `;

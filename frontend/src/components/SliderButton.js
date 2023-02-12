@@ -6,12 +6,10 @@ const pixelToRem = size => `${size / 16}rem`;
 // <!-- Rounded switch reference -->
 // https://www.w3schools.com/howto/howto_css_switch.asp
 
-// const pixelToRem = size => `${size / 16}rem`;
-
 function SliderButton(props) {
   return (
     <SliderContainer>
-      <SliderInput type="checkbox" />
+      <SliderInput type="checkbox" onChange={props.onClick} />
       <SliderSpan className="slider round" />
     </SliderContainer>
   );
