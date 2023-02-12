@@ -1,17 +1,49 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import styled from 'styled-components';
-
-import HeaderAndTitle from './HeaderAndTitle';
-import theme from '../styles/Theme';
 
 const pixelToRem = size => `${size / 16}rem`;
 
 function MemberAuthorizeWindow(props) {
+  const memberListRef = React.createRef();
+  let toggleNext = false;
+  const selectToggle = data => {
+    const memberList = memberListRef.current.children;
+    let checkedAny = false;
+
+    // if checked any, remove every checkbox
+    for (const element of memberList) {
+      let tdList = element.children;
+      if (tdList[tdList.length - 1].children[0].checked === true) {
+        checkedAny = true;
+        break;
+      }
+    }
+    if (checkedAny === true) {
+      toggleNext = false;
+    }
+
+    // transition : toggle check
+    for (const element of memberList) {
+      let tdList = element.children;
+      console.log(tdList[tdList.length - 1].children[0].checked);
+      tdList[tdList.length - 1].children[0].checked = toggleNext;
+    }
+
+    toggleNext = !toggleNext;
+  };
+
+  const confirmGrant = data => {
+    // open dialog box
+  };
+
+  const confirmDeny = data => {
+    // open dialog box
+  };
+
   return (
     <MemberAuthorizeContainer>
       <Toolbar>
-        <SelectAllTool>전체 선택 및 해제</SelectAllTool>
+        <SelectAllTool onClick={selectToggle}>전체 선택 및 해제</SelectAllTool>
       </Toolbar>
       <WaitingMemberContainer>
         <WaitingMemberHeader>
@@ -22,10 +54,10 @@ function MemberAuthorizeWindow(props) {
             <td>학과</td>
             <td>학년</td>
             <td>연락처</td>
-            <td>승인</td>
+            <td>선택</td>
           </tr>
         </WaitingMemberHeader>
-        <WaitingMemberList>
+        <WaitingMemberList ref={memberListRef}>
           <WaitingMember>Member 1</WaitingMember>
           <WaitingMember>Member 2</WaitingMember>
           <WaitingMember>Member 3</WaitingMember>
@@ -33,8 +65,8 @@ function MemberAuthorizeWindow(props) {
         </WaitingMemberList>
       </WaitingMemberContainer>
       <ActionButtonContainer>
-        <DenyButton>가입 거부</DenyButton>
-        <GrantButton>가입 승인</GrantButton>
+        <DenyButton onClick={confirmDeny}>가입 거부</DenyButton>
+        <GrantButton onClick={confirmGrant}>가입 승인</GrantButton>
       </ActionButtonContainer>
     </MemberAuthorizeContainer>
   );
@@ -49,7 +81,9 @@ function WaitingMember(props) {
       <td>4</td>
       <td>5</td>
       <td>6</td>
-      <td>7</td>
+      <td>
+        <input type="checkbox" name="color" value="blue" />
+      </td>
     </MemberPresenter>
   );
 }
@@ -62,14 +96,17 @@ const MemberAuthorizeContainer = styled.div`
 
 const Toolbar = styled.div`
   display: flex;
+  height: ${pixelToRem(40)};
   justify-content: right;
   width: 100%;
 `;
 
 const SelectAllTool = styled.button`
+  border: 0;
   color: rgb(150, 150, 150);
   font-weight: light;
   font-size: ${pixelToRem(8)};
+  align-self: end;
   margin-right: ${pixelToRem(5)};
 `;
 
@@ -107,11 +144,12 @@ const ActionButtonContainer = styled.div`
   button {
     border-radius: 10px;
 
-    border: 4px solid rgb(255, 60, 60);
-    background-color: rgb(255, 60, 60);
+    background-color: rgb(80, 80, 80);
+    border: 0;
+    color: white;
     font-size: ${pixelToRem(20)};
 
-    margin: ${pixelToRem(20)};
+    margin: ${pixelToRem(60)};
     width: ${pixelToRem(120)};
     height: ${pixelToRem(40)};
   }
@@ -131,3 +169,43 @@ const MemberPresenter = styled.tr`
     background: rgb(220, 220, 220);
   }
 `;
+
+// function AuthConfirmDialog(props) {
+//   return (
+//     <AuthConfirmDialogContainer>
+//       <AuthComfirmDialogMessage>
+//         <span>가입을 거부/승인 하시겠습니까?!!!!!</span>
+//         <span>진짜? 정말? 후회 없죠?</span>
+//       </AuthComfirmDialogMessage>
+//       <AuthConfirmDialogButtonContainer>
+//         <AuthConfirmDialogCancel>Cancel</AuthConfirmDialogCancel>
+//         <AuthConfirmDialogOk>OK</AuthConfirmDialogOk>
+//       </AuthConfirmDialogButtonContainer>
+//     </AuthConfirmDialogContainer>
+//   );
+// }
+
+// const AuthConfirmDialogContainer = styled.div`
+//   height: ${pixelToRem(400)};
+//   width: ${pixelToRem(800)};
+
+//   background: lightgray;
+// `;
+
+// const AuthComfirmDialogMessage = styled.div`
+//   width: 100%;
+//   height: 55%;
+// `;
+
+// const AuthConfirmDialogButtonContainer = styled.div`
+//   width: 100%;
+//   height: 45%;
+// `;
+
+// const AuthConfirmDialogCancel = styled.button`
+//   *
+// `;
+
+// const AuthConfirmDialogOk = styled.button`
+//   *
+// `;
