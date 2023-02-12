@@ -31,12 +31,10 @@ function UmbrellaRentWindow(props) {
 export default UmbrellaRentWindow;
 
 const UmbrellaRentContainer = styled.div`
-  border: 4px solid rgb(0, 0, 0);
   width: 100%;
 `;
 
 const RentListContainer = styled.table`
-  border: 4px dotted rgb(50, 50, 50);
   width: 100%;
 
   tr {
