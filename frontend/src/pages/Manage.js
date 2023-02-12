@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import HeaderAndTitle from '../components/HeaderAndTitle';
+import UmbrellaRentWindow from '../components/UmbrellaRentWindow';
 import theme from '../styles/Theme';
 
 const pixelToRem = size => `${size / 16}rem`;
@@ -52,9 +53,9 @@ function Manage(props) {
         <ManageTabPageItem className="hidden-page">
           회원 정보 컴포넌트
         </ManageTabPageItem>
-        <ManageTabPageItem className="hidden-page">
+        <UmbrellaRentWindow className="hidden-page">
           우산 대여 컴포넌트
-        </ManageTabPageItem>
+        </UmbrellaRentWindow>
         <ManageTabPageItem className="hidden-page">
           사물함 대여 컴포넌트
         </ManageTabPageItem>

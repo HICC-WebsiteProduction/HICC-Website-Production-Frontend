@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import SliderButton from '../components/SliderButton';
+
 const pixelToRem = size => `${size / 16}rem`;
 
 function UmbrellaRentWindow(props) {
@@ -25,12 +27,22 @@ function UmbrellaRentWindow(props) {
   );
 }
 
+export default UmbrellaRentWindow;
+
 const UmbrellaRentContainer = styled.div`
   *
 `;
 
+const RentHeader = styled.thead`
+  *
+`;
+
+const RentList = styled.tbody`
+  *
+`;
+
 const RentListContainer = styled.table`
-  // https://www.w3schools.com/howto/howto_css_switch.asp
+  *
 `;
 
 function RentInfo(props) {
@@ -38,7 +50,13 @@ function RentInfo(props) {
     <RentPresenter>
       <td>1</td>
       <td>Guardian_demoN</td>
-      <td>true(slide)</td>
+      <td>
+        <SliderButton />
+      </td>
     </RentPresenter>
   );
 }
+
+const RentPresenter = styled.tr`
+  *
+`;

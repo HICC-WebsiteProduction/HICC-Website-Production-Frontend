@@ -3,11 +3,12 @@ import styled from 'styled-components';
 
 const pixelToRem = size => `${size / 16}rem`;
 
-//<!-- Rounded switch -->
+// <!-- Rounded switch reference -->
+// https://www.w3schools.com/howto/howto_css_switch.asp
 
 // const pixelToRem = size => `${size / 16}rem`;
 
-function SliderButton(props){
+function SliderButton(props) {
   return (
     <SliderContainer>
       <SliderInput type="checkbox" />
@@ -16,6 +17,8 @@ function SliderButton(props){
   );
 }
 
+export default SliderButton;
+
 const SliderContainer = styled.label`
   position: relative;
   display: inline-block;
@@ -23,18 +26,18 @@ const SliderContainer = styled.label`
   height: 34px;
 
   input:checked + .slider {
-    background-color: #2196F3;
+    background-color: #2196f3;
   }
-  
+
   input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
+    box-shadow: 0 0 1px #2196f3;
   }
-  
+
   input:checked + .slider:before {
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);
-  }  
+  }
 `;
 
 const SliderInput = styled.input`
@@ -51,20 +54,20 @@ const SliderSpan = styled.span`
   right: 0;
   bottom: 0;
   background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
   border-radius: 34px;
 
   :before {
     position: absolute;
-    content: "";
+    content: '';
     height: 26px;
     width: 26px;
     left: 4px;
     bottom: 4px;
     background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
     border-radius: 50%;
   }
 `;
