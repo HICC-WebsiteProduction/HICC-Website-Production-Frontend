@@ -1,6 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import styled from 'styled-components';
+import CabinetRentWindow from '../components/CabinetRentWindow';
 
 import HeaderAndTitle from '../components/HeaderAndTitle';
 import theme from '../styles/Theme';
@@ -38,7 +38,7 @@ function Manage(props) {
     console.log('end of function');
   };
   return (
-    <ManageContainer>
+    <ManageContainer className="hidden-page">
       <HeaderAndTitle titleName="관리" />
       <ManageTabHeaderContainer ref={headerRef}>
         <ManageTabHeaderItem onClick={selectTab}>회원 승인</ManageTabHeaderItem>
@@ -56,9 +56,7 @@ function Manage(props) {
         <ManageTabPageItem className="hidden-page">
           우산 대여 컴포넌트
         </ManageTabPageItem>
-        <ManageTabPageItem className="hidden-page">
-          사물함 대여 컴포넌트
-        </ManageTabPageItem>
+        <CabinetRentWindow />
       </ManageTabPageContainer>
     </ManageContainer>
   );
