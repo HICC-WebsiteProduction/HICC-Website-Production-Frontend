@@ -44,7 +44,7 @@ const RentListContainer = styled.table`
   td {
     text-align: center;
     vertical-align: middle;
-    
+
     font-size: ${pixelToRem(20)};
   }
 `;
