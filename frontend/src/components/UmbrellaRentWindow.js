@@ -44,14 +44,14 @@ const RentListContainer = styled.table`
   td {
     text-align: center;
     vertical-align: middle;
-
+    
     font-size: ${pixelToRem(20)};
   }
 `;
 
 const RentHeader = styled.thead`
-  font-weight: bold;
   background: lightgray;
+  font-weight: bold;
 `;
 
 const RentList = styled.tbody`
@@ -77,6 +77,7 @@ function RentInfo(props) {
 
 const RentPresenter = styled.tr`
   height: ${pixelToRem(30)};
+
   :nth-child(2n) {
     background: rgb(220, 220, 220);
   }
