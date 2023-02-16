@@ -96,18 +96,18 @@ const MemberAuthorizeContainer = styled.div`
 
 const Toolbar = styled.div`
   display: flex;
+  width: 100%;
   height: ${pixelToRem(40)};
   justify-content: right;
-  width: 100%;
 `;
 
 const SelectAllTool = styled.button`
+  margin-right: ${pixelToRem(5)};
   border: 0;
   color: rgb(150, 150, 150);
-  font-weight: light;
   font-size: ${pixelToRem(8)};
+  font-weight: light;
   align-self: end;
-  margin-right: ${pixelToRem(5)};
 `;
 
 const WaitingMemberContainer = styled.table`
@@ -126,8 +126,8 @@ const WaitingMemberContainer = styled.table`
 `;
 
 const WaitingMemberHeader = styled.thead`
-  font-weight: bold;
   background: lightgray;
+  font-weight: bold;
 `;
 
 const WaitingMemberList = styled.tbody`
@@ -136,22 +136,21 @@ const WaitingMemberList = styled.tbody`
 
 const ActionButtonContainer = styled.div`
   display: flex;
+  width: 100%;
+  height: 100px;
   align-items: center;
   justify-content: center;
-  height: 100px;
-  width: 100%;
 
   button {
-    border-radius: 10px;
-
     background-color: rgb(80, 80, 80);
-    border: 0;
-    color: white;
-    font-size: ${pixelToRem(20)};
 
-    margin: ${pixelToRem(60)};
     width: ${pixelToRem(120)};
     height: ${pixelToRem(40)};
+    margin: ${pixelToRem(60)};
+    border: 0;
+    border-radius: 10px;
+    color: white;
+    font-size: ${pixelToRem(20)};
   }
 `;
 
@@ -165,6 +164,7 @@ const GrantButton = styled.button`
 
 const MemberPresenter = styled.tr`
   height: ${pixelToRem(30)};
+
   :nth-child(2n) {
     background: rgb(220, 220, 220);
   }
