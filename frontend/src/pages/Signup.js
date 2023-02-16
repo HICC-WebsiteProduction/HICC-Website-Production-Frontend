@@ -7,6 +7,9 @@ import InputMemberInfo from '../components/InputMemberInfo';
 import Warning from '../components/Warning';
 import Button from '../components/Button';
 import InputMemberValidInfo from '../components/InputMemberValidInfo';
+import { useDispatch } from 'react-redux';
+import { registerUser } from '../_actions/userAction';
+import history from '../history';
 
 const pixelToRem = size => `${size / 16}rem`;
 
@@ -16,7 +19,14 @@ function Signup(props) {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onSubmit = data => console.log(data);
+  const dispatch = useDispatch();
+  const onSubmit = data => {
+    console.log(data);
+    dispatch(registerUser(data)).then(res => {
+      alert('가입이 정상적으로 완료되었습니다.');
+      history.push('/');
+    });
+  };
   return (
     <SignupContainer>
       <HeaderAndTitle titleName="회원가입" />
