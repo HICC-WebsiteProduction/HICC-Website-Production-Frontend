@@ -15,7 +15,7 @@ const ButtonDesign = styled.button`
   height: ${pixelToRem(40)};
   background-color: ${theme.colors.blue};
   border: none;
-  border-radius: 10px;
+  border-radius: ${pixelToRem(10)};
   color: ${theme.colors.white};
   &:hover {
     cursor: pointer;

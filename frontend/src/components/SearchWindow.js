@@ -22,8 +22,8 @@ const SearchContainer = styled.div`
   justify-content: flex-start;
   width: ${pixelToRem(318)};
   height: ${pixelToRem(34)};
-  border: 1px solid #000000;
-  border-radius: 50px;
+  border: ${pixelToRem(1)} solid #000000;
+  border-radius: ${pixelToRem(50)};
 `;
 
 const MagnifyingGlass = styled.div`
