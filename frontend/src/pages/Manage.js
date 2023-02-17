@@ -1,8 +1,9 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 
 import HeaderAndTitle from '../components/HeaderAndTitle';
+import UmbrellaRentWindow from '../components/UmbrellaRentWindow';
+import MemberAuthorizeWindow from '../components/MemberAuthorizeWindow';
 import theme from '../styles/Theme';
 
 const pixelToRem = size => `${size / 16}rem`;
@@ -49,13 +50,11 @@ function Manage(props) {
         </ManageTabHeaderItem>
       </ManageTabHeaderContainer>
       <ManageTabPageContainer ref={pageRef}>
-        <ManageTabPageItem>회원 승인 컴포넌트</ManageTabPageItem>
+        <MemberAuthorizeWindow />
         <ManageTabPageItem className="hidden-page">
           회원 정보 컴포넌트
         </ManageTabPageItem>
-        <ManageTabPageItem className="hidden-page">
-          우산 대여 컴포넌트
-        </ManageTabPageItem>
+        <UmbrellaRentWindow className="hidden-page" />
         <ManageTabPageItem className="hidden-page">
           사물함 대여 컴포넌트
         </ManageTabPageItem>
