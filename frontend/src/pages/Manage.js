@@ -1,8 +1,8 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 
 import HeaderAndTitle from '../components/HeaderAndTitle';
+import MemberAuthorizeWindow from '../components/MemberAuthorizeWindow';
 import theme from '../styles/Theme';
 
 const pixelToRem = size => `${size / 16}rem`;
@@ -49,7 +49,7 @@ function Manage(props) {
         </ManageTabHeaderItem>
       </ManageTabHeaderContainer>
       <ManageTabPageContainer ref={pageRef}>
-        <ManageTabPageItem>회원 승인 컴포넌트</ManageTabPageItem>
+        <MemberAuthorizeWindow />
         <ManageTabPageItem className="hidden-page">
           회원 정보 컴포넌트
         </ManageTabPageItem>
