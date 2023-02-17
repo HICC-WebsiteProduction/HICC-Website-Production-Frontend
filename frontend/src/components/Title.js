@@ -24,7 +24,7 @@ const TitleContainer = styled.div`
   height: ${pixelToRem(88)};
   margin: 0 ${pixelToRem(20)};
   padding-left: ${pixelToRem(71)};
-  border-bottom: 2px dashed ${theme.colors.light_grey};
+  border-bottom: ${pixelToRem(2)} dashed ${theme.colors.light_grey};
 `;
 
 const Icon = styled.div`

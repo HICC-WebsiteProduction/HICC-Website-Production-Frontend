@@ -13,19 +13,22 @@ export default function InputMemberInfo(props) {
         {props.labelName}
         <Required>{props.required ? ' *' : ''}</Required>
       </Label>
-      <SearchContainer>
+      <InputRowContent error={props.errors}>
         <Input
           name={props.name}
           type={props.type}
-          placeholder="내용을 입력해주세요"
+          placeholder={`내용을 입력해주세요 ${
+            props.specificPlaceholder ? props.specificPlaceholder : ''
+          }`}
           maxLength={props.maxLength}
           {...props.register(props.name, {
-            required: props.required
-              ? `${props.labelName}은(는) 필수 입력입니다.`
-              : '',
+            required: {
+              value: props.required,
+              message: '필수입력정보입니다.',
+            },
             minLength: {
               value: props.minLength,
-              message: props.minLengthMessage,
+              message: props.validPatternMessage,
             },
             pattern: {
               value: props.validPattern,
@@ -33,13 +36,16 @@ export default function InputMemberInfo(props) {
             },
           })}
         />
-        <CircleExclamation>
-          {props.errors && <FontAwesomeIcon icon={faCircleExclamation} />}
-        </CircleExclamation>
-      </SearchContainer>
-      <ErrorMessage>
-        {props.errors && <small role="alert">{props.errors.message}</small>}
-      </ErrorMessage>
+        {props.checkDuplicate ? (
+          <CheckDuplicate>중복확인</CheckDuplicate>
+        ) : null}
+        {props.errors && (
+          <CircleExclamation>
+            <FontAwesomeIcon icon={faCircleExclamation} />
+          </CircleExclamation>
+        )}
+      </InputRowContent>
+      <ErrorMessage>{props.errors && props.errors.message}</ErrorMessage>
     </InputRow>
   );
 }
@@ -52,8 +58,8 @@ const InputRow = styled.div`
 `;
 
 const Required = styled.span`
-  font-size: ${theme.fontSizes.paragraph};
   color: ${theme.colors.red};
+  font-size: ${theme.fontSizes.paragraph};
 `;
 
 const Label = styled.label`
@@ -62,14 +68,17 @@ const Label = styled.label`
   font-size: ${theme.fontSizes.paragraph};
 `;
 
-const SearchContainer = styled.div`
+const InputRowContent = styled.div`
   ${theme.flexbox.flex};
   justify-content: flex-start;
   width: ${pixelToRem(336)};
   height: ${pixelToRem(30)};
   margin-bottom: ${pixelToRem(5)};
-  border: 0.8px solid #000000;
-  border-radius: 10px;
+  border: ${props =>
+    props.error
+      ? `${pixelToRem(0.8)} solid ${theme.colors.red};`
+      : `${pixelToRem(0.8)} solid ${theme.colors.black};`};
+  border-radius: ${pixelToRem(10)};
 `;
 
 const Input = styled.input`
@@ -83,16 +92,24 @@ const Input = styled.input`
   }
 `;
 
+const CheckDuplicate = styled.a`
+  width: ${pixelToRem(48)};
+  margin-right: ${pixelToRem(8)};
+  color: ${theme.colors.blue};
+  font-family: ${theme.fontWeight.Bold};
+  font-size: ${theme.fontSizes.font_micro};
+`;
+
 const CircleExclamation = styled.div`
   width: ${pixelToRem(12)};
   height: ${pixelToRem(12)};
-  margin: ${pixelToRem(9)} ${pixelToRem(14)};
+  margin: ${pixelToRem(9)} ${pixelToRem(14)} ${pixelToRem(9)} ${pixelToRem(4)};
   color: ${theme.colors.red};
   font-size: ${theme.fontSizes.font_small};
 `;
 
 const ErrorMessage = styled.span`
+  color: ${theme.colors.red};
   font-family: NanumBarunGothic, sans-serif;
   font-size: ${theme.fontSizes.font_micro};
-  color: ${theme.colors.red};
 `;
