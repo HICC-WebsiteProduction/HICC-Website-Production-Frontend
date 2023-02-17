@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import HeaderAndTitle from '../components/HeaderAndTitle';
 import UmbrellaRentWindow from '../components/UmbrellaRentWindow';
+import MemberAuthorizeWindow from '../components/MemberAuthorizeWindow';
 import theme from '../styles/Theme';
 
 const pixelToRem = size => `${size / 16}rem`;
@@ -49,7 +50,7 @@ function Manage(props) {
         </ManageTabHeaderItem>
       </ManageTabHeaderContainer>
       <ManageTabPageContainer ref={pageRef}>
-        <ManageTabPageItem>회원 승인 컴포넌트</ManageTabPageItem>
+        <MemberAuthorizeWindow />
         <ManageTabPageItem className="hidden-page">
           회원 정보 컴포넌트
         </ManageTabPageItem>
@@ -66,34 +67,35 @@ export default Manage;
 
 const ManageContainer = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 100%;
 `;
 
 const ManageTabHeaderContainer = styled.ul`
-  height: 40px;
-  list-style: none;
   display: block;
+  list-style: none;
   float: none;
   clear: both;
-  margin: 0 ${pixelToRem(40)};
-  padding-left: ${pixelToRem(71)};
+  height: ${pixelToRem(40)};
   border-bottom: 2px solid ${theme.colors.light_grey};
+  padding-left: ${pixelToRem(71)};
+  margin: 0 ${pixelToRem(40)};
 `;
 
 const ManageTabHeaderItem = styled.div`
-  width: 100px;
-  height: 40px;
+  line-height: ${pixelToRem(40)};
   float: left;
+  width: ${pixelToRem(100)};
+  height: ${pixelToRem(40)};
+  border: 1px solid gray;
   text-align: center;
   text-decoration: none;
-  border: 1px solid white;
 `;
 
 const ManageTabPageContainer = styled.div`
   display: block;
-  margin: 0 ${pixelToRem(40)};
-  padding-left: ${pixelToRem(71)};
   border-bottom: 2px solid ${theme.colors.light_grey};
+  padding-left: ${pixelToRem(71)};
+  margin: 0 ${pixelToRem(40)};
 
   .hidden-page {
     display: none;
