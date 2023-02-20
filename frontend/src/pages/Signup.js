@@ -43,7 +43,7 @@ function Signup(props) {
           minLength={7}
           maxLength={7}
           validPattern={InputMemberValidInfo.ID.validPattern}
-          validPatternMessage={InputMemberValidInfo.ID.invalidPatternWarning}
+          invalidPatternWarning={InputMemberValidInfo.ID.invalidPatternWarning}
         />
         <InputMemberInfo
           labelName="비밀번호"
@@ -56,7 +56,7 @@ function Signup(props) {
           minLength={8}
           maxLength={16}
           validPattern={InputMemberValidInfo.PW.validPattern}
-          validPatternMessage={InputMemberValidInfo.PW.invalidPatternWarning}
+          invalidPatternWarning={InputMemberValidInfo.PW.invalidPatternWarning}
         />
         <InputMemberInfo
           labelName="닉네임"
@@ -69,7 +69,7 @@ function Signup(props) {
           minLength={4}
           maxLength={16}
           validPattern={InputMemberValidInfo.nickname.validPattern}
-          validPatternMessage={
+          invalidPatternWarning={
             InputMemberValidInfo.nickname.invalidPatternWarning
           }
         />
@@ -85,7 +85,7 @@ function Signup(props) {
           minLength={2}
           maxLength={7}
           validPattern={InputMemberValidInfo.koreanName.validPattern}
-          validPatternMessage={
+          invalidPatternWarning={
             InputMemberValidInfo.koreanName.invalidPatternWarning
           }
         />
@@ -101,7 +101,7 @@ function Signup(props) {
           minLength={2}
           maxLength={2}
           validPattern={InputMemberValidInfo.studentID.validPattern}
-          validPatternMessage={
+          invalidPatternWarning={
             InputMemberValidInfo.studentID.invalidPatternWarning
           }
         />
@@ -117,7 +117,9 @@ function Signup(props) {
           minLength={1}
           maxLength={1}
           validPattern={InputMemberValidInfo.grade.validPattern}
-          validPatternMessage={InputMemberValidInfo.grade.invalidPatternWarning}
+          invalidPatternWarning={
+            InputMemberValidInfo.grade.invalidPatternWarning
+          }
         />
         <InputMemberInfo
           labelName="전화번호"
@@ -131,7 +133,9 @@ function Signup(props) {
           minLength={13}
           maxLength={13}
           validPattern={InputMemberValidInfo.call.validPattern}
-          validPatternMessage={InputMemberValidInfo.call.invalidPatternWarning}
+          invalidPatternWarning={
+            InputMemberValidInfo.call.invalidPatternWarning
+          }
         />
         <ButtonContainer>
           <Button buttonType="button" buttonName="취소"></Button>
