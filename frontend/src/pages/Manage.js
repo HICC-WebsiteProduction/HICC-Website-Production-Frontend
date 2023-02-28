@@ -6,6 +6,7 @@ import HeaderAndTitle from '../components/HeaderAndTitle';
 import UmbrellaRentWindow from '../components/UmbrellaRentWindow';
 import MemberAuthorizeWindow from '../components/MemberAuthorizeWindow';
 import theme from '../styles/Theme';
+import MemberInfoWindow from '../components/MemberInfoWindow';
 
 const pixelToRem = size => `${size / 16}rem`;
 
@@ -52,9 +53,7 @@ function Manage(props) {
       </ManageTabHeaderContainer>
       <ManageTabPageContainer ref={pageRef}>
         <MemberAuthorizeWindow />
-        <ManageTabPageItem className="hidden-page">
-          회원 정보 컴포넌트
-        </ManageTabPageItem>
+        <MemberInfoWindow />
         <ManageTabPageItem className="hidden-page">
           우산 대여 컴포넌트
         </ManageTabPageItem>
