@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import logo from '../images/hicc_logo.png';
 import theme from '../styles/Theme';
@@ -6,10 +6,26 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell } from '@fortawesome/free-regular-svg-icons';
 import { faCircleUser } from '@fortawesome/free-regular-svg-icons';
 import SearchWindow from './SearchWindow';
+import UserModal from './UserModal';
 
 const pixelToRem = size => `${size / 16}rem`;
 
 export default function Header() {
+  const [userModalVisibility, setUserModalVisibility] = useState(false);
+  const menuRef = useRef();
+  useEffect(() => {
+    const handler = event => {
+      if (!menuRef.current.contains(event.target)) {
+        setUserModalVisibility(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handler);
+
+    return () => {
+      document.removeEventListener('mousedown', handler);
+    };
+  });
   return (
     <HeaderContainer>
       <Logo />
@@ -18,9 +34,15 @@ export default function Header() {
         <BellIcon>
           <FontAwesomeIcon icon={faBell} size="2x" />
         </BellIcon>
-        <UserIcon type="button">
-          <FontAwesomeIcon icon={faCircleUser} />
-        </UserIcon>
+        <UserButtonWrapper ref={menuRef}>
+          <UserButton
+            type="button"
+            onClick={() => setUserModalVisibility(!userModalVisibility)}
+          >
+            <FontAwesomeIcon icon={faCircleUser} />
+          </UserButton>
+          {userModalVisibility ? <UserModal /> : null}
+        </UserButtonWrapper>
       </UserContainer>
     </HeaderContainer>
   );
@@ -32,7 +54,7 @@ const HeaderContainer = styled.header`
   justify-content: space-between;
   height: ${pixelToRem(74)};
   padding: 0 ${theme.margin.margin_content};
-  border-bottom: 2px solid ${theme.colors.light_grey};
+  border-bottom: ${pixelToRem(2)} solid ${theme.colors.light_grey};
   transform: rotate(-0.05deg);
 `;
 
@@ -53,11 +75,19 @@ const BellIcon = styled.div`
   margin-left: ${pixelToRem(28)};
 `;
 
-const UserIcon = styled.button`
+const UserButtonWrapper = styled.div`
+  display: inline-block;
+  position: relative;
+`;
+
+const UserButton = styled.button`
   width: ${pixelToRem(28)};
   height: ${pixelToRem(32)};
   margin-left: ${pixelToRem(28)};
   background-color: transparent;
   border: none;
   font-size: ${pixelToRem(32)};
+  &:hover {
+    cursor: pointer;
+  }
 `;
