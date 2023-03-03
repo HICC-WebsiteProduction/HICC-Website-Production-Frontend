@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
-import user from './UserReducer';
+import userReducer from './UserReducer';
+import changeGradeReducer from './ChangeGradeReducer';
 
 const rootReducer = combineReducers({
-  user,
+  userReducer,
+  changeGradeReducer,
 });
 
 export default rootReducer;

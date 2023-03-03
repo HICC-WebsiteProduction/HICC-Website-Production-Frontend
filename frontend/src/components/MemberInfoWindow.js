@@ -1,40 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import theme from '../styles/Theme';
+import ConfirmMessage from '../confirmMessage/ConfirmMessage';
+import { useDispatch } from 'react-redux';
+import { changeGrade } from '../_actions/changeGradeAction';
 
 const pixelToRem = size => `${size / 16}rem`;
 
 function MemberInfoWindow(props) {
-  const memberListRef = React.createRef();
-  let toggleNext = false;
-  const selectToggle = data => {
-    const memberList = memberListRef.current.children;
-    let checkedAny = false;
-
-    // if checked any, remove every checkbox
-    for (const element of memberList) {
-      let tdList = element.children;
-      if (tdList[tdList.length - 1].children[0].checked === true) {
-        checkedAny = true;
-        break;
-      }
-    }
-    if (checkedAny === true) {
-      toggleNext = false;
-    }
-
-    // transition : toggle check
-    for (const element of memberList) {
-      let tdList = element.children;
-      console.log(tdList[tdList.length - 1].children[0].checked);
-      tdList[tdList.length - 1].children[0].checked = toggleNext;
-    }
-
-    toggleNext = !toggleNext;
-  };
+  const dispatch = useDispatch();
 
   const confirmGrant = data => {
-    // open dialog box
+    // 등급 변경사항 상태를 리덕스 스토어에 저장합니다.
+    // 나중에 이 상태를 백엔드 데이터베이스에 저장 요청을 하면 됩니다.
+    if (window.confirm(ConfirmMessage.gradeChange)) {
+      dispatch(changeGrade(memberInfo));
+    }
+  };
+  const getChangeInfo = (memberID, grade) => {
+    // 변경정보를 받아와 멤버정보를 수정합니다.
+    let memberInfoTemp = memberInfo;
+    memberInfoTemp[memberID - 1].grade = grade;
+    setMemberInfo(memberInfoTemp);
   };
 
   const confirmDeny = data => {
@@ -47,25 +34,21 @@ function MemberInfoWindow(props) {
       .then(res => res.json())
       .then(data => data.memberInfo);
   };
-  // 최초 1회만 부르도록 설정하려면 마지막에 빈 배열을 넣어 문제를 해결할 수 있지만
-  // 탭 이동으로 이 화면으로 넘어오는 상황이라 (페이지가 처음 로드되는 상황이 아님) 그럴 수가 없는 상황입니다.
-  // 해결책 아시는 분 알려주시면....
   useEffect(() => {
+    // 멤버 초기정보를 셋팅합니다.
     const initMemberInfo = async () => {
-      const result = await fetchData();
+      const result = await fetchData(); // array 내부는 Object
       setMemberInfo(result);
     };
     initMemberInfo();
-  });
+  }, []);
 
   return (
     <MemberInfoContainer>
-      <Toolbar>
-        <SelectAllTool onClick={selectToggle}>전체 선택 및 해제</SelectAllTool>
-      </Toolbar>
       <MemberContainer>
         <MemberHeader>
           <tr>
+            <HideTd>번호</HideTd>
             <td>닉네임</td>
             <td>학번</td>
             <td>이름</td>
@@ -73,25 +56,26 @@ function MemberInfoWindow(props) {
             <td>학년</td>
             <td>연락처</td>
             <td>등급</td>
-            <td>선택</td>
           </tr>
         </MemberHeader>
-        <MemberList ref={memberListRef}>
-          {memberInfo.map((value, index) => {
-            return (
-              <RegisteredMember
-                key={index}
-                memberNumber={index + 1}
-                nickname={value.nickname}
-                name={value.name}
-                studentID={value.studentID}
-                schoolGrade={value.schoolGrade}
-                major={value.major}
-                tel={value.tel}
-                grade={value.grade}
-              />
-            );
-          })}
+        <MemberList>
+          {memberInfo &&
+            memberInfo.map((value, index) => {
+              return (
+                <RegisteredMember
+                  key={index}
+                  memberNumber={index + 1}
+                  nickname={value.nickname}
+                  name={value.name}
+                  studentID={value.studentID}
+                  schoolGrade={value.schoolGrade}
+                  major={value.major}
+                  tel={value.tel}
+                  grade={value.grade}
+                  getMemberInfo={getChangeInfo}
+                />
+              );
+            })}
           {/*<RegisteredMember MemberNumber={1} />
           <RegisteredMember MemberNumber={2} />
           <RegisteredMember MemberNumber={3} />
@@ -106,8 +90,18 @@ function MemberInfoWindow(props) {
 }
 
 function RegisteredMember(props) {
+  const memberDetailRef = React.createRef();
+  const [grade, setGrade] = useState(props.grade);
+  const changeGradeFunc = e => {
+    setGrade(e.target.value);
+    props.getMemberInfo(
+      memberDetailRef.current.firstChild.innerHTML,
+      e.target.value,
+    );
+  };
   return (
-    <MemberPresenter>
+    <MemberPresenter ref={memberDetailRef}>
+      <HideTd>{props.memberNumber}</HideTd>
       <td>
         <MemberDetailsLink href={`/manage/memberDetail/${props.nickname}`}>
           {props.nickname}
@@ -118,16 +112,13 @@ function RegisteredMember(props) {
       <td>{props.major}</td>
       <td>{props.schoolGrade}</td>
       <td>{props.tel}</td>
-      <td>
-        <select defaultValue={props.grade}>
+      <td id="grade">
+        <select value={grade} onChange={changeGradeFunc}>
           <option value="normal">일반</option>
           <option value="graduate">졸업생</option>
           <option value="manager">운영진</option>
           <option value="president">회장</option>
         </select>
-      </td>
-      <td>
-        <input type="checkbox" name="color" value="blue" />
       </td>
     </MemberPresenter>
   );
@@ -139,27 +130,9 @@ const MemberInfoContainer = styled.div`
   *
 `;
 
-const Toolbar = styled.div`
-  display: flex;
-  width: 100%;
-  height: ${pixelToRem(40)};
-  justify-content: right;
-`;
-
-const SelectAllTool = styled.button`
-  margin-right: ${pixelToRem(5)};
-  border: 0;
-  color: rgb(150, 150, 150);
-  font-size: ${pixelToRem(8)};
-  font-weight: lighter;
-  align-self: end;
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
 const MemberContainer = styled.table`
   width: 100%;
+  margin-top: ${pixelToRem(40)};
 
   tr {
     height: ${pixelToRem(50)};
@@ -227,4 +200,8 @@ const MemberDetailsLink = styled.a`
   &:hover {
     cursor: pointer;
   }
+`;
+
+const HideTd = styled.td`
+  display: none;
 `;
