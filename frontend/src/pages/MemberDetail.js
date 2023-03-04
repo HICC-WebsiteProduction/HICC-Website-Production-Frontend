@@ -7,7 +7,7 @@ import HeaderAndTitle from '../components/HeaderAndTitle';
 import MemberInfo from '../components/MemberInfo';
 import { useDispatch, useSelector } from 'react-redux';
 import confirmMessage from '../confirmMessage/ConfirmMessage';
-import { changeGrade } from '../_actions/changeGradeAction';
+import { changeGrade } from '../_actions/changeMemberInfoAction';
 
 const pixelToRem = size => `${size / 16}rem`;
 
@@ -16,7 +16,7 @@ export default function MemberDetail() {
   const { userNickname } = useParams();
   const [userinfo, setUserinfo] = useState([]);
   const [userGrade, setUserGrade] = useState('');
-  const userStore = useSelector(store => store.changeGradeReducer);
+  const userStore = useSelector(store => store.changeMemberInfoReducer);
   const dispatch = useDispatch();
   const updateMemberGrade = e => {
     setUserGrade(e.target.value);

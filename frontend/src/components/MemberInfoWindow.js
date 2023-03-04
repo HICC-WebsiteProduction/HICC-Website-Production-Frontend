@@ -4,13 +4,13 @@ import theme from '../styles/Theme';
 import { Link } from 'react-router-dom';
 import ConfirmMessage from '../confirmMessage/ConfirmMessage';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeGrade, initMember } from '../_actions/changeGradeAction';
+import { changeGrade, initMember } from '../_actions/changeMemberInfoAction';
 
 const pixelToRem = size => `${size / 16}rem`;
 
 function MemberInfoWindow(props) {
   const dispatch = useDispatch();
-  const userReducer = useSelector(state => state.changeGradeReducer);
+  const userReducer = useSelector(state => state.changeMemberInfoReducer);
 
   const confirmGrant = data => {
     // 등급 변경사항 상태를 리덕스 스토어에 저장합니다.
