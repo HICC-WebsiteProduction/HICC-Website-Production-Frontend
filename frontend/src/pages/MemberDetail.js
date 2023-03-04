@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import theme from '../styles/Theme';
 import logo from '../dummy/hongik.png';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import HeaderAndTitle from '../components/HeaderAndTitle';
 import MemberInfo from '../components/MemberInfo';
-import Button from '../components/Button';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import confirmMessage from '../confirmMessage/ConfirmMessage';
+import { changeGrade } from '../_actions/changeGradeAction';
 
 const pixelToRem = size => `${size / 16}rem`;
 
@@ -14,25 +15,53 @@ const pixelToRem = size => `${size / 16}rem`;
 export default function MemberDetail() {
   const { userNickname } = useParams();
   const [userinfo, setUserinfo] = useState([]);
+  const [userGrade, setUserGrade] = useState('');
   const userStore = useSelector(store => store.changeGradeReducer);
-  useEffect(() => {
-    if (userStore.changeSuccess) {
-      for (const member of userStore.changeSuccess) {
+  const dispatch = useDispatch();
+  const updateMemberGrade = e => {
+    setUserGrade(e.target.value);
+  };
+  const saveMemberInfo = () => {
+    if (window.confirm(confirmMessage.gradeChange)) {
+      let userinfoTemp = userinfo;
+      userinfoTemp.grade = userGrade;
+      setUserinfo(userinfoTemp);
+      console.log(userinfo);
+      // 아래 코드도 DB가 나온다면 필요없을 듯
+      if (userStore.changeSuccess) {
+        setUserInformation(userStore.changeSuccess, true);
+      } else {
+        setUserInformation(userStore.init, true);
+      }
+    }
+  };
+  const setUserInformation = (store, save) => {
+    if (!save) {
+      for (const member of store) {
         if (member.nickname === userNickname) {
           setUserinfo(member);
+          setUserGrade(member.grade);
           break;
         }
       }
     } else {
-      for (const member of userStore.init) {
-        if (member.nickname === userNickname) {
-          setUserinfo(member);
-          console.log(userinfo);
-          break;
-        }
-      }
+      const totalUser = store;
+      const userIdx = totalUser.findIndex(
+        element => element.nickname === userNickname,
+      );
+      totalUser[userIdx] = userinfo;
+      console.log(totalUser);
+      dispatch(changeGrade(totalUser));
     }
-  }, [userNickname, userStore.changeSuccess, userStore.init, userinfo]);
+  };
+  useEffect(() => {
+    if (userStore.changeSuccess) {
+      setUserInformation(userStore.changeSuccess, false);
+    } else {
+      setUserInformation(userStore.init, false);
+    }
+    console.log('호출');
+  }, []);
   return (
     <MemberDetailContainer>
       <HeaderAndTitle titleName="회원 정보" />
@@ -53,7 +82,7 @@ export default function MemberDetail() {
             <MemberInfo name="전화번호" param={userinfo.tel} />
             <GradeContainer>
               <Label>등급</Label>
-              <select value={userinfo.grade}>
+              <select value={userGrade} onChange={e => updateMemberGrade(e)}>
                 <option value="normal">일반</option>
                 <option value="graduate">졸업생</option>
                 <option value="manager">운영진</option>
@@ -67,7 +96,9 @@ export default function MemberDetail() {
         )}
       </MemberProfile>
       <SubmitButtonContainer>
-        <Button buttonName="저장" type="button" />
+        <SubmitButton to="/manage" onClick={saveMemberInfo}>
+          저장
+        </SubmitButton>
       </SubmitButtonContainer>
     </MemberDetailContainer>
   );
@@ -129,4 +160,19 @@ const GoAwayButton = styled.button`
 const SubmitButtonContainer = styled.div`
   ${theme.flexbox.flexCenterColumn};
   margin-top: ${pixelToRem(0)};
+`;
+
+const SubmitButton = styled(Link)`
+  width: ${pixelToRem(102)};
+  height: ${pixelToRem(40)};
+  padding-top: ${pixelToRem(12)};
+  background-color: ${theme.colors.blue};
+  border: none;
+  border-radius: ${pixelToRem(10)};
+  color: ${theme.colors.white};
+  text-decoration-line: none;
+  text-align: center;
+  &:hover {
+    cursor: pointer;
+  }
 `;

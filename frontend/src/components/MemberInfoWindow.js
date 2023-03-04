@@ -3,13 +3,14 @@ import styled from 'styled-components';
 import theme from '../styles/Theme';
 import { Link } from 'react-router-dom';
 import ConfirmMessage from '../confirmMessage/ConfirmMessage';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { changeGrade, initMember } from '../_actions/changeGradeAction';
 
 const pixelToRem = size => `${size / 16}rem`;
 
 function MemberInfoWindow(props) {
   const dispatch = useDispatch();
+  const userReducer = useSelector(state => state.changeGradeReducer);
 
   const confirmGrant = data => {
     // 등급 변경사항 상태를 리덕스 스토어에 저장합니다.
@@ -38,10 +39,19 @@ function MemberInfoWindow(props) {
   };
   useEffect(() => {
     // 멤버 초기정보를 셋팅합니다.
+    // 아래 조건문은 DB에 저장된 값을 불러온다면 필요없습니다..
+    // DB에 저장된다면 무조건 DB 에서 들고오면 되기 때문입니다.
+    // DB 없이 변경값을 확인하기위해 임시로 해놓은 코드입니다.
     const initMemberInfo = async () => {
-      const result = await fetchData(); // array 내부는 Object
-      setMemberInfo(result);
-      dispatch(initMember(result));
+      if (!userReducer.changeSuccess) {
+        // 변경사항이 없으면 초기값
+        const result = await fetchData(); // array 내부는 Object
+        setMemberInfo(result);
+        dispatch(initMember(result));
+      } else {
+        // 변경사항이 있으면 변경값
+        setMemberInfo(userReducer.changeSuccess);
+      }
     };
     initMemberInfo();
   }, []);
