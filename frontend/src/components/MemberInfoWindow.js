@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import theme from '../styles/Theme';
+import { Link } from 'react-router-dom';
 import ConfirmMessage from '../confirmMessage/ConfirmMessage';
 import { useDispatch } from 'react-redux';
-import { changeGrade } from '../_actions/changeGradeAction';
+import { changeGrade, initMember } from '../_actions/changeGradeAction';
 
 const pixelToRem = size => `${size / 16}rem`;
 
@@ -15,6 +16,7 @@ function MemberInfoWindow(props) {
     // 나중에 이 상태를 백엔드 데이터베이스에 저장 요청을 하면 됩니다.
     if (window.confirm(ConfirmMessage.gradeChange)) {
       dispatch(changeGrade(memberInfo));
+      alert('회원 등급 변경에 성공하였습니다.');
     }
   };
   const getChangeInfo = (memberID, grade) => {
@@ -39,6 +41,7 @@ function MemberInfoWindow(props) {
     const initMemberInfo = async () => {
       const result = await fetchData(); // array 내부는 Object
       setMemberInfo(result);
+      dispatch(initMember(result));
     };
     initMemberInfo();
   }, []);
@@ -103,7 +106,7 @@ function RegisteredMember(props) {
     <MemberPresenter ref={memberDetailRef}>
       <HideTd>{props.memberNumber}</HideTd>
       <td>
-        <MemberDetailsLink href={`/manage/memberDetail/${props.nickname}`}>
+        <MemberDetailsLink to={`/manage/memberDetail/${props.nickname}`}>
           {props.nickname}
         </MemberDetailsLink>
       </td>
@@ -194,7 +197,7 @@ const MemberPresenter = styled.tr`
   }
 `;
 
-const MemberDetailsLink = styled.a`
+const MemberDetailsLink = styled(Link)`
   color: ${theme.colors.blue};
   text-decoration-line: none;
   &:hover {

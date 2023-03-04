@@ -1,25 +1,38 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import theme from '../styles/Theme';
-import dummy from '../dummy/memberInfo.json';
 import logo from '../dummy/hongik.png';
 import { useParams } from 'react-router-dom';
 import HeaderAndTitle from '../components/HeaderAndTitle';
 import MemberInfo from '../components/MemberInfo';
 import Button from '../components/Button';
+import { useSelector } from 'react-redux';
 
 const pixelToRem = size => `${size / 16}rem`;
 
+// 페이지를 재로딩하면 redux state 가 초기화되어 내용이 사라집니다.
 export default function MemberDetail() {
   const { userNickname } = useParams();
-  let userinfo = null;
-  for (const member of dummy.memberInfo) {
-    if (member.nickname === userNickname) {
-      userinfo = member;
-      break;
+  const [userinfo, setUserinfo] = useState([]);
+  const userStore = useSelector(store => store.changeGradeReducer);
+  useEffect(() => {
+    if (userStore.changeSuccess) {
+      for (const member of userStore.changeSuccess) {
+        if (member.nickname === userNickname) {
+          setUserinfo(member);
+          break;
+        }
+      }
+    } else {
+      for (const member of userStore.init) {
+        if (member.nickname === userNickname) {
+          setUserinfo(member);
+          console.log(userinfo);
+          break;
+        }
+      }
     }
-  }
-  console.log(userinfo);
+  }, [userNickname, userStore.changeSuccess, userStore.init, userinfo]);
   return (
     <MemberDetailContainer>
       <HeaderAndTitle titleName="회원 정보" />
@@ -40,7 +53,7 @@ export default function MemberDetail() {
             <MemberInfo name="전화번호" param={userinfo.tel} />
             <GradeContainer>
               <Label>등급</Label>
-              <select defaultValue={userinfo.grade}>
+              <select value={userinfo.grade}>
                 <option value="normal">일반</option>
                 <option value="graduate">졸업생</option>
                 <option value="manager">운영진</option>
