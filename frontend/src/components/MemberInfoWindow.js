@@ -48,9 +48,11 @@ function MemberInfoWindow(props) {
         const result = await fetchData(); // array 내부는 Object
         setMemberInfo(result);
         dispatch(initMember(result));
-      } else {
-        // 변경사항이 있으면 변경값
+      } else if (!userReducer.deleteSuccess) {
+        // 변경사항이 있으면 변경값 하지만 멤버를 지우지 않은 상태
         setMemberInfo(userReducer.changeSuccess);
+      } else {
+        setMemberInfo(userReducer.deleteSuccess);
       }
     };
     initMemberInfo();

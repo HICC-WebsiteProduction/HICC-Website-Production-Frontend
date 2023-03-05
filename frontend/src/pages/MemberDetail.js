@@ -7,7 +7,7 @@ import HeaderAndTitle from '../components/HeaderAndTitle';
 import MemberInfo from '../components/MemberInfo';
 import { useDispatch, useSelector } from 'react-redux';
 import confirmMessage from '../confirmMessage/ConfirmMessage';
-import { changeGrade } from '../_actions/changeMemberInfoAction';
+import { changeGrade, deleteMember } from '../_actions/changeMemberInfoAction';
 
 const pixelToRem = size => `${size / 16}rem`;
 
@@ -20,6 +20,19 @@ export default function MemberDetail() {
   const dispatch = useDispatch();
   const updateMemberGrade = e => {
     setUserGrade(e.target.value);
+  };
+  const deleteUser = () => {
+    if (window.confirm(confirmMessage.getOutMember)) {
+      if (userinfo.grade === 'president') {
+        alert('본인 강퇴는 안돼요...');
+      } else {
+        if (userStore.changeSuccess) {
+          deleteMemberCase(userStore.changeSuccess);
+        } else {
+          deleteMemberCase(userStore.init);
+        }
+      }
+    }
   };
   const saveMemberInfo = () => {
     if (window.confirm(confirmMessage.gradeChange)) {
@@ -53,6 +66,16 @@ export default function MemberDetail() {
       console.log(totalUser);
       dispatch(changeGrade(totalUser));
     }
+  };
+  const deleteMemberCase = store => {
+    const totalUser = store;
+    const userIdx = totalUser.findIndex(
+      element => element.nickname === userNickname,
+    );
+    delete totalUser[userIdx];
+    const newTotalUser = totalUser.filter(element => element !== undefined);
+    console.log(newTotalUser);
+    dispatch(deleteMember(newTotalUser));
   };
   useEffect(() => {
     if (userStore.changeSuccess) {
@@ -88,7 +111,9 @@ export default function MemberDetail() {
                 <option value="manager">운영진</option>
                 <option value="president">회장</option>
               </select>
-              <GoAwayButton>강퇴</GoAwayButton>
+              <GoAwayButton to="/manage" onClick={deleteUser}>
+                강퇴
+              </GoAwayButton>
             </GradeContainer>
           </MemberProfileList>
         ) : (
@@ -144,14 +169,18 @@ const Label = styled.label`
   font-size: ${theme.fontSizes.paragraph};
 `;
 
-const GoAwayButton = styled.button`
+const GoAwayButton = styled(Link)`
+  display: inline-block;
   width: ${pixelToRem(70)};
   height: ${pixelToRem(25)};
   margin-left: ${pixelToRem(30)};
+  padding-top: ${pixelToRem(4)};
   background-color: ${theme.colors.blue};
   border: none;
   border-radius: ${pixelToRem(10)};
   color: ${theme.colors.white};
+  text-decoration-line: none;
+  text-align: center;
   &:hover {
     cursor: pointer;
   }
