@@ -6,6 +6,7 @@ import MyPage from './pages/MyPage';
 import Manage from './pages/Manage';
 import Myinfo from './pages/Myinfo';
 import Noticeboard from './pages/Noticeboard';
+import MemberDetail from './pages/MemberDetail';
 
 function Router() {
   return (
@@ -17,6 +18,10 @@ function Router() {
         <Route path="/manage" element={<Manage />} />
         <Route path="/myinfo" element={<Myinfo />} />
         <Route path="/noticeboard" element={<Noticeboard />} />
+        <Route
+          path="/manage/memberDetail/:userNickname"
+          element={<MemberDetail />}
+        />
       </Routes>
     </BrowserRouter>
   );
