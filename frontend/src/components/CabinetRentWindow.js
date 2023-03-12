@@ -10,7 +10,7 @@ const layoutWidthPx = 608;
 
 function CabinetRentWindow(props) {
   return (
-    <CabinetRentContainer className="hidden-page">
+    <CabinetRentContainer className={props.className}>
       <CabinetLayoutDisplay>
         {Array.from(Array(layoutRow).keys()).map((value, index) => {
           return Array.from(Array(layoutColumn).keys()).map((value, index) => {
