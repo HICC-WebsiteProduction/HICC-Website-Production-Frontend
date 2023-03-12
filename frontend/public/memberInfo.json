@@ -1,0 +1,20 @@
+{
+  "memberInfo": [
+    {"nickname": "apple", "name": "이지우", "studentID": 22,
+      "schoolGrade": 2, "major": "컴퓨터공학전공", "tel": "010-1234-5678", "grade": "president"},
+    {"nickname": "banana", "name": "경수현", "studentID": 20,
+      "schoolGrade": 4, "major": "경영학전공", "tel": "010-1234-5678", "grade": "manager"},
+    {"nickname": "pineapple", "name": "김진호", "studentID": 17,
+      "schoolGrade": 5, "major": "경영학전공", "tel": "010-1234-5678", "grade": "manager"},
+    {"nickname": "melon", "name": "김효진", "studentID": 21,
+      "schoolGrade": 2, "major": "신소재공학전공", "tel": "010-1234-5678", "grade": "manager"},
+    {"nickname": "strawberry", "name": "김화윤", "studentID": 22,
+      "schoolGrade": 2, "major": "신소재공학전공", "tel": "010-1234-5678", "grade": "manager"},
+    {"nickname": "orange", "name": "장민지", "studentID": 22,
+      "schoolGrade": 2, "major": "컴퓨터공학전공", "tel": "010-1234-5678", "grade": "manager"},
+    {"nickname": "pear", "name": "윤찬호", "studentID": 19,
+      "schoolGrade": 3, "major": "컴퓨터공학전공", "tel": "010-1234-5678", "grade": "normal"},
+    {"nickname": "peach", "name": "김준호", "studentID": 20,
+      "schoolGrade": 3, "major": "전자전기공학부", "tel": "010-1234-5678", "grade": "normal"}
+  ]
+}
