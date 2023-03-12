@@ -14,11 +14,11 @@ export default function LoginInputMemberInfo(props) {
       {...props.register(props.name, {
         required: {
           value: props.required,
-          message: props.requiredMessage,
+          message: '필수입력정보입니다.',
         },
         pattern: {
           value: props.validPattern,
-          message: props.validPatternMessage,
+          message: props.invalidPatternWarning,
         },
       })}
     />

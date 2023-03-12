@@ -33,8 +33,8 @@ export default function LoginUserModal() {
             register={register}
             minLength={7}
             maxLength={7}
-            validPattern={/^[A-Z][0-9]{6}$/}
-            validPatternMessage={InputMemberValidInfo.ID.validPatternMessage}
+            validPattern={InputMemberValidInfo.ID.validPattern}
+            validPatternMessage={InputMemberValidInfo.ID.invalidPatternWarning}
           />
           <LoginInputMemberInfo
             placeholder="Password"
@@ -45,10 +45,8 @@ export default function LoginUserModal() {
             register={register}
             minLength={8}
             maxLength={16}
-            validPattern={
-              /^(?!((?:[A-Za-z]+)|(?:[~!@#$%^&*()_+=]+)|(?:[0-9]+))$)[A-Za-z\d~!@#$%^&*()_+=]{10,}|(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,}$/
-            }
-            validPatternMessage={InputMemberValidInfo.PW.validPatternMessage}
+            validPattern={InputMemberValidInfo.PW.validPattern}
+            validPatternMessage={InputMemberValidInfo.PW.invalidPatternWarning}
           />
           <ErrorMessage>
             {(errors.ID && errors.ID.message) ||

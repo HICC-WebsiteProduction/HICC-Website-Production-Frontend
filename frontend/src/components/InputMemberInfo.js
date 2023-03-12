@@ -28,11 +28,11 @@ export default function InputMemberInfo(props) {
             },
             minLength: {
               value: props.minLength,
-              message: props.validPatternMessage,
+              message: props.invalidPatternWarning,
             },
             pattern: {
               value: props.validPattern,
-              message: props.validPatternMessage,
+              message: props.invalidPatternWarning,
             },
           })}
         />

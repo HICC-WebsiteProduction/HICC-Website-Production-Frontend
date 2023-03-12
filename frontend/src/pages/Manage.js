@@ -1,10 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
+import CabinetRentWindow from '../components/CabinetRentWindow';
 
 import HeaderAndTitle from '../components/HeaderAndTitle';
 import UmbrellaRentWindow from '../components/UmbrellaRentWindow';
 import MemberAuthorizeWindow from '../components/MemberAuthorizeWindow';
 import theme from '../styles/Theme';
+import MemberInfoWindow from '../components/MemberInfoWindow';
 
 const pixelToRem = size => `${size / 16}rem`;
 
@@ -39,7 +41,7 @@ function Manage(props) {
     console.log('end of function');
   };
   return (
-    <ManageContainer>
+    <ManageContainer className="hidden-page">
       <HeaderAndTitle titleName="관리" />
       <ManageTabHeaderContainer ref={headerRef}>
         <ManageTabHeaderItem onClick={selectTab}>회원 승인</ManageTabHeaderItem>
@@ -51,13 +53,11 @@ function Manage(props) {
       </ManageTabHeaderContainer>
       <ManageTabPageContainer ref={pageRef}>
         <MemberAuthorizeWindow />
+        <MemberInfoWindow />
         <ManageTabPageItem className="hidden-page">
-          회원 정보 컴포넌트
+          우산 대여 컴포넌트
         </ManageTabPageItem>
-        <UmbrellaRentWindow className="hidden-page" />
-        <ManageTabPageItem className="hidden-page">
-          사물함 대여 컴포넌트
-        </ManageTabPageItem>
+        <CabinetRentWindow />
       </ManageTabPageContainer>
     </ManageContainer>
   );
