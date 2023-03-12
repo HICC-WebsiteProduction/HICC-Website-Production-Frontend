@@ -7,7 +7,7 @@ const pixelToRem = size => `${size / 16}rem`;
 
 function UmbrellaRentWindow(props) {
   return (
-    <UmbrellaRentContainer>
+    <UmbrellaRentContainer className={props.className}>
       <RentListContainer>
         <RentHeader>
           <tr>
