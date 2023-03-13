@@ -1,25 +1,90 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import theme from '../styles/Theme';
-import dummy from '../dummy/memberInfo.json';
 import logo from '../dummy/hongik.png';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import HeaderAndTitle from '../components/HeaderAndTitle';
 import MemberInfo from '../components/MemberInfo';
-import Button from '../components/Button';
+import { useDispatch, useSelector } from 'react-redux';
+import confirmMessage from '../confirmMessage/ConfirmMessage';
+import { changeGrade, deleteMember } from '../_actions/changeMemberInfoAction';
 
 const pixelToRem = size => `${size / 16}rem`;
 
+// 페이지를 재로딩하면 redux state 가 초기화되어 내용이 사라집니다.
 export default function MemberDetail() {
   const { userNickname } = useParams();
-  let userinfo = null;
-  for (const member of dummy.memberInfo) {
-    if (member.nickname === userNickname) {
-      userinfo = member;
-      break;
+  const [userinfo, setUserinfo] = useState([]);
+  const [userGrade, setUserGrade] = useState('');
+  const userStore = useSelector(store => store.changeMemberInfoReducer);
+  const dispatch = useDispatch();
+  const updateMemberGrade = e => {
+    setUserGrade(e.target.value);
+  };
+  const deleteUser = () => {
+    if (window.confirm(confirmMessage.getOutMember)) {
+      if (userinfo.grade === 'president') {
+        alert('본인 강퇴는 안돼요...');
+      } else {
+        if (userStore.changeSuccess) {
+          deleteMemberCase(userStore.changeSuccess);
+        } else {
+          deleteMemberCase(userStore.init);
+        }
+      }
     }
-  }
-  console.log(userinfo);
+  };
+  const saveMemberInfo = () => {
+    if (window.confirm(confirmMessage.gradeChange)) {
+      let userinfoTemp = userinfo;
+      userinfoTemp.grade = userGrade;
+      setUserinfo(userinfoTemp);
+      console.log(userinfo);
+      // 아래 코드도 DB가 나온다면 필요없을 듯
+      if (userStore.changeSuccess) {
+        setUserInformation(userStore.changeSuccess, true);
+      } else {
+        setUserInformation(userStore.init, true);
+      }
+    }
+  };
+  const setUserInformation = (store, save) => {
+    if (!save) {
+      for (const member of store) {
+        if (member.nickname === userNickname) {
+          setUserinfo(member);
+          setUserGrade(member.grade);
+          break;
+        }
+      }
+    } else {
+      const totalUser = store;
+      const userIdx = totalUser.findIndex(
+        element => element.nickname === userNickname,
+      );
+      totalUser[userIdx] = userinfo;
+      console.log(totalUser);
+      dispatch(changeGrade(totalUser));
+    }
+  };
+  const deleteMemberCase = store => {
+    const totalUser = store;
+    const userIdx = totalUser.findIndex(
+      element => element.nickname === userNickname,
+    );
+    delete totalUser[userIdx];
+    const newTotalUser = totalUser.filter(element => element !== undefined);
+    console.log(newTotalUser);
+    dispatch(deleteMember(newTotalUser));
+  };
+  useEffect(() => {
+    if (userStore.changeSuccess) {
+      setUserInformation(userStore.changeSuccess, false);
+    } else {
+      setUserInformation(userStore.init, false);
+    }
+    console.log('호출');
+  }, []);
   return (
     <MemberDetailContainer>
       <HeaderAndTitle titleName="회원 정보" />
@@ -40,13 +105,15 @@ export default function MemberDetail() {
             <MemberInfo name="전화번호" param={userinfo.tel} />
             <GradeContainer>
               <Label>등급</Label>
-              <select defaultValue={userinfo.grade}>
+              <select value={userGrade} onChange={e => updateMemberGrade(e)}>
                 <option value="normal">일반</option>
                 <option value="graduate">졸업생</option>
                 <option value="manager">운영진</option>
                 <option value="president">회장</option>
               </select>
-              <GoAwayButton>강퇴</GoAwayButton>
+              <GoAwayButton to="/manage" onClick={deleteUser}>
+                강퇴
+              </GoAwayButton>
             </GradeContainer>
           </MemberProfileList>
         ) : (
@@ -54,7 +121,9 @@ export default function MemberDetail() {
         )}
       </MemberProfile>
       <SubmitButtonContainer>
-        <Button buttonName="저장" type="button" />
+        <SubmitButton to="/manage" onClick={saveMemberInfo}>
+          저장
+        </SubmitButton>
       </SubmitButtonContainer>
     </MemberDetailContainer>
   );
@@ -100,14 +169,18 @@ const Label = styled.label`
   font-size: ${theme.fontSizes.paragraph};
 `;
 
-const GoAwayButton = styled.button`
+const GoAwayButton = styled(Link)`
+  display: inline-block;
   width: ${pixelToRem(70)};
   height: ${pixelToRem(25)};
   margin-left: ${pixelToRem(30)};
+  padding-top: ${pixelToRem(4)};
   background-color: ${theme.colors.blue};
   border: none;
   border-radius: ${pixelToRem(10)};
   color: ${theme.colors.white};
+  text-decoration-line: none;
+  text-align: center;
   &:hover {
     cursor: pointer;
   }
@@ -116,4 +189,19 @@ const GoAwayButton = styled.button`
 const SubmitButtonContainer = styled.div`
   ${theme.flexbox.flexCenterColumn};
   margin-top: ${pixelToRem(0)};
+`;
+
+const SubmitButton = styled(Link)`
+  width: ${pixelToRem(102)};
+  height: ${pixelToRem(40)};
+  padding-top: ${pixelToRem(12)};
+  background-color: ${theme.colors.blue};
+  border: none;
+  border-radius: ${pixelToRem(10)};
+  color: ${theme.colors.white};
+  text-decoration-line: none;
+  text-align: center;
+  &:hover {
+    cursor: pointer;
+  }
 `;
