@@ -41,7 +41,7 @@ function MemberAuthorizeWindow(props) {
   };
 
   return (
-    <MemberAuthorizeContainer>
+    <MemberAuthorizeContainer className={props.className}>
       <Toolbar>
         <SelectAllTool onClick={selectToggle}>전체 선택 및 해제</SelectAllTool>
       </Toolbar>
