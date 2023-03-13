@@ -1,26 +1,67 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import theme from '../styles/Theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser } from '@fortawesome/free-regular-svg-icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutUser } from '../_actions/userAction';
 
 const pixelToRem = size => `${size / 16}rem`;
 
-export default function LogoutUserModal() {
+const gradeName = {
+  president: '회장',
+  manager: '운영진',
+  normal: '일반',
+  graduate: '졸업생',
+};
+
+export default function LogoutUserModal(props) {
+  const [loginUserID, setLoginUserID] = useState('');
+  const [loginUserNickname, setLoginUserNickname] = useState('');
+  const [loginUserGrade, setLoginUserGrade] = useState('');
+  const authStore = useSelector(state => state.userReducer);
+  const dispatch = useDispatch();
+  const fetchData = () => {
+    return fetch('memberInfo.json')
+      .then(res => res.json())
+      .then(data => data.memberInfo);
+  };
+  useEffect(() => {
+    const getMemberInfo = async () => {
+      const result = await fetchData();
+      const user = authStore.loginSuccess;
+      for (const member of result) {
+        if (user.ID === member.ID) {
+          setLoginUserID(user.ID);
+          setLoginUserNickname(member.nickname);
+          const grades = Object.keys(gradeName);
+          const grade = grades.find(key => key === member.grade);
+          setLoginUserGrade(gradeName[grade]);
+          break;
+        }
+      }
+    };
+    getMemberInfo();
+  }, []);
+  const logout = () => {
+    props.loginRequest(false);
+    dispatch(logoutUser(loginUserID));
+    alert('정상적으로 로그아웃 되었습니다.');
+  };
   return (
     <LogoutUserModalContainer>
       <LogoutUserModalInner>
         <UserIcon>
           <FontAwesomeIcon icon={faCircleUser} />
         </UserIcon>
-        <Nickname>닉네임</Nickname>
-        <Grade>등급(회장,운영진)</Grade>
+        <Nickname>{loginUserNickname}</Nickname>
+        <Grade>{loginUserGrade}</Grade>
         <ModalInButtonContainer>
           <ModalInButton type="button">정보수정</ModalInButton>
           <ModalInButton type="button">내가 작성한 글/댓글</ModalInButton>
           <ModalInButton type="button">관리페이지</ModalInButton>
         </ModalInButtonContainer>
-        <GoSignupButton href={'/signup'}>로그아웃</GoSignupButton>
+        <LogoutButton onClick={logout}>로그아웃</LogoutButton>
       </LogoutUserModalInner>
     </LogoutUserModalContainer>
   );
@@ -100,11 +141,16 @@ const ModalInButton = styled.button`
   }
 `;
 
-const GoSignupButton = styled.a`
+const LogoutButton = styled.button`
   width: ${pixelToRem(40)};
   height: ${pixelToRem(12)};
   margin-top: ${pixelToRem(5)};
   color: ${theme.colors.blue};
+  background: transparent;
+  border: none;
   font-size: ${theme.fontSizes.font_micro};
   text-decoration-line: none;
+  &:hover {
+    cursor: pointer;
+  }
 `;
