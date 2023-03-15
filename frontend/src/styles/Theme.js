@@ -24,11 +24,14 @@ const margin = {
 
 const colors = {
   white: '#ffffff',
+  white_grey: '#f2f2f2',
   black: '#000000',
   red: '#ff0000',
   blue: '#2d9cdb',
   grey: '#989898',
   light_grey: '#a8a8a8',
+  very_light_gray: '#ddd',
+  chinese_silver: '#ccc',
 };
 
 const flexbox = {
