@@ -63,9 +63,9 @@ const BoardList = styled.ul`
   width: 20%;
   height: 100%;
   padding: 0;
-  margin-left: 20px;
+  margin-left: ${pixelToRem(20)};
   list-style-type: none;
-  background-color: #f0f0f0;
+  background-color: ${theme.colors.white_grey};
   border-right: 1px solid ${theme.colors.chinese_silver};
 `;
 
