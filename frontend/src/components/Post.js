@@ -1,94 +1,47 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import theme from '../styles/Theme';
+import NewPost from '../components/NewPost';
+import dummy from '../dummy/posts.json';
 
 const pixelToRem = size => `${size / 16}rem`;
 
 export default function Post(props) {
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState(() => {
+    const initialPosts = dummy.posts || [];
+    return initialPosts;
+  });
+
   const [currentPost, setCurrentPost] = useState(null);
   const [filteredPosts, setFilteredPosts] = useState(posts);
+  const [isCreatingPost, setIsCreatingPost] = useState(false);
 
   useEffect(() => {
-    // 서버에서 게시물 목록을 가져와서 posts 상태를 업데이트합니다.
-    // 서버에서 가져오는 방법에 따라 수정예정입니다.
-    fetch('/api/posts')
-      .then(response => response.json())
-      .then(posts => {
-        setPosts(posts);
-        setFilteredPosts(
-          posts.filter(
-            post => post[props.postFilter] === props.filterCondition,
-          ),
-        );
-      })
-      .catch(error => console.error(error));
+    const posts = dummy.posts || [];
+    setPosts(posts);
   }, []);
 
-  if (posts.length === 0) {
-    //게시글 더미 데이터
-    setPosts([
-      {
-        id: 1,
-        board: '자유게시판',
-        title: '자유게시판 첫번째 글',
-        content: '자유게시판 첫번째 글 내용입니다.',
-        writer: '최세호',
-        date: '2023/01/01',
-      },
-      {
-        id: 2,
-        board: '공지게시판',
-        title: '공지게시판 첫번째 글',
-        content: '공지게시판 첫번째 글 내용입니다.',
-        writer: '최세호',
-        date: '2023/01/01',
-      },
-      {
-        id: 3,
-        board: '활동사진게시판',
-        title: '활동사진게시판 첫번째 글',
-        content: '활동사진게시판 첫번째 글 내용입니다.',
-        writer: '최세호',
-        date: '2023/01/01',
-      },
-      {
-        id: 4,
-        board: '자유게시판',
-        title: '자유게시판 두번째 글',
-        content: '자유게시판 두번째 글 내용입니다.',
-        writer: '최세호',
-        date: '2023/01/01',
-      },
-      {
-        id: 5,
-        board: '공지게시판',
-        title: '공지게시판 두번째 글',
-        content: '전체게시판 두번째 글 내용입니다.',
-        writer: '최세호',
-        date: '2023/01/01',
-      },
-      {
-        id: 6,
-        board: '활동사진게시판',
-        title: '활동사진게시판 두번째 글',
-        content: '활동사진게시판 두번째 글 내용입니다.',
-        writer: '최세호',
-        date: '2023/01/01',
-      },
-    ]);
-  }
   useEffect(() => {
-    const boardPosts = posts.filter(
+    const boardPosts = dummy.posts.filter(
       post => post[props.postFilter] === props.filterCondition,
     );
     setFilteredPosts(boardPosts);
     setCurrentPost(null);
-  }, [props.filterCondition]); //필터 조건 바뀔떄마다 렌더링
+    setIsCreatingPost(null);
+  }, [props.filterCondition]);
 
   const handlePostClick = postId => {
-    const post = posts.find(post => post.id === postId);
+    const post = dummy.posts.find(post => post.id === postId);
     setCurrentPost(post);
+  };
+
+  // 새 글 저장 후 실행할 함수
+  const handleSave = () => {
+    setCurrentPost(null); // currentPost 상태를 null로 바꿔서 게시글 목록 보이게 함
+    setIsCreatingPost(null);
+    console.log('handleSave함수 실행됨');
+    const posts = dummy.posts || [];
+    setPosts(posts);
   };
 
   return (
@@ -100,6 +53,15 @@ export default function Post(props) {
             <PostContent>{currentPost.content}</PostContent>
           </PostContainer>
           <Button onClick={() => setCurrentPost(null)}>목록으로</Button>
+        </>
+      ) : isCreatingPost ? (
+        <>
+          <NewPost
+            board={props.filterCondition}
+            writer="최세호"
+            onSave={handleSave}
+          />
+          <Button onClick={() => setIsCreatingPost(null)}>취소</Button>
         </>
       ) : (
         <>
@@ -113,16 +75,23 @@ export default function Post(props) {
               </tr>
             </PostsHeader>
             <PostsList>
-              {filteredPosts.map(post => (
+              {filteredPosts.map((post, index) => (
                 <tr key={post.id} onClick={() => handlePostClick(post.id)}>
-                  <td>{post.id}</td>
+                  <td>{index}</td>
                   <td>{post.title}</td>
                   <td>{post.writer}</td>
                   <td>{post.date}</td>
-                  {/* <p>{post.content.slice(0, 100)}...</p> */}
                 </tr>
               ))}
             </PostsList>
+
+            {/* 글쓰기 버튼 추가 */}
+            {/* currentPost 상태를 true로 바꿔서 새 글 작성 컴포넌트가 보이게 함 */}
+            {/* writer는 임의로 설정함 */}
+            {/* 실제로는 로그인한 사용자의 정보를 받아와야 함 */}
+            {/* onSave에 handleSave 함수를 전달함 */}
+            {/* 새 글 저장 후 실행됨 */}
+            <Button onClick={() => setIsCreatingPost(true)}>글쓰기</Button>
           </PostsContainer>
         </>
       )}
