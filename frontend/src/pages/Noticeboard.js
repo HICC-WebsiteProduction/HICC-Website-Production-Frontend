@@ -70,8 +70,8 @@ const BoardList = styled.ul`
 `;
 
 const BoardItem = styled.li`
-  padding: 10px;
-  font-size: 14px;
+  padding: ${pixelToRem(10)};
+  font-size: ${pixelToRem(14)};
   cursor: pointer;
 
   &:hover {

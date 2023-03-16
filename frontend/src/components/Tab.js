@@ -1,5 +1,8 @@
+// tab 사용 방법은 MyPage.js 의 15번쨰 라인 const tabs 을 보시면 됩니다.
 import React, { useState } from 'react';
 import styled from 'styled-components';
+
+const pixelToRem = size => `${size / 16}rem`;
 
 const Tabs = ({ tabs }) => {
   const [activeTab, setActiveTab] = useState(0);
@@ -39,7 +42,7 @@ const TabList = styled.ul`
 `;
 
 const TabItem = styled.li`
-  margin-right: 20px;
+  margin-right: ${pixelToRem(20)};
   cursor: pointer;
   font-weight: ${props => (props.active ? 'bold' : 'normal')};
 `;

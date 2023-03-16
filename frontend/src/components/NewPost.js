@@ -126,7 +126,7 @@ const Input = styled.input`
 // 텍스트 영역
 const TextArea = styled.textarea`
   width: 100%;
-  height: 200px;
+  height: ${pixelToRem(200)};
 `;
 
 // 버튼

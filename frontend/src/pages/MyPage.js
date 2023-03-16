@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Header from '../components/Header';
-import logo from '../images/hicc_logo.png';
 import theme from '../styles/Theme';
 import Post from '../components/Post';
 import Tabs from '../components/Tab';
@@ -18,6 +17,7 @@ function Mypage() {
       title: '내 작성 글',
       content: <Post postFilter="writer" filterCondition="최세호" />,
     },
+    // 댓글 목록 구현 예정
     { title: '내 작성 댓글', content: <MyComments /> },
   ];
   return (
@@ -58,7 +58,7 @@ const UserInfo = styled.div`
 const Logo = styled.div`
   width: ${pixelToRem(100)};
   height: ${pixelToRem(80)};
-  background-image: url('${logo}');
+  background-image: url('${'https://ssl.pstatic.net/static/common/myarea/myInfo.gif'}');
   background-size: contain;
   background-repeat: no-repeat;
   margin-right: ${pixelToRem(14)};

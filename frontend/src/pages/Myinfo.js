@@ -44,7 +44,7 @@ function Profile() {
       <ProfileWrapper>
         <div>
           <ProfilePicture src={profileImage} alt="프로필 사진" />
-          <input type="file" onChange={handleProfileImageChange} />
+          <ProfileInput type="file" onChange={handleProfileImageChange} />
         </div>
         <div>
           {isEditing ? (
@@ -96,4 +96,8 @@ const EditButton = styled.button`
   font-size: 1em;
   font-weight: bold;
   cursor: pointer;
+`;
+
+const ProfileInput = styled.input`
+  *
 `;

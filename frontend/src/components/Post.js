@@ -77,7 +77,7 @@ export default function Post(props) {
             <PostsList>
               {filteredPosts.map((post, index) => (
                 <tr key={post.id} onClick={() => handlePostClick(post.id)}>
-                  <td>{index}</td>
+                  <td>{index + 1}</td>
                   <td>{post.title}</td>
                   <td>{post.writer}</td>
                   <td>{post.date}</td>
