@@ -60,7 +60,7 @@ export default function NoticeModal() {
           <NoticeHeaderTapItemIcon>
             <FontAwesomeIcon icon={faCalendarCheck} />
           </NoticeHeaderTapItemIcon>
-          알림
+          일정
         </NoticeHeaderTapItem>
         <NoticeHeaderTapItem onClick={selectTab}>
           <NoticeHeaderTapItemIcon>
@@ -71,9 +71,9 @@ export default function NoticeModal() {
       </NoticeHeaderTap>
       <NoticeModalBody ref={pageRef}>
         <NotificationTapContent />
-        <NoticePageItem className="hidden-page">temp1</NoticePageItem>
-        <NoticePageItem className="hidden-page">temp2</NoticePageItem>
-        <NoticePageItem className="hidden-page">temp3</NoticePageItem>
+        <NotificationTapContent type="board" className="hidden-page" />
+        <NotificationTapContent type="schedule" className="hidden-page" />
+        <NotificationTapContent type="rent" className="hidden-page" />
       </NoticeModalBody>
     </NoticeModalContainer>
   );
