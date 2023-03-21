@@ -95,32 +95,34 @@ function NotificationContents(props) {
 }
 
 function NotificationDescFunc(props) {
-  if (props.type === 'board') {
-    return (
-      <NotificationDesc>
-        <NotificationLink href={props.payload.link}>
-          {props.payload.nickname}님이 내 글에 댓글을 달았습니다.
-        </NotificationLink>
-      </NotificationDesc>
-    );
-  } else if (props.type === 'schedule') {
-    return (
-      <NotificationDesc>
-        <NotificationLink href={props.payload.link}>
-          {props.payload.scheduleName}까지 D-{props.payload.dueDate} 남았습니다.
-        </NotificationLink>
-      </NotificationDesc>
-    );
-  } else if (props.type === 'rent') {
-    return (
-      <NotificationDesc>
-        <NotificationLink href={props.payload.link}>
-          {props.payload.rentItem}반납일까지 D-{props.payload.dueDate}
-          남았습니다.
-        </NotificationLink>
-      </NotificationDesc>
-    );
-  }
+  const calculateDueDate = () => {
+    const now = new Date();
+    const time = new Date(Date.parse(props.payload.dueDate));
+    const diff = time - now;
+    if (diff < 3600000) {
+      return `${parseInt(diff / (1000 * 60))}분`;
+    } else if (diff < 216000000) {
+      return `${parseInt(diff / (1000 * 60 * 60))}시간`;
+    } else {
+      return `${parseInt(diff / (1000 * 60 * 60 * 24))}일`;
+    }
+  };
+  const notificationMessage = {
+    board: `${props.payload.nickname}님이 내 글에 댓글을 달았습니다.`,
+    schedule: `${
+      props.payload.scheduleName
+    }까지 D-${calculateDueDate()} 남았습니다.`,
+    rent: `${
+      props.payload.rentItem
+    }반납일까지 D-${calculateDueDate()} 남았습니다.`,
+  };
+  return (
+    <NotificationDesc>
+      <NotificationLink href={props.payload.link}>
+        {notificationMessage[props.type]}
+      </NotificationLink>
+    </NotificationDesc>
+  );
 }
 
 const NotificationTapContentContainer = styled.div``;
