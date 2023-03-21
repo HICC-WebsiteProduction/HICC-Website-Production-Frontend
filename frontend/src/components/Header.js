@@ -8,6 +8,7 @@ import { faCircleUser } from '@fortawesome/free-regular-svg-icons';
 import SearchWindow from './SearchWindow';
 import UserModal from './UserModal';
 import NoticeModal from './NoticeModal';
+import { Link } from 'react-router-dom';
 
 const pixelToRem = size => `${size / 16}rem`;
 
@@ -34,7 +35,9 @@ export default function Header() {
   });
   return (
     <HeaderContainer>
-      <Logo />
+      <LogoLink to={'/'}>
+        <Logo />
+      </LogoLink>
       <UserContainer>
         <SearchWindow />
         <NoticeButtonWrapper ref={noticeButtonRef}>
@@ -69,6 +72,8 @@ const HeaderContainer = styled.header`
   border-bottom: ${pixelToRem(2)} solid ${theme.colors.light_grey};
   transform: rotate(-0.05deg);
 `;
+
+const LogoLink = styled(Link)``;
 
 const Logo = styled.div`
   width: ${pixelToRem(100)};
