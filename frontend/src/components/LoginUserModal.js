@@ -6,16 +6,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser } from '@fortawesome/free-regular-svg-icons';
 import LoginInputMemberInfo from './LoginInputMemberInfo';
 import InputMemberValidInfo from './InputMemberValidInfo';
+import { useDispatch } from 'react-redux';
+import { loginUser } from '../_actions/userAction';
 
 const pixelToRem = size => `${size / 16}rem`;
 
-export default function LoginUserModal() {
+export default function LoginUserModal(props) {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onSubmit = data => console.log(data);
+  const onSubmit = data => {
+    props.loginRequest(data);
+  };
   return (
     <UserModalContainer>
       <UserModalInner>
