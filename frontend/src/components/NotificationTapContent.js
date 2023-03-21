@@ -1,103 +1,127 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faComments, faSquareMinus } from '@fortawesome/free-regular-svg-icons';
-import React from 'react';
+import {
+  faCalendarCheck,
+  faComments,
+  faSquareMinus,
+} from '@fortawesome/free-regular-svg-icons';
+import { faCartPlus } from '@fortawesome/free-solid-svg-icons';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import theme from '../styles/Theme';
 
 const pixelToRem = size => `${size / 16}rem`;
 
-export default function NotificationTapContent() {
+const noticeIcon = {
+  board: faComments,
+  schedule: faCalendarCheck,
+  rent: faCartPlus,
+};
+
+export default function NotificationTapContent(props) {
+  const [notice, setNotice] = useState([]);
+  const fetchData = () => {
+    return fetch('notice.json')
+      .then(res => res.json())
+      .then(data => data.notice)
+      .then(data => {
+        if (props.type === 'board') {
+          return data.filter(item => item.type === 'board');
+        } else if (props.type === 'schedule') {
+          return data.filter(item => item.type === 'schedule');
+        } else if (props.type === 'rent') {
+          return data.filter(item => item.type === 'rent');
+        }
+        return data;
+      });
+  };
+  useEffect(() => {
+    const initData = async () => {
+      const result = await fetchData();
+      setNotice(result);
+    };
+    initData();
+  }, []);
   return (
-    <NotificationTapContentContainer>
+    <NotificationTapContentContainer className={props.className}>
       <ReadingRelatedFuncGroup>
         <AllReadNotifications>전체 읽기</AllReadNotifications>/
         <DeleteReadNotifications>읽은 알림 삭제</DeleteReadNotifications>
       </ReadingRelatedFuncGroup>
-      <NotificationContents>
-        <NoticeBodyItemIcon>
-          <FontAwesomeIcon icon={faComments} />
-        </NoticeBodyItemIcon>
-        <NotificationDesc>
-          “닉네임”님이 내 글에 댓글을 달았습니다.
-        </NotificationDesc>
-        <NotificationTimeInfo>30분전</NotificationTimeInfo>
-        <DeleteNotificationIcon>
-          <FontAwesomeIcon icon={faSquareMinus} />
-        </DeleteNotificationIcon>
-      </NotificationContents>
-      <NotificationContents>
-        <NoticeBodyItemIcon>
-          <FontAwesomeIcon icon={faComments} />
-        </NoticeBodyItemIcon>
-        <NotificationDesc>
-          “닉네임”님이 내 글에 댓글을 달았습니다.
-        </NotificationDesc>
-        <NotificationTimeInfo>30분전</NotificationTimeInfo>
-        <DeleteNotificationIcon>
-          <FontAwesomeIcon icon={faSquareMinus} />
-        </DeleteNotificationIcon>
-      </NotificationContents>
-      <NotificationContents>
-        <NoticeBodyItemIcon>
-          <FontAwesomeIcon icon={faComments} />
-        </NoticeBodyItemIcon>
-        <NotificationDesc>
-          “닉네임”님이 내 글에 댓글을 달았습니다.
-        </NotificationDesc>
-        <NotificationTimeInfo>30분전</NotificationTimeInfo>
-        <DeleteNotificationIcon>
-          <FontAwesomeIcon icon={faSquareMinus} />
-        </DeleteNotificationIcon>
-      </NotificationContents>
-      <NotificationContents>
-        <NoticeBodyItemIcon>
-          <FontAwesomeIcon icon={faComments} />
-        </NoticeBodyItemIcon>
-        <NotificationDesc>
-          “닉네임”님이 내 글에 댓글을 달았습니다.
-        </NotificationDesc>
-        <NotificationTimeInfo>30분전</NotificationTimeInfo>
-        <DeleteNotificationIcon>
-          <FontAwesomeIcon icon={faSquareMinus} />
-        </DeleteNotificationIcon>
-      </NotificationContents>
-      <NotificationContents>
-        <NoticeBodyItemIcon>
-          <FontAwesomeIcon icon={faComments} />
-        </NoticeBodyItemIcon>
-        <NotificationDesc>
-          “닉네임”님이 내 글에 댓글을 달았습니다.
-        </NotificationDesc>
-        <NotificationTimeInfo>30분전</NotificationTimeInfo>
-        <DeleteNotificationIcon>
-          <FontAwesomeIcon icon={faSquareMinus} />
-        </DeleteNotificationIcon>
-      </NotificationContents>
-      <NotificationContents>
-        <NoticeBodyItemIcon>
-          <FontAwesomeIcon icon={faComments} />
-        </NoticeBodyItemIcon>
-        <NotificationDesc>
-          “닉네임”님이 내 글에 댓글을 달았습니다.
-        </NotificationDesc>
-        <NotificationTimeInfo>30분전</NotificationTimeInfo>
-        <DeleteNotificationIcon>
-          <FontAwesomeIcon icon={faSquareMinus} />
-        </DeleteNotificationIcon>
-      </NotificationContents>
-      <NotificationContents>
-        <NoticeBodyItemIcon>
-          <FontAwesomeIcon icon={faComments} />
-        </NoticeBodyItemIcon>
-        <NotificationDesc>
-          “닉네임”님이 내 글에 댓글을 달았습니다.
-        </NotificationDesc>
-        <NotificationTimeInfo>30분전</NotificationTimeInfo>
-        <DeleteNotificationIcon>
-          <FontAwesomeIcon icon={faSquareMinus} />
-        </DeleteNotificationIcon>
-      </NotificationContents>
+      {notice.length > 0 &&
+        notice.map((item, idx) => (
+          <NotificationContents
+            type={item.type}
+            payload={item.payload}
+            time={item.time}
+          />
+        ))}
     </NotificationTapContentContainer>
+  );
+}
+
+function NotificationContents(props) {
+  const [icon, setIcon] = useState(null);
+  useEffect(() => {
+    const findIcon = type => {
+      const key = Object.keys(noticeIcon).find(v => v === type);
+      setIcon(noticeIcon[key]);
+    };
+    findIcon(props.type);
+  }, [icon, props.type]);
+  const calculatePastTime = () => {
+    const now = new Date();
+    const time = new Date(Date.parse(props.time));
+    const diff = now - time;
+    if (diff < 3600000) {
+      return `${parseInt(diff / (1000 * 60))}분 전`;
+    } else if (diff < 216000000) {
+      return `${parseInt(diff / (1000 * 60 * 60))}시간 전`;
+    } else {
+      return `${parseInt(diff / (1000 * 60 * 60 * 24))}일 전`;
+    }
+  };
+  return (
+    <NotificationContentsContainer>
+      <NoticeBodyItemIcon>
+        {icon && <FontAwesomeIcon icon={icon} />}
+      </NoticeBodyItemIcon>
+      <NotificationDescFunc type={props.type} payload={props.payload} />
+      <NotificationTimeInfo>{calculatePastTime()}</NotificationTimeInfo>
+      <DeleteNotificationIcon>
+        <FontAwesomeIcon icon={faSquareMinus} />
+      </DeleteNotificationIcon>
+    </NotificationContentsContainer>
+  );
+}
+
+function NotificationDescFunc(props) {
+  const calculateDueDate = () => {
+    const now = new Date();
+    const time = new Date(Date.parse(props.payload.dueDate));
+    const diff = time - now;
+    if (diff < 3600000) {
+      return `${parseInt(diff / (1000 * 60))}분`;
+    } else if (diff < 216000000) {
+      return `${parseInt(diff / (1000 * 60 * 60))}시간`;
+    } else {
+      return `${parseInt(diff / (1000 * 60 * 60 * 24))}일`;
+    }
+  };
+  const notificationMessage = {
+    board: `${props.payload.nickname}님이 내 글에 댓글을 달았습니다.`,
+    schedule: `${
+      props.payload.scheduleName
+    }까지 D-${calculateDueDate()} 남았습니다.`,
+    rent: `${
+      props.payload.rentItem
+    }반납일까지 D-${calculateDueDate()} 남았습니다.`,
+  };
+  return (
+    <NotificationDesc>
+      <NotificationLink href={props.payload.link}>
+        {notificationMessage[props.type]}
+      </NotificationLink>
+    </NotificationDesc>
   );
 }
 
@@ -121,7 +145,7 @@ const DeleteReadNotifications = styled.a`
   font-size: ${pixelToRem(6)};
 `;
 
-const NotificationContents = styled.div`
+const NotificationContentsContainer = styled.div`
   ${theme.flexbox.flex};
   align-items: center;
   width: ${pixelToRem(234)};
@@ -141,9 +165,13 @@ const NotificationDesc = styled.span`
   height: ${pixelToRem(32)};
   margin-left: ${pixelToRem(4)};
   padding-top: ${pixelToRem(7)};
-  color: ${theme.colors.white};
   font-size: ${pixelToRem(8)};
   font-family: ${theme.fontWeight.ExtraLight}, sans-serif;
+`;
+
+const NotificationLink = styled.a`
+  color: ${theme.colors.white};
+  text-decoration: none;
 `;
 
 const NotificationTimeInfo = styled.span`
