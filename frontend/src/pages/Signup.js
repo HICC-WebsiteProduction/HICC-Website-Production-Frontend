@@ -29,7 +29,7 @@ function Signup(props) {
   };
   return (
     <SignupContainer>
-      <HeaderAndTitle titleName="회원가입" />
+      <HeaderAndTitle type="user" titleName="회원가입" />
       <Warning />
       <InputForm onSubmit={handleSubmit(onSubmit)}>
         <InputMemberInfo
