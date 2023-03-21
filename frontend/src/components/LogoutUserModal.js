@@ -8,44 +8,11 @@ import { logoutUser } from '../_actions/userAction';
 
 const pixelToRem = size => `${size / 16}rem`;
 
-const gradeName = {
-  president: '회장',
-  manager: '운영진',
-  normal: '일반',
-  graduate: '졸업생',
-};
-
 export default function LogoutUserModal(props) {
-  const [loginUserID, setLoginUserID] = useState('');
-  const [loginUserNickname, setLoginUserNickname] = useState('');
-  const [loginUserGrade, setLoginUserGrade] = useState('');
-  const authStore = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
-  const fetchData = () => {
-    return fetch('memberInfo.json')
-      .then(res => res.json())
-      .then(data => data.memberInfo);
-  };
-  useEffect(() => {
-    const getMemberInfo = async () => {
-      const result = await fetchData();
-      const user = authStore.loginSuccess;
-      for (const member of result) {
-        if (user.ID === member.ID) {
-          setLoginUserID(user.ID);
-          setLoginUserNickname(member.nickname);
-          const grades = Object.keys(gradeName);
-          const grade = grades.find(key => key === member.grade);
-          setLoginUserGrade(gradeName[grade]);
-          break;
-        }
-      }
-    };
-    getMemberInfo();
-  }, []);
   const logout = () => {
-    props.loginRequest(false);
-    dispatch(logoutUser(loginUserID));
+    dispatch(logoutUser(props.id));
+    props.setAuth(false);
     alert('정상적으로 로그아웃 되었습니다.');
   };
   return (
@@ -54,8 +21,8 @@ export default function LogoutUserModal(props) {
         <UserIcon>
           <FontAwesomeIcon icon={faCircleUser} />
         </UserIcon>
-        <Nickname>{loginUserNickname}</Nickname>
-        <Grade>{loginUserGrade}</Grade>
+        <Nickname>{props.nickname}</Nickname>
+        <Grade>{props.grade}</Grade>
         <ModalInButtonContainer>
           <ModalInButton type="button">정보수정</ModalInButton>
           <ModalInButton type="button">내가 작성한 글/댓글</ModalInButton>

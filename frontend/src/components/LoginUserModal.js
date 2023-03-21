@@ -17,10 +17,8 @@ export default function LoginUserModal(props) {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const dispatch = useDispatch();
   const onSubmit = data => {
-    props.loginRequest(true);
-    dispatch(loginUser(data));
+    props.loginRequest(data);
   };
   return (
     <UserModalContainer>
