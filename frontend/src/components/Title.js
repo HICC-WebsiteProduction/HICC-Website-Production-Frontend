@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-regular-svg-icons';
 import theme from '../styles/Theme';
 
 const pixelToRem = size => `${size / 16}rem`;
@@ -10,7 +9,7 @@ export default function Title(props) {
   return (
     <TitleContainer>
       <Icon>
-        <FontAwesomeIcon icon={faUser} size="2x" />
+        <FontAwesomeIcon icon={props.icon} size="2x" />
       </Icon>
       <TitleName>{props.titleName}</TitleName>
     </TitleContainer>
