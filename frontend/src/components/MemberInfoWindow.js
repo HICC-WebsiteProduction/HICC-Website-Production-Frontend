@@ -60,9 +60,6 @@ function MemberInfoWindow(props) {
 
   return (
     <MemberInfoContainer className={props.className}>
-      <Toolbar>
-        <SelectAllTool onClick={selectToggle}>전체 선택 및 해제</SelectAllTool>
-      </Toolbar>
       <MemberContainer>
         <MemberHeader>
           <tr>

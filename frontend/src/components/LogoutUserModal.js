@@ -1,26 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import theme from '../styles/Theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser } from '@fortawesome/free-regular-svg-icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutUser } from '../_actions/userAction';
 
 const pixelToRem = size => `${size / 16}rem`;
 
-export default function LogoutUserModal() {
+export default function LogoutUserModal(props) {
+  const dispatch = useDispatch();
+  const logout = () => {
+    dispatch(logoutUser(props.id));
+    props.setAuth(false);
+    alert('정상적으로 로그아웃 되었습니다.');
+  };
   return (
     <LogoutUserModalContainer>
       <LogoutUserModalInner>
         <UserIcon>
           <FontAwesomeIcon icon={faCircleUser} />
         </UserIcon>
-        <Nickname>닉네임</Nickname>
-        <Grade>등급(회장,운영진)</Grade>
+        <Nickname>{props.nickname}</Nickname>
+        <Grade>{props.grade}</Grade>
         <ModalInButtonContainer>
           <ModalInButton type="button">정보수정</ModalInButton>
           <ModalInButton type="button">내가 작성한 글/댓글</ModalInButton>
           <ModalInButton type="button">관리페이지</ModalInButton>
         </ModalInButtonContainer>
-        <GoSignupButton href={'/signup'}>로그아웃</GoSignupButton>
+        <LogoutButton onClick={logout}>로그아웃</LogoutButton>
       </LogoutUserModalInner>
     </LogoutUserModalContainer>
   );
@@ -100,11 +108,16 @@ const ModalInButton = styled.button`
   }
 `;
 
-const GoSignupButton = styled.a`
+const LogoutButton = styled.button`
   width: ${pixelToRem(40)};
   height: ${pixelToRem(12)};
   margin-top: ${pixelToRem(5)};
   color: ${theme.colors.blue};
+  background: transparent;
+  border: none;
   font-size: ${theme.fontSizes.font_micro};
   text-decoration-line: none;
+  &:hover {
+    cursor: pointer;
+  }
 `;
