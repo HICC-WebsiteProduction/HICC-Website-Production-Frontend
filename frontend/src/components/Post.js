@@ -25,10 +25,10 @@ export default function Post(props) {
     const boardPosts = dummy.posts.filter(
       post => post[props.postFilter] === props.filterCondition,
     );
-    setFilteredPosts(boardPosts);
+    setFilteredPosts(boardPosts.reverse());
     setCurrentPost(null);
     setIsCreatingPost(null);
-  }, [props.filterCondition]);
+  }, [props.filterCondition, posts]);
 
   const handlePostClick = postId => {
     const post = dummy.posts.find(post => post.id === postId);
@@ -36,12 +36,15 @@ export default function Post(props) {
   };
 
   // 새 글 저장 후 실행할 함수
-  const handleSave = () => {
+  const handleSave = newPost => {
     setCurrentPost(null); // currentPost 상태를 null로 바꿔서 게시글 목록 보이게 함
     setIsCreatingPost(null);
     console.log('handleSave함수 실행됨');
-    const posts = dummy.posts || [];
-    setPosts(posts);
+
+    const updatedPosts = [...posts, newPost];
+    setPosts(updatedPosts);
+    // const posts = dummy.posts || [];
+    // setPosts(posts);
   };
 
   return (
@@ -88,22 +91,23 @@ export default function Post(props) {
             <PostsList>
               {filteredPosts.map((post, index) => (
                 <tr key={post.id} onClick={() => handlePostClick(post.id)}>
-                  <td>{index + 1}</td>
+                  <td>{filteredPosts.length - index}</td>
                   <td>{post.title}</td>
                   <td>{post.writer}</td>
                   <td>{post.date}</td>
                 </tr>
               ))}
             </PostsList>
-
-            {/* 글쓰기 버튼 추가 */}
-            {/* currentPost 상태를 true로 바꿔서 새 글 작성 컴포넌트가 보이게 함 */}
-            {/* writer는 임의로 설정함 */}
-            {/* 실제로는 로그인한 사용자의 정보를 받아와야 함 */}
-            {/* onSave에 handleSave 함수를 전달함 */}
-            {/* 새 글 저장 후 실행됨 */}
           </PostsContainer>
-          <Button onClick={() => setIsCreatingPost(true)}>글쓰기</Button>
+          {/* 글쓰기 버튼 추가 */}
+          {/* currentPost 상태를 true로 바꿔서 새 글 작성 컴포넌트가 보이게 함 */}
+          {/* writer는 임의로 설정함 */}
+          {/* 실제로는 로그인한 사용자의 정보를 받아와야 함 */}
+          {/* onSave에 handleSave 함수를 전달함 */}
+          {/* 새 글 저장 후 실행됨 */}
+          {props.showButton && (
+            <Button onClick={() => setIsCreatingPost(true)}>글쓰기</Button>
+          )}
         </>
       )}
     </PostBox>

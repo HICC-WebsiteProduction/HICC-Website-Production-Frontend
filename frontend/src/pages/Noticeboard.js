@@ -37,7 +37,11 @@ function Noticeboard() {
             졸업생게시판
           </BoardItem>
         </BoardList>
-        <Post postFilter="board" filterCondition={currentBoard} />
+        <Post
+          postFilter="board"
+          filterCondition={currentBoard}
+          showButton={true}
+        />
       </BoardBox>
     </NoticeBoardContainer>
   );

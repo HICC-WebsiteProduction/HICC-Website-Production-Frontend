@@ -34,21 +34,23 @@ export default function NewPost(props) {
       return;
     }
 
-    // 로컬 json 파일에 데이터 추가하기
-    dummy.posts.push({
+    const newPost = {
       id: dummy.posts.length + 1,
       board: props.board,
       title,
       content,
       writer: props.writer,
       date: new Date().toLocaleDateString(),
-    });
+    };
+
+    // 로컬 json 파일에 데이터 추가하기
+    dummy.posts.push(newPost);
 
     // 결과 확인하기
     console.log(dummy);
     console.log(dummy.posts);
     alert('글이 성공적으로 저장되었습니다.');
-    props.onSave(); // 부모 컴포넌트의 onSave 함수 호출
+    props.onSave(newPost); // 부모 컴포넌트의 onSave 함수 호출
   };
 
   // 서버랑 통신할때 핸들러
@@ -89,11 +91,15 @@ export default function NewPost(props) {
       <NewPostTitle>새 글 작성</NewPostTitle>
       <InputBox>
         <InputLabel>제목</InputLabel>
-        <Input value={title} onChange={handleTitleChange} />
+        <Input value={title} maxLength="50" onChange={handleTitleChange} />
       </InputBox>
       <InputBox>
         <InputLabel>내용</InputLabel>
-        <TextArea value={content} onChange={handleContentChange} />
+        <TextArea
+          value={content}
+          maxLength="1000"
+          onChange={handleContentChange}
+        />
       </InputBox>
       <Button onClick={handleSaveClick}>저장</Button>
     </NewPostContainer>
