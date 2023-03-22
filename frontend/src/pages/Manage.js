@@ -53,11 +53,11 @@ function Manage(props) {
       </ManageTabHeaderContainer>
       <ManageTabPageContainer ref={pageRef}>
         <MemberAuthorizeWindow />
-        <MemberInfoWindow />
+        <MemberInfoWindow className="hidden-page" />
         <ManageTabPageItem className="hidden-page">
           우산 대여 컴포넌트
         </ManageTabPageItem>
-        <CabinetRentWindow />
+        <CabinetRentWindow className="hidden-page" />
       </ManageTabPageContainer>
     </ManageContainer>
   );
