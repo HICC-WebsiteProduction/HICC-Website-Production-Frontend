@@ -61,7 +61,18 @@ export default function Post(props) {
             writer="최세호"
             onSave={handleSave}
           />
-          <Button onClick={() => setIsCreatingPost(null)}>취소</Button>
+          <Button
+            onClick={() => {
+              const confirmed = window.confirm(
+                '         *정말로 취소하시겠습니까? \n (취소시 작성된 내용이 저장되지 않습니다)',
+              );
+              if (confirmed) {
+                setIsCreatingPost(null);
+              }
+            }}
+          >
+            취소
+          </Button>
         </>
       ) : (
         <>
@@ -91,8 +102,8 @@ export default function Post(props) {
             {/* 실제로는 로그인한 사용자의 정보를 받아와야 함 */}
             {/* onSave에 handleSave 함수를 전달함 */}
             {/* 새 글 저장 후 실행됨 */}
-            <Button onClick={() => setIsCreatingPost(true)}>글쓰기</Button>
           </PostsContainer>
+          <Button onClick={() => setIsCreatingPost(true)}>글쓰기</Button>
         </>
       )}
     </PostBox>
@@ -106,14 +117,14 @@ const PostBox = styled.div`
 
 const PostContainer = styled.div`
   margin-top: 2rem;
-  border: 1px solid #ddd;
   padding: 1rem;
+  border: 1px solid #ddd;
 `;
 
 const PostTitle = styled.h1`
-  font-size: 2rem;
   margin-bottom: 1rem;
   border-bottom: 1px solid ${theme.colors.very_light_gray};
+  font-size: 2rem;
 `;
 
 const PostContent = styled.p`

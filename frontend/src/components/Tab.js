@@ -28,8 +28,8 @@ const Tabs = ({ tabs }) => {
 export default Tabs;
 
 const TabsWrapper = styled.div`
-  width: 100%;
   display: flex;
+  width: 100%;
   flex-direction: column;
   align-items: center;
 `;

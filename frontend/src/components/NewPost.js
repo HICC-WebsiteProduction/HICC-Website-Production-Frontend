@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import theme from '../styles/Theme';
 import dummy from '../dummy/posts.json';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const pixelToRem = size => `${size / 16}rem`;
 
@@ -26,6 +28,9 @@ export default function NewPost(props) {
     // 입력값 검증
     if (!title || !content) {
       alert('제목과 내용을 모두 입력해주세요.');
+      console.log(title);
+      console.log(content);
+
       return;
     }
 
