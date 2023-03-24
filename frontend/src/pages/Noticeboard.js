@@ -15,7 +15,7 @@ function Noticeboard() {
 
   return (
     <NoticeBoardContainer>
-      <HeaderAndTitle titleName="게시판" />
+      <HeaderAndTitle type="board" titleName="게시판" />
       <BoardBox>
         <BoardList>
           <BoardItem onClick={() => handleBoardChange('공지게시판')}>

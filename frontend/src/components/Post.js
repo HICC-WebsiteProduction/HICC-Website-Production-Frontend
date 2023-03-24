@@ -15,6 +15,8 @@ export default function Post(props) {
   const [currentPost, setCurrentPost] = useState(null);
   const [filteredPosts, setFilteredPosts] = useState(posts);
   const [isCreatingPost, setIsCreatingPost] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호
+  const [postsPerPage, setPostsPerPage] = useState(1); // 페이지당 게시글 수
 
   useEffect(() => {
     const posts = dummy.posts || [];
@@ -28,6 +30,7 @@ export default function Post(props) {
     setFilteredPosts(boardPosts.reverse());
     setCurrentPost(null);
     setIsCreatingPost(null);
+    setCurrentPage(1);
   }, [props.filterCondition, posts]);
 
   const handlePostClick = postId => {
@@ -46,6 +49,14 @@ export default function Post(props) {
     // const posts = dummy.posts || [];
     // setPosts(posts);
   };
+
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
+  const pageNumbers = [];
+  for (let i = 1; i <= Math.ceil(filteredPosts.length / postsPerPage); i++) {
+    pageNumbers.push(i);
+  }
 
   return (
     <PostBox>
@@ -89,9 +100,9 @@ export default function Post(props) {
               </tr>
             </PostsHeader>
             <PostsList>
-              {filteredPosts.map((post, index) => (
+              {currentPosts.map((post, index) => (
                 <tr key={post.id} onClick={() => handlePostClick(post.id)}>
-                  <td>{filteredPosts.length - index}</td>
+                  <td>{filteredPosts.length - indexOfFirstPost - index}</td>
                   <td>{post.title}</td>
                   <td>{post.writer}</td>
                   <td>{post.date}</td>
@@ -108,6 +119,17 @@ export default function Post(props) {
           {props.showButton && (
             <Button onClick={() => setIsCreatingPost(true)}>글쓰기</Button>
           )}
+          <Pagination>
+            {pageNumbers.map(number => (
+              <PageNumber
+                key={number}
+                active={number === currentPage}
+                onClick={() => setCurrentPage(number)}
+              >
+                {number}
+              </PageNumber>
+            ))}
+          </Pagination>
         </>
       )}
     </PostBox>
@@ -181,5 +203,26 @@ const PostsList = styled.tbody`
     border-bottom: 1px solid ${theme.colors.white_grey};
     text-align: center;
     vertical-align: middle;
+  }
+`;
+
+const Pagination = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+`;
+
+const PageNumber = styled.span`
+  margin: 0 0.5rem;
+  font-size: 1.2rem;
+  padding: 0.2rem;
+  border-radius: 50%;
+  background-color: ${({ active }) => (active ? 'skyblue' : 'white')};
+
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
   }
 `;
