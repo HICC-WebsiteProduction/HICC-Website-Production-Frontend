@@ -214,11 +214,11 @@ const Pagination = styled.div`
 `;
 
 const PageNumber = styled.span`
-  margin: 0 0.5rem;
-  font-size: 1.2rem;
   padding: 0.2rem;
+  margin: 0 0.5rem;
   border-radius: 50%;
   background-color: ${({ active }) => (active ? 'skyblue' : 'white')};
+  font-size: 1.2rem;
 
   cursor: pointer;
 
