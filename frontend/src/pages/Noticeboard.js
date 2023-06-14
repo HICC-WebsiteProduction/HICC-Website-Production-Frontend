@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import HeaderAndTitle from '../components/HeaderAndTitle';
+import HeaderAndTitle from '../components/header/HeaderAndTitle';
 import theme from '../styles/Theme';
 import Post from '../components/Post';
 

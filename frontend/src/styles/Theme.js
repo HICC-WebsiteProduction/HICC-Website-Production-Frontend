@@ -1,32 +1,23 @@
-const pixelToRem = size => `${size / 16}rem`;
-
 const fontSizes = {
-  title: pixelToRem(28),
-  paragraph: pixelToRem(18),
-  font_normal: pixelToRem(16),
-  font_small: pixelToRem(12),
-  font_micro: pixelToRem(10),
-};
-
-const fontWeight = {
-  // 나눔바른고딕체를 사용합니다.
-  ExtraLight: 'NanumBarunGothicExtraLight',
-  Light: 'NanumBarunGothicLight',
-  Regular: 'NanumBarunGothic',
-  Bold: 'NanumBarunGothicBold',
+  title: '40px',
+  label: '24px',
+  paragraph: '18px',
+  font_normal: '16px',
+  font_small: '12px',
+  font_micro: '10px',
 };
 
 const margin = {
-  margin_browser: pixelToRem(32),
-  margin_content: pixelToRem(20),
-  margin_component: pixelToRem(25),
+  margin_browser: '32px',
+  margin_content: '20px',
+  margin_component: '36px',
 };
 
 const colors = {
-  white: '#ffffff',
+  white: '#EDF0F8',
   white_grey: '#f2f2f2',
   black: '#000000',
-  red: '#ff0000',
+  red: '#FF3D00',
   blue: '#2d9cdb',
   grey: '#989898',
   light_grey: '#a8a8a8',
@@ -58,7 +49,6 @@ const flexbox = {
 
 const theme = {
   fontSizes,
-  fontWeight,
   colors,
   flexbox,
   margin,

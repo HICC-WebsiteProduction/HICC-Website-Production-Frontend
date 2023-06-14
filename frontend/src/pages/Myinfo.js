@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import UserInfo from '../components/UserInfo';
 import EditUserInfo from '../components/EditUserInfo';
-import HeaderAndTitle from '../components/HeaderAndTitle';
+import HeaderAndTitle from '../components/header/HeaderAndTitle';
 
 function Profile() {
   const [profileImage, setProfileImage] = useState(

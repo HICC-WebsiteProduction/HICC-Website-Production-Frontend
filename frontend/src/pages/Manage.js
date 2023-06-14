@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import CabinetRentWindow from '../components/CabinetRentWindow';
 
-import HeaderAndTitle from '../components/HeaderAndTitle';
+import HeaderAndTitle from '../components/header/HeaderAndTitle';
 import UmbrellaRentWindow from '../components/UmbrellaRentWindow';
 import MemberAuthorizeWindow from '../components/MemberAuthorizeWindow';
 import theme from '../styles/Theme';

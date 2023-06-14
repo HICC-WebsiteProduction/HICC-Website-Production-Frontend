@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
-import Header from '../components/Header';
+import Header from '../components/header/Header';
 import MainButton from '../components/MainButton';
 import logo from '../images/hicc_logo.png';
 

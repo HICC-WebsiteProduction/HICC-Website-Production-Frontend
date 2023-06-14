@@ -166,7 +166,6 @@ const NotificationDesc = styled.span`
   margin-left: ${pixelToRem(4)};
   padding-top: ${pixelToRem(7)};
   font-size: ${pixelToRem(8)};
-  font-family: ${theme.fontWeight.ExtraLight}, sans-serif;
 `;
 
 const NotificationLink = styled.a`

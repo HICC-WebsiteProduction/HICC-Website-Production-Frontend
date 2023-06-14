@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import theme from '../styles/Theme';
 import logo from '../dummy/hongik.png';
 import { Link, useParams } from 'react-router-dom';
-import HeaderAndTitle from '../components/HeaderAndTitle';
+import HeaderAndTitle from '../components/header/HeaderAndTitle';
 import MemberInfo from '../components/MemberInfo';
 import { useDispatch, useSelector } from 'react-redux';
 import confirmMessage from '../confirmMessage/ConfirmMessage';

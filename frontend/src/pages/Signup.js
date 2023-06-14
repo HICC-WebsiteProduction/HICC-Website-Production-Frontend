@@ -2,9 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import theme from '../styles/Theme';
 import { useForm } from 'react-hook-form';
-import HeaderAndTitle from '../components/HeaderAndTitle';
+import HeaderAndTitle from '../components/header/HeaderAndTitle';
 import InputMemberInfo from '../components/InputMemberInfo';
-import Warning from '../components/Warning';
 import Button from '../components/Button';
 import InputMemberValidInfo from '../components/InputMemberValidInfo';
 import { useDispatch } from 'react-redux';
@@ -29,8 +28,7 @@ function Signup(props) {
   };
   return (
     <SignupContainer>
-      <HeaderAndTitle type="user" titleName="회원가입" />
-      <Warning />
+      <HeaderAndTitle titleName="회원가입" />
       <InputForm onSubmit={handleSubmit(onSubmit)}>
         <InputMemberInfo
           labelName="ID"
@@ -155,6 +153,8 @@ const SignupContainer = styled.div`
 
 const InputForm = styled.form`
   ${theme.flexbox.flexCenterColumn}
+  width: 786px;
+  margin: 0 auto;
 `;
 
 const ButtonContainer = styled.div`
