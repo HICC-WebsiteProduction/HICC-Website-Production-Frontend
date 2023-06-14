@@ -7,12 +7,14 @@ import Manage from './pages/Manage';
 import Myinfo from './pages/Myinfo';
 import Noticeboard from './pages/Noticeboard';
 import MemberDetail from './pages/MemberDetail';
+import Login from './pages/Login';
 
 function Router() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Main />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/manage" element={<Manage />} />

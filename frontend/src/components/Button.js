@@ -4,7 +4,11 @@ import theme from '../styles/Theme';
 
 export default function Button(props) {
   return (
-    <ButtonDesign className={props.className} type={props.buttonType}>
+    <ButtonDesign
+      className={props.className}
+      type={props.buttonType}
+      onClick={props.onClick}
+    >
       {props.buttonName}
     </ButtonDesign>
   );

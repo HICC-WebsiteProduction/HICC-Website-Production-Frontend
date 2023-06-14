@@ -8,7 +8,7 @@ import Button from '../components/Button';
 import InputMemberValidInfo from '../components/InputMemberValidInfo';
 import { useDispatch } from 'react-redux';
 import { registerUser } from '../_actions/userAction';
-import history from '../history';
+import { useNavigate } from 'react-router-dom';
 
 function Signup(props) {
   const {
@@ -21,13 +21,15 @@ function Signup(props) {
     console.log(data);
     dispatch(registerUser(data)).then(res => {
       alert('가입이 정상적으로 완료되었습니다.');
-      history.push('/');
+      navigate('/');
     });
   };
+  const navigate = useNavigate();
   return (
     <SignupContainer>
       <HeaderAndTitle titleName="회원가입" />
       <InputForm onSubmit={handleSubmit(onSubmit)}>
+        <JoinAnnouncementMent>모든 항목에 응답해주세요</JoinAnnouncementMent>
         <InputMemberInfo
           labelName="ID"
           name="ID"
@@ -107,7 +109,12 @@ function Signup(props) {
           validPattern={InputMemberValidInfo.call.validPattern}
         />
         <ButtonContainer>
-          <CancleButton buttonType="button" buttonName="취소" />
+          <CancleButton
+            buttonName="취소"
+            onClick={() => {
+              navigate('/');
+            }}
+          />
           <SubmitButton buttonType="submit" buttonName="회원가입" />
         </ButtonContainer>
       </InputForm>
@@ -124,8 +131,21 @@ const SignupContainer = styled.div`
 
 const InputForm = styled.form`
   ${theme.flexbox.flexCenterColumn}
+  position: relative;
   width: 786px;
   margin: 0 auto;
+`;
+
+const JoinAnnouncementMent = styled.span`
+  position: absolute;
+  top: -35px;
+  right: 0px;
+  color: ${theme.colors.white};
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 300;
+  font-size: ${theme.fontSizes.font_normal};
+  line-height: 150%;
 `;
 
 const ButtonContainer = styled.div`

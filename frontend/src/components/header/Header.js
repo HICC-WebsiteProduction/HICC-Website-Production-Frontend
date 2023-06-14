@@ -28,7 +28,7 @@ export default function Header() {
       <Logo to={'/'} />
       <NavigationAndUser>
         <Navigation>
-          <Menu to="#">게시판</Menu>
+          <Menu to="/noticeboard">게시판</Menu>
           <Menu to="#">회계정보</Menu>
           <Menu to="#">일정 캘린더</Menu>
           <Menu to="#">대여</Menu>
