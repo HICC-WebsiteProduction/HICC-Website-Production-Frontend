@@ -10,7 +10,7 @@ export default function InputMemberInfo(props) {
         <Input
           name={props.name}
           type={props.type}
-          placeholder={`내용을 입력해주세요 ${
+          placeholder={`${
             props.specificPlaceholder ? props.specificPlaceholder : ''
           }`}
           maxLength={props.maxLength}
@@ -21,11 +21,11 @@ export default function InputMemberInfo(props) {
             },
             minLength: {
               value: props.minLength,
-              message: props.invalidPatternWarning,
+              message: '조건에 맞게 입력해주세요',
             },
             pattern: {
               value: props.validPattern,
-              message: props.invalidPatternWarning,
+              message: '조건에 맞게 입력해주세요',
             },
           })}
         />
@@ -93,4 +93,5 @@ const ErrorMessage = styled.span`
   font-weight: 300;
   line-height: 150%;
   font-size: ${theme.fontSizes.font_normal};
+  white-space: nowrap;
 `;

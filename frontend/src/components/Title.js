@@ -21,6 +21,7 @@ const TitleName = styled.h1`
   margin: 0 auto;
   color: ${theme.colors.white};
   font-family: 'GmarketSansMedium', sans-serif;
+  font-weight: 500;
   line-height: 120%;
   font-size: ${theme.fontSizes.title};
 `;
