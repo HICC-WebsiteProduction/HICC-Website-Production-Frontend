@@ -31,7 +31,7 @@ export default function Header() {
           <Menu to="/noticeboard">게시판</Menu>
           <Menu to="#">회계정보</Menu>
           <Menu to="#">일정 캘린더</Menu>
-          <Menu to="#">대여</Menu>
+          <Menu to="/rent/umbrellarent">대여</Menu>
         </Navigation>
         <UserContainer>
           <NoticeButtonWrapper ref={noticeButtonRef}>
@@ -87,6 +87,7 @@ const Menu = styled(Link)`
   font-weight: 600;
   line-height: 150%;
   text-decoration: none;
+  white-space: nowrap;
 `;
 
 const UserContainer = styled.div`
@@ -121,6 +122,7 @@ const LoginLink = styled(Link)`
   font-weight: 600;
   line-height: 150%;
   text-decoration: none;
+  white-space: nowrap;
   &:hover {
     cursor: pointer;
   }

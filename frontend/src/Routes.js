@@ -8,6 +8,8 @@ import Myinfo from './pages/Myinfo';
 import Noticeboard from './pages/Noticeboard';
 import MemberDetail from './pages/MemberDetail';
 import Login from './pages/Login';
+import CabinetRent from './pages/CabinetRent';
+import UmbrellaRent from './pages/UmbrellaRent';
 
 function Router() {
   return (
@@ -24,6 +26,8 @@ function Router() {
           path="/manage/memberDetail/:userNickname"
           element={<MemberDetail />}
         />
+        <Route path="/rent/umbrellarent" element={<UmbrellaRent />} />
+        <Route path="/rent/cabinetrent" element={<CabinetRent />} />
       </Routes>
     </BrowserRouter>
   );
