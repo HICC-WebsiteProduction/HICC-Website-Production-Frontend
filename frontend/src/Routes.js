@@ -10,6 +10,7 @@ import MemberDetail from './pages/MemberDetail';
 import Login from './pages/Login';
 import CabinetRent from './pages/CabinetRent';
 import UmbrellaRent from './pages/UmbrellaRent';
+import ScheduleCalender from './pages/ScheduleCalender';
 
 function Router() {
   return (
@@ -28,6 +29,7 @@ function Router() {
         />
         <Route path="/rent/umbrellarent" element={<UmbrellaRent />} />
         <Route path="/rent/cabinetrent" element={<CabinetRent />} />
+        <Route path="/schedulecalender" element={<ScheduleCalender />} />
       </Routes>
     </BrowserRouter>
   );

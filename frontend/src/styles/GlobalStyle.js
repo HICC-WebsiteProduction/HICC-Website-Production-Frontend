@@ -4,6 +4,7 @@ import theme from './Theme';
 
 import Pretendard_SemiBold from './fonts/Pretendard/Pretendard-SemiBold.woff2';
 import Pretendard_Light from './fonts/Pretendard/Pretendard-Light.woff2';
+import SCDream8 from './fonts/SCDream/SCDream8.woff2';
 
 const GlobalStyle = createGlobalStyle`
     ${reset};
@@ -20,6 +21,13 @@ const GlobalStyle = createGlobalStyle`
         src: local('Pretendard Light'),
         url(${Pretendard_Light}) format('woff2');
         font-weight: 300;
+    }
+
+    @font-face {
+        font-family: 'SCDream';
+        src: local('SCDream 800'),
+        url(${SCDream8}) format('woff2');
+        font-weight: 800;
     }
 
     @font-face {
