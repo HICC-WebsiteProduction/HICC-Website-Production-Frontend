@@ -1,0 +1,85 @@
+{
+  "notice" : [
+    {
+      "id": 1,
+      "type": "board",
+      "state": "unread",
+      "user": "apple",
+      "time": "2023/03/18 12:00:00",
+      "payload": {
+        "nickname": "pineapple",
+        "link": "http://localhost:3000/manage"
+      }
+    },
+    {
+      "id": 2,
+      "type": "board",
+      "state": "read",
+      "user": "apple",
+      "time": "2023/03/19 12:00:00",
+      "payload": {
+        "nickname": "pineapple",
+        "link": "http://localhost:3000/manage"
+      }
+    },
+    {
+      "id": 3,
+      "type": "board",
+      "state": "unread",
+      "user": "pineapple",
+      "time": "2023/03/20 12:00:00",
+      "payload": {
+        "nickname": "apple",
+        "link": "http://localhost:3000/manage"
+      }
+    },
+    {
+      "id": 4,
+      "type": "schedule",
+      "state": "unread",
+      "user": "apple",
+      "time": "2023/03/12 12:00:00",
+      "payload": {
+        "scheduleName": "조별미션",
+        "dueDate": "2023/03/27 12:00:00",
+        "link": "http://localhost:3000/manage"
+      }
+    },
+    {
+      "id": 5,
+      "type": "schedule",
+      "state": "read",
+      "user": "apple",
+      "time": "2023/03/20 12:00:00",
+      "payload": {
+        "scheduleName": "프로젝트 발표대회",
+        "dueDate": "2023/03/24 12:00:00",
+        "link": "http://localhost:3000/manage"
+      }
+    },
+    {
+      "id": 6,
+      "type": "rent",
+      "state": "unread",
+      "user": "apple",
+      "time": "2023/03/20 12:00:00",
+      "payload": {
+        "rentItem": "우산",
+        "dueDate": "2023/04/01 12:00:00",
+        "link": "http://localhost:3000/manage"
+      }
+    },
+    {
+      "id": 7,
+      "type": "rent",
+      "state": "unread",
+      "user": "apple",
+      "time": "2023/03/20 12:00:00",
+      "payload": {
+        "rentItem": "사물함",
+        "dueDate": "2023/04/01 12:00:00",
+        "link": "http://localhost:3000/manage"
+      }
+    }
+  ]
+}
