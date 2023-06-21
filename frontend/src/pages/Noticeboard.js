@@ -15,7 +15,7 @@ function Noticeboard() {
 
   return (
     <NoticeBoardContainer>
-      <HeaderAndTitle titleName="게시판" />
+      <HeaderAndTitle type="board" titleName="게시판" />
       <BoardBox>
         <BoardList>
           <BoardItem onClick={() => handleBoardChange('공지게시판')}>
@@ -37,7 +37,11 @@ function Noticeboard() {
             졸업생게시판
           </BoardItem>
         </BoardList>
-        <Post postFilter="board" filterCondition={currentBoard} />
+        <Post
+          postFilter="board"
+          filterCondition={currentBoard}
+          showButton={true}
+        />
       </BoardBox>
     </NoticeBoardContainer>
   );
