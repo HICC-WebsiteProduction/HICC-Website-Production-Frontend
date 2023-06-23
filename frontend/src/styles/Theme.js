@@ -1,7 +1,7 @@
 const fontSizes = {
   title: '40px',
   label: '24px',
-  paragraph: '18px',
+  paragraph: '20px',
   font_normal: '16px',
   font_small: '12px',
   font_micro: '10px',
@@ -16,7 +16,7 @@ const margin = {
 const colors = {
   white: '#EDF0F8',
   white_grey: '#f2f2f2',
-  black: '#000000',
+  black: '#2c2c33',
   red: '#FF3D00',
   blue: '#2d9cdb',
   grey: '#989898',

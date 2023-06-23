@@ -1,3 +1,17 @@
+.react-datepicker {
+  position: fixed;
+  left: -70%;
+}
+
+.react-datepicker-popper {
+  position: fixed !important;
+  transform: none !important;
+}
+
+.datepicker-container {
+  position: relative;
+}
+
 .react-datepicker__header {
   border: none !important;
 }
@@ -56,4 +70,11 @@
 .react-datepicker__day--today:hover {
   border: 1px solid #4ea1d3;
   border-radius: 50%;
+}
+
+.react-datepicker__children-container {
+  width: 100% !important;
+  margin: 0 !important;
+  padding-right: 0 !important;
+  padding-left: 0 !important;
 }

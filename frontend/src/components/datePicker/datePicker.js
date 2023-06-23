@@ -4,24 +4,39 @@ import { ko } from 'date-fns/esm/locale';
 import styled from 'styled-components';
 import { getYear, getMonth } from 'date-fns';
 import '../../styles/datepicker.css';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectDate } from '../../_actions/datePickerAction';
 require('react-datepicker/dist/react-datepicker.css');
 
-export default function CustomDatePicker() {
+export default function CustomDatePicker(props) {
   const [date, setDate] = useState(new Date());
   const [month, setMonth] = useState(new Date().getMonth() + 1);
+  const [datePickerOpen, setDatePickerOpen] = useState(true);
+
+  const dispatch = useDispatch();
 
   const CustomInput = forwardRef(({ onClick }, ref) => (
     <DatePickerButton onClick={onClick} ref={ref}>
-      {`클릭`}
+      <FontAwesomeIcon icon={faCalendarDays} />
     </DatePickerButton>
   ));
 
   const handleMonthChange = date => {
     setMonth(date.getMonth());
+    console.log(month);
   };
 
   const handleDaySelect = date => {
     setDate(date);
+    dispatch(selectDate(date));
+  };
+
+  const onClose = event => {
+    event.preventDefault();
+    setDatePickerOpen(false);
   };
 
   useEffect(() => {
@@ -29,14 +44,15 @@ export default function CustomDatePicker() {
   }, []);
 
   return (
-    <DatePickerContainer
+    <DatePickerWrapper
       locale={ko}
       dateFormat="yyyy-MM-dd"
       selected={date}
-      onSelect={date => handleDaySelect(date)}
+      onChange={date => handleDaySelect(date)}
       shouldCloseOnSelect={false}
       onMonthChange={handleMonthChange}
       calendarContainer={MyContainer}
+      wrapperClassName="datepicker-container"
       renderCustomHeader={({
         date,
         changeYear,
@@ -58,21 +74,36 @@ export default function CustomDatePicker() {
         day.getDate() === date.getDate() ? 'selectedDay' : 'unSelectedDay'
       }
       customInput={<CustomInput />}
-    />
+      isOpen={datePickerOpen}
+    >
+      <DatePickerFooter>
+        <SelectButton onClick={onClose}>취소</SelectButton>
+        <SelectButton>확인</SelectButton>
+      </DatePickerFooter>
+    </DatePickerWrapper>
   );
 }
 
+const DatePickerWrapper = styled(DatePicker)`
+  display: ${props => (props.isOpen ? 'block' : 'none')};
+`;
+
 const DatePickerButton = styled.button`
-  width: 50px;
-  height: 30px;
+  background-color: transparent;
+  border: none;
+  color: #b99cf0;
+  font-size: 20px;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 function MyContainer({ className, children }) {
-  const date = new Date();
+  const date = useSelector(state => state.datePickerReducer.selectedDay);
   const week = ['일', '월', '화', '수', '목', '금', '토'];
 
   return (
-    <CalendarContainer className={className}>
+    <DatePickerContainer className={className}>
       <DatePickerTop>
         <ShowYear>{`${date.getFullYear()}년`}</ShowYear>
         <ShowDate>{`${date.getMonth() + 1}월 ${date.getDate()}일 ${
@@ -80,11 +111,7 @@ function MyContainer({ className, children }) {
         }요일`}</ShowDate>
       </DatePickerTop>
       <DatePickerBody>{children}</DatePickerBody>
-      <DatePickerFooter>
-        <SelectButton>취소</SelectButton>
-        <SelectButton>확인</SelectButton>
-      </DatePickerFooter>
-    </CalendarContainer>
+    </DatePickerContainer>
   );
 }
 
@@ -148,6 +175,9 @@ const DatePickerBody = styled.div`
   position: relative;
 `;
 
-const DatePickerContainer = styled(DatePicker)`
-  background-color: blue;
+const DatePickerContainer = styled(CalendarContainer)`
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
 `;

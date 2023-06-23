@@ -31,7 +31,6 @@ function Router() {
         />
         <Route path="/rent/umbrellarent" element={<UmbrellaRent />} />
         <Route path="/rent/cabinetrent" element={<CabinetRent />} />
-        <Route path="/schedulecalender" element={<ScheduleCalender />} />
       </Routes>
     </BrowserRouter>
   );
