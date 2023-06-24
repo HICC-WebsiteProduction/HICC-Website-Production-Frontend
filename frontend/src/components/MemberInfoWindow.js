@@ -4,38 +4,72 @@ import theme from '../styles/Theme';
 import { Link } from 'react-router-dom';
 import ConfirmMessage from '../confirmMessage/ConfirmMessage';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeGrade, initMember } from '../_actions/changeMemberInfoAction';
+import {
+  changeGradeAction,
+  initMember,
+} from '../_actions/changeMemberInfoAction';
 
-const pixelToRem = size => `${size / 16}rem`;
+const memberGrade = {
+  president: '회장',
+  manager: '운영진',
+  normal: '일반',
+  graduate: '졸업생',
+};
 
 function MemberInfoWindow(props) {
   const dispatch = useDispatch();
   const userReducer = useSelector(state => state.changeMemberInfoReducer);
 
+  const [memberInfo, setMemberInfo] = useState([]);
+  const [selectdMemberList, setSelectdMemberList] = useState([]);
+  const [selectGrade, setSelectGrade] = useState('normal');
+
+  const changeGradeSelect = event => {
+    setSelectGrade(event.target.value);
+  };
+
   const confirmGrant = data => {
     // 등급 변경사항 상태를 리덕스 스토어에 저장합니다.
     // 나중에 이 상태를 백엔드 데이터베이스에 저장 요청을 하면 됩니다.
     if (window.confirm(ConfirmMessage.gradeChange)) {
-      dispatch(changeGrade(memberInfo));
+      const updatedMemberInfo = changeGrade();
+      dispatch(changeGradeAction(updatedMemberInfo));
       alert('회원 등급 변경에 성공하였습니다.');
     }
   };
-  const getChangeInfo = (memberID, grade) => {
+  const changeGrade = () => {
     // 변경정보를 받아와 멤버정보를 수정합니다.
-    let memberInfoTemp = memberInfo;
-    memberInfoTemp[memberID - 1].grade = grade;
-    setMemberInfo(memberInfoTemp);
+    const updatedMemberInfo = memberInfo.map(member => {
+      if (selectdMemberList.includes(member.studentID)) {
+        return { ...member, grade: selectGrade };
+      } else {
+        return member;
+      }
+    });
+
+    setMemberInfo(updatedMemberInfo);
+  };
+
+  const getSelectdMemberInfo = (memberID, checked) => {
+    if (checked) {
+      const updatedList = [...selectdMemberList];
+      updatedList.push(memberID);
+      setSelectdMemberList(updatedList);
+    } else {
+      const updatedList = selectdMemberList.filter(item => item !== memberID);
+      setSelectdMemberList(updatedList);
+    }
   };
 
   const confirmDeny = data => {
     // open dialog box
   };
-  const [memberInfo, setMemberInfo] = useState([]);
+
   // 멤버 정보 더미데이터 불러옵니다.
-  const fetchData = () => {
-    return fetch('memberInfo.json')
-      .then(res => res.json())
-      .then(data => data.memberInfo);
+  const fetchData = async () => {
+    const res = await fetch('memberInfo.json');
+    const data = await res.json();
+    return data.memberInfo;
   };
   useEffect(() => {
     // 멤버 초기정보를 셋팅합니다.
@@ -59,18 +93,22 @@ function MemberInfoWindow(props) {
   }, []);
 
   return (
-    <MemberInfoContainer className={props.className}>
+    <MemberInfoContainer>
+      <MemberListTitle>
+        현재 부원 목록
+        <Indicator />
+      </MemberListTitle>
       <MemberContainer>
         <MemberHeader>
           <tr>
-            <HideTd>번호</HideTd>
-            <td>닉네임</td>
-            <td>학번</td>
-            <td>이름</td>
-            <td>학과</td>
-            <td>학년</td>
-            <td>연락처</td>
             <td>등급</td>
+            <td>이름</td>
+            <td>학번</td>
+            <td>닉네임</td>
+            <td>연락처</td>
+            <td>
+              <input type="checkbox" />
+            </td>
           </tr>
         </MemberHeader>
         <MemberList>
@@ -79,61 +117,51 @@ function MemberInfoWindow(props) {
               return (
                 <RegisteredMember
                   key={index}
-                  memberNumber={index + 1}
                   nickname={value.nickname}
                   name={value.name}
                   studentID={value.studentID}
-                  schoolGrade={value.schoolGrade}
-                  major={value.major}
                   tel={value.tel}
                   grade={value.grade}
-                  getMemberInfo={getChangeInfo}
+                  getMemberInfo={getSelectdMemberInfo}
                 />
               );
             })}
-          {/*<RegisteredMember MemberNumber={1} />
-          <RegisteredMember MemberNumber={2} />
-          <RegisteredMember MemberNumber={3} />
-          <RegisteredMember MemberNumber={4} />*/}
         </MemberList>
       </MemberContainer>
       <ActionButtonContainer>
-        <ModifyButton onClick={confirmGrant}>등급 승격/강등</ModifyButton>
+        <ChangeGradeSelect onChange={changeGradeSelect}>
+          <GradeOption value="normal">일반</GradeOption>
+          <GradeOption value="graduate">졸업생</GradeOption>
+          <GradeOption value="manager">운영진</GradeOption>
+        </ChangeGradeSelect>
+        <ModifyButton onClick={confirmGrant}>등급 수정</ModifyButton>
       </ActionButtonContainer>
     </MemberInfoContainer>
   );
 }
 
 function RegisteredMember(props) {
-  const memberDetailRef = React.createRef();
-  const [grade, setGrade] = useState(props.grade);
-  const changeGradeFunc = e => {
-    setGrade(e.target.value);
-    props.getMemberInfo(
-      memberDetailRef.current.firstChild.innerHTML,
-      e.target.value,
-    );
+  const changeSelect = e => {
+    props.getMemberInfo(e.target.value, e.target.checked);
   };
+
   return (
-    <MemberPresenter ref={memberDetailRef}>
-      <HideTd>{props.memberNumber}</HideTd>
+    <MemberPresenter>
+      <td>{memberGrade[props.grade]}</td>
+      <td>{props.name}</td>
+      <td>{props.studentID}</td>
       <td>
         <MemberDetailsLink to={`/manage/memberDetail/${props.nickname}`}>
           {props.nickname}
         </MemberDetailsLink>
       </td>
-      <td>{props.studentID}</td>
-      <td>{props.name}</td>
-      <td>{props.major}</td>
-      <td>{props.schoolGrade}</td>
       <td>{props.tel}</td>
-      <td id="grade">
-        <select value={grade} onChange={changeGradeFunc}>
-          <option value="normal">일반</option>
-          <option value="graduate">졸업생</option>
-          <option value="manager">운영진</option>
-          <option value="president">회장</option>
-        </select>
+      <td>
+        <input
+          type="checkbox"
+          value={props.studentID}
+          onChange={changeSelect}
+        />
       </td>
     </MemberPresenter>
   );
@@ -141,72 +169,117 @@ function RegisteredMember(props) {
 
 export default MemberInfoWindow;
 
-const MemberInfoContainer = styled.div`
-  *
+const MemberInfoContainer = styled.div``;
+
+const MemberListTitle = styled.span`
+  position: relative;
+  padding-bottom: 10px;
+  border-bottom: 3px solid #3cda5b;
+  color: ${theme.colors.white};
+  font-family: 'Pretendard';
+  font-weight: 600;
+  font-size: 25px;
+`;
+
+const Indicator = styled.div`
+  position: absolute;
+  top: 40px;
+  left: 42%;
+  width: 0;
+  height: 0;
+  border-bottom: 10px solid transparent;
+  border-top: 10px solid #3cda5b;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
 `;
 
 const MemberContainer = styled.table`
+  margin-top: 70px;
   width: 100%;
-  margin-top: ${pixelToRem(40)};
 
   tr {
-    height: ${pixelToRem(50)};
+    height: 50px;
   }
 
   td {
     text-align: center;
     vertical-align: middle;
 
-    font-size: ${pixelToRem(20)};
+    font-size: ${theme.fontSizes.paragraph};
   }
 `;
 
 const MemberHeader = styled.thead`
-  background: lightgray;
-  font-weight: bold;
+  background: transparent;
+  border-bottom: 1px solid ${theme.colors.white};
+  color: ${theme.colors.white};
+
+  font-family: 'Pretendard';
+  font-weight: 600;
+  text-align: center;
+  font-size: ${theme.fontSizes.paragraph};
 `;
 
-const MemberList = styled.tbody`
-  *
-`;
+const MemberList = styled.tbody``;
 
 const ActionButtonContainer = styled.div`
   display: flex;
   width: 100%;
   height: 100px;
+  margin-top: 50px;
   align-items: center;
   justify-content: center;
 
-  button {
-    background-color: rgb(80, 80, 80);
-
-    width: ${pixelToRem(120)};
-    height: ${pixelToRem(40)};
-    margin: ${pixelToRem(60)};
-    border: 0;
+  button,
+  select {
+    width: 160px;
+    height: 60px;
+    margin: 60px;
     border-radius: 10px;
     color: white;
-    font-size: ${pixelToRem(18)};
-    &:hover {
-      cursor: pointer;
-    }
+
+    font-family: 'Pretendard';
+    font-weight: 600;
+    font-size: 25px;
   }
 `;
 
-const DenyButton = styled.button`
-  *
+const ChangeGradeSelect = styled.select`
+  border: 3px solid #3cda5b;
+  background-color: transparent;
+  outline: none;
+  text-align: center;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const GradeOption = styled.option`
+  color: ${theme.colors.black};
+  font-family: 'Pretendard';
+  font-weight: 600;
+  font-size: 25px;
 `;
 
 const ModifyButton = styled.button`
-  *
+  border: 0;
+  background: #3cda5b;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const MemberPresenter = styled.tr`
-  height: ${pixelToRem(30)};
+  height: 40px;
+  border-bottom: 1px solid ${theme.colors.white};
 
-  :nth-child(2n) {
-    background: rgb(220, 220, 220);
-  }
+  color: ${theme.colors.white};
+  font-family: 'Pretendard';
+  font-weight: 300;
+  font-size: 20px;
+  text-align: center;
 `;
 
 const MemberDetailsLink = styled(Link)`

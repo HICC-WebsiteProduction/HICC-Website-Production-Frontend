@@ -7,7 +7,7 @@ function MemberAuthorizeWindow(props) {
   const memberListRef = React.createRef();
   let toggleNext = false;
 
-  const selectToggle = data => {
+  const selectToggle = () => {
     const memberList = memberListRef.current.children;
     let checkedAny = false;
 

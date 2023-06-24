@@ -21,7 +21,7 @@ function Manage(props) {
   ];
 
   return (
-    <ManageContainer className="hidden-page">
+    <ManageContainer>
       <HeaderAndManageTap
         currentTabContents={currentTabContents}
         changeTabContent={changeTabContent}
