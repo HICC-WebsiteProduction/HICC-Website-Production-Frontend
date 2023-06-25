@@ -6,6 +6,7 @@ import dummy from '../dummy/posts.json';
 import logo from '../dummy/hongik.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComment } from '@fortawesome/free-solid-svg-icons';
+import NoticeBoardTable from './table/NoticeBoardTable';
 
 const dummyComment = `홍익대학교가 세상을 만난 것은 1946년입니다.
 널리 세상을 이롭게 하는 홍익의 정신으로 미래를 선도하는 리더를 배출하는 홍익대학교.
@@ -24,12 +25,12 @@ export default function Post(props) {
   const [filteredPosts, setFilteredPosts] = useState(posts);
   const [isCreatingPost, setIsCreatingPost] = useState(false);
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호
-  const [postsPerPage, setPostsPerPage] = useState(1); // 페이지당 게시글 수
+  const [postsPerPage, setPostsPerPage] = useState(10); // 페이지당 게시글 수
 
   const [commentText, setCommentText] = useState('');
 
   // 글자수 제한
-  const limit = 50;
+  const limit = 500;
 
   useEffect(() => {
     const posts = dummy.posts || [];
@@ -99,7 +100,6 @@ export default function Post(props) {
             <PostContent>{currentPost.content}</PostContent>
             <Button onClick={() => setCurrentPost(null)}>목록으로</Button>
           </PostContainer>
-
           <CommentContainer>
             <CommentHeader>
               <CommentIcon>
@@ -164,24 +164,13 @@ export default function Post(props) {
       ) : (
         <>
           <PostsContainer>
-            <PostsHeader>
-              <tr>
-                <th>{props.filterCondition}</th>
-                <th>제목</th>
-                <th>작성자</th>
-                <th>날짜</th>
-              </tr>
-            </PostsHeader>
-            <PostsList>
-              {currentPosts.map((post, index) => (
-                <tr key={post.id} onClick={() => handlePostClick(post.id)}>
-                  <td>{filteredPosts.length - indexOfFirstPost - index}</td>
-                  <td>{post.title}</td>
-                  <td>{post.writer}</td>
-                  <td>{post.date}</td>
-                </tr>
-              ))}
-            </PostsList>
+            <NoticeBoardHeader>{props.filterCondition}</NoticeBoardHeader>
+            <NoticeBoardTable
+              postList={currentPosts}
+              filteredPosts={filteredPosts}
+              indexOfFirstPost={indexOfFirstPost}
+              handlePostClick={handlePostClick}
+            />
           </PostsContainer>
           {/* 글쓰기 버튼 추가 */}
           {/* currentPost 상태를 true로 바꿔서 새 글 작성 컴포넌트가 보이게 함 */}
@@ -445,38 +434,13 @@ const CommentContent = styled.p`
   white-space: pre-line;
 `;
 
-const PostsContainer = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-`;
+const PostsContainer = styled.div``;
 
-const PostsHeader = styled.thead`
-  background-color: ${theme.colors.white_grey};
-
-  th {
-    padding: 1rem;
-    text-align: left;
-    font-weight: bold;
-    font-size: 1.2rem;
-    border-bottom: 1px solid ${theme.colors.very_light_gray};
-    text-align: center;
-    vertical-align: middle;
-  }
-`;
-
-const PostsList = styled.tbody`
-  tr {
-    cursor: pointer;
-    &:hover {
-      background-color: ${theme.colors.chinese_silver};
-    }
-  }
-  td {
-    padding: 1rem;
-    border-bottom: 1px solid ${theme.colors.white_grey};
-    text-align: center;
-    vertical-align: middle;
-  }
+const NoticeBoardHeader = styled.h2`
+  color: ${theme.colors.white};
+  font-family: 'GmarketSansMedium';
+  font-weight: 500;
+  font-size: ${theme.fontSizes.title};
 `;
 
 const Pagination = styled.div`
