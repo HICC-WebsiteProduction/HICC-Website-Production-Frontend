@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import HeaderAndNavigation from '../components/header/HeaderAndNavigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,8 +7,22 @@ import theme from '../styles/Theme';
 import { cabinetStatus } from './../dummy/cabinetStatus';
 import Button from './../components/Button';
 import Caution from '../components/Caution';
+import ApplyCabinetModal from '../components/popup/ApplyCabinetModal';
 
 export default function CabinetRent(props) {
+  const cabinetList = cabinetStatus;
+
+  const [cabinetRentModal, setCabinetRentModal] = useState(
+    cabinetList
+      .filter(cabinet => cabinet.status === 'unrent')
+      .map(cabinet => {
+        return {
+          cabinetNumber: cabinet.cabinetNumber,
+          modalOpen: false,
+        };
+      }),
+  );
+
   // 상위 링크를 표시하기 위함
   const ancestorMenuTree = [
     { name: '홈', link: '/' },
@@ -20,8 +34,45 @@ export default function CabinetRent(props) {
   ];
   const approveManagerMent = `관리자 승인 후\n사용 가능합니다.`;
 
-  const cabinetList = cabinetStatus;
   const myName = '김진호';
+
+  const setModalOpen = cabinetNumber => {
+    const updateCabinetRentModal = cabinetRentModal.map(cabinet => {
+      return {
+        ...cabinet,
+        modalOpen: cabinet.cabinetNumber === cabinetNumber,
+      };
+    });
+    console.log(updateCabinetRentModal);
+    setCabinetRentModal(updateCabinetRentModal);
+  };
+
+  const setModalClose = () => {
+    const updateCabinetRentModal = cabinetRentModal.map(cabinet => {
+      return {
+        ...cabinet,
+        modalOpen: false,
+      };
+    });
+    setCabinetRentModal(updateCabinetRentModal);
+  };
+
+  const modalRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = event => {
+      if (
+        modalRef.current == null ||
+        !modalRef.current.contains(event.target)
+      ) {
+        setModalClose();
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [modalRef]);
 
   return (
     <CabinetRentContainer>
@@ -89,12 +140,23 @@ export default function CabinetRent(props) {
                 ) : (
                   <>
                     <ApproveManager>{approveManagerMent}</ApproveManager>
-                    <RentButton buttonName="대여 신청하기"></RentButton>
+                    <RentButton
+                      buttonName="대여 신청하기"
+                      onClick={() => setModalOpen(cabinet.cabinetNumber)}
+                    ></RentButton>
                   </>
                 )}
               </CabinetDesc>
             </Cabinet>
           ))}
+          <div ref={modalRef}>
+            {cabinetRentModal.map(
+              cabinet =>
+                cabinet.modalOpen && (
+                  <ApplyCabinetModal cabinetNumber={cabinet.cabinetNumber} />
+                ),
+            )}
+          </div>
         </CabinetGrid>
         <Caution />
       </CabinetCurrentState>
@@ -103,12 +165,13 @@ export default function CabinetRent(props) {
 }
 
 const CabinetRentContainer = styled.div`
+  position: relative;
   width: 100%;
   height: 100vh;
 `;
 
 const CabinetCurrentState = styled.div`
-  width: 1200px;
+  width: ${theme.componentSize.maxWidth};
   margin: 64px auto;
 `;
 
@@ -120,7 +183,7 @@ const CabinetListHeader = styled.header`
   font-family: 'GmarketSansMedium', sans-serif;
   font-style: normal;
   font-weight: 500;
-  font-size: 40px;
+  font-size: ${theme.fontSizes.title};
   line-height: 100%;
 `;
 
@@ -167,7 +230,7 @@ const CabinetNumber = styled.div`
   font-family: 'GmarketSansMedium', sans-serif;
   font-style: normal;
   font-weight: 500;
-  font-size: 32px;
+  font-size: ${theme.fontSizes.post_title};
   line-height: 100%;
 `;
 
@@ -189,18 +252,18 @@ const CabinetRentCircleStatus = styled.div`
   margin-right: 10px;
   background-color: ${props =>
     props.rent && props.myRent
-      ? '#9747FF'
+      ? theme.colors.purple
       : props.rent
       ? 'transparent'
-      : '#4ea1d3'};
+      : theme.colors.blue};
 
   border: 3px solid
     ${props =>
       props.rent && props.myRent
-        ? '#9747FF'
+        ? theme.colors.purple
         : props.rent
         ? theme.colors.white
-        : '#4ea1d3'};
+        : theme.colors.blue};
   border-radius: 50%;
 `;
 
@@ -231,11 +294,11 @@ const DayInfo = styled.div`
 
 const StartDay = styled.div`
   margin-bottom: 4px;
-  color: ${props => (props.myRent ? theme.colors.black : '#b3b3b3')};
+  color: ${props => (props.myRent ? theme.colors.black : theme.colors.grey)};
 `;
 
 const EndDay = styled.div`
-  color: ${props => (props.myRent ? '#9747FF' : '#b3b3b3')};
+  color: ${props => (props.myRent ? theme.colors.purple : theme.colors.grey)};
   font-weight: ${props => (props.myRent ? 600 : 300)};
 `;
 
@@ -245,7 +308,7 @@ const ApproveManager = styled.div`
   font-family: 'Pretendard';
   font-style: normal;
   font-weight: 300;
-  font-size: 16px;
+  font-size: ${theme.fontSizes.font_normal};
   line-height: 110%;
   text-align: center;
   white-space: pre-line;
@@ -254,11 +317,11 @@ const ApproveManager = styled.div`
 const RentButton = styled(Button)`
   width: 160px;
   height: 40px;
-  background-color: #4ea1d3;
+  background-color: ${theme.colors.blue};
   border-radius: 20px;
 
   font-weight: 300;
-  font-size: 18px;
+  font-size: ${theme.fontSizes.font_normal};
   line-height: 21px;
 `;
 
@@ -266,12 +329,12 @@ const Lender = styled.div`
   width: 160px;
   height: 40px;
   padding-top: 9px;
-  background-color: #b3b3b3;
+  background-color: ${theme.colors.grey};
   border-radius: 20px;
 
   color: ${theme.colors.black};
   font-weight: 300;
-  font-size: 18px;
+  font-size: ${theme.fontSizes.font_normal};
   line-height: 21px;
   text-align: center;
 `;
@@ -280,14 +343,14 @@ const Lender = styled.div`
 const ReturnCabinetButton = styled.button`
   width: 160px;
   height: 40px;
-  background-color: #9747ff;
+  background-color: ${theme.colors.purple};
   border: none;
   border-radius: 20px;
   color: ${theme.colors.white};
   font-family: 'Pretendard', sans-serif;
   font-style: normal;
   font-weight: 300;
-  font-size: 18px;
+  font-size: ${theme.fontSizes.font_normal};
   line-height: 21px;
 
   &:hover {

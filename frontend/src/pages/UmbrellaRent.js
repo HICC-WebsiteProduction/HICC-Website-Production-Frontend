@@ -112,7 +112,7 @@ const UmbrellaRentContainer = styled.div`
 `;
 
 const UmbrellaCurrentState = styled.div`
-  width: 1200px;
+  width: ${theme.componentSize.maxWidth};
   margin: 64px auto;
 `;
 
@@ -124,7 +124,7 @@ const UmbrellaListHeader = styled.header`
   font-family: 'GmarketSansMedium', sans-serif;
   font-style: normal;
   font-weight: 500;
-  font-size: 40px;
+  font-size: ${theme.fontSizes.title};
   line-height: 100%;
 `;
 
@@ -171,7 +171,7 @@ const UmbrellaNumber = styled.div`
   font-family: 'GmarketSansMedium', sans-serif;
   font-style: normal;
   font-weight: 500;
-  font-size: 32px;
+  font-size: ${theme.fontSizes.post_title};
   line-height: 100%;
 `;
 
@@ -194,18 +194,18 @@ const CabinetRentCircleStatus = styled.div`
   margin-right: 10px;
   background-color: ${props =>
     props.rent && props.myRent
-      ? '#9747FF'
+      ? theme.colors.purple
       : props.rent
       ? 'transparent'
-      : '#4ea1d3'};
+      : theme.colors.blue};
 
   border: 3px solid
     ${props =>
       props.rent && props.myRent
-        ? '#9747FF'
+        ? theme.colors.purple
         : props.rent
         ? theme.colors.white
-        : '#4ea1d3'};
+        : theme.colors.blue};
   border-radius: 50%;
 `;
 
@@ -239,17 +239,17 @@ const DayInfo = styled.div`
 
 const StartDay = styled.div`
   margin-bottom: 4px;
-  color: ${props => (props.myRent ? theme.colors.black : '#b3b3b3')};
+  color: ${props => (props.myRent ? theme.colors.black : theme.colors.grey)};
 `;
 
 const RentButton = styled(Button)`
   width: 248px;
   height: 40px;
-  background-color: #4ea1d3;
+  background-color: ${theme.colors.blue};
   border-radius: 20px;
 
   font-weight: 300;
-  font-size: 18px;
+  font-size: ${theme.fontSizes.font_normal};
   line-height: 21px;
 `;
 
@@ -257,12 +257,12 @@ const Lender = styled.div`
   width: 248px;
   height: 40px;
   padding-top: 9px;
-  background-color: #b3b3b3;
+  background-color: ${theme.colors.grey};
   border-radius: 20px;
 
   color: ${theme.colors.black};
   font-weight: 300;
-  font-size: 18px;
+  font-size: ${theme.fontSizes.font_normal};
   line-height: 21px;
   text-align: center;
 `;
@@ -271,14 +271,14 @@ const Lender = styled.div`
 const ReturnUmbrellaButton = styled.button`
   width: 248px;
   height: 40px;
-  background-color: #9747ff;
+  background-color: ${theme.colors.purple};
   border: none;
   border-radius: 20px;
   color: ${theme.colors.white};
   font-family: 'Pretendard', sans-serif;
   font-style: normal;
   font-weight: 300;
-  font-size: 18px;
+  font-size: ${theme.fontSizes.font_normal};
   line-height: 21px;
 
   &:hover {

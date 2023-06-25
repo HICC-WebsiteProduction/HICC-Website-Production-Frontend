@@ -131,7 +131,7 @@ const CalendarButton = styled.button`
   background-color: transparent;
   border: none;
   color: ${theme.colors.white};
-  font-size: 30px;
+  font-size: ${theme.fontSizes.subtitle};
   &:hover {
     cursor: pointer;
   }
@@ -155,7 +155,7 @@ const CalendarTop = styled.div`
   font-family: 'SCDream';
   font-style: normal;
   font-weight: 800;
-  font-size: 30px;
+  font-size: ${theme.fontSizes.subtitle};
   text-align: center;
   line-height: 36px;
 `;
@@ -179,7 +179,7 @@ const AddScheduleButton = styled.button`
   font-family: 'Pretendard';
   font-style: normal;
   font-weight: 600;
-  font-size: 30px;
+  font-size: ${theme.fontSizes.subtitle};
   line-height: 36px;
 
   &:hover {
@@ -199,9 +199,10 @@ const CalendarMain = styled.div`
 const CalendarDay = styled.div`
   width: 150px;
   height: 40px;
-  color: ${props => (props.isSunday ? '#FF8764' : theme.colors.white)};
+  color: ${props =>
+    props.isSunday ? theme.colors.cancleRed : theme.colors.white};
   font-family: 'Pretendard', sans-serif;
-  font-size: 25px;
+  font-size: ${theme.fontSizes.calendar};
   font-weight: 600;
   text-align: center;
 `;
@@ -214,9 +215,10 @@ const CalendarBox2 = styled.div`
 
 const CalendarDate = styled.div`
   margin-top: 16px;
-  color: ${props => (props.isSunday ? '#FF8764' : theme.colors.white)};
+  color: ${props =>
+    props.isSunday ? theme.colors.cancleRed : theme.colors.white};
   font-family: 'Pretendard', sans-serif;
-  font-size: 25px;
+  font-size: ${theme.fontSizes.calendar};
   font-weight: 600;
   text-align: center;
 `;

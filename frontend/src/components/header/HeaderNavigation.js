@@ -48,7 +48,7 @@ const AncestorMenu = styled.nav`
   font-family: 'GmarketSansMedium', sans-serif;
   font-style: normal;
   font-weight: 500;
-  font-size: 20px;
+  font-size: ${theme.fontSizes.paragraph};
   line-height: 120%;
   text-decoration: none;
 `;

@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import theme from '../styles/Theme';
 import HeaderAndManageTap from '../components/header/HeaderAndManageTap';
 import { TabContentByIndex } from '../components/header/TabContentByIndex';
-
-const pixelToRem = size => `${size / 16}rem`;
 
 function Manage(props) {
   const [tabContentIndex, setTabContentIndex] = useState(0);

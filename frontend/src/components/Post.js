@@ -97,8 +97,8 @@ export default function Post(props) {
               </PostWriterContainer>
             </PostHeader>
             <PostContent>{currentPost.content}</PostContent>
+            <Button onClick={() => setCurrentPost(null)}>목록으로</Button>
           </PostContainer>
-          <Button onClick={() => setCurrentPost(null)}>목록으로</Button>
 
           <CommentContainer>
             <CommentHeader>
@@ -215,7 +215,8 @@ const PostBox = styled.div`
 `;
 
 const PostContainer = styled.div`
-  margin-bottom: 3rem 0;
+  width: ${theme.componentSize.maxWidth};
+  margin: 3rem auto;
 `;
 
 const PostHeader = styled.div`
@@ -228,7 +229,7 @@ const PostTitle = styled.h1`
   margin-bottom: 1rem;
 
   color: ${theme.colors.white};
-  font-size: 32px;
+  font-size: ${theme.fontSizes.post_title};
   font-family: 'GmarketSansMedium';
   font-weight: 500;
   line-height: 120%;
@@ -307,7 +308,8 @@ const Button = styled.button`
 `;
 
 const CommentContainer = styled.div`
-  margin: 150px 0;
+  width: ${theme.componentSize.maxWidth};
+  margin: 150px auto;
 `;
 
 const CommentHeader = styled.h1`

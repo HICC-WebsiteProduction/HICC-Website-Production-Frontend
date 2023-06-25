@@ -11,7 +11,6 @@ import MemberDetail from './pages/MemberDetail';
 import Login from './pages/Login';
 import CabinetRent from './pages/CabinetRent';
 import UmbrellaRent from './pages/UmbrellaRent';
-import ScheduleCalender from './pages/ScheduleCalender';
 
 function Router() {
   return (

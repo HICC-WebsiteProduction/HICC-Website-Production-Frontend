@@ -169,14 +169,14 @@ const ChangeGradeSelect = styled.select`
   width: 119px;
   height: 30px;
   border-radius: 5px;
-  border: 2px solid #3cda5b;
+  border: 2px solid ${theme.colors.green};
   outline: none;
 
   background-color: transparent;
   color: ${theme.colors.white};
   font-family: 'Pretendard';
   font-weight: 600;
-  font-size: 15px;
+  font-size: ${theme.fontSizes.paragraph};
   text-align: center;
 `;
 
@@ -184,7 +184,7 @@ const ChangeGradeOption = styled.option`
   color: ${theme.colors.black};
   font-family: 'Pretendard';
   font-weight: 600;
-  font-size: 20px;
+  font-size: ${theme.fontSizes.paragraph};
 `;
 
 const GoAwayButton = styled.button`
@@ -193,7 +193,7 @@ const GoAwayButton = styled.button`
   right: -210px;
   width: 56px;
   height: 30px;
-  background-color: #ff8764;
+  background-color: ${theme.colors.cancleRed};
   border: none;
   border-radius: 5px;
   color: ${theme.colors.white};
@@ -212,13 +212,13 @@ const SubmitButton = styled.button`
   width: 160px;
   height: 60px;
   border-radius: 10px;
-  background-color: #3cda5b;
+  background-color: ${theme.colors.green};
   color: ${theme.colors.white};
   border: none;
 
   font-family: 'Pretendard';
   font-weight: 600;
-  font-size: 25px;
+  font-size: ${theme.fontSizes.label};
   &:hover {
     cursor: pointer;
   }

@@ -33,7 +33,7 @@ function Signup(props) {
         <InputMemberInfo
           labelName="ID"
           name="ID"
-          specificPlaceholder="알파벳 1자리, 숫자 6자리"
+          specificPlaceholder="학번을 입력해주세요"
           required={true}
           checkDuplicate={false}
           type="text"

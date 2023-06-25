@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import SliderButton from '../components/SliderButton';
+import theme from '../styles/Theme';
 
 const pixelToRem = size => `${size / 16}rem`;
 
@@ -45,7 +46,7 @@ const RentListContainer = styled.table`
     text-align: center;
     vertical-align: middle;
 
-    font-size: ${pixelToRem(20)};
+    font-size: ${theme.fontSizes.paragraph}};
   }
 `;
 
