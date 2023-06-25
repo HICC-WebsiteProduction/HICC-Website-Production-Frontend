@@ -1,16 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import theme from '../styles/Theme';
-
-const pixelToRem = size => `${size / 16}rem`;
 
 export default function Title(props) {
   return (
     <TitleContainer>
-      <Icon>
-        <FontAwesomeIcon icon={props.icon} size="2x" />
-      </Icon>
       <TitleName>{props.titleName}</TitleName>
     </TitleContainer>
   );
@@ -20,17 +14,14 @@ const TitleContainer = styled.div`
   ${theme.flexbox.flex};
   justify-content: flex-start;
   align-items: center;
-  height: ${pixelToRem(88)};
-  margin: 0 ${pixelToRem(20)};
-  padding-left: ${pixelToRem(71)};
-  border-bottom: ${pixelToRem(2)} dashed ${theme.colors.light_grey};
-`;
-
-const Icon = styled.div`
-  margin-right: ${pixelToRem(14)};
+  height: 300px;
 `;
 
 const TitleName = styled.h1`
-  font-family: NanumBarunGothic, sans-serif;
+  margin: 0 auto;
+  color: ${theme.colors.white};
+  font-family: 'GmarketSansMedium', sans-serif;
+  font-weight: 500;
+  line-height: 120%;
   font-size: ${theme.fontSizes.title};
 `;

@@ -1,12 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-
-const pixelToRem = size => `${size / 16}rem`;
+import theme from '../styles/Theme';
+import { waitingMember } from './../dummy/watingMember';
 
 function MemberAuthorizeWindow(props) {
   const memberListRef = React.createRef();
   let toggleNext = false;
-  const selectToggle = data => {
+
+  const selectToggle = () => {
     const memberList = memberListRef.current.children;
     let checkedAny = false;
 
@@ -40,28 +41,39 @@ function MemberAuthorizeWindow(props) {
     // open dialog box
   };
 
+  const waitingMemberList = waitingMember;
+
   return (
-    <MemberAuthorizeContainer className={props.className}>
-      <Toolbar>
-        <SelectAllTool onClick={selectToggle}>전체 선택 및 해제</SelectAllTool>
-      </Toolbar>
+    <MemberAuthorizeContainer>
+      <MemberAuthorizeListTitle>
+        승인대기자 목록
+        <Indicator />
+      </MemberAuthorizeListTitle>
+
       <WaitingMemberContainer>
         <WaitingMemberHeader>
           <tr>
-            <td>닉네임</td>
-            <td>ID</td>
+            <td>NO.</td>
             <td>이름</td>
-            <td>학과</td>
-            <td>학년</td>
-            <td>연락처</td>
-            <td>선택</td>
+            <td>학번</td>
+            <td>닉네임</td>
+            <td>전화번호</td>
+            <td>
+              <input type="checkbox" onClick={selectToggle} />
+            </td>
           </tr>
         </WaitingMemberHeader>
         <WaitingMemberList ref={memberListRef}>
-          <WaitingMember>Member 1</WaitingMember>
-          <WaitingMember>Member 2</WaitingMember>
-          <WaitingMember>Member 3</WaitingMember>
-          <WaitingMember>Member 4</WaitingMember>
+          {waitingMemberList.map((member, index) => (
+            <WaitingMember
+              key={`member${index}`}
+              no={index + 1}
+              name={member.name}
+              studentNo={member.studentNo}
+              nickname={member.nickname}
+              call={member.call}
+            />
+          ))}
         </WaitingMemberList>
       </WaitingMemberContainer>
       <ActionButtonContainer>
@@ -75,12 +87,11 @@ function MemberAuthorizeWindow(props) {
 function WaitingMember(props) {
   return (
     <MemberPresenter>
-      <td>1</td>
-      <td>2</td>
-      <td>3</td>
-      <td>4</td>
-      <td>5</td>
-      <td>6</td>
+      <td>{props.no}</td>
+      <td>{props.name}</td>
+      <td>{props.studentNo}</td>
+      <td>{props.nickname}</td>
+      <td>{props.call}</td>
       <td>
         <input type="checkbox" name="color" value="blue" />
       </td>
@@ -91,83 +102,108 @@ function WaitingMember(props) {
 export default MemberAuthorizeWindow;
 
 const MemberAuthorizeContainer = styled.div`
-  *
-`;
-
-const Toolbar = styled.div`
-  display: flex;
   width: 100%;
-  height: ${pixelToRem(40)};
-  justify-content: right;
+  height: 100vh;
 `;
 
-const SelectAllTool = styled.button`
-  margin-right: ${pixelToRem(5)};
-  border: 0;
-  color: rgb(150, 150, 150);
-  font-size: ${pixelToRem(8)};
-  font-weight: light;
-  align-self: end;
+const MemberAuthorizeListTitle = styled.span`
+  position: relative;
+  padding-bottom: 10px;
+  border-bottom: 3px solid #3cda5b;
+  color: ${theme.colors.white};
+  font-family: 'Pretendard';
+  font-weight: 600;
+  font-size: 25px;
+`;
+
+const Indicator = styled.div`
+  position: absolute;
+  top: 40px;
+  left: 42%;
+  width: 0;
+  height: 0;
+  border-bottom: 10px solid transparent;
+  border-top: 10px solid #3cda5b;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
 `;
 
 const WaitingMemberContainer = styled.table`
+  margin-top: 70px;
   width: 100%;
 
   tr {
-    height: ${pixelToRem(50)};
+    height: 50px;
   }
 
   td {
     text-align: center;
     vertical-align: middle;
 
-    font-size: ${pixelToRem(20)};
+    font-size: ${theme.fontSizes.paragraph};
   }
 `;
 
 const WaitingMemberHeader = styled.thead`
-  background: lightgray;
-  font-weight: bold;
+  background: transparent;
+  border-bottom: 1px solid ${theme.colors.white};
+  color: ${theme.colors.white};
+
+  font-family: 'Pretendard';
+  font-weight: 600;
+  text-align: center;
+  font-size: ${theme.fontSizes.paragraph};
 `;
 
-const WaitingMemberList = styled.tbody`
-  *
-`;
+const WaitingMemberList = styled.tbody``;
 
 const ActionButtonContainer = styled.div`
   display: flex;
   width: 100%;
   height: 100px;
+  margin-top: 50px;
   align-items: center;
   justify-content: center;
 
   button {
-    background-color: rgb(80, 80, 80);
-
-    width: ${pixelToRem(120)};
-    height: ${pixelToRem(40)};
-    margin: ${pixelToRem(60)};
+    width: 160px;
+    height: 60px;
+    margin: 60px;
     border: 0;
     border-radius: 10px;
     color: white;
-    font-size: ${pixelToRem(20)};
+
+    font-family: 'Pretendard';
+    font-weight: 600;
+    font-size: 25px;
   }
 `;
 
 const DenyButton = styled.button`
-  *
+  background: #ff8764;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const GrantButton = styled.button`
-  *
+  background: #3cda5b;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const MemberPresenter = styled.tr`
-  height: ${pixelToRem(30)};
+  height: 40px;
+  border-bottom: 1px solid ${theme.colors.white};
 
-  :nth-child(2n) {
-    background: rgb(220, 220, 220);
-  }
+  color: ${theme.colors.white};
+  font-family: 'Pretendard';
+  font-weight: 300;
+  font-size: 20px;
+  text-align: center;
 `;
 
 // function AuthConfirmDialog(props) {

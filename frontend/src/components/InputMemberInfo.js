@@ -1,115 +1,97 @@
 import React from 'react';
 import styled from 'styled-components';
 import theme from '../styles/Theme';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
-
-const pixelToRem = size => `${size / 16}rem`;
 
 export default function InputMemberInfo(props) {
   return (
     <InputRow>
-      <Label>
-        {props.labelName}
-        <Required>{props.required ? ' *' : ''}</Required>
-      </Label>
+      <Label>{props.labelName}</Label>
       <InputRowContent error={props.errors}>
         <Input
           name={props.name}
           type={props.type}
-          placeholder={`내용을 입력해주세요 ${
+          placeholder={`${
             props.specificPlaceholder ? props.specificPlaceholder : ''
           }`}
           maxLength={props.maxLength}
           {...props.register(props.name, {
             required: {
               value: props.required,
-              message: '필수입력정보입니다.',
+              message: '조건에 맞게 입력해주세요',
             },
             minLength: {
               value: props.minLength,
-              message: props.invalidPatternWarning,
+              message: '조건에 맞게 입력해주세요',
             },
             pattern: {
               value: props.validPattern,
-              message: props.invalidPatternWarning,
+              message: '조건에 맞게 입력해주세요',
             },
           })}
         />
-        {props.checkDuplicate ? (
+        {/* {props.checkDuplicate ? (
           <CheckDuplicate>중복확인</CheckDuplicate>
-        ) : null}
-        {props.errors && (
-          <CircleExclamation>
-            <FontAwesomeIcon icon={faCircleExclamation} />
-          </CircleExclamation>
-        )}
+        ) : null} */}
+        <ErrorMessage>{props.errors && props.errors.message}</ErrorMessage>
       </InputRowContent>
-      <ErrorMessage>{props.errors && props.errors.message}</ErrorMessage>
     </InputRow>
   );
 }
 
 const InputRow = styled.div`
-  ${theme.flexbox.flexColumn};
+  ${theme.flexbox.flex};
   justify-content: flex-start;
-  width: ${pixelToRem(336)};
+  width: 786px;
   margin-bottom: ${theme.margin.margin_component};
 `;
 
-const Required = styled.span`
-  color: ${theme.colors.red};
-  font-size: ${theme.fontSizes.paragraph};
-`;
-
 const Label = styled.label`
-  margin-bottom: ${pixelToRem(8)};
-  font-family: NanumBarunGothic, sans-serif;
-  font-size: ${theme.fontSizes.paragraph};
+  width: 204px;
+  color: ${theme.colors.white};
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%;
+  font-size: ${theme.fontSizes.label};
 `;
 
 const InputRowContent = styled.div`
   ${theme.flexbox.flex};
   justify-content: flex-start;
-  width: ${pixelToRem(336)};
-  height: ${pixelToRem(30)};
-  margin-bottom: ${pixelToRem(5)};
-  border: ${props =>
-    props.error
-      ? `${pixelToRem(0.8)} solid ${theme.colors.red};`
-      : `${pixelToRem(0.8)} solid ${theme.colors.black};`};
-  border-radius: ${pixelToRem(10)};
+  width: 582px;
+  height: 60px;
+  background-color: ${theme.colors.white};
+  border-radius: 20px;
 `;
 
 const Input = styled.input`
-  width: ${pixelToRem(286)};
-  height: ${pixelToRem(15)};
-  margin: ${pixelToRem(7.5)} ${pixelToRem(18)};
+  width: 100%;
+  height: 24px;
+  margin: 18px 24px;
+  background-color: ${theme.colors.white};
   border: none;
-  font-size: ${theme.fontSizes.font_small};
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 600;
+  font-size: ${theme.fontSizes.font_normal};
   &:focus {
     outline: none;
   }
 `;
 
-const CheckDuplicate = styled.a`
-  width: ${pixelToRem(48)};
-  margin-right: ${pixelToRem(8)};
-  color: ${theme.colors.blue};
-  font-family: ${theme.fontWeight.Bold};
-  font-size: ${theme.fontSizes.font_micro};
-`;
-
-const CircleExclamation = styled.div`
-  width: ${pixelToRem(12)};
-  height: ${pixelToRem(12)};
-  margin: ${pixelToRem(9)} ${pixelToRem(14)} ${pixelToRem(9)} ${pixelToRem(4)};
-  color: ${theme.colors.red};
-  font-size: ${theme.fontSizes.font_small};
-`;
+// const CheckDuplicate = styled.a`
+//   width: 48px;
+//   margin-right: 8px;
+//   color: ${theme.colors.blue};
+//   font-size: ${theme.fontSizes.font_micro};
+// `;
 
 const ErrorMessage = styled.span`
   color: ${theme.colors.red};
-  font-family: NanumBarunGothic, sans-serif;
-  font-size: ${theme.fontSizes.font_micro};
+  margin: 18px 22px;
+  font-family: 'Pretendard', sans-serif;
+  font-weight: 300;
+  line-height: 150%;
+  font-size: ${theme.fontSizes.font_normal};
+  white-space: nowrap;
 `;

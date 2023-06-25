@@ -1,6 +1,6 @@
 import { CHANGE_GRADE, INIT_MEMBER, DELETE_MEMBER } from './types';
 
-export function changeGrade(data) {
+export function changeGradeAction(data) {
   return {
     type: CHANGE_GRADE,
     payload: data,

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Header from '../components/Header';
+import Header from '../components/header/Header';
 import theme from '../styles/Theme';
 import Post from '../components/Post';
 import Tabs from '../components/Tab';

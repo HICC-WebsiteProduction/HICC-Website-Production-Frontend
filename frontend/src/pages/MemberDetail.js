@@ -2,14 +2,23 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import theme from '../styles/Theme';
 import logo from '../dummy/hongik.png';
-import { Link, useParams } from 'react-router-dom';
-import HeaderAndTitle from '../components/HeaderAndTitle';
+import { useParams } from 'react-router-dom';
+import HeaderAndTitle from '../components/header/HeaderAndTitle';
 import MemberInfo from '../components/MemberInfo';
 import { useDispatch, useSelector } from 'react-redux';
 import confirmMessage from '../confirmMessage/ConfirmMessage';
-import { changeGrade, deleteMember } from '../_actions/changeMemberInfoAction';
+import {
+  changeGradeAction,
+  deleteMember,
+} from '../_actions/changeMemberInfoAction';
+import { useNavigate } from 'react-router-dom';
 
-const pixelToRem = size => `${size / 16}rem`;
+const memberGrade = {
+  president: '회장',
+  manager: '운영진',
+  normal: '일반',
+  graduate: '졸업생',
+};
 
 // 페이지를 재로딩하면 redux state 가 초기화되어 내용이 사라집니다.
 export default function MemberDetail() {
@@ -18,6 +27,7 @@ export default function MemberDetail() {
   const [userGrade, setUserGrade] = useState('');
   const userStore = useSelector(store => store.changeMemberInfoReducer);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const updateMemberGrade = e => {
     setUserGrade(e.target.value);
   };
@@ -31,6 +41,7 @@ export default function MemberDetail() {
         } else {
           deleteMemberCase(userStore.init);
         }
+        navigate('/manage');
       }
     }
   };
@@ -46,6 +57,7 @@ export default function MemberDetail() {
       } else {
         setUserInformation(userStore.init, true);
       }
+      navigate('/manage');
     }
   };
   const setUserInformation = (store, save) => {
@@ -64,7 +76,7 @@ export default function MemberDetail() {
       );
       totalUser[userIdx] = userinfo;
       console.log(totalUser);
-      dispatch(changeGrade(totalUser));
+      dispatch(changeGradeAction(totalUser));
     }
   };
   const deleteMemberCase = store => {
@@ -92,28 +104,25 @@ export default function MemberDetail() {
         {userinfo ? (
           <ProfileImageWrapper>
             <ProfileImage src={logo} />
-            <ProfileImageChange>프로필 사진 변경</ProfileImageChange>
           </ProfileImageWrapper>
         ) : null}
         {userinfo ? (
           <MemberProfileList>
-            <MemberInfo name="닉네임" param={userinfo.nickname} />
             <MemberInfo name="이름" param={userinfo.name} />
+            <MemberInfo name="닉네임" param={userinfo.nickname} />
             <MemberInfo name="학번" param={userinfo.studentID} />
-            <MemberInfo name="학년" param={userinfo.schoolGrade} />
-            <MemberInfo name="학과" param={userinfo.major} />
             <MemberInfo name="전화번호" param={userinfo.tel} />
             <GradeContainer>
-              <Label>등급</Label>
-              <select value={userGrade} onChange={e => updateMemberGrade(e)}>
-                <option value="normal">일반</option>
-                <option value="graduate">졸업생</option>
-                <option value="manager">운영진</option>
-                <option value="president">회장</option>
-              </select>
-              <GoAwayButton to="/manage" onClick={deleteUser}>
-                강퇴
-              </GoAwayButton>
+              <MemberInfo name="등급" param={memberGrade[userinfo.grade]} />
+              <ChangeGradeSelect
+                value={userGrade}
+                onChange={e => updateMemberGrade(e)}
+              >
+                <ChangeGradeOption value="normal">일반</ChangeGradeOption>
+                <ChangeGradeOption value="graduate">졸업생</ChangeGradeOption>
+                <ChangeGradeOption value="manager">운영진</ChangeGradeOption>
+              </ChangeGradeSelect>
+              <GoAwayButton onClick={deleteUser}>강퇴</GoAwayButton>
             </GradeContainer>
           </MemberProfileList>
         ) : (
@@ -121,9 +130,7 @@ export default function MemberDetail() {
         )}
       </MemberProfile>
       <SubmitButtonContainer>
-        <SubmitButton to="/manage" onClick={saveMemberInfo}>
-          저장
-        </SubmitButton>
+        <SubmitButton onClick={saveMemberInfo}>저장</SubmitButton>
       </SubmitButtonContainer>
     </MemberDetailContainer>
   );
@@ -137,21 +144,13 @@ const MemberProfile = styled.div`
 const ProfileImageWrapper = styled.div`
   ${theme.flexbox.flexCenterColumn};
   width: 30%;
-  margin: ${theme.margin.margin_component} ${pixelToRem(50)};
+  margin: ${theme.margin.margin_component} 50px;
 `;
 const ProfileImage = styled.img`
-  width: ${pixelToRem(250)};
-  height: ${pixelToRem(250)};
+  width: 250px;
+  height: 250px;
   margin: ${theme.margin.margin_component};
   border-radius: 50%;
-`;
-const ProfileImageChange = styled.button`
-  background: transparent;
-  border: none;
-  color: ${theme.colors.blue};
-  &:hover {
-    cursor: pointer;
-  }
 `;
 
 const MemberProfileList = styled.div`
@@ -159,27 +158,45 @@ const MemberProfileList = styled.div`
   margin-top: ${theme.margin.margin_component};
 `;
 
-const GradeContainer = styled.div``;
-
-const Label = styled.label`
-  display: inline-block;
-  width: ${pixelToRem(90)};
-  margin-right: ${pixelToRem(5)};
-  font-family: NanumBarunGothic, sans-serif;
-  font-size: ${theme.fontSizes.paragraph};
+const GradeContainer = styled.div`
+  position: relative;
 `;
 
-const GoAwayButton = styled(Link)`
-  display: inline-block;
-  width: ${pixelToRem(70)};
-  height: ${pixelToRem(25)};
-  margin-left: ${pixelToRem(30)};
-  padding-top: ${pixelToRem(4)};
-  background-color: ${theme.colors.blue};
-  border: none;
-  border-radius: ${pixelToRem(10)};
+const ChangeGradeSelect = styled.select`
+  position: absolute;
+  top: 0px;
+  right: -140px;
+  width: 119px;
+  height: 30px;
+  border-radius: 5px;
+  border: 2px solid #3cda5b;
+  outline: none;
+
+  background-color: transparent;
   color: ${theme.colors.white};
-  text-decoration-line: none;
+  font-family: 'Pretendard';
+  font-weight: 600;
+  font-size: 15px;
+  text-align: center;
+`;
+
+const ChangeGradeOption = styled.option`
+  color: ${theme.colors.black};
+  font-family: 'Pretendard';
+  font-weight: 600;
+  font-size: 20px;
+`;
+
+const GoAwayButton = styled.button`
+  position: absolute;
+  top: 0px;
+  right: -210px;
+  width: 56px;
+  height: 30px;
+  background-color: #ff8764;
+  border: none;
+  border-radius: 5px;
+  color: ${theme.colors.white};
   text-align: center;
   &:hover {
     cursor: pointer;
@@ -188,19 +205,20 @@ const GoAwayButton = styled(Link)`
 
 const SubmitButtonContainer = styled.div`
   ${theme.flexbox.flexCenterColumn};
-  margin-top: ${pixelToRem(0)};
+  margin: 40px 0;
 `;
 
-const SubmitButton = styled(Link)`
-  width: ${pixelToRem(102)};
-  height: ${pixelToRem(40)};
-  padding-top: ${pixelToRem(12)};
-  background-color: ${theme.colors.blue};
-  border: none;
-  border-radius: ${pixelToRem(10)};
+const SubmitButton = styled.button`
+  width: 160px;
+  height: 60px;
+  border-radius: 10px;
+  background-color: #3cda5b;
   color: ${theme.colors.white};
-  text-decoration-line: none;
-  text-align: center;
+  border: none;
+
+  font-family: 'Pretendard';
+  font-weight: 600;
+  font-size: 25px;
   &:hover {
     cursor: pointer;
   }
