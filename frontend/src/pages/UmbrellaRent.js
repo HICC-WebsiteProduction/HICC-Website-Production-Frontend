@@ -171,7 +171,7 @@ const UmbrellaNumber = styled.div`
   font-family: 'GmarketSansMedium', sans-serif;
   font-style: normal;
   font-weight: 500;
-  font-size: ${theme.fontSizes.post_title};
+  font-size: ${theme.fontSizes.subtitle};
   line-height: 100%;
 `;
 
