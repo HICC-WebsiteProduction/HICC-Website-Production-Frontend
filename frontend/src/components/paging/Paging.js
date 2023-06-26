@@ -7,11 +7,15 @@ export default function Paging({ page, count, setPage }) {
     <>
       <Pagination
         activePage={page}
-        itemsCountPerPage={1}
+        itemsCountPerPage={10}
         totalItemsCount={count}
-        pageRangeDisplayed={1}
+        pageRangeDisplayed={5}
         prevPageText={'<'}
         nextPageText={'>'}
+        linkClassFirst="first-button"
+        linkClassPrev="prev-button"
+        linkClassNext="next-button"
+        linkClassLast="last-button"
         onChange={setPage}
       />
     </>

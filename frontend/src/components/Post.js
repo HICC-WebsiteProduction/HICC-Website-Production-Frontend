@@ -5,6 +5,22 @@ import NewPost from '../components/NewPost';
 import dummy from '../dummy/posts.json';
 import NoticeBoardTable from './table/NoticeBoardTable';
 import CurrentPost from './noticeboard/CurrentPost';
+import Paging from './paging/Paging';
+import Filter from './Filter';
+import Button from './Button';
+
+const optionValue = {
+  period: {
+    whole: '전체기간',
+    oneMonth: '1개월',
+    HalfYear: '6개월',
+  },
+  index: {
+    writer: '작성자',
+    title: '제목',
+    postId: '글번호',
+  },
+};
 
 export default function Post(props) {
   const [posts, setPosts] = useState(() => {
@@ -13,10 +29,17 @@ export default function Post(props) {
   });
 
   const [currentPost, setCurrentPost] = useState(null);
-  const [filteredPosts, setFilteredPosts] = useState(posts);
+  const [filteredPosts, setFilteredPosts] = useState(posts); // 현재 필터의 게시글 전체
   const [isCreatingPost, setIsCreatingPost] = useState(false);
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호
   const [postsPerPage, setPostsPerPage] = useState(10); // 페이지당 게시글 수
+  const [filteredPostsCount, setFilteredPostsCount] = useState(0); // 현재 필터의 게시글 수
+
+  const [searchByPeriod, setSearchByPeriod] = useState(
+    optionValue.period.whole,
+  ); // 기간으로 검색
+  const [searchByIndex, setSearchByIndex] = useState(optionValue.index.writer); // 인덱스로 검색
+  const [searchByKeyword, setSearchByKeyword] = useState(''); // 키워드로 검색
 
   useEffect(() => {
     const posts = dummy.posts || [];
@@ -28,6 +51,7 @@ export default function Post(props) {
       post => post[props.postFilter] === props.filterCondition,
     );
     setFilteredPosts(boardPosts.reverse());
+    setFilteredPostsCount(boardPosts.length);
     setCurrentPost(null);
     setIsCreatingPost(null);
     setCurrentPage(1);
@@ -57,6 +81,22 @@ export default function Post(props) {
   for (let i = 1; i <= Math.ceil(filteredPosts.length / postsPerPage); i++) {
     pageNumbers.push(i);
   }
+
+  const setPage = error => {
+    setCurrentPage(error);
+  };
+
+  const onChangeSearchByPeriod = event => {
+    setSearchByPeriod(event.target.value);
+  };
+
+  const onChangeSearchByIndex = event => {
+    setSearchByIndex(event.target.value);
+  };
+
+  const onChangeSearchByKeyword = event => {
+    setSearchByKeyword(event.target.value);
+  };
 
   return (
     <PostBox>
@@ -103,9 +143,11 @@ export default function Post(props) {
           {/* onSave에 handleSave 함수를 전달함 */}
           {/* 새 글 저장 후 실행됨 */}
           {props.showButton && (
-            <Button onClick={() => setIsCreatingPost(true)}>글쓰기</Button>
+            <WriteButton onClick={() => setIsCreatingPost(true)}>
+              글쓰기
+            </WriteButton>
           )}
-          <Pagination>
+          {/* <Pagination>
             {pageNumbers.map(number => (
               <PageNumber
                 key={number}
@@ -115,7 +157,29 @@ export default function Post(props) {
                 {number}
               </PageNumber>
             ))}
-          </Pagination>
+          </Pagination> */}
+          <Paging
+            page={currentPage}
+            count={filteredPostsCount}
+            setPage={setPage}
+          />
+          <FilterContainer>
+            <Filter
+              optionValue={optionValue.period}
+              onChange={onChangeSearchByPeriod}
+            />
+            <Gap />
+            <Filter
+              optionValue={optionValue.index}
+              onChange={onChangeSearchByIndex}
+            />
+            <Gap />
+            <KeywordSearch
+              placeholder="검색어를 입력하세요"
+              onChange={onChangeSearchByKeyword}
+            />
+            <SearchButton buttonName="검색" />
+          </FilterContainer>
         </>
       )}
     </PostBox>
@@ -127,7 +191,7 @@ const PostBox = styled.div`
   margin-right: 20px;
 `;
 
-const Button = styled.button`
+const WriteButton = styled.button`
   width: 102px;
   height: 40px;
   background-color: ${theme.colors.blue};
@@ -148,23 +212,47 @@ const NoticeBoardHeader = styled.h2`
   font-size: ${theme.fontSizes.title};
 `;
 
-const Pagination = styled.div`
+const FilterContainer = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 1rem;
+  justify-content: flex-end;
+  width: ${theme.componentSize.maxWidth};
+  margin: 50px auto;
 `;
 
-const PageNumber = styled.span`
-  padding: 0.2rem;
-  margin: 0 0.5rem;
-  border-radius: 50%;
-  background-color: ${({ active }) => (active ? 'skyblue' : 'white')};
-  font-size: 1.2rem;
+const Gap = styled.div`
+  width: 20px;
+  height: 20px;
+`;
 
-  cursor: pointer;
+const KeywordSearch = styled.input`
+  width: 250px;
+  height: 45px;
+  padding: 6.5px 10px;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid ${theme.colors.white};
+  outline: none;
 
-  &:hover {
-    text-decoration: underline;
+  color: ${theme.colors.white};
+  font-family: 'Pretendard';
+  font-weight: 300;
+  font-size: ${theme.fontSizes.paragraph};
+  line-height: 150%;
+
+  &::placeholder {
+    color: ${theme.colors.white};
   }
+`;
+
+const SearchButton = styled(Button)`
+  width: 80px;
+  height: 45px;
+  margin-left: 20px;
+
+  border-radius: 40px;
+  color: ${theme.colors.white};
+  font-family: 'Pretendard';
+  font-weight: 500;
+  font-size: ${theme.fontSizes.paragraph};
+  line-height: 150%;
 `;
