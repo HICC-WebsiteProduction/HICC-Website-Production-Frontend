@@ -110,6 +110,7 @@ function Signup(props) {
         />
         <ButtonContainer>
           <CancleButton
+            buttonType="button"
             buttonName="취소"
             onClick={() => {
               navigate('/');

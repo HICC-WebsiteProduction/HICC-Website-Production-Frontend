@@ -188,7 +188,6 @@ export default function Post(props) {
 
 const PostBox = styled.div`
   width: 100%;
-  margin-right: 20px;
 `;
 
 const WriteButton = styled.button`
