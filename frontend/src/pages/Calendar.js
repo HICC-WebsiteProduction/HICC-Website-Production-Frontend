@@ -139,7 +139,9 @@ const CalendarButton = styled.button`
 
 const MainContainer = styled.div`
   position: relative;
+  width: ${theme.componentSize.maxWidth};
   height: 100vh;
+  margin: 0 auto;
   place-items: center;
   align-items: center;
   justify-content: center;
@@ -189,7 +191,7 @@ const AddScheduleButton = styled.button`
 
 const CalendarMain = styled.div`
   display: grid;
-  grid-template-columns: repeat(7, minmax(150px, 150px));
+  grid-template-columns: repeat(7, minmax(171px, 171px));
   grid-template-rows: 1fr repeat(6, minmax(200px, 200px));
   place-items: center;
   align-items: center;
@@ -197,7 +199,7 @@ const CalendarMain = styled.div`
 `;
 
 const CalendarDay = styled.div`
-  width: 150px;
+  width: 171px;
   height: 40px;
   color: ${props =>
     props.isSunday ? theme.colors.cancleRed : theme.colors.white};
@@ -208,7 +210,7 @@ const CalendarDay = styled.div`
 `;
 
 const CalendarBox2 = styled.div`
-  width: 150px;
+  width: 171px;
   height: 200px;
   border-top: 3px solid ${theme.colors.white};
 `;

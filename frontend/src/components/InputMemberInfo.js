@@ -7,7 +7,7 @@ import Button from './Button';
 
 export default function InputMemberInfo(props) {
   return (
-    <InputRow>
+    <InputRow width={props.width}>
       <Label>{props.labelName}</Label>
       <InputRowContent error={props.errors}>
         <Input
@@ -51,7 +51,7 @@ const InputRow = styled.div`
   ${theme.flexbox.flex};
   position: relative;
   justify-content: flex-start;
-  width: 786px;
+  width: ${props => `${props.width}px`};
   margin-bottom: ${theme.margin.margin_component};
 `;
 

@@ -38,6 +38,7 @@ function Noticeboard() {
           postFilter="board"
           filterCondition={currentBoard}
           showButton={true}
+          isMypage={false}
         />
       </BoardBox>
     </NoticeBoardContainer>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import HeaderAndManageTap from '../components/header/HeaderAndManageTap';
 import { TabContentByIndex } from '../components/header/TabContentByIndex';
+import theme from '../styles/Theme';
 
 function Manage(props) {
   const [tabContentIndex, setTabContentIndex] = useState(0);
@@ -31,6 +32,7 @@ function Manage(props) {
 export default Manage;
 
 const ManageContainer = styled.div`
-  width: 100%;
+  width: ${theme.componentSize.maxWidth};
   height: 100vh;
+  margin: 0 auto;
 `;

@@ -128,7 +128,9 @@ export default function Post(props) {
       ) : (
         <>
           <PostsContainer>
-            <NoticeBoardHeader>{props.filterCondition}</NoticeBoardHeader>
+            {!props.isMypage && (
+              <NoticeBoardHeader>{props.filterCondition}</NoticeBoardHeader>
+            )}
             <NoticeBoardTable
               postList={currentPosts}
               filteredPosts={filteredPosts}
