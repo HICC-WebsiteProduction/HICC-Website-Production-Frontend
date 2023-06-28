@@ -8,10 +8,10 @@ export const cabinetStatus = [
   },
   {
     cabinetNumber: 2,
-    status: 'unrent',
+    status: 'waiting',
     start: '',
     end: '',
-    lender: '',
+    lender: '손기배',
   },
   {
     cabinetNumber: 3,

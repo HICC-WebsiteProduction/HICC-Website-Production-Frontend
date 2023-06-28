@@ -7,10 +7,33 @@ import theme from '../styles/Theme';
 import { cabinetStatus } from './../dummy/cabinetStatus';
 import Button from './../components/Button';
 import Caution from '../components/Caution';
-import ApplyCabinetModal from '../components/popup/ApplyCabinetModal';
+import ApplyModal from '../components/popup/ApplyModal';
 
 export default function CabinetRent(props) {
-  const cabinetList = cabinetStatus;
+  const [cabinetList, setCabinetList] = useState([]); // 사물함 리스트
+  const myName = '김진호';
+
+  // 내가 빌린 것 체크
+  useEffect(() => {
+    const checkMyRent = cabinetStatus.find(
+      cabinet => cabinet.lender === myName,
+    );
+    if (checkMyRent !== undefined) {
+      const cabinetListIncludeMyRent = cabinetStatus.map(cabinet => {
+        if (cabinet.lender === myName) {
+          return {
+            ...cabinet,
+            status: 'myRent',
+          };
+        } else {
+          return cabinet;
+        }
+      });
+      setCabinetList(cabinetListIncludeMyRent);
+    } else {
+      setCabinetList(cabinetStatus);
+    }
+  }, []);
 
   const [cabinetRentModal, setCabinetRentModal] = useState(
     cabinetList
@@ -33,8 +56,6 @@ export default function CabinetRent(props) {
     { name: '사물함 대여', link: '/rent/cabinetrent', accent: true },
   ];
   const approveManagerMent = `관리자 승인 후\n사용 가능합니다.`;
-
-  const myName = '김진호';
 
   const setModalOpen = cabinetNumber => {
     const updateCabinetRentModal = cabinetRentModal.map(cabinet => {
@@ -74,6 +95,10 @@ export default function CabinetRent(props) {
     };
   }, [modalRef]);
 
+  useEffect(() => {
+    console.log(cabinetList);
+  }, [cabinetList]);
+
   return (
     <CabinetRentContainer>
       <HeaderAndNavigation
@@ -88,72 +113,72 @@ export default function CabinetRent(props) {
           <CabinetListHeaderText>사물함 목록</CabinetListHeaderText>
         </CabinetListHeader>
         <CabinetGrid>
-          {cabinetList.map(cabinet => (
-            <Cabinet
-              key={`cabinet${cabinet.cabinetNumber}`}
-              rent={cabinet.status === 'rent'}
-              myRent={cabinet.status === 'rent' && cabinet.lender === myName}
-            >
-              <CabinetNumber
-                rent={cabinet.status === 'rent'}
-                myRent={cabinet.status === 'rent' && cabinet.lender === myName}
+          {cabinetList.length > 0 &&
+            cabinetList.map(cabinet => (
+              <Cabinet
+                key={`cabinet${cabinet.cabinetNumber}`}
+                status={cabinet.status}
               >
-                {cabinet.cabinetNumber}
-              </CabinetNumber>
-              <CabinetDesc>
-                <CabinetRentStatus>
-                  <CabinetRentCircleStatus
-                    rent={cabinet.status === 'rent'}
-                    myRent={
-                      cabinet.status === 'rent' && cabinet.lender === myName
-                    }
-                  />
-                  <CabinetRentStatusMent
-                    rent={cabinet.status === 'rent'}
-                    myRent={
-                      cabinet.status === 'rent' && cabinet.lender === myName
-                    }
-                  >
-                    {cabinet.status === 'rent' && cabinet.lender === myName
-                      ? '내가 대여'
-                      : cabinet.status === 'rent'
-                      ? '대여 중'
-                      : '대여 가능'}
-                  </CabinetRentStatusMent>
-                </CabinetRentStatus>
-                {cabinet.status === 'rent' ? (
-                  <>
-                    <DayInfo>
-                      <StartDay
-                        myRent={cabinet.lender === myName}
-                      >{`대여일자 | ${cabinet.start}`}</StartDay>
-                      <EndDay
-                        myRent={cabinet.lender === myName}
-                      >{`반납일자 | ${cabinet.end}`}</EndDay>
-                    </DayInfo>
-                    {cabinet.lender === myName ? (
-                      <ReturnCabinetButton>반납하기</ReturnCabinetButton>
-                    ) : (
-                      <Lender>{cabinet.lender}</Lender>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    <ApproveManager>{approveManagerMent}</ApproveManager>
-                    <RentButton
-                      buttonName="대여 신청하기"
-                      onClick={() => setModalOpen(cabinet.cabinetNumber)}
-                    ></RentButton>
-                  </>
-                )}
-              </CabinetDesc>
-            </Cabinet>
-          ))}
+                <CabinetNumber status={cabinet.status}>
+                  {cabinet.cabinetNumber}
+                </CabinetNumber>
+                <CabinetDesc>
+                  <CabinetRentStatus>
+                    <CabinetRentCircleStatus status={cabinet.status} />
+                    <CabinetRentStatusMent status={cabinet.status}>
+                      {cabinet.status === 'myRent'
+                        ? '내가 대여'
+                        : cabinet.status === 'rent'
+                        ? '대여 중'
+                        : cabinet.status === 'waiting'
+                        ? '승인 대기 중'
+                        : '대여 가능'}
+                    </CabinetRentStatusMent>
+                  </CabinetRentStatus>
+                  {cabinet.status === 'rent' || cabinet.status === 'myRent' ? (
+                    <>
+                      <DayInfo>
+                        <StartDay
+                          myRent={cabinet.lender === myName}
+                        >{`대여일자 | ${cabinet.start}`}</StartDay>
+                        <EndDay
+                          myRent={cabinet.lender === myName}
+                        >{`반납일자 | ${cabinet.end}`}</EndDay>
+                      </DayInfo>
+                      {cabinet.lender === myName ? (
+                        <ReturnCabinetButton>반납하기</ReturnCabinetButton>
+                      ) : (
+                        <Lender>{cabinet.lender}</Lender>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <ApproveManager>{approveManagerMent}</ApproveManager>
+                      {cabinet.status === 'waiting' ? (
+                        <WaitingApprove>{cabinet.lender}</WaitingApprove>
+                      ) : (
+                        <RentButton
+                          buttonName="대여 신청하기"
+                          onClick={() => setModalOpen(cabinet.cabinetNumber)}
+                        ></RentButton>
+                      )}
+                    </>
+                  )}
+                </CabinetDesc>
+              </Cabinet>
+            ))}
           <div ref={modalRef}>
             {cabinetRentModal.map(
               cabinet =>
                 cabinet.modalOpen && (
-                  <ApplyCabinetModal cabinetNumber={cabinet.cabinetNumber} />
+                  <ApplyModal
+                    item={`사물함`}
+                    itemNumber={cabinet.cabinetNumber}
+                    startDay={new Date().toISOString().slice(0, 10)}
+                    endDay={''}
+                    startDayDisabled={true}
+                    endDayDisabled={false}
+                  />
                 ),
             )}
           </div>
@@ -210,23 +235,16 @@ const Cabinet = styled.div`
   padding: 0px 16px;
   border: 1px solid ${theme.colors.white};
   border-radius: 20px;
-  background-color: ${props =>
-    props.rent && props.myRent
-      ? theme.colors.white
-      : props.rent
-      ? 'transparent'
-      : theme.colors.white};
+  background-color: ${props => theme.itemColorByState.background[props.status]};
 `;
 
 const CabinetNumber = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 26px;
   margin: 60px 16px;
-  padding-top: 8px;
-  color: ${props =>
-    props.rent && props.myRent
-      ? theme.colors.black
-      : props.rent
-      ? theme.colors.white
-      : theme.colors.black};
+  color: ${props => theme.itemColorByState.number[props.status]};
   font-family: 'GmarketSansMedium', sans-serif;
   font-style: normal;
   font-weight: 500;
@@ -250,32 +268,16 @@ const CabinetRentCircleStatus = styled.div`
   width: 20px;
   height: 20px;
   margin-right: 10px;
-  background-color: ${props =>
-    props.rent && props.myRent
-      ? theme.colors.purple
-      : props.rent
-      ? 'transparent'
-      : theme.colors.blue};
-
+  background-color: ${props => theme.itemColorByState.indicator[props.status]};
   border: 3px solid
-    ${props =>
-      props.rent && props.myRent
-        ? theme.colors.purple
-        : props.rent
-        ? theme.colors.white
-        : theme.colors.blue};
+    ${props => theme.itemColorByState.indicatorBorder[props.status]};
   border-radius: 50%;
 `;
 
 const CabinetRentStatusMent = styled.div`
+  width: 133px;
   padding-top: 3px;
-  color: ${props =>
-    props.rent && props.myRent
-      ? theme.colors.black
-      : props.rent
-      ? theme.colors.white
-      : theme.colors.black};
-
+  color: ${props => theme.itemColorByState.itemStatus[props.status]};
   font-family: 'GmarketSansMedium', sans-serif;
   font-style: normal;
   font-weight: 500;
@@ -333,6 +335,22 @@ const Lender = styled.div`
   border-radius: 20px;
 
   color: ${theme.colors.black};
+  font-family: 'Pretendard';
+  font-weight: 300;
+  font-size: ${theme.fontSizes.font_normal};
+  line-height: 21px;
+  text-align: center;
+`;
+
+const WaitingApprove = styled.div`
+  width: 160px;
+  height: 40px;
+  padding-top: 9px;
+  background-color: ${theme.itemColorByState.button.wating};
+  border-radius: 20px;
+
+  color: ${theme.colors.black};
+  font-family: 'Pretendard';
   font-weight: 300;
   font-size: ${theme.fontSizes.font_normal};
   line-height: 21px;

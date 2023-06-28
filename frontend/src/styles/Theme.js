@@ -21,6 +21,7 @@ const colors = {
   white: '#EDF0F8',
   white_grey: '#f2f2f2',
   black: '#2c2c33',
+  pureBlack: '#000000',
   red: '#FF3D00',
   blue: '#4EA1D3',
   grey: '#B3B3B3',
@@ -58,12 +59,52 @@ const componentSize = {
   maxWidth: '1200px',
 };
 
+const itemColorByState = {
+  background: {
+    rent: 'transparent',
+    unrent: colors.white,
+    myRent: colors.white,
+    waiting: colors.white,
+  },
+  number: {
+    rent: colors.white,
+    unrent: colors.black,
+    myRent: colors.black,
+    wating: colors.white,
+  },
+  indicator: {
+    rent: 'transperent',
+    unrent: colors.blue,
+    myRent: colors.purple,
+    waiting: colors.grey,
+  },
+  indicatorBorder: {
+    rent: colors.white,
+    unrent: colors.blue,
+    myRent: colors.purple,
+    waiting: colors.grey,
+  },
+  itemStatus: {
+    rent: colors.white,
+    unrent: colors.pureBlack,
+    myRent: colors.pureBlack,
+    waiting: colors.pureBlack,
+  },
+  button: {
+    rent: colors.grey,
+    unrent: colors.blue,
+    myRent: colors.purple,
+    wating: colors.grey,
+  },
+};
+
 const theme = {
   fontSizes,
   colors,
   flexbox,
   margin,
   componentSize,
+  itemColorByState,
 };
 
 export default theme;
