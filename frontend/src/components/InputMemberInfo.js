@@ -36,7 +36,7 @@ export default function InputMemberInfo(props) {
           <CheckDuplicate
             buttonName="중복 확인"
             buttonType="button"
-            onClick={() => console.log('hi')}
+            onClick={() => props.checkDuplicate()}
           />
         ) : null}
       </InputRowContent>

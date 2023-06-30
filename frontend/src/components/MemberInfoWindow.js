@@ -8,6 +8,7 @@ import {
   changeGradeAction,
   initMember,
 } from '../_actions/changeMemberInfoAction';
+import useConfirm from '../hook/useConfirm';
 
 const memberGrade = {
   president: '회장',
@@ -24,19 +25,6 @@ function MemberInfoWindow(props) {
   const [selectdMemberList, setSelectdMemberList] = useState([]);
   const [selectGrade, setSelectGrade] = useState('normal');
 
-  const changeGradeSelect = event => {
-    setSelectGrade(event.target.value);
-  };
-
-  const confirmGrant = data => {
-    // 등급 변경사항 상태를 리덕스 스토어에 저장합니다.
-    // 나중에 이 상태를 백엔드 데이터베이스에 저장 요청을 하면 됩니다.
-    if (window.confirm(ConfirmMessage.gradeChange)) {
-      const updatedMemberInfo = changeGrade();
-      dispatch(changeGradeAction(updatedMemberInfo));
-      alert('회원 등급 변경에 성공하였습니다.');
-    }
-  };
   const changeGrade = () => {
     // 변경정보를 받아와 멤버정보를 수정합니다.
     const updatedMemberInfo = memberInfo.map(member => {
@@ -48,6 +36,17 @@ function MemberInfoWindow(props) {
     });
 
     setMemberInfo(updatedMemberInfo);
+    dispatch(changeGradeAction(updatedMemberInfo));
+  };
+
+  const confirmGrant = useConfirm(
+    ConfirmMessage.gradeChange,
+    changeGrade,
+    '회원 등급 변경에 성공하였습니다.',
+  );
+
+  const changeGradeSelect = event => {
+    setSelectGrade(event.target.value);
   };
 
   const getSelectdMemberInfo = (memberID, checked) => {

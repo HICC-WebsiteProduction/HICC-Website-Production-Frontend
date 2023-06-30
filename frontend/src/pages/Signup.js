@@ -9,6 +9,8 @@ import InputMemberValidInfo from '../components/InputMemberValidInfo';
 import { useDispatch } from 'react-redux';
 import { registerUser } from '../_actions/userAction';
 import { useNavigate } from 'react-router-dom';
+import useAlert from '../hook/useAlert';
+import ConfirmMessage from '../confirmMessage/ConfirmMessage';
 
 function Signup(props) {
   const {
@@ -25,6 +27,19 @@ function Signup(props) {
     });
   };
   const navigate = useNavigate();
+
+  const alert = useAlert();
+
+  const isError = true;
+
+  const checkDuplicate = () => {
+    // 서버로 중복체크 전달
+    // 성공했다면
+    isError
+      ? alert(true, ConfirmMessage.duplicateCheck[0])
+      : alert(false, ConfirmMessage.duplicateCheck[1]);
+  };
+
   return (
     <SignupContainer>
       <HeaderAndTitle titleName="회원가입" />
@@ -63,7 +78,7 @@ function Signup(props) {
           name="nickname"
           specificPlaceholder="한글, 영어대소문자, 숫자로 이루어진 4~16자리"
           required={true}
-          checkDuplicate={true}
+          checkDuplicate={checkDuplicate}
           type="text"
           register={register}
           errors={errors.nickname}
