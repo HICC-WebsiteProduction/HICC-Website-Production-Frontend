@@ -16,6 +16,8 @@ function Signup(props) {
   const {
     register,
     handleSubmit,
+    setError,
+    clearErrors,
     formState: { errors },
   } = useForm();
   const dispatch = useDispatch();
@@ -39,6 +41,29 @@ function Signup(props) {
       ? alert(true, ConfirmMessage.duplicateCheck[0])
       : alert(false, ConfirmMessage.duplicateCheck[1]);
   };
+
+  // const checkDuplicate = async () => {
+  //   try {
+  //     const duplicate = true;
+  //     if (duplicate) {
+  //       new Error('duplicate nickname');
+  //     }
+  //     clearErrors('nickname');
+  //     alert(false, ConfirmMessage.duplicateCheck[1]);
+  //   } catch (err) {
+  //     if (err instanceof Error && err.message === 'duplicate nickname') {
+  //       console.log('here');
+  //       setError(
+  //         'nickname',
+  //         {
+  //           message: '중복된 닉네임입니다.',
+  //         },
+  //         { shouldFocus: true },
+  //       );
+  //     }
+  //     alert(true, ConfirmMessage.duplicateCheck[0]);
+  //   }
+  // };
 
   return (
     <SignupContainer>
