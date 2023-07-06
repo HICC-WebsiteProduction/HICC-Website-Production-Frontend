@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
+import EachPost from '../eachItem/EachPost';
 
 /*
   10개 씩 컨텐츠를 전달해줘야합니다.
@@ -15,17 +16,13 @@ export default function NoticeBoardTable(props) {
       </NoticeBoardTableHeader>
       <NoticeBoardTableBody>
         {props.postList.map((post, index) => (
-          <PostList
-            key={post.id}
-            onClick={() => props.handlePostClick(post.id)}
-          >
-            <No>
-              {props.filteredPosts.length - props.indexOfFirstPost - index}
-            </No>
-            <PostTitle>{post.title}</PostTitle>
-            <Writer>{post.writer}</Writer>
-            <WriteDate>{post.date}</WriteDate>
-          </PostList>
+          <EachPost
+            post={post}
+            index={index}
+            filteredPosts={props.filteredPosts}
+            indexOfFirstPost={props.indexOfFirstPost}
+            handlePostClick={props.handlePostClick}
+          />
         ))}
       </NoticeBoardTableBody>
     </NoticeBoardTableContainer>
@@ -89,29 +86,4 @@ const WriteDate = styled.div`
 const NoticeBoardTableBody = styled.div`
   padding: 20px 0;
   border-bottom: 2px solid ${theme.colors.white};
-`;
-
-const PostList = styled.div`
-  display: flex;
-  width: 100%;
-  height: 50px;
-  margin-bottom: 15px;
-
-  color: ${theme.colors.white};
-  text-align: center;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-const PostTitle = styled.div`
-  display: flex;
-  align-items: center;
-  width: 770px;
-  line-height: 150%;
 `;

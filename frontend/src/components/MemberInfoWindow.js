@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import theme from '../styles/Theme';
-import { Link } from 'react-router-dom';
 import ConfirmMessage from '../confirmMessage/ConfirmMessage';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -9,13 +8,8 @@ import {
   initMember,
 } from '../_actions/changeMemberInfoAction';
 import useConfirm from '../hook/useConfirm';
-
-const memberGrade = {
-  president: '회장',
-  manager: '운영진',
-  normal: '일반',
-  graduate: '졸업생',
-};
+import Checkbox from './Checkbox';
+import EachRegisteredMember from './eachItem/EachRegisteredMember';
 
 function MemberInfoWindow(props) {
   const dispatch = useDispatch();
@@ -60,10 +54,6 @@ function MemberInfoWindow(props) {
     }
   };
 
-  const confirmDeny = data => {
-    // open dialog box
-  };
-
   // 멤버 정보 더미데이터 불러옵니다.
   const fetchData = async () => {
     const res = await fetch('memberInfo.json');
@@ -89,7 +79,7 @@ function MemberInfoWindow(props) {
       }
     };
     initMemberInfo();
-  }, []);
+  }, [dispatch, userReducer.changeSuccess, userReducer.deleteSuccess]);
 
   return (
     <MemberInfoContainer>
@@ -106,7 +96,7 @@ function MemberInfoWindow(props) {
             <td>닉네임</td>
             <td>연락처</td>
             <td>
-              <input type="checkbox" />
+              <Checkbox checkboxId="allcheck" />
             </td>
           </tr>
         </MemberHeader>
@@ -114,7 +104,7 @@ function MemberInfoWindow(props) {
           {memberInfo &&
             memberInfo.map((value, index) => {
               return (
-                <RegisteredMember
+                <EachRegisteredMember
                   key={index}
                   nickname={value.nickname}
                   name={value.name}
@@ -136,33 +126,6 @@ function MemberInfoWindow(props) {
         <ModifyButton onClick={confirmGrant}>등급 수정</ModifyButton>
       </ActionButtonContainer>
     </MemberInfoContainer>
-  );
-}
-
-function RegisteredMember(props) {
-  const changeSelect = e => {
-    props.getMemberInfo(e.target.value, e.target.checked);
-  };
-
-  return (
-    <MemberPresenter>
-      <td>{memberGrade[props.grade]}</td>
-      <td>{props.name}</td>
-      <td>{props.studentID}</td>
-      <td>
-        <MemberDetailsLink to={`/manage/memberDetail/${props.nickname}`}>
-          {props.nickname}
-        </MemberDetailsLink>
-      </td>
-      <td>{props.tel}</td>
-      <td>
-        <input
-          type="checkbox"
-          value={props.studentID}
-          onChange={changeSelect}
-        />
-      </td>
-    </MemberPresenter>
   );
 }
 
@@ -265,25 +228,6 @@ const ModifyButton = styled.button`
   border: 0;
   background: ${theme.colors.green};
 
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-const MemberPresenter = styled.tr`
-  height: 40px;
-  border-bottom: 1px solid ${theme.colors.white};
-
-  color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-weight: 300;
-  font-size: ${theme.fontSizes.paragraph};
-  text-align: center;
-`;
-
-const MemberDetailsLink = styled(Link)`
-  color: ${theme.colors.blue};
-  text-decoration-line: none;
   &:hover {
     cursor: pointer;
   }

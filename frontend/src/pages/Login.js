@@ -8,6 +8,7 @@ import InputMemberInfo from '../components/InputMemberInfo';
 import InputMemberValidInfo from '../components/InputMemberValidInfo';
 import Button from '../components/Button';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export default function Login(props) {
   const {
@@ -18,6 +19,10 @@ export default function Login(props) {
   const dispatch = useDispatch();
   const onSubmit = data => {
     console.log(data);
+    axios
+      .get('https://d8283195-fc5b-4a14-adbc-aacf11909e5a.mock.pstmn.io/cabinet')
+      .then(res => res.json())
+      .then(data => console.log(data));
   };
   const navigate = useNavigate();
   return (

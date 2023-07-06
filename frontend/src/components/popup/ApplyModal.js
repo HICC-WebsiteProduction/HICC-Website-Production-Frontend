@@ -3,13 +3,21 @@ import theme from '../../styles/Theme';
 import Button from '../Button';
 
 export default function ApplyModal(props) {
+  const {
+    itemName,
+    itemNumber,
+    startDay,
+    endDay,
+    startDayDisabled,
+    endDayDisabled,
+  } = props;
   return (
     <ApplyCabinetModalContainer>
-      <Header>{props.item} 대여 신청</Header>
+      <Header>{itemName} 대여 신청</Header>
       <ApplyCabinetModalContent>
         <InputRow>
-          <Label>사물함 번호</Label>
-          <Input value={props.itemNumber} disabled />
+          <Label>{itemName} 번호</Label>
+          <Input value={itemNumber} disabled />
         </InputRow>
         <InputRow>
           <Label>대여자</Label>
@@ -17,19 +25,11 @@ export default function ApplyModal(props) {
         </InputRow>
         <InputRow>
           <Label>대여일자</Label>
-          <Input
-            type="date"
-            value={props.startDay}
-            disabled={props.startDayDisabled}
-          />
+          <Input type="date" value={startDay} disabled={startDayDisabled} />
         </InputRow>
         <InputRow>
           <Label>반납일자</Label>
-          <Input
-            type="date"
-            value={props.endDay}
-            disabled={props.endDayDisabled}
-          />
+          <Input type="date" value={endDay} disabled={endDayDisabled} />
         </InputRow>
       </ApplyCabinetModalContent>
       <ApplyButton buttonName="신청하기" />
