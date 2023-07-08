@@ -11,11 +11,16 @@ import promiseMiddleware from 'redux-promise';
 import reduxThunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import rootReducer from './_reducers/RootReducer';
+import { worker } from './mocks/browsers';
 
 const createStoreWidthMiddleware = applyMiddleware(
   promiseMiddleware,
   reduxThunk,
 )(createStore);
+
+if (process.env.NODE_ENV === 'development') {
+  worker.start();
+}
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
