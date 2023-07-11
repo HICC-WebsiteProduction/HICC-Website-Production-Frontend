@@ -12,6 +12,7 @@ import reduxThunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import rootReducer from './_reducers/RootReducer';
 import { worker } from './mocks/browsers';
+import { RecoilRoot } from 'recoil';
 
 const createStoreWidthMiddleware = applyMiddleware(
   promiseMiddleware,
@@ -27,15 +28,17 @@ root.render(
   <>
     <GlobalStyle />
     <ThemeProvider theme={Theme}>
-      <Provider
-        store={createStoreWidthMiddleware(
-          rootReducer,
-          window.__REDUX_DEVTOOLS_EXTENSION__ &&
-            window.__REDUX_DEVTOOLS_EXTENSION__(),
-        )}
-      >
-        <Routes />
-      </Provider>
+      <RecoilRoot>
+        <Provider
+          store={createStoreWidthMiddleware(
+            rootReducer,
+            window.__REDUX_DEVTOOLS_EXTENSION__ &&
+              window.__REDUX_DEVTOOLS_EXTENSION__(),
+          )}
+        >
+          <Routes />
+        </Provider>
+      </RecoilRoot>
     </ThemeProvider>
   </>,
 );

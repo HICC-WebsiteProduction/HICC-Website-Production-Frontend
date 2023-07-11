@@ -7,7 +7,7 @@ const InputMemberValidInfo = {
       /^(?!((?:[A-Za-z]+)|(?:[~!@#$%^&*()_+=]+)|(?:[0-9]+))$)[A-Za-z\d~!@#$%^&*()_+=]{10,}|(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,}$/,
   },
   nickname: {
-    validPattern: /^[가-힣|a-z|A-Z|0-9|].{3,}$/,
+    validPattern: /^([가-힣a-zA-Z0-9]){3,}$/,
   },
   koreanName: {
     validPattern: /^[가-힣]+$/,
