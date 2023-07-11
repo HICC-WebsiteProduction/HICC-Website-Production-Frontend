@@ -3,12 +3,13 @@ import styled from 'styled-components';
 import HeaderAndTitle from '../components/header/HeaderAndTitle';
 import theme from '../styles/Theme';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
 import InputMemberInfo from '../components/InputMemberInfo';
 import InputMemberValidInfo from '../components/InputMemberValidInfo';
 import Button from '../components/Button';
 import { useNavigate } from 'react-router-dom';
 import { request } from '../utils/axios';
+import { useSetRecoilState } from 'recoil';
+import { user } from '../atom/user';
 
 export default function Login(props) {
   const {
@@ -16,13 +17,18 @@ export default function Login(props) {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const dispatch = useDispatch();
+  const setUser = useSetRecoilState(user);
   const onSubmit = async data => {
-    const response = await request('post', '/login', {
-      id: data.ID,
-      password: data.PW,
-    });
-    console.log(response);
+    try {
+      const response = await request('post', '/login', {
+        id: data.ID,
+        password: data.PW,
+      });
+      setUser(response.body);
+      navigate('/');
+    } catch (error) {
+      console.log(error);
+    }
   };
   const navigate = useNavigate();
   return (
@@ -65,7 +71,11 @@ export default function Login(props) {
               navigate('/signup');
             }}
           />
-          <LoginButton buttonType="submit" buttonName="로그인" />
+          <LoginButton
+            buttonType="submit"
+            buttonName="로그인"
+            onClick={onSubmit}
+          />
           <InduceJoinMent>회원이 아니라면</InduceJoinMent>
         </ButtonContainer>
       </InputForm>

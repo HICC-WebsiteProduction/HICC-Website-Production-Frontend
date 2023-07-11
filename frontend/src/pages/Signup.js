@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import theme from '../styles/Theme';
 import { useForm } from 'react-hook-form';
@@ -16,54 +16,44 @@ function Signup(props) {
   const {
     register,
     handleSubmit,
-    setError,
-    clearErrors,
     formState: { errors },
+    getValues,
   } = useForm();
   const dispatch = useDispatch();
   const onSubmit = data => {
-    console.log(data);
+    if (!isNicknameChecked) {
+      alert(true, '중복체크를 해주세요');
+      return;
+    }
+
     dispatch(registerUser(data)).then(res => {
-      alert('가입이 정상적으로 완료되었습니다.');
+      alert(false, '가입이 정상적으로 완료되었습니다.');
       navigate('/');
     });
   };
   const navigate = useNavigate();
 
   const alert = useAlert();
+  const isError = false;
 
-  const isError = true;
+  const [isNicknameChecked, setIsNicknameChecked] = useState(false);
+
+  const inputNickname = getValues('nickname');
 
   const checkDuplicate = () => {
     // 서버로 중복체크 전달
     // 성공했다면
-    isError
-      ? alert(true, ConfirmMessage.duplicateCheck[0])
-      : alert(false, ConfirmMessage.duplicateCheck[1]);
+    if (isError) {
+      alert(true, ConfirmMessage.duplicateCheck[0]);
+    } else {
+      alert(false, ConfirmMessage.duplicateCheck[1]);
+      setIsNicknameChecked(true);
+    }
   };
 
-  // const checkDuplicate = async () => {
-  //   try {
-  //     const duplicate = true;
-  //     if (duplicate) {
-  //       new Error('duplicate nickname');
-  //     }
-  //     clearErrors('nickname');
-  //     alert(false, ConfirmMessage.duplicateCheck[1]);
-  //   } catch (err) {
-  //     if (err instanceof Error && err.message === 'duplicate nickname') {
-  //       console.log('here');
-  //       setError(
-  //         'nickname',
-  //         {
-  //           message: '중복된 닉네임입니다.',
-  //         },
-  //         { shouldFocus: true },
-  //       );
-  //     }
-  //     alert(true, ConfirmMessage.duplicateCheck[0]);
-  //   }
-  // };
+  useEffect(() => {
+    setIsNicknameChecked(false);
+  }, [inputNickname]);
 
   return (
     <SignupContainer>
@@ -162,7 +152,7 @@ function Signup(props) {
               navigate('/');
             }}
           />
-          <SubmitButton buttonType="submit" buttonName="회원가입" />
+          <SubmitButton buttonName="회원가입" buttonType="submit" />
         </ButtonContainer>
       </InputForm>
     </SignupContainer>

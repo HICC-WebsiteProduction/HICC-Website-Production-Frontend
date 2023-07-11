@@ -10,8 +10,12 @@ import MemberDetail from './pages/MemberDetail';
 import Login from './pages/Login';
 import CabinetRent from './pages/CabinetRent';
 import UmbrellaRent from './pages/UmbrellaRent';
+import PrivateRoute from './PrivateRoute';
+import { useRecoilValue } from 'recoil';
+import { user } from './atom/user';
 
 function Router() {
+  const isLogin = useRecoilValue(user).accessToken;
   return (
     <BrowserRouter>
       <Routes>
@@ -21,7 +25,12 @@ function Router() {
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/manage" element={<Manage />} />
-        <Route path="/noticeboard" element={<Noticeboard />} />
+        <Route
+          path="/noticeboard"
+          element={
+            <PrivateRoute authenticated={isLogin} component={<Noticeboard />} />
+          }
+        />
         <Route
           path="/manage/memberDetail/:userNickname"
           element={<MemberDetail />}
