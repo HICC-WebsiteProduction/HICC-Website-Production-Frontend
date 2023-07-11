@@ -113,7 +113,7 @@ const MemberAuthorizeListTitle = styled.span`
   color: ${theme.colors.white};
   font-family: 'Pretendard';
   font-weight: 600;
-  font-size: 25px;
+  font-size: ${theme.fontSizes.label};
 `;
 
 const Indicator = styled.div`
@@ -175,7 +175,7 @@ const ActionButtonContainer = styled.div`
 
     font-family: 'Pretendard';
     font-weight: 600;
-    font-size: 25px;
+    font-size: ${theme.fontSizes.label};
   }
 `;
 
@@ -202,7 +202,7 @@ const MemberPresenter = styled.tr`
   color: ${theme.colors.white};
   font-family: 'Pretendard';
   font-weight: 300;
-  font-size: 20px;
+  font-size: ${theme.fontSizes.paragraph};
   text-align: center;
 `;
 

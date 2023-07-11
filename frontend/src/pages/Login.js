@@ -36,6 +36,7 @@ export default function Login(props) {
           minLength={7}
           maxLength={7}
           validPattern={InputMemberValidInfo.ID.validPattern}
+          width={786}
         />
         <InputMemberInfo
           labelName="비밀번호"
@@ -49,6 +50,7 @@ export default function Login(props) {
           minLength={8}
           maxLength={16}
           validPattern={InputMemberValidInfo.PW.validPattern}
+          width={786}
         />
         <ButtonContainer>
           <JoinButton

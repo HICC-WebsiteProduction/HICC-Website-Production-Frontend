@@ -1,4 +1,3 @@
-import { faColumns } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import styled from 'styled-components';
 

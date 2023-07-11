@@ -5,13 +5,11 @@ import Signup from './pages/Signup';
 import Calendar from './pages/Calendar';
 import MyPage from './pages/MyPage';
 import Manage from './pages/Manage';
-import Myinfo from './pages/Myinfo';
 import Noticeboard from './pages/Noticeboard';
 import MemberDetail from './pages/MemberDetail';
 import Login from './pages/Login';
 import CabinetRent from './pages/CabinetRent';
 import UmbrellaRent from './pages/UmbrellaRent';
-import ScheduleCalender from './pages/ScheduleCalender';
 
 function Router() {
   return (
@@ -23,7 +21,6 @@ function Router() {
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/manage" element={<Manage />} />
-        <Route path="/myinfo" element={<Myinfo />} />
         <Route path="/noticeboard" element={<Noticeboard />} />
         <Route
           path="/manage/memberDetail/:userNickname"

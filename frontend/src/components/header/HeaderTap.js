@@ -31,9 +31,6 @@ export default function HeaderTap(props) {
             >
               {menu.name}
             </CurrentMenuTabContents>
-            <VeticalBar>
-              {idx < props.currentTabContents.length - 1 ? ` | ` : ''}
-            </VeticalBar>
           </>
         ))}
       </CurrentMenuTab>
@@ -74,23 +71,25 @@ const CurrentMenuTab = styled.nav`
 `;
 
 const CurrentMenuTabContents = styled.span`
+  margin-left: 10px;
+  padding-left: 10px;
+  border-left: 1px solid ${theme.colors.white};
+
   color: ${theme.colors.white};
   font-family: ${props => (props.accent ? `GmarketSansMedium` : 'Pretendard')},
     sans-serif;
   font-style: normal;
   font-weight: ${props => (props.accent ? 500 : 300)};
-  font-size: 25px;
+  font-size: 30px;
   line-height: 120%;
   text-decoration: none;
   &:hover {
     cursor: pointer;
   }
-`;
 
-const VeticalBar = styled.span`
-  color: ${theme.colors.white};
-  font-family: sans-serif;
-  font-weight: 100;
-  font-size: 25px;
-  text-decoration: none;
+  &:first-child {
+    margin-left: 0;
+    padding-left: 0;
+    border-left: none;
+  }
 `;

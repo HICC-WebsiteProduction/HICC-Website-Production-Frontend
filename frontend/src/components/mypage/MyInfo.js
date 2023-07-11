@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import UserInfo from '../components/UserInfo';
-import EditUserInfo from '../components/EditUserInfo';
-import HeaderAndTitle from '../components/header/HeaderAndTitle';
+import UserInfo from '../UserInfo';
+import EditUserInfo from '../EditUserInfo';
+import theme from '../../styles/Theme';
 
 function Profile() {
   const [profileImage, setProfileImage] = useState(
@@ -39,14 +39,12 @@ function Profile() {
 
   return (
     <>
-      <HeaderAndTitle titleName="내 정보" />
-
       <ProfileWrapper>
-        <div>
+        <ProfileImageContainer>
           <ProfilePicture src={profileImage} alt="프로필 사진" />
           <ProfileInput type="file" onChange={handleProfileImageChange} />
-        </div>
-        <div>
+        </ProfileImageContainer>
+        <>
           {isEditing ? (
             <EditUserInfo
               nickname={nickname}
@@ -59,16 +57,18 @@ function Profile() {
               nickname={nickname}
               level="일반회원"
               phone={phone}
-              major="Computer Science"
-              year="2"
+              studentId="C011001"
+              major="컴퓨터공학과"
             />
           )}
+        </>
+        <ButtonContainer>
           {isEditing ? (
             <EditButton onClick={handleSaveButtonClick}>저장</EditButton>
           ) : (
             <EditButton onClick={handleEditButtonClick}>정보 수정</EditButton>
           )}
-        </div>
+        </ButtonContainer>
       </ProfileWrapper>
     </>
   );
@@ -78,26 +78,45 @@ export default Profile;
 
 const ProfileWrapper = styled.div`
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
+  position: relative;
+`;
+
+const ProfileImageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 const ProfilePicture = styled.img`
-  width: 100px;
-  height: 100px;
+  width: 180px;
+  height: 180px;
   border-radius: 50%;
 `;
 
 const EditButton = styled.button`
-  background-color: white;
-  border: 1px solid black;
-  border-radius: 5px;
-  padding: 5px 10px;
-  font-size: 1em;
-  font-weight: bold;
-  cursor: pointer;
+  width: 786px;
+  height: 60px;
+  margin-bottom: 50px;
+  border: none;
+  border-radius: 20px;
+  background: ${theme.colors.blue};
+  outline: none;
+
+  color: ${theme.colors.white};
+  font-family: 'Pretendard';
+  font-weight: 600;
+  font-size: ${theme.fontSizes.label};
+  line-height: 150%;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
-const ProfileInput = styled.input`
-  *
+const ProfileInput = styled.input``;
+
+const ButtonContainer = styled.div`
+  position: absolute;
+  top: 540px;
 `;

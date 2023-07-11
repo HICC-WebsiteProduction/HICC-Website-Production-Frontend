@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectDate } from '../../_actions/datePickerAction';
+import theme from '../../styles/Theme';
 require('react-datepicker/dist/react-datepicker.css');
 
 export default function CustomDatePicker(props) {
@@ -91,7 +92,7 @@ const DatePickerWrapper = styled(DatePicker)`
 const DatePickerButton = styled.button`
   background-color: transparent;
   border: none;
-  color: #b99cf0;
+  color: ${theme.colors.purple};
   font-size: 20px;
   &:hover {
     cursor: pointer;
@@ -121,7 +122,7 @@ const DatePickerFooter = styled.div`
   height: 100px;
   padding: 0 70px;
   padding-top: 36px;
-  background-color: #2c2c33;
+  background-color: ${theme.colors.black};
 `;
 
 const SelectButton = styled.button`
@@ -136,7 +137,7 @@ const CustomHeaderContainer = styled.div`
   align-items: center;
   padding-top: 67px;
   padding-bottom: 38px;
-  background-color: #2c2c33;
+  background-color: ${theme.colors.black};
 `;
 
 const MonthButton = styled.button`
@@ -160,7 +161,7 @@ const DatePickerTop = styled.div`
   width: 490px;
   height: 130px;
   padding: 30px 20px;
-  background-color: #edf0f8;
+  background-color: ${theme.colors.white};
 `;
 
 const ShowYear = styled.div`

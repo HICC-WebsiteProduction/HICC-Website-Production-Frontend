@@ -54,7 +54,9 @@ export default function Header() {
 const HeaderContainer = styled.header`
   ${theme.flexbox.flex};
   justify-content: space-between;
+  width: ${theme.componentSize.maxWidth};
   height: 74px;
+  margin: 0 auto;
   padding: 0 ${theme.margin.margin_content};
   transform: rotate(-0.05deg);
 `;
@@ -81,7 +83,7 @@ const Navigation = styled.nav`
 const Menu = styled(Link)`
   padding: 0 20px;
   color: ${theme.colors.white};
-  font-size: 18px;
+  font-size: ${theme.fontSizes.navigation_menu};
   font-family: 'Pretendard', sans-serif;
   font-style: normal;
   font-weight: 600;
@@ -105,7 +107,7 @@ const NoticeButton = styled.button`
   background-color: transparent;
   border: none;
   color: ${theme.colors.white};
-  font-size: 20px;
+  font-size: ${theme.fontSizes.label};
   &:hover {
     cursor: pointer;
   }
@@ -117,7 +119,7 @@ const LoginLink = styled(Link)`
   border: none;
   color: ${theme.colors.white};
   font-family: 'Pretendard', sans-serif;
-  font-size: 18px;
+  font-size: ${theme.fontSizes.navigation_menu};
   font-style: normal;
   font-weight: 600;
   line-height: 150%;

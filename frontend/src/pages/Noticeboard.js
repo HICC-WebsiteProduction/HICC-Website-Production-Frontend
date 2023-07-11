@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Post from '../components/Post';
 import HeaderAndTap from '../components/header/HeaderAndTap';
+import theme from '../styles/Theme';
 
 function Noticeboard() {
   const [currentBoard, setCurrentBoard] = useState('공지게시판');
@@ -37,6 +38,7 @@ function Noticeboard() {
           postFilter="board"
           filterCondition={currentBoard}
           showButton={true}
+          isMypage={false}
         />
       </BoardBox>
     </NoticeBoardContainer>
@@ -51,8 +53,7 @@ const NoticeBoardContainer = styled.div`
 `;
 
 const BoardBox = styled.div`
-  display: flex;
-
-  width: 100%;
+  width: ${theme.componentSize.maxWidth};
   height: 100vh;
+  margin: 0 auto;
 `;

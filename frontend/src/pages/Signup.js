@@ -33,7 +33,7 @@ function Signup(props) {
         <InputMemberInfo
           labelName="ID"
           name="ID"
-          specificPlaceholder="알파벳 1자리, 숫자 6자리"
+          specificPlaceholder="학번을 입력해주세요"
           required={true}
           checkDuplicate={false}
           type="text"
@@ -42,6 +42,7 @@ function Signup(props) {
           minLength={7}
           maxLength={7}
           validPattern={InputMemberValidInfo.ID.validPattern}
+          width={786}
         />
         <InputMemberInfo
           labelName="비밀번호"
@@ -55,6 +56,7 @@ function Signup(props) {
           minLength={8}
           maxLength={16}
           validPattern={InputMemberValidInfo.PW.validPattern}
+          width={786}
         />
         <InputMemberInfo
           labelName="닉네임"
@@ -68,6 +70,7 @@ function Signup(props) {
           minLength={4}
           maxLength={16}
           validPattern={InputMemberValidInfo.nickname.validPattern}
+          width={786}
         />
         <InputMemberInfo
           labelName="이름"
@@ -81,6 +84,7 @@ function Signup(props) {
           minLength={2}
           maxLength={7}
           validPattern={InputMemberValidInfo.koreanName.validPattern}
+          width={786}
         />
         <InputMemberInfo
           labelName="학번"
@@ -94,6 +98,7 @@ function Signup(props) {
           minLength={2}
           maxLength={2}
           validPattern={InputMemberValidInfo.studentID.validPattern}
+          width={786}
         />
         <InputMemberInfo
           labelName="전화번호"
@@ -107,9 +112,11 @@ function Signup(props) {
           minLength={13}
           maxLength={13}
           validPattern={InputMemberValidInfo.call.validPattern}
+          width={786}
         />
         <ButtonContainer>
           <CancleButton
+            buttonType="button"
             buttonName="취소"
             onClick={() => {
               navigate('/');

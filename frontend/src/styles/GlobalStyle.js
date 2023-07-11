@@ -4,6 +4,7 @@ import theme from './Theme';
 
 import Pretendard_SemiBold from './fonts/Pretendard/Pretendard-SemiBold.woff2';
 import Pretendard_Light from './fonts/Pretendard/Pretendard-Light.woff2';
+import Pretendard_Medium from './fonts/Pretendard/Pretendard-Medium.woff2';
 import SCDream8 from './fonts/SCDream/SCDream8.woff2';
 
 const GlobalStyle = createGlobalStyle`
@@ -14,6 +15,13 @@ const GlobalStyle = createGlobalStyle`
         src: local('Pretendard SemiBold'),
         url(${Pretendard_SemiBold}) format('woff2');
         font-weight: 600;
+    }
+
+    @font-face {
+        font-family: 'Pretendard';
+        src: local('Pretendard Medium'),
+        url(${Pretendard_Medium}) format('woff2');
+        font-weight: 500;
     }
 
     @font-face {
@@ -38,10 +46,10 @@ const GlobalStyle = createGlobalStyle`
     }
 
     *{
-      margin: 0;
-      padding: 0;
-      box-sizing:border-box;
-      font-family: sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: sans-serif;
     }
     
     body {

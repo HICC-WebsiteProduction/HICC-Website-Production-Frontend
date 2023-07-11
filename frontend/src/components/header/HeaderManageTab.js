@@ -58,7 +58,7 @@ const CurrentMenuTabContents = styled.div`
   font-family: 'Pretendard', sans-serif;
   font-style: normal;
   font-weight: ${props => (props.accent ? 600 : 300)};
-  font-size: 30px;
+  font-size: ${theme.fontSizes.tab};
   line-height: 120%;
   text-decoration: none;
   &:hover {

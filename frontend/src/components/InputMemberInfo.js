@@ -1,10 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import theme from '../styles/Theme';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
+import Button from './Button';
 
 export default function InputMemberInfo(props) {
   return (
-    <InputRow>
+    <InputRow width={props.width}>
       <Label>{props.labelName}</Label>
       <InputRowContent error={props.errors}>
         <Input
@@ -29,19 +32,26 @@ export default function InputMemberInfo(props) {
             },
           })}
         />
-        {/* {props.checkDuplicate ? (
-          <CheckDuplicate>중복확인</CheckDuplicate>
-        ) : null} */}
-        <ErrorMessage>{props.errors && props.errors.message}</ErrorMessage>
+        {props.checkDuplicate ? (
+          <CheckDuplicate
+            buttonName="중복 확인"
+            buttonType="button"
+            onClick={() => console.log('hi')}
+          />
+        ) : null}
       </InputRowContent>
+      <ErrorMessage>
+        {props.errors && <FontAwesomeIcon icon={faCircleExclamation} />}
+      </ErrorMessage>
     </InputRow>
   );
 }
 
 const InputRow = styled.div`
   ${theme.flexbox.flex};
+  position: relative;
   justify-content: flex-start;
-  width: 786px;
+  width: ${props => `${props.width}px`};
   margin-bottom: ${theme.margin.margin_component};
 `;
 
@@ -79,19 +89,26 @@ const Input = styled.input`
   }
 `;
 
-// const CheckDuplicate = styled.a`
-//   width: 48px;
-//   margin-right: 8px;
-//   color: ${theme.colors.blue};
-//   font-size: ${theme.fontSizes.font_micro};
-// `;
+const CheckDuplicate = styled(Button)`
+  width: 120px;
+  height: 46px;
+  margin-right: 12px;
+  border-radius: 20px;
+
+  color: ${theme.colors.white};
+  font-family: 'Pretendard';
+  font-weight: 600;
+  font-size: ${theme.fontSizes.font_normal};
+`;
 
 const ErrorMessage = styled.span`
-  color: ${theme.colors.red};
-  margin: 18px 22px;
+  position: absolute;
+  top: 10%;
+  right: -50px;
+  color: #ff9494;
   font-family: 'Pretendard', sans-serif;
   font-weight: 300;
   line-height: 150%;
-  font-size: ${theme.fontSizes.font_normal};
+  font-size: ${theme.fontSizes.subtitle};
   white-space: nowrap;
 `;

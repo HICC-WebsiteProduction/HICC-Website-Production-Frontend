@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import HeaderAndNavigation from '../components/header/HeaderAndNavigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,8 +7,45 @@ import theme from '../styles/Theme';
 import { cabinetStatus } from './../dummy/cabinetStatus';
 import Button from './../components/Button';
 import Caution from '../components/Caution';
+import ApplyModal from '../components/popup/ApplyModal';
 
 export default function CabinetRent(props) {
+  const [cabinetList, setCabinetList] = useState([]); // 사물함 리스트
+  const myName = '김진호';
+
+  // 내가 빌린 것 체크
+  useEffect(() => {
+    const checkMyRent = cabinetStatus.find(
+      cabinet => cabinet.lender === myName,
+    );
+    if (checkMyRent !== undefined) {
+      const cabinetListIncludeMyRent = cabinetStatus.map(cabinet => {
+        if (cabinet.lender === myName) {
+          return {
+            ...cabinet,
+            status: 'myRent',
+          };
+        } else {
+          return cabinet;
+        }
+      });
+      setCabinetList(cabinetListIncludeMyRent);
+    } else {
+      setCabinetList(cabinetStatus);
+    }
+  }, []);
+
+  const [cabinetRentModal, setCabinetRentModal] = useState(
+    cabinetList
+      .filter(cabinet => cabinet.status === 'unrent')
+      .map(cabinet => {
+        return {
+          cabinetNumber: cabinet.cabinetNumber,
+          modalOpen: false,
+        };
+      }),
+  );
+
   // 상위 링크를 표시하기 위함
   const ancestorMenuTree = [
     { name: '홈', link: '/' },
@@ -20,8 +57,47 @@ export default function CabinetRent(props) {
   ];
   const approveManagerMent = `관리자 승인 후\n사용 가능합니다.`;
 
-  const cabinetList = cabinetStatus;
-  const myName = '김진호';
+  const setModalOpen = cabinetNumber => {
+    const updateCabinetRentModal = cabinetRentModal.map(cabinet => {
+      return {
+        ...cabinet,
+        modalOpen: cabinet.cabinetNumber === cabinetNumber,
+      };
+    });
+    console.log(updateCabinetRentModal);
+    setCabinetRentModal(updateCabinetRentModal);
+  };
+
+  const setModalClose = () => {
+    const updateCabinetRentModal = cabinetRentModal.map(cabinet => {
+      return {
+        ...cabinet,
+        modalOpen: false,
+      };
+    });
+    setCabinetRentModal(updateCabinetRentModal);
+  };
+
+  const modalRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = event => {
+      if (
+        modalRef.current == null ||
+        !modalRef.current.contains(event.target)
+      ) {
+        setModalClose();
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [modalRef]);
+
+  useEffect(() => {
+    console.log(cabinetList);
+  }, [cabinetList]);
 
   return (
     <CabinetRentContainer>
@@ -37,64 +113,75 @@ export default function CabinetRent(props) {
           <CabinetListHeaderText>사물함 목록</CabinetListHeaderText>
         </CabinetListHeader>
         <CabinetGrid>
-          {cabinetList.map(cabinet => (
-            <Cabinet
-              key={`cabinet${cabinet.cabinetNumber}`}
-              rent={cabinet.status === 'rent'}
-              myRent={cabinet.status === 'rent' && cabinet.lender === myName}
-            >
-              <CabinetNumber
-                rent={cabinet.status === 'rent'}
-                myRent={cabinet.status === 'rent' && cabinet.lender === myName}
+          {cabinetList.length > 0 &&
+            cabinetList.map(cabinet => (
+              <Cabinet
+                key={`cabinet${cabinet.cabinetNumber}`}
+                status={cabinet.status}
               >
-                {cabinet.cabinetNumber}
-              </CabinetNumber>
-              <CabinetDesc>
-                <CabinetRentStatus>
-                  <CabinetRentCircleStatus
-                    rent={cabinet.status === 'rent'}
-                    myRent={
-                      cabinet.status === 'rent' && cabinet.lender === myName
-                    }
+                <CabinetNumber status={cabinet.status}>
+                  {cabinet.cabinetNumber}
+                </CabinetNumber>
+                <CabinetDesc>
+                  <CabinetRentStatus>
+                    <CabinetRentCircleStatus status={cabinet.status} />
+                    <CabinetRentStatusMent status={cabinet.status}>
+                      {cabinet.status === 'myRent'
+                        ? '내가 대여'
+                        : cabinet.status === 'rent'
+                        ? '대여 중'
+                        : cabinet.status === 'waiting'
+                        ? '승인 대기 중'
+                        : '대여 가능'}
+                    </CabinetRentStatusMent>
+                  </CabinetRentStatus>
+                  {cabinet.status === 'rent' || cabinet.status === 'myRent' ? (
+                    <>
+                      <DayInfo>
+                        <StartDay
+                          myRent={cabinet.lender === myName}
+                        >{`대여일자 | ${cabinet.start}`}</StartDay>
+                        <EndDay
+                          myRent={cabinet.lender === myName}
+                        >{`반납일자 | ${cabinet.end}`}</EndDay>
+                      </DayInfo>
+                      {cabinet.lender === myName ? (
+                        <ReturnCabinetButton>반납하기</ReturnCabinetButton>
+                      ) : (
+                        <Lender>{cabinet.lender}</Lender>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <ApproveManager>{approveManagerMent}</ApproveManager>
+                      {cabinet.status === 'waiting' ? (
+                        <WaitingApprove>{cabinet.lender}</WaitingApprove>
+                      ) : (
+                        <RentButton
+                          buttonName="대여 신청하기"
+                          onClick={() => setModalOpen(cabinet.cabinetNumber)}
+                        ></RentButton>
+                      )}
+                    </>
+                  )}
+                </CabinetDesc>
+              </Cabinet>
+            ))}
+          <div ref={modalRef}>
+            {cabinetRentModal.map(
+              cabinet =>
+                cabinet.modalOpen && (
+                  <ApplyModal
+                    item={`사물함`}
+                    itemNumber={cabinet.cabinetNumber}
+                    startDay={new Date().toISOString().slice(0, 10)}
+                    endDay={''}
+                    startDayDisabled={true}
+                    endDayDisabled={false}
                   />
-                  <CabinetRentStatusMent
-                    rent={cabinet.status === 'rent'}
-                    myRent={
-                      cabinet.status === 'rent' && cabinet.lender === myName
-                    }
-                  >
-                    {cabinet.status === 'rent' && cabinet.lender === myName
-                      ? '내가 대여'
-                      : cabinet.status === 'rent'
-                      ? '대여 중'
-                      : '대여 가능'}
-                  </CabinetRentStatusMent>
-                </CabinetRentStatus>
-                {cabinet.status === 'rent' ? (
-                  <>
-                    <DayInfo>
-                      <StartDay
-                        myRent={cabinet.lender === myName}
-                      >{`대여일자 | ${cabinet.start}`}</StartDay>
-                      <EndDay
-                        myRent={cabinet.lender === myName}
-                      >{`반납일자 | ${cabinet.end}`}</EndDay>
-                    </DayInfo>
-                    {cabinet.lender === myName ? (
-                      <ReturnCabinetButton>반납하기</ReturnCabinetButton>
-                    ) : (
-                      <Lender>{cabinet.lender}</Lender>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    <ApproveManager>{approveManagerMent}</ApproveManager>
-                    <RentButton buttonName="대여 신청하기"></RentButton>
-                  </>
-                )}
-              </CabinetDesc>
-            </Cabinet>
-          ))}
+                ),
+            )}
+          </div>
         </CabinetGrid>
         <Caution />
       </CabinetCurrentState>
@@ -103,12 +190,13 @@ export default function CabinetRent(props) {
 }
 
 const CabinetRentContainer = styled.div`
+  position: relative;
   width: 100%;
   height: 100vh;
 `;
 
 const CabinetCurrentState = styled.div`
-  width: 1200px;
+  width: ${theme.componentSize.maxWidth};
   margin: 64px auto;
 `;
 
@@ -120,7 +208,7 @@ const CabinetListHeader = styled.header`
   font-family: 'GmarketSansMedium', sans-serif;
   font-style: normal;
   font-weight: 500;
-  font-size: 40px;
+  font-size: ${theme.fontSizes.title};
   line-height: 100%;
 `;
 
@@ -147,27 +235,20 @@ const Cabinet = styled.div`
   padding: 0px 16px;
   border: 1px solid ${theme.colors.white};
   border-radius: 20px;
-  background-color: ${props =>
-    props.rent && props.myRent
-      ? theme.colors.white
-      : props.rent
-      ? 'transparent'
-      : theme.colors.white};
+  background-color: ${props => theme.itemColorByState.background[props.status]};
 `;
 
 const CabinetNumber = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 26px;
   margin: 60px 16px;
-  padding-top: 8px;
-  color: ${props =>
-    props.rent && props.myRent
-      ? theme.colors.black
-      : props.rent
-      ? theme.colors.white
-      : theme.colors.black};
+  color: ${props => theme.itemColorByState.number[props.status]};
   font-family: 'GmarketSansMedium', sans-serif;
   font-style: normal;
   font-weight: 500;
-  font-size: 32px;
+  font-size: ${theme.fontSizes.subtitle};
   line-height: 100%;
 `;
 
@@ -187,32 +268,16 @@ const CabinetRentCircleStatus = styled.div`
   width: 20px;
   height: 20px;
   margin-right: 10px;
-  background-color: ${props =>
-    props.rent && props.myRent
-      ? '#9747FF'
-      : props.rent
-      ? 'transparent'
-      : '#4ea1d3'};
-
+  background-color: ${props => theme.itemColorByState.indicator[props.status]};
   border: 3px solid
-    ${props =>
-      props.rent && props.myRent
-        ? '#9747FF'
-        : props.rent
-        ? theme.colors.white
-        : '#4ea1d3'};
+    ${props => theme.itemColorByState.indicatorBorder[props.status]};
   border-radius: 50%;
 `;
 
 const CabinetRentStatusMent = styled.div`
+  width: 133px;
   padding-top: 3px;
-  color: ${props =>
-    props.rent && props.myRent
-      ? theme.colors.black
-      : props.rent
-      ? theme.colors.white
-      : theme.colors.black};
-
+  color: ${props => theme.itemColorByState.itemStatus[props.status]};
   font-family: 'GmarketSansMedium', sans-serif;
   font-style: normal;
   font-weight: 500;
@@ -231,11 +296,11 @@ const DayInfo = styled.div`
 
 const StartDay = styled.div`
   margin-bottom: 4px;
-  color: ${props => (props.myRent ? theme.colors.black : '#b3b3b3')};
+  color: ${props => (props.myRent ? theme.colors.black : theme.colors.grey)};
 `;
 
 const EndDay = styled.div`
-  color: ${props => (props.myRent ? '#9747FF' : '#b3b3b3')};
+  color: ${props => (props.myRent ? theme.colors.purple : theme.colors.grey)};
   font-weight: ${props => (props.myRent ? 600 : 300)};
 `;
 
@@ -245,7 +310,7 @@ const ApproveManager = styled.div`
   font-family: 'Pretendard';
   font-style: normal;
   font-weight: 300;
-  font-size: 16px;
+  font-size: ${theme.fontSizes.font_normal};
   line-height: 110%;
   text-align: center;
   white-space: pre-line;
@@ -254,11 +319,11 @@ const ApproveManager = styled.div`
 const RentButton = styled(Button)`
   width: 160px;
   height: 40px;
-  background-color: #4ea1d3;
+  background-color: ${theme.colors.blue};
   border-radius: 20px;
 
   font-weight: 300;
-  font-size: 18px;
+  font-size: ${theme.fontSizes.font_normal};
   line-height: 21px;
 `;
 
@@ -266,12 +331,28 @@ const Lender = styled.div`
   width: 160px;
   height: 40px;
   padding-top: 9px;
-  background-color: #b3b3b3;
+  background-color: ${theme.colors.grey};
   border-radius: 20px;
 
   color: ${theme.colors.black};
+  font-family: 'Pretendard';
   font-weight: 300;
-  font-size: 18px;
+  font-size: ${theme.fontSizes.font_normal};
+  line-height: 21px;
+  text-align: center;
+`;
+
+const WaitingApprove = styled.div`
+  width: 160px;
+  height: 40px;
+  padding-top: 9px;
+  background-color: ${theme.itemColorByState.button.wating};
+  border-radius: 20px;
+
+  color: ${theme.colors.black};
+  font-family: 'Pretendard';
+  font-weight: 300;
+  font-size: ${theme.fontSizes.font_normal};
   line-height: 21px;
   text-align: center;
 `;
@@ -280,14 +361,14 @@ const Lender = styled.div`
 const ReturnCabinetButton = styled.button`
   width: 160px;
   height: 40px;
-  background-color: #9747ff;
+  background-color: ${theme.colors.purple};
   border: none;
   border-radius: 20px;
   color: ${theme.colors.white};
   font-family: 'Pretendard', sans-serif;
   font-style: normal;
   font-weight: 300;
-  font-size: 18px;
+  font-size: ${theme.fontSizes.font_normal};
   line-height: 21px;
 
   &:hover {

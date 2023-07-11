@@ -59,7 +59,7 @@ const CautionContent = styled.div`
   font-family: 'Pretendard';
   font-style: normal;
   font-weight: 300;
-  font-size: 20px;
+  font-size: ${theme.fontSizes.paragraph};
   line-height: 150%;
   white-space: pre-line;
 `;

@@ -174,11 +174,11 @@ const MemberInfoContainer = styled.div``;
 const MemberListTitle = styled.span`
   position: relative;
   padding-bottom: 10px;
-  border-bottom: 3px solid #3cda5b;
+  border-bottom: 3px solid ${theme.colors.green};
   color: ${theme.colors.white};
   font-family: 'Pretendard';
   font-weight: 600;
-  font-size: 25px;
+  font-size: ${theme.fontSizes.label};
 `;
 
 const Indicator = styled.div`
@@ -188,7 +188,7 @@ const Indicator = styled.div`
   width: 0;
   height: 0;
   border-bottom: 10px solid transparent;
-  border-top: 10px solid #3cda5b;
+  border-top: 10px solid ${theme.colors.green};
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
 `;
@@ -240,12 +240,12 @@ const ActionButtonContainer = styled.div`
 
     font-family: 'Pretendard';
     font-weight: 600;
-    font-size: 25px;
+    font-size: ${theme.fontSizes.label};
   }
 `;
 
 const ChangeGradeSelect = styled.select`
-  border: 3px solid #3cda5b;
+  border: 3px solid ${theme.colors.green};
   background-color: transparent;
   outline: none;
   text-align: center;
@@ -259,12 +259,12 @@ const GradeOption = styled.option`
   color: ${theme.colors.black};
   font-family: 'Pretendard';
   font-weight: 600;
-  font-size: 25px;
+  font-size: ${theme.fontSizes.label};
 `;
 
 const ModifyButton = styled.button`
   border: 0;
-  background: #3cda5b;
+  background: ${theme.colors.green};
 
   &:hover {
     cursor: pointer;
@@ -278,7 +278,7 @@ const MemberPresenter = styled.tr`
   color: ${theme.colors.white};
   font-family: 'Pretendard';
   font-weight: 300;
-  font-size: 20px;
+  font-size: ${theme.fontSizes.paragraph};
   text-align: center;
 `;
 
@@ -288,8 +288,4 @@ const MemberDetailsLink = styled(Link)`
   &:hover {
     cursor: pointer;
   }
-`;
-
-const HideTd = styled.td`
-  display: none;
 `;

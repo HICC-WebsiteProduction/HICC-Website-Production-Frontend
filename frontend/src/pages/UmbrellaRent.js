@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import HeaderAndNavigation from '../components/header/HeaderAndNavigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,6 +7,7 @@ import theme from '../styles/Theme';
 import Caution from '../components/Caution';
 import { umbrellaStatus } from '../dummy/umbrellaStatus';
 import Button from '../components/Button';
+import ApplyModal from '../components/popup/ApplyModal';
 
 /*
 currentTabContents는 현재 탭의 정보로
@@ -14,6 +15,84 @@ name은 이름, link은 url, accent는 현재 메뉴면 true, 아니면 false를
 */
 
 export default function UmbrellaRent(props) {
+  const myName = '김진호';
+
+  const [umbrellaList, setUmbrellaList] = useState([]);
+
+  // 내가 빌린 것 체크
+  useEffect(() => {
+    const checkMyRent = umbrellaStatus.find(
+      umbrella => umbrella.lender === myName,
+    );
+    if (checkMyRent !== undefined) {
+      const umbrellaListIncludeMyRent = umbrellaStatus.map(umbrella => {
+        if (umbrella.lender === myName) {
+          return {
+            ...umbrella,
+            status: 'myRent',
+          };
+        } else {
+          return umbrella;
+        }
+      });
+      setUmbrellaList(umbrellaListIncludeMyRent);
+    } else {
+      setUmbrellaList(umbrellaStatus);
+    }
+  }, []);
+
+  const [umbrellaRentModal, setUmbrellaRentModal] = useState(
+    umbrellaList
+      .filter(umbrella => umbrella.status === 'unrent')
+      .map(umbrella => {
+        return {
+          umbrellaNumber: umbrella.umbrellaNumber,
+          modalOpen: false,
+        };
+      }),
+  );
+
+  const setModalOpen = umbrellaNumber => {
+    const updateUmbrellaRentModal = umbrellaRentModal.map(umbrella => {
+      return {
+        ...umbrella,
+        modalOpen: umbrella.umbrellaNumber === umbrellaNumber,
+      };
+    });
+    console.log(updateUmbrellaRentModal);
+    setUmbrellaRentModal(updateUmbrellaRentModal);
+  };
+
+  const setModalClose = () => {
+    const updateUmbrellaRentModal = umbrellaRentModal.map(umbrella => {
+      return {
+        ...umbrella,
+        modalOpen: false,
+      };
+    });
+    setUmbrellaRentModal(updateUmbrellaRentModal);
+  };
+
+  const modalRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = event => {
+      if (
+        modalRef.current == null ||
+        !modalRef.current.contains(event.target)
+      ) {
+        setModalClose();
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [modalRef]);
+
+  const now = new Date();
+  const sevenDaysAgo = new Date(now.setDate(now.getDate() + 7));
+
   // 상위 링크를 표시하기 위함
   const ancestorMenuTree = [
     { name: '홈', link: '/' },
@@ -23,10 +102,6 @@ export default function UmbrellaRent(props) {
     { name: '우산 대여', link: '/rent/umbrellarent', accent: true },
     { name: '사물함 대여', link: '/rent/cabinetrent', accent: false },
   ];
-  const approveManagerMent = `관리자 승인 후\n사용 가능합니다.`;
-  const umbrellaList = umbrellaStatus;
-
-  const myName = '김진호';
 
   return (
     <UmbrellaRentContainer>
@@ -43,62 +118,66 @@ export default function UmbrellaRent(props) {
           <UmbrellaListHeaderText>우산 목록</UmbrellaListHeaderText>
         </UmbrellaListHeader>
         <UmbrellaGrid>
-          {umbrellaList.map(umbrella => (
-            <Umbrella
-              key={`umbrella${umbrella.umbrellaNumber}`}
-              rent={umbrella.status === 'rent'}
-              myRent={umbrella.status === 'rent' && umbrella.lender === myName}
-            >
-              <UmbrellaNumber
-                rent={umbrella.status === 'rent'}
-                myRent={
-                  umbrella.status === 'rent' && umbrella.lender === myName
-                }
+          {umbrellaList.length > 0 &&
+            umbrellaList.map(umbrella => (
+              <Umbrella
+                key={`umbrella${umbrella.umbrellaNumber}`}
+                status={umbrella.status}
               >
-                {umbrella.umbrellaNumber}
-              </UmbrellaNumber>
-              <UmbrellaDesc>
-                <UmbrellaRentStatus>
-                  <CabinetRentCircleStatus
-                    rent={umbrella.status === 'rent'}
-                    myRent={
-                      umbrella.status === 'rent' && umbrella.lender === myName
-                    }
+                <UmbrellaNumber status={umbrella.status}>
+                  {umbrella.umbrellaNumber}
+                </UmbrellaNumber>
+                <UmbrellaDesc>
+                  <UmbrellaRentStatus>
+                    <CabinetRentCircleStatus status={umbrella.status} />
+                    <UmbrellaRentStatusMent status={umbrella.status}>
+                      {umbrella.status === 'myRent'
+                        ? '내가 대여'
+                        : umbrella.status === 'rent'
+                        ? '대여 중'
+                        : '대여 가능'}
+                    </UmbrellaRentStatusMent>
+                  </UmbrellaRentStatus>
+                  {umbrella.status === 'rent' ||
+                  umbrella.status === 'myRent' ? (
+                    <>
+                      <DayInfo>
+                        <EndDay
+                          myRent={umbrella.lender === myName}
+                        >{`${umbrella.end} 까지`}</EndDay>
+                      </DayInfo>
+                      {umbrella.lender === myName ? (
+                        <ReturnUmbrellaButton>반납하기</ReturnUmbrellaButton>
+                      ) : (
+                        <Lender>{umbrella.lender}</Lender>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <RentButton
+                        buttonName="대여 신청하기"
+                        onClick={() => setModalOpen(umbrella.umbrellaNumber)}
+                      ></RentButton>
+                    </>
+                  )}
+                </UmbrellaDesc>
+              </Umbrella>
+            ))}
+          <div ref={modalRef}>
+            {umbrellaRentModal.map(
+              umbrella =>
+                umbrella.modalOpen && (
+                  <ApplyModal
+                    item={`우산`}
+                    itemNumber={umbrella.umbrellaNumber}
+                    startDay={new Date().toISOString().slice(0, 10)}
+                    endDay={sevenDaysAgo.toISOString().slice(0, 10)}
+                    startDayDisabled={true}
+                    endDayDisabled={true}
                   />
-                  <UmbrellaRentStatusMent
-                    rent={umbrella.status === 'rent'}
-                    myRent={
-                      umbrella.status === 'rent' && umbrella.lender === myName
-                    }
-                  >
-                    {umbrella.status === 'rent' && umbrella.lender === myName
-                      ? '내가 대여'
-                      : umbrella.status === 'rent'
-                      ? '대여 중'
-                      : '대여 가능'}
-                  </UmbrellaRentStatusMent>
-                </UmbrellaRentStatus>
-                {umbrella.status === 'rent' ? (
-                  <>
-                    <DayInfo>
-                      <StartDay
-                        myRent={umbrella.lender === myName}
-                      >{`${umbrella.start}~`}</StartDay>
-                    </DayInfo>
-                    {umbrella.lender === myName ? (
-                      <ReturnUmbrellaButton>반납하기</ReturnUmbrellaButton>
-                    ) : (
-                      <Lender>{umbrella.lender}</Lender>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    <RentButton buttonName="대여 신청하기"></RentButton>
-                  </>
-                )}
-              </UmbrellaDesc>
-            </Umbrella>
-          ))}
+                ),
+            )}
+          </div>
         </UmbrellaGrid>
         <Caution />
       </UmbrellaCurrentState>
@@ -112,7 +191,7 @@ const UmbrellaRentContainer = styled.div`
 `;
 
 const UmbrellaCurrentState = styled.div`
-  width: 1200px;
+  width: ${theme.componentSize.maxWidth};
   margin: 64px auto;
 `;
 
@@ -124,7 +203,7 @@ const UmbrellaListHeader = styled.header`
   font-family: 'GmarketSansMedium', sans-serif;
   font-style: normal;
   font-weight: 500;
-  font-size: 40px;
+  font-size: ${theme.fontSizes.title};
   line-height: 100%;
 `;
 
@@ -151,27 +230,20 @@ const Umbrella = styled.div`
   padding: 0px 16px;
   border: 1px solid ${theme.colors.white};
   border-radius: 20px;
-  background-color: ${props =>
-    props.rent && props.myRent
-      ? theme.colors.white
-      : props.rent
-      ? 'transparent'
-      : theme.colors.white};
+  background-color: ${props => theme.itemColorByState.background[props.status]};
 `;
 
 const UmbrellaNumber = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 21px;
   margin: 25px;
-  padding-top: 11px;
-  color: ${props =>
-    props.rent && props.myRent
-      ? theme.colors.black
-      : props.rent
-      ? theme.colors.white
-      : theme.colors.black};
+  color: ${props => theme.itemColorByState.number[props.status]};
   font-family: 'GmarketSansMedium', sans-serif;
   font-style: normal;
   font-weight: 500;
-  font-size: 32px;
+  font-size: ${theme.fontSizes.subtitle};
   line-height: 100%;
 `;
 
@@ -192,31 +264,16 @@ const CabinetRentCircleStatus = styled.div`
   width: 20px;
   height: 20px;
   margin-right: 10px;
-  background-color: ${props =>
-    props.rent && props.myRent
-      ? '#9747FF'
-      : props.rent
-      ? 'transparent'
-      : '#4ea1d3'};
+  background-color: ${props => theme.itemColorByState.indicator[props.status]};
 
   border: 3px solid
-    ${props =>
-      props.rent && props.myRent
-        ? '#9747FF'
-        : props.rent
-        ? theme.colors.white
-        : '#4ea1d3'};
+    ${props => theme.itemColorByState.indicatorBorder[props.status]};
   border-radius: 50%;
 `;
 
 const UmbrellaRentStatusMent = styled.div`
   padding-top: 3px;
-  color: ${props =>
-    props.rent && props.myRent
-      ? theme.colors.black
-      : props.rent
-      ? theme.colors.white
-      : theme.colors.black};
+  color: ${props => theme.itemColorByState.itemStatus[props.status]};
 
   font-family: 'GmarketSansMedium', sans-serif;
   font-style: normal;
@@ -228,7 +285,7 @@ const UmbrellaRentStatusMent = styled.div`
 const DayInfo = styled.div`
   position: absolute;
   top: 10px;
-  right: 10px;
+  right: 0px;
   margin: 8px 0;
   font-family: 'Pretendard';
   font-style: normal;
@@ -237,19 +294,19 @@ const DayInfo = styled.div`
   line-height: 100%;
 `;
 
-const StartDay = styled.div`
+const EndDay = styled.div`
   margin-bottom: 4px;
-  color: ${props => (props.myRent ? theme.colors.black : '#b3b3b3')};
+  color: ${props => (props.myRent ? theme.colors.black : theme.colors.grey)};
 `;
 
 const RentButton = styled(Button)`
   width: 248px;
   height: 40px;
-  background-color: #4ea1d3;
+  background-color: ${theme.colors.blue};
   border-radius: 20px;
 
   font-weight: 300;
-  font-size: 18px;
+  font-size: ${theme.fontSizes.font_normal};
   line-height: 21px;
 `;
 
@@ -257,12 +314,12 @@ const Lender = styled.div`
   width: 248px;
   height: 40px;
   padding-top: 9px;
-  background-color: #b3b3b3;
+  background-color: ${theme.colors.grey};
   border-radius: 20px;
 
   color: ${theme.colors.black};
   font-weight: 300;
-  font-size: 18px;
+  font-size: ${theme.fontSizes.font_normal};
   line-height: 21px;
   text-align: center;
 `;
@@ -271,14 +328,14 @@ const Lender = styled.div`
 const ReturnUmbrellaButton = styled.button`
   width: 248px;
   height: 40px;
-  background-color: #9747ff;
+  background-color: ${theme.colors.purple};
   border: none;
   border-radius: 20px;
   color: ${theme.colors.white};
   font-family: 'Pretendard', sans-serif;
   font-style: normal;
   font-weight: 300;
-  font-size: 18px;
+  font-size: ${theme.fontSizes.font_normal};
   line-height: 21px;
 
   &:hover {
