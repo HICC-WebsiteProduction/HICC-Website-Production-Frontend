@@ -5,8 +5,8 @@ import styled from 'styled-components';
 import { registerUser } from '../../_actions/userAction';
 import theme from '../../styles/Theme';
 import InputMemberInfo from './InputMemberInfo';
-import Regex from './Regex';
-import ViewMemberInfo from '../ViewMemberInfo';
+import ViewMemberInfo from './ViewMemberInfo';
+import Regex from './../../constants/Regex';
 
 export default function EditUserInfo(props) {
   const {

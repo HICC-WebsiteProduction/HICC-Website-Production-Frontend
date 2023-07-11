@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
-import Button from '../Button';
+import Button from '../util/Button';
 
 export default function ApplyModal(props) {
   const {

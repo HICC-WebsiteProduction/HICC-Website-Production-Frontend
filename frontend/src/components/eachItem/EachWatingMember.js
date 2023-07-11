@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import { useState } from 'react';
-import Checkbox from '../Checkbox';
+import Checkbox from './../util/Checkbox';
 
 function EachWaitingMember(props) {
   const [checked, setChecked] = useState(false);

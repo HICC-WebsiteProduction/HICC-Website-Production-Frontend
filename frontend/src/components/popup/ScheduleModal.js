@@ -1,15 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
-import Button from '../Button';
 import CustomDatePicker from './../datePicker/datePicker';
 import { useSelector } from 'react-redux';
-
-const typeColor = {
-  amity: '#3CDA5B',
-  hongikEvent: '#4EA1D3',
-  academic: '#B99CF0',
-};
+import Button from './../util/Button';
 
 export default function ScheduleModal(props) {
   const [selectOption, setSelectOption] = useState('default');
@@ -30,22 +24,28 @@ export default function ScheduleModal(props) {
         <ScheduleModalTitle>일정 제목</ScheduleModalTitle>
         <SelectScheduleType
           value={selectOption}
-          color={selectOption}
+          color={theme.scheduleTypeColor[selectOption]}
           onChange={onChangeSelect}
         >
           <SelectScheduleTypeOption value="default" style={{ display: 'none' }}>
             일정 종류
           </SelectScheduleTypeOption>
-          <SelectScheduleTypeOption value="amity" color={typeColor.amity}>
+          <SelectScheduleTypeOption
+            value="amity"
+            color={theme.scheduleTypeColor.amity}
+          >
             친목
           </SelectScheduleTypeOption>
           <SelectScheduleTypeOption
             value="hongikEvent"
-            color={typeColor.hongikEvent}
+            color={theme.scheduleTypeColor.hongikEvent}
           >
             학교행사
           </SelectScheduleTypeOption>
-          <SelectScheduleTypeOption value="academic" color={typeColor.academic}>
+          <SelectScheduleTypeOption
+            value="academic"
+            color={theme.scheduleTypeColor.academic}
+          >
             학술
           </SelectScheduleTypeOption>
         </SelectScheduleType>
@@ -126,7 +126,7 @@ const SelectScheduleType = styled.select`
   border: 3px solid ${theme.colors.black};
   background: ${theme.colors.white};
 
-  color: ${props => typeColor[props.color]};
+  color: ${props => props.color};
   font-family: 'Pretendard';
   font-size: 25px;
   font-weight: 300;

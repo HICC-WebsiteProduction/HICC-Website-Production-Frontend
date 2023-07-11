@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import theme from '../styles/Theme';
-import { waitingMember } from './../dummy/watingMember';
-import EachWaitingMember from './eachItem/EachWatingMemer';
-import Checkbox from './Checkbox';
+import theme from './../../styles/Theme';
+
+import { waitingMember } from '../../dummy/watingMember';
+import EachWaitingMember from '../eachItem/EachWatingMember';
+import Checkbox from './../util/Checkbox';
 
 function MemberAuthorizeWindow(props) {
   const memberListRef = React.createRef();

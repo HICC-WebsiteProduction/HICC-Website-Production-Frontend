@@ -1,26 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import theme from '../styles/Theme';
-import NewPost from '../components/NewPost';
-import dummy from '../dummy/posts.json';
-import NoticeBoardTable from './table/NoticeBoardTable';
-import CurrentPost from './noticeboard/CurrentPost';
-import Paging from './paging/Paging';
-import Filter from './Filter';
-import Button from './Button';
-
-const optionValue = {
-  period: {
-    whole: '전체기간',
-    oneMonth: '1개월',
-    HalfYear: '6개월',
-  },
-  index: {
-    writer: '작성자',
-    title: '제목',
-    postId: '글번호',
-  },
-};
+import theme from '../../styles/Theme';
+import NewPost from './NewPost';
+import dummy from '../../dummy/posts.json';
+import NoticeBoardTable from '../table/NoticeBoardTable';
+import CurrentPost from './CurrentPost';
+import Paging from '../paging/Paging';
+import Filter from './../util/Filter';
+import Button from './../util/Button';
+import { filterOptionValue } from './../../constants/FilterOptionValue';
 
 export default function Post(props) {
   const [posts, setPosts] = useState(() => {
@@ -36,9 +24,11 @@ export default function Post(props) {
   const [filteredPostsCount, setFilteredPostsCount] = useState(0); // 현재 필터의 게시글 수
 
   const [searchByPeriod, setSearchByPeriod] = useState(
-    optionValue.period.whole,
+    filterOptionValue.period.whole,
   ); // 기간으로 검색
-  const [searchByIndex, setSearchByIndex] = useState(optionValue.index.writer); // 인덱스로 검색
+  const [searchByIndex, setSearchByIndex] = useState(
+    filterOptionValue.index.writer,
+  ); // 인덱스로 검색
   const [searchByKeyword, setSearchByKeyword] = useState(''); // 키워드로 검색
 
   useEffect(() => {
@@ -167,12 +157,12 @@ export default function Post(props) {
           />
           <FilterContainer>
             <Filter
-              optionValue={optionValue.period}
+              optionValue={filterOptionValue.period}
               onChange={onChangeSearchByPeriod}
             />
             <Gap />
             <Filter
-              optionValue={optionValue.index}
+              optionValue={filterOptionValue.index}
               onChange={onChangeSearchByIndex}
             />
             <Gap />

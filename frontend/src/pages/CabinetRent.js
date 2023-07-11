@@ -5,10 +5,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import theme from '../styles/Theme';
 import { cabinetStatus } from './../dummy/cabinetStatus';
-import Caution from '../components/Caution';
 import EachCabinet from '../components/eachItem/EachCabinet';
 import useModalList from '../hook/useModalList';
 import ApplyModal from '../components/popup/ApplyModal';
+import Caution from './../constants/Caution';
 
 export default function CabinetRent(props) {
   const [cabinetList, setCabinetList] = useState([]); // 사물함 리스트
@@ -39,7 +39,7 @@ export default function CabinetRent(props) {
   // 상위 링크를 표시하기 위함
   const ancestorMenuTree = [
     { name: '홈', link: '/' },
-    { name: '대여', link: '/rent/cabinetrent' },
+    { name: '대여', link: '/rent/umbrellarent' },
   ];
   const currentTabContents = [
     { name: '우산 대여', link: '/rent/umbrellarent', accent: false },

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
-import Button from '../Button';
+import Button from '../util/Button';
 
 export default function InputMemberInfo(props) {
   return (

@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import theme from '../styles/Theme';
+import theme from './../styles/Theme';
+
 import logo from '../dummy/hongik.png';
 import { useParams } from 'react-router-dom';
 import HeaderAndTitle from '../components/header/HeaderAndTitle';
-import MemberInfo from '../components/MemberInfo';
+import MemberInfo from './../components/manage/MemberInfo';
+
 import { useDispatch, useSelector } from 'react-redux';
-import confirmMessage from '../confirmMessage/ConfirmMessage';
+import confirmMessage from './../constants/ConfirmMessage';
+
 import {
   changeGradeAction,
   deleteMember,

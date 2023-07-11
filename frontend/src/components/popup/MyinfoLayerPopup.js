@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
-import Button from '../Button';
+import Button from '../util/Button';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { user } from '../../atom/user';
 import { useNavigate } from 'react-router';

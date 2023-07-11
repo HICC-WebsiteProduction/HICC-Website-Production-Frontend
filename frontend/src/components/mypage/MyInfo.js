@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import UserInfo from '../UserInfo';
+import UserInfo from './UserInfo';
 import theme from '../../styles/Theme';
 import EditUserInfo from './../input/EditUserInfo';
 

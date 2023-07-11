@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import ViewMemberInfo from './ViewMemberInfo';
+import ViewMemberInfo from './../input/ViewMemberInfo';
 
 export default function UserInfo({ nickname, level, phone, studentId, major }) {
   return (

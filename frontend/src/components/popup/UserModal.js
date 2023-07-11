@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import LoginUserModal from './LoginUserModal';
-import LogoutUserModal from './LogoutUserModal';
+import LoginUserModal from '../LoginUserModal';
+import LogoutUserModal from '../LogoutUserModal';
 import { useDispatch } from 'react-redux';
-import { loginUser } from '../_actions/userAction';
+import { loginUser } from '../../_actions/userAction';
+import { memberGrade } from '../../constants/MemberGrade';
 
 export default function UserModal() {
   const [auth, setAuth] = useState(false);
@@ -21,13 +22,8 @@ export default function UserModal() {
       }
     });
   };
-  const gradeName = {
-    president: '회장',
-    manager: '운영진',
-    normal: '일반',
-    graduate: '졸업생',
-  };
-  const fetchData = () => {
+
+  const fetchData = async () => {
     return fetch('memberInfo.json')
       .then(res => res.json())
       .then(data => data.memberInfo);
@@ -38,9 +34,9 @@ export default function UserModal() {
       if (data.ID === member.ID) {
         setLoginUserID(data.ID);
         setLoginUserNickname(member.nickname);
-        const grades = Object.keys(gradeName);
+        const grades = Object.keys(memberGrade);
         const grade = grades.find(key => key === member.grade);
-        setLoginUserGrade(gradeName[grade]);
+        setLoginUserGrade(memberGrade[grade]);
         return true;
       }
     }

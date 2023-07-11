@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import theme from '../styles/Theme';
-import ConfirmMessage from '../confirmMessage/ConfirmMessage';
+import theme from '../../styles/Theme';
+import ConfirmMessage from '../../constants/ConfirmMessage';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   changeGradeAction,
   initMember,
-} from '../_actions/changeMemberInfoAction';
-import useConfirm from '../hook/useConfirm';
-import Checkbox from './Checkbox';
-import EachRegisteredMember from './eachItem/EachRegisteredMember';
+} from '../../_actions/changeMemberInfoAction';
+import useConfirm from '../../hook/useConfirm';
+import Checkbox from '../util/Checkbox';
+import EachRegisteredMember from '../eachItem/EachRegisteredMember';
 
 function MemberInfoWindow(props) {
   const dispatch = useDispatch();

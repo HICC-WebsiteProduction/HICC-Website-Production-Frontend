@@ -4,13 +4,13 @@ import theme from '../styles/Theme';
 import { useForm } from 'react-hook-form';
 import HeaderAndTitle from '../components/header/HeaderAndTitle';
 import InputMemberInfo from '../components/input/InputMemberInfo';
-import Button from '../components/Button';
-import Regex from '../components/input/Regex';
+import Button from '../components/util/Button';
+import Regex from '../constants/Regex';
 import { useDispatch } from 'react-redux';
 import { registerUser } from '../_actions/userAction';
 import { useNavigate } from 'react-router-dom';
 import useAlert from '../hook/useAlert';
-import ConfirmMessage from '../confirmMessage/ConfirmMessage';
+import ConfirmMessage from '../constants/ConfirmMessage';
 import { request } from '../utils/axios';
 
 function Signup(props) {

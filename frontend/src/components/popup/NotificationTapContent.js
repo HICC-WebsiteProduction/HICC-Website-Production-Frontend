@@ -7,7 +7,7 @@ import {
 import { faCartPlus } from '@fortawesome/free-solid-svg-icons';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import theme from '../styles/Theme';
+import theme from '../../styles/Theme';
 
 const pixelToRem = size => `${size / 16}rem`;
 

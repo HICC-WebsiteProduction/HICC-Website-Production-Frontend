@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import theme from '../styles/Theme';
-import dummy from '../dummy/posts.json';
+import theme from '../../styles/Theme';
+import dummy from '../../dummy/posts.json';
 // import ReactQuill from 'react-quill';
 // import 'react-quill/dist/quill.snow.css';
 

@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import book from '../images/book1.svg';
-import board from '../images/board1.svg';
-import budget from '../images/budget1.svg';
-import locker from '../images/lockers1.svg';
-import map from '../images/maps1.svg';
-import note from '../images/notes1.svg';
+import book from './../../images/book1.svg';
+import board from './../../images/board1.svg';
+import budget from './../../images/budget1.svg';
+import locker from './../../images/lockers1.svg';
+import map from './../../images/maps1.svg';
+import note from './../../images/notes1.svg';
 
 const pixelToRem = size => `${size / 16}rem`;
 

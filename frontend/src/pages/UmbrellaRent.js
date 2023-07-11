@@ -4,9 +4,9 @@ import HeaderAndNavigation from '../components/header/HeaderAndNavigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUmbrella } from '@fortawesome/free-solid-svg-icons';
 import theme from '../styles/Theme';
-import Caution from '../components/Caution';
 import { umbrellaStatus } from '../dummy/umbrellaStatus';
 import EachUmbrella from '../components/eachItem/EachUmbrella';
+import Caution from './../constants/Caution';
 
 /*
 currentTabContents는 현재 탭의 정보로
@@ -43,7 +43,7 @@ export default function UmbrellaRent(props) {
   // 상위 링크를 표시하기 위함
   const ancestorMenuTree = [
     { name: '홈', link: '/' },
-    { name: '대여', link: '/rent/cabinetrent' },
+    { name: '대여', link: '/rent/umbrellarent' },
   ];
   const currentTabContents = [
     { name: '우산 대여', link: '/rent/umbrellarent', accent: true },

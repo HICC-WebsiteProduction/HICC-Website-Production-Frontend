@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import theme from '../styles/Theme';
+import theme from '../../styles/Theme';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
-import { getSVGURL } from '../utils/getSVGURL';
+import { getSVGURL } from '../../utils/getSVGURL';
 
 function Checkbox(props) {
   return (
