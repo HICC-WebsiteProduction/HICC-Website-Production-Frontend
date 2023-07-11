@@ -9,6 +9,7 @@ import useModal from '../../hook/useModal';
 import { useRecoilValue } from 'recoil';
 import { user } from '../../atom/user';
 import MyinfoLayerPopup from '../popup/MyinfoLayerPopup';
+import NoticeLayerPopup from '../popup/noticeLayerPopup';
 
 export default function Header() {
   const noticeButtonRef = useRef(null);
@@ -36,7 +37,7 @@ export default function Header() {
             <>
               <NoticeLayerPopupWrapper ref={noticeButtonRef}>
                 <FontAwesomeIcon icon={faBell} />
-                {noticeModal ? <NoticeModal /> : null}
+                {noticeModal ? <NoticeLayerPopup /> : null}
               </NoticeLayerPopupWrapper>
               <MyinfoLayerPopupWrapper ref={myInfoButtonRef}>
                 내 정보

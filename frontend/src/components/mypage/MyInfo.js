@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import UserInfo from '../UserInfo';
-import EditUserInfo from '../EditUserInfo';
 import theme from '../../styles/Theme';
+import EditUserInfo from './../input/EditUserInfo';
 
 function Profile() {
   const [profileImage, setProfileImage] = useState(

@@ -3,21 +3,22 @@ import styled from 'styled-components';
 import theme from '../styles/Theme';
 import { useForm } from 'react-hook-form';
 import HeaderAndTitle from '../components/header/HeaderAndTitle';
-import InputMemberInfo from '../components/InputMemberInfo';
+import InputMemberInfo from '../components/input/InputMemberInfo';
 import Button from '../components/Button';
-import InputMemberValidInfo from '../components/InputMemberValidInfo';
+import Regex from '../components/input/Regex';
 import { useDispatch } from 'react-redux';
 import { registerUser } from '../_actions/userAction';
 import { useNavigate } from 'react-router-dom';
 import useAlert from '../hook/useAlert';
 import ConfirmMessage from '../confirmMessage/ConfirmMessage';
+import { request } from '../utils/axios';
 
 function Signup(props) {
   const {
     register,
     handleSubmit,
     formState: { errors },
-    getValues,
+    watch,
   } = useForm();
   const dispatch = useDispatch();
   const onSubmit = data => {
@@ -34,20 +35,25 @@ function Signup(props) {
   const navigate = useNavigate();
 
   const alert = useAlert();
-  const isError = false;
 
   const [isNicknameChecked, setIsNicknameChecked] = useState(false);
 
-  const inputNickname = getValues('nickname');
+  // 한 글자씩 늦게 반영되는 오류 발생
+  // watch를 사용하여 해결완료
+  const inputNickname = watch('nickname');
 
-  const checkDuplicate = () => {
-    // 서버로 중복체크 전달
-    // 성공했다면
-    if (isError) {
+  const checkDuplicate = async () => {
+    try {
+      console.log(inputNickname);
+      const response = await request('get', `/signup/${inputNickname}`);
+      if (response.status === 200) {
+        alert(false, ConfirmMessage.duplicateCheck[1]);
+        setIsNicknameChecked(true);
+      } else {
+        alert(true, ConfirmMessage.duplicateCheck[0]);
+      }
+    } catch (error) {
       alert(true, ConfirmMessage.duplicateCheck[0]);
-    } else {
-      alert(false, ConfirmMessage.duplicateCheck[1]);
-      setIsNicknameChecked(true);
     }
   };
 
@@ -71,7 +77,7 @@ function Signup(props) {
           errors={errors.ID}
           minLength={7}
           maxLength={7}
-          validPattern={InputMemberValidInfo.ID.validPattern}
+          pattern={Regex.ID.pattern}
           width={786}
         />
         <InputMemberInfo
@@ -85,21 +91,7 @@ function Signup(props) {
           errors={errors.pw}
           minLength={8}
           maxLength={16}
-          validPattern={InputMemberValidInfo.PW.validPattern}
-          width={786}
-        />
-        <InputMemberInfo
-          labelName="닉네임"
-          name="nickname"
-          specificPlaceholder="한글, 영어대소문자, 숫자로 이루어진 4~16자리"
-          required={true}
-          checkDuplicate={checkDuplicate}
-          type="text"
-          register={register}
-          errors={errors.nickname}
-          minLength={4}
-          maxLength={16}
-          validPattern={InputMemberValidInfo.nickname.validPattern}
+          pattern={Regex.PW.pattern}
           width={786}
         />
         <InputMemberInfo
@@ -113,21 +105,35 @@ function Signup(props) {
           errors={errors.koreanName}
           minLength={2}
           maxLength={7}
-          validPattern={InputMemberValidInfo.koreanName.validPattern}
+          pattern={Regex.koreanName.pattern}
           width={786}
         />
         <InputMemberInfo
-          labelName="학번"
-          name="studentID"
-          specificPlaceholder="숫자로 이루어진 2자리 ex) 23"
+          labelName="닉네임"
+          name="nickname"
+          specificPlaceholder="한글, 영어대소문자, 숫자로 이루어진 4~16자리"
+          required={true}
+          checkDuplicate={checkDuplicate}
+          type="text"
+          register={register}
+          errors={errors.nickname}
+          minLength={4}
+          maxLength={16}
+          pattern={Regex.nickname.pattern}
+          width={786}
+        />
+        <InputMemberInfo
+          labelName="학과"
+          name="major"
+          specificPlaceholder="한글 3~14자리 (조소과 ~ 스마트도시데이터사이언스전공)"
           required={true}
           checkDuplicate={false}
-          type="number"
+          type="text"
           register={register}
-          errors={errors.studentID}
-          minLength={2}
-          maxLength={2}
-          validPattern={InputMemberValidInfo.studentID.validPattern}
+          errors={errors.major}
+          minLength={3}
+          maxLength={14}
+          pattern={Regex.major.pattern}
           width={786}
         />
         <InputMemberInfo
@@ -141,7 +147,7 @@ function Signup(props) {
           errors={errors.call}
           minLength={13}
           maxLength={13}
-          validPattern={InputMemberValidInfo.call.validPattern}
+          pattern={Regex.call.pattern}
           width={786}
         />
         <ButtonContainer>

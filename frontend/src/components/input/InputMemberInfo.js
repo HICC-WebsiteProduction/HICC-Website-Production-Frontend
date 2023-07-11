@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import theme from '../styles/Theme';
+import theme from '../../styles/Theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
-import Button from './Button';
+import Button from '../Button';
 
 export default function InputMemberInfo(props) {
   return (
@@ -27,7 +27,7 @@ export default function InputMemberInfo(props) {
               message: '조건에 맞게 입력해주세요',
             },
             pattern: {
-              value: props.validPattern,
+              value: props.pattern,
               message: '조건에 맞게 입력해주세요',
             },
           })}

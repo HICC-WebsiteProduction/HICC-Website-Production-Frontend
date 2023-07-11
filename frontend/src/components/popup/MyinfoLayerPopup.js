@@ -21,6 +21,7 @@ function MyinfoLayerPopup() {
   };
   return (
     <MyinfoLayerPopupContainer>
+      <Triangle />
       <Header>
         <Profile src="/images/profile.png" />
         <UserInfo>
@@ -28,17 +29,17 @@ function MyinfoLayerPopup() {
           <Grade>{userinfo.grade}</Grade>
           <Name>{userinfo.name}</Name>
         </UserInfo>
-        <MyPageButton
-          buttonName="마이페이지"
-          buttonType="button"
-          onClick={goMyPage}
-        />
-        <LogoutButton
-          buttonName="로그아웃"
-          buttonType="button"
-          onClick={logout}
-        />
       </Header>
+      <MyPageButton
+        buttonName="마이페이지"
+        buttonType="button"
+        onClick={goMyPage}
+      />
+      <LogoutButton
+        buttonName="로그아웃"
+        buttonType="button"
+        onClick={logout}
+      />
     </MyinfoLayerPopupContainer>
   );
 }
@@ -48,15 +49,59 @@ export default MyinfoLayerPopup;
 const MyinfoLayerPopupContainer = styled.div`
   display: flex;
   position: absolute;
-  top: 50%;
-  left: 20%;
+  top: 50px;
+  left: -290px;
   z-index: 100;
   flex-direction: column;
   align-items: center;
   width: 347px;
   height: 300px;
   padding: 20px 25px;
+  border: 2px solid ${theme.colors.blue};
+  border-radius: 20px;
   background-color: ${theme.colors.black};
+`;
+
+const Triangle = styled.div`
+  display: inline-block;
+  position: absolute;
+  top: -10px;
+  left: 90%;
+  transform: translateX(-50%);
+  width: 15px;
+  height: 15px;
+  &::before {
+    content: ' ';
+    display: block;
+    width: 15px;
+    height: 2px;
+    background: ${theme.colors.blue};
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    -webkit-transform: rotate(40deg);
+    -moz-transform: rotate(40deg);
+    -ms-transform: rotate(40deg);
+    transform: rotate(40deg);
+    position: absolute;
+    top: 3px;
+    right: -5px;
+  }
+  &::after {
+    content: ' ';
+    display: block;
+    width: 15px;
+    height: 2px;
+    background: ${theme.colors.blue};
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    -webkit-transform: rotate(-40deg);
+    -moz-transform: rotate(-40deg);
+    -ms-transform: rotate(-40deg);
+    transform: rotate(-40deg);
+    position: absolute;
+    top: 3px;
+    left: -5px;
+  }
 `;
 
 const Header = styled.header`
@@ -79,24 +124,21 @@ const Nickname = styled.div`
   font-family: 'Pretendard';
   font-size: ${theme.fontSizes.label};
   font-weight: 600;
-  line-height: 150%;
 `;
 
 const Grade = styled.div`
   margin-bottom: 10px;
   color: ${theme.colors.white};
   font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.label};
+  font-size: ${theme.fontSizes.font_normal};
   font-weight: 600;
-  line-height: 150%;
 `;
 
 const Name = styled.div`
   color: ${theme.colors.white};
   font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.label};
+  font-size: ${theme.fontSizes.font_normal};
   font-weight: 600;
-  line-height: 150%;
 `;
 
 const MyPageButton = styled(Button)`

@@ -3,7 +3,6 @@ import styled, { keyframes } from 'styled-components';
 import Header from '../components/header/Header';
 import MainButton from '../components/MainButton';
 import logo from '../images/hicc_logo.png';
-import NoticeBoardTable from '../components/table/NoticeBoardTable';
 
 const pixelToRem = size => `${size / 16}rem`;
 
