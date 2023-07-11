@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import SliderButton from '../components/SliderButton';
-import theme from '../styles/Theme';
+import SliderButton from '../util/SliderButton';
+import theme from '../../styles/Theme';
 
 const pixelToRem = size => `${size / 16}rem`;
 

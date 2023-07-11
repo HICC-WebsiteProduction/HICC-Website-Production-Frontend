@@ -9,6 +9,7 @@ import EachCabinet from '../components/eachItem/EachCabinet';
 import useModalList from '../hook/useModalList';
 import ApplyModal from '../components/popup/ApplyModal';
 import Caution from './../constants/Caution';
+import moment from 'moment';
 
 export default function CabinetRent(props) {
   const [cabinetList, setCabinetList] = useState([]); // 사물함 리스트
@@ -80,7 +81,7 @@ export default function CabinetRent(props) {
                 <ApplyModal
                   itemName={`사물함`}
                   itemNumber={item.id}
-                  startDay={new Date().toISOString().slice(0, 10)}
+                  startDay={moment(new Date()).format('yyyy-MM-DD')}
                   endDay={''}
                   startDayDisabled={true}
                   endDayDisabled={false}

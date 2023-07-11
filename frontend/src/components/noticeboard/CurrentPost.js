@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import logo from '../../dummy/hongik.png';
 import theme from '../../styles/Theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComment } from '@fortawesome/free-solid-svg-icons';
@@ -28,7 +27,7 @@ export default function CurrentPost(props) {
         <PostHeader>
           <PostTitle>{props.currentPost.title}</PostTitle>
           <PostWriterContainer>
-            <PostWriterProfile src={logo} alt="profile" />
+            <PostWriterProfile src={'/images/hongik.png'} alt="profile" />
             <PostWriterDesc>
               <PostWriterInfo>
                 <PostWriterNickname>
@@ -51,7 +50,7 @@ export default function CurrentPost(props) {
           댓글
         </CommentHeader>
         <CommentWriteWrapper>
-          <CommentWriterProfile src={logo} />
+          <CommentWriterProfile src={'/images/hongik.png'} />
           <CommentWriteContainer>
             <CommentWriterInfo>
               <CommentWriter>{props.currentPost.writer}</CommentWriter>
@@ -71,7 +70,7 @@ export default function CurrentPost(props) {
           </CommentWriteContainer>
         </CommentWriteWrapper>
         <CommentListWrapper>
-          <CommentWriterProfile src={logo} />
+          <CommentWriterProfile src={'/images/hongik.png'} />
           <CommentListContainer>
             <CommentWriterInfo>
               <CommentWriter>{`김진호`}</CommentWriter>

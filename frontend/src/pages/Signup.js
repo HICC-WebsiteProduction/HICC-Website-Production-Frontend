@@ -6,8 +6,6 @@ import HeaderAndTitle from '../components/header/HeaderAndTitle';
 import InputMemberInfo from '../components/input/InputMemberInfo';
 import Button from '../components/util/Button';
 import Regex from '../constants/Regex';
-import { useDispatch } from 'react-redux';
-import { registerUser } from '../_actions/userAction';
 import { useNavigate } from 'react-router-dom';
 import useAlert from '../hook/useAlert';
 import ConfirmMessage from '../constants/ConfirmMessage';
@@ -20,17 +18,15 @@ function Signup(props) {
     formState: { errors },
     watch,
   } = useForm();
-  const dispatch = useDispatch();
+
   const onSubmit = data => {
     if (!isNicknameChecked) {
       alert(true, '중복체크를 해주세요');
       return;
     }
 
-    dispatch(registerUser(data)).then(res => {
-      alert(false, '가입이 정상적으로 완료되었습니다.');
-      navigate('/');
-    });
+    alert(false, '가입이 정상적으로 완료되었습니다.');
+    navigate('/');
   };
   const navigate = useNavigate();
 

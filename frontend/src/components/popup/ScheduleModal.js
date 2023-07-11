@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import CustomDatePicker from './../datePicker/datePicker';
-import { useSelector } from 'react-redux';
 import Button from './../util/Button';
+import { useRecoilValue } from 'recoil';
+import { date } from '../../atom/date';
+import moment from 'moment';
 
 export default function ScheduleModal(props) {
   const [selectOption, setSelectOption] = useState('default');
@@ -16,7 +18,7 @@ export default function ScheduleModal(props) {
     event.preventDefault();
   };
 
-  const date = useSelector(state => state.datePickerReducer.selectedDay);
+  const selectDate = useRecoilValue(date);
 
   return (
     <ScheduleModalContainer>
@@ -59,7 +61,7 @@ export default function ScheduleModal(props) {
           <InputRowLable>날짜</InputRowLable>
           <Input
             type="date"
-            value={date.toISOString().slice(0, 10)}
+            value={moment(selectDate).format('yyyy-MM-DD')}
             disabled
             required
           />

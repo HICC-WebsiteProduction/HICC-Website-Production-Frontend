@@ -1,5 +1,6 @@
 import { rest } from 'msw';
 import user from './user.json';
+import allMember from './memberInfo.json';
 import { BASE_URL } from '../config';
 import { response200, response401 } from './response';
 
@@ -12,7 +13,6 @@ export const handlers = [
 
   rest.get(`${BASE_URL}/signup/:nickname`, async (req, res, ctx) => {
     const { nickname } = req.params;
-    console.log(nickname);
     const userData = ['apple', 'banana', 'blue'];
 
     const isValid = !userData.find(item => item === nickname);
@@ -21,5 +21,15 @@ export const handlers = [
     } else {
       return res(ctx.json(response401(isValid)));
     }
+  }),
+
+  // 상세 멤버 불러오기
+  rest.get(`${BASE_URL}/manage/memberinfo/:user`, async (req, res, ctx) => {
+    const { user } = req.params;
+    const allUser = allMember.memberInfo;
+    const currentUser = allUser.find(member => member.nickname === user);
+
+    const response = response200(currentUser);
+    return res(ctx.json(response));
   }),
 ];

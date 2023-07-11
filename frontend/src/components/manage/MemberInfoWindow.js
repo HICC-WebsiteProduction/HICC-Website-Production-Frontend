@@ -2,20 +2,15 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import ConfirmMessage from '../../constants/ConfirmMessage';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  changeGradeAction,
-  initMember,
-} from '../../_actions/changeMemberInfoAction';
+
 import useConfirm from '../../hook/useConfirm';
 import Checkbox from '../util/Checkbox';
 import EachRegisteredMember from '../eachItem/EachRegisteredMember';
+import { useRecoilState } from 'recoil';
+import { memberinfo } from '../../atom/memberinfo';
 
 function MemberInfoWindow(props) {
-  const dispatch = useDispatch();
-  const userReducer = useSelector(state => state.changeMemberInfoReducer);
-
-  const [memberInfo, setMemberInfo] = useState([]);
+  const [memberInfo, setMemberInfo] = useRecoilState(memberinfo);
   const [selectdMemberList, setSelectdMemberList] = useState([]);
   const [selectGrade, setSelectGrade] = useState('normal');
 
@@ -30,19 +25,21 @@ function MemberInfoWindow(props) {
     });
 
     setMemberInfo(updatedMemberInfo);
-    dispatch(changeGradeAction(updatedMemberInfo));
   };
 
+  // 회원 등급 변경 버튼을 눌렀을 때 실행되는 함수
   const confirmGrant = useConfirm(
     ConfirmMessage.gradeChange,
     changeGrade,
     '회원 등급 변경에 성공하였습니다.',
   );
 
+  // 회원 등급 선택 값을 변경하였을 때 실행되는 함수
   const changeGradeSelect = event => {
     setSelectGrade(event.target.value);
   };
 
+  // 체크된 멤버를 관리하는 함수
   const getSelectdMemberInfo = (memberID, checked) => {
     if (checked) {
       const updatedList = [...selectdMemberList];
@@ -60,26 +57,18 @@ function MemberInfoWindow(props) {
     const data = await res.json();
     return data.memberInfo;
   };
+
   useEffect(() => {
-    // 멤버 초기정보를 셋팅합니다.
-    // 아래 조건문은 DB에 저장된 값을 불러온다면 필요없습니다..
-    // DB에 저장된다면 무조건 DB 에서 들고오면 되기 때문입니다.
-    // DB 없이 변경값을 확인하기위해 임시로 해놓은 코드입니다.
     const initMemberInfo = async () => {
-      if (!userReducer.changeSuccess) {
+      if (memberInfo.length === 0) {
         // 변경사항이 없으면 초기값
         const result = await fetchData(); // array 내부는 Object
         setMemberInfo(result);
-        dispatch(initMember(result));
-      } else if (!userReducer.deleteSuccess) {
-        // 변경사항이 있으면 변경값 하지만 멤버를 지우지 않은 상태
-        setMemberInfo(userReducer.changeSuccess);
-      } else {
-        setMemberInfo(userReducer.deleteSuccess);
       }
     };
+
     initMemberInfo();
-  }, [dispatch, userReducer.changeSuccess, userReducer.deleteSuccess]);
+  }, [memberInfo, setMemberInfo]);
 
   return (
     <MemberInfoContainer>
@@ -109,7 +98,7 @@ function MemberInfoWindow(props) {
                   nickname={value.nickname}
                   name={value.name}
                   studentID={value.studentID}
-                  tel={value.tel}
+                  call={value.call}
                   grade={value.grade}
                   getMemberInfo={getSelectdMemberInfo}
                 />

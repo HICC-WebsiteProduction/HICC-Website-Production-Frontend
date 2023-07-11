@@ -15,11 +15,11 @@ function EachRegisteredMember(props) {
       <td>{props.name}</td>
       <td>{props.studentID}</td>
       <td>
-        <MemberDetailsLink to={`/manage/memberDetail/${props.nickname}`}>
+        <MemberDetailsLink to={`/manage/memberinfo/${props.nickname}`}>
           {props.nickname}
         </MemberDetailsLink>
       </td>
-      <td>{props.tel}</td>
+      <td>{props.call}</td>
       <td>
         <Checkbox value={props.studentID} onChange={changeSelect} />
       </td>

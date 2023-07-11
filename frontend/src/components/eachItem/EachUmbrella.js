@@ -3,6 +3,7 @@ import theme from '../../styles/Theme';
 import { useRef } from 'react';
 import useModal from '../../hook/useModal';
 import ApplyModal from '../popup/ApplyModal';
+import moment from 'moment';
 
 function EachUmbrella({ umbrella }) {
   const myName = '김진호';
@@ -50,8 +51,8 @@ function EachUmbrella({ umbrella }) {
               <ApplyModal
                 itemName={`우산`}
                 itemNumber={umbrella.umbrellaNumber}
-                startDay={new Date().toISOString().slice(0, 10)}
-                endDay={sevenDaysAgo.toISOString().slice(0, 10)}
+                startDay={moment(new Date()).format('yyyy-MM-DD')}
+                endDay={moment(sevenDaysAgo).format('yyyy-MM-DD')}
                 startDayDisabled={true}
                 endDayDisabled={true}
               />
