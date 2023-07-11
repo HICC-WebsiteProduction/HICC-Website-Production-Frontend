@@ -1,28 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell } from '@fortawesome/free-regular-svg-icons';
 import NoticeModal from '../NoticeModal';
 import { Link } from 'react-router-dom';
+import useModal from '../../hook/useModal';
 
 export default function Header() {
-  const [noticeModalVisibility, setNoticeModalVisibility] = useState(false);
-  const noticeButtonRef = useRef();
+  const noticeButtonRef = useRef(null);
+  const noticeModal = useModal(noticeButtonRef);
 
-  useEffect(() => {
-    const handler = event => {
-      if (!noticeButtonRef.current.contains(event.target)) {
-        setNoticeModalVisibility(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handler);
-
-    return () => {
-      document.removeEventListener('mousedown', handler);
-    };
-  });
   return (
     <HeaderContainer>
       <Logo to={'/'} />
@@ -35,13 +23,8 @@ export default function Header() {
         </Navigation>
         <UserContainer>
           <NoticeButtonWrapper ref={noticeButtonRef}>
-            <NoticeButton
-              type="button"
-              onClick={() => setNoticeModalVisibility(!noticeModalVisibility)}
-            >
-              <FontAwesomeIcon icon={faBell} />
-            </NoticeButton>
-            {noticeModalVisibility ? <NoticeModal /> : null}
+            <FontAwesomeIcon icon={faBell} />
+            {noticeModal ? <NoticeModal /> : null}
           </NoticeButtonWrapper>
           <LoginLink to="/login">로그인</LoginLink>
         </UserContainer>
@@ -101,11 +84,6 @@ const UserContainer = styled.div`
 const NoticeButtonWrapper = styled.div`
   display: inline-block;
   position: relative;
-`;
-
-const NoticeButton = styled.button`
-  background-color: transparent;
-  border: none;
   color: ${theme.colors.white};
   font-size: ${theme.fontSizes.label};
   &:hover {
