@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
 
-function EachCabinet({ cabinet, handleModal }) {
+function EachCabinet({ cabinet }) {
   const myName = '김진호';
   const approveManagerMent = `관리자 승인 후\n사용 가능합니다.`;
 
@@ -46,9 +46,7 @@ function EachCabinet({ cabinet, handleModal }) {
               <WaitingApprove>{cabinet.lender}</WaitingApprove>
             ) : (
               <>
-                <RentButton onClick={handleModal(cabinet.cabinetNumber)}>
-                  대여 신청하기
-                </RentButton>
+                <RentButton>대여 신청하기</RentButton>
               </>
             )}
           </>
