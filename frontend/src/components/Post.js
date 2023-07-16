@@ -149,17 +149,6 @@ export default function Post(props) {
               글쓰기
             </WriteButton>
           )}
-          {/* <Pagination>
-            {pageNumbers.map(number => (
-              <PageNumber
-                key={number}
-                active={number === currentPage}
-                onClick={() => setCurrentPage(number)}
-              >
-                {number}
-              </PageNumber>
-            ))}
-          </Pagination> */}
           <Paging
             page={currentPage}
             count={filteredPostsCount}
