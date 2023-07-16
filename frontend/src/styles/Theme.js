@@ -98,6 +98,12 @@ const itemColorByState = {
   },
 };
 
+const scheduleTypeColor = {
+  amity: '#3CDA5B',
+  hongikEvent: '#4EA1D3',
+  academic: '#B99CF0',
+};
+
 const theme = {
   fontSizes,
   colors,
@@ -105,6 +111,7 @@ const theme = {
   margin,
   componentSize,
   itemColorByState,
+  scheduleTypeColor,
 };
 
 export default theme;

@@ -1,5 +1,5 @@
-import Post from '../Post';
 import MyInfo from '../mypage/MyInfo';
+import Post from './../noticeboard/Post';
 
 export const TabContentByIndexMypage = {
   '내 정보': <MyInfo />,

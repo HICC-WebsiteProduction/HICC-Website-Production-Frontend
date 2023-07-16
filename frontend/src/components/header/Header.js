@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell } from '@fortawesome/free-regular-svg-icons';
-import NoticeModal from '../NoticeModal';
 import { Link } from 'react-router-dom';
 import useModal from '../../hook/useModal';
 import { useRecoilValue } from 'recoil';

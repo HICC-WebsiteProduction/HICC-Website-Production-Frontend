@@ -1,12 +1,10 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { registerUser } from '../../_actions/userAction';
 import theme from '../../styles/Theme';
 import InputMemberInfo from './InputMemberInfo';
-import Regex from './Regex';
-import ViewMemberInfo from '../ViewMemberInfo';
+import ViewMemberInfo from './ViewMemberInfo';
+import Regex from './../../constants/Regex';
 
 export default function EditUserInfo(props) {
   const {
@@ -19,12 +17,9 @@ export default function EditUserInfo(props) {
       call: props.phone,
     },
   });
-  const dispatch = useDispatch();
+
   const onSubmit = data => {
     console.log(data);
-    dispatch(registerUser(data)).then(res => {
-      alert('수정이 정상적으로 완료되었습니다.');
-    });
   };
   return (
     <EditUserInfoWrapper>

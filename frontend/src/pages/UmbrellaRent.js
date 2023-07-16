@@ -4,9 +4,10 @@ import HeaderAndNavigation from '../components/header/HeaderAndNavigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUmbrella } from '@fortawesome/free-solid-svg-icons';
 import theme from '../styles/Theme';
-import Caution from '../components/Caution';
 import { umbrellaStatus } from '../dummy/umbrellaStatus';
 import EachUmbrella from '../components/eachItem/EachUmbrella';
+import Caution from './../constants/Caution';
+import useMyRent from '../hook/useMyRent';
 
 /*
 currentTabContents는 현재 탭의 정보로
@@ -17,33 +18,16 @@ export default function UmbrellaRent(props) {
   const myName = '김진호';
 
   const [umbrellaList, setUmbrellaList] = useState([]);
+  const umbrellaListIncludeMyRent = useMyRent(umbrellaStatus, myName);
 
-  // 내가 빌린 것 체크
   useEffect(() => {
-    const checkMyRent = umbrellaStatus.find(
-      umbrella => umbrella.lender === myName,
-    );
-    if (checkMyRent !== undefined) {
-      const umbrellaListIncludeMyRent = umbrellaStatus.map(umbrella => {
-        if (umbrella.lender === myName) {
-          return {
-            ...umbrella,
-            status: 'myRent',
-          };
-        } else {
-          return umbrella;
-        }
-      });
-      setUmbrellaList(umbrellaListIncludeMyRent);
-    } else {
-      setUmbrellaList(umbrellaStatus);
-    }
+    setUmbrellaList(umbrellaListIncludeMyRent);
   }, []);
 
   // 상위 링크를 표시하기 위함
   const ancestorMenuTree = [
     { name: '홈', link: '/' },
-    { name: '대여', link: '/rent/cabinetrent' },
+    { name: '대여', link: '/rent/umbrellarent' },
   ];
   const currentTabContents = [
     { name: '우산 대여', link: '/rent/umbrellarent', accent: true },
@@ -66,7 +50,9 @@ export default function UmbrellaRent(props) {
         </UmbrellaListHeader>
         <UmbrellaGrid>
           {umbrellaList.length > 0 &&
-            umbrellaList.map(umbrella => <EachUmbrella umbrella={umbrella} />)}
+            umbrellaList.map(umbrella => (
+              <EachUmbrella key={umbrella.umbrellaNumber} umbrella={umbrella} />
+            ))}
         </UmbrellaGrid>
         <Caution />
       </UmbrellaCurrentState>

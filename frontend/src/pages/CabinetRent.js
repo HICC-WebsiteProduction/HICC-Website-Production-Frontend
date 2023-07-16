@@ -5,53 +5,31 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import theme from '../styles/Theme';
 import { cabinetStatus } from './../dummy/cabinetStatus';
-import Caution from '../components/Caution';
 import EachCabinet from '../components/eachItem/EachCabinet';
-import useModalList from '../hook/useModalList';
 import ApplyModal from '../components/popup/ApplyModal';
+import Caution from './../constants/Caution';
+import moment from 'moment';
+import useMyRent from '../hook/useMyRent';
 
 export default function CabinetRent(props) {
   const [cabinetList, setCabinetList] = useState([]); // 사물함 리스트
   const myName = '김진호';
 
-  // 내가 빌린 것 체크
+  const cabinetListIncludeMyRent = useMyRent(cabinetStatus, myName);
+
   useEffect(() => {
-    const checkMyRent = cabinetStatus.find(
-      cabinet => cabinet.lender === myName,
-    );
-    if (checkMyRent !== undefined) {
-      const cabinetListIncludeMyRent = cabinetStatus.map(cabinet => {
-        if (cabinet.lender === myName) {
-          return {
-            ...cabinet,
-            status: 'myRent',
-          };
-        } else {
-          return cabinet;
-        }
-      });
-      setCabinetList(cabinetListIncludeMyRent);
-    } else {
-      setCabinetList(cabinetStatus);
-    }
+    setCabinetList(cabinetListIncludeMyRent);
   }, []);
 
   // 상위 링크를 표시하기 위함
   const ancestorMenuTree = [
     { name: '홈', link: '/' },
-    { name: '대여', link: '/rent/cabinetrent' },
+    { name: '대여', link: '/rent/umbrellarent' },
   ];
   const currentTabContents = [
     { name: '우산 대여', link: '/rent/umbrellarent', accent: false },
     { name: '사물함 대여', link: '/rent/cabinetrent', accent: true },
   ];
-
-  const modalRef = useRef(null);
-
-  const [modalList, handleModal] = useModalList(
-    modalRef,
-    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
-  );
 
   return (
     <CabinetRentContainer>
@@ -69,10 +47,10 @@ export default function CabinetRent(props) {
         <CabinetGrid>
           {cabinetList.length > 0 &&
             cabinetList.map(cabinet => (
-              <EachCabinet cabinet={cabinet} handleModal={handleModal} />
+              <EachCabinet key={cabinet.cabinetNumber} cabinet={cabinet} />
             ))}
         </CabinetGrid>
-
+        {/* 
         <div ref={modalRef}>
           {modalList.map(
             item =>
@@ -80,14 +58,14 @@ export default function CabinetRent(props) {
                 <ApplyModal
                   itemName={`사물함`}
                   itemNumber={item.id}
-                  startDay={new Date().toISOString().slice(0, 10)}
+                  startDay={moment(new Date()).format('yyyy-MM-DD')}
                   endDay={''}
                   startDayDisabled={true}
                   endDayDisabled={false}
                 />
               ),
           )}
-        </div>
+        </div> */}
         <Caution />
       </CabinetCurrentState>
     </CabinetRentContainer>

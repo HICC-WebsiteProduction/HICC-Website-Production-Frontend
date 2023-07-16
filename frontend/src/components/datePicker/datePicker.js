@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useState } from 'react';
+import { forwardRef, useState } from 'react';
 import DatePicker, { CalendarContainer } from 'react-datepicker';
 import { ko } from 'date-fns/esm/locale';
 import styled from 'styled-components';
@@ -7,17 +7,16 @@ import '../../styles/datepicker.css';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectDate } from '../../_actions/datePickerAction';
+
 import theme from '../../styles/Theme';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { date } from './../../atom/date';
 require('react-datepicker/dist/react-datepicker.css');
 
 export default function CustomDatePicker(props) {
-  const [date, setDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useRecoilState(date);
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [datePickerOpen, setDatePickerOpen] = useState(true);
-
-  const dispatch = useDispatch();
 
   const CustomInput = forwardRef(({ onClick }, ref) => (
     <DatePickerButton onClick={onClick} ref={ref}>
@@ -31,8 +30,7 @@ export default function CustomDatePicker(props) {
   };
 
   const handleDaySelect = date => {
-    setDate(date);
-    dispatch(selectDate(date));
+    setSelectedDate(date);
   };
 
   const onClose = event => {
@@ -40,15 +38,11 @@ export default function CustomDatePicker(props) {
     setDatePickerOpen(false);
   };
 
-  useEffect(() => {
-    setDate(new Date());
-  }, []);
-
   return (
     <DatePickerWrapper
       locale={ko}
       dateFormat="yyyy-MM-dd"
-      selected={date}
+      selected={selectedDate}
       onChange={date => handleDaySelect(date)}
       shouldCloseOnSelect={false}
       onMonthChange={handleMonthChange}
@@ -72,7 +66,9 @@ export default function CustomDatePicker(props) {
       )}
       calendarClassName="custom-calender"
       dayClassName={day =>
-        day.getDate() === date.getDate() ? 'selectedDay' : 'unSelectedDay'
+        day.getDate() === selectedDate.getDate()
+          ? 'selectedDay'
+          : 'unSelectedDay'
       }
       customInput={<CustomInput />}
       isOpen={datePickerOpen}
@@ -100,15 +96,17 @@ const DatePickerButton = styled.button`
 `;
 
 function MyContainer({ className, children }) {
-  const date = useSelector(state => state.datePickerReducer.selectedDay);
+  const selectedDate = useRecoilValue(date);
   const week = ['일', '월', '화', '수', '목', '금', '토'];
 
   return (
     <DatePickerContainer className={className}>
       <DatePickerTop>
-        <ShowYear>{`${date.getFullYear()}년`}</ShowYear>
-        <ShowDate>{`${date.getMonth() + 1}월 ${date.getDate()}일 ${
-          week[date.getDay()]
+        <ShowYear>{`${selectedDate.getFullYear()}년`}</ShowYear>
+        <ShowDate>{`${
+          selectedDate.getMonth() + 1
+        }월 ${selectedDate.getDate()}일 ${
+          week[selectedDate.getDay()]
         }요일`}</ShowDate>
       </DatePickerTop>
       <DatePickerBody>{children}</DatePickerBody>

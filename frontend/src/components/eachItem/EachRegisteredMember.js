@@ -1,16 +1,10 @@
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import { Link } from 'react-router-dom';
-import Checkbox from '../Checkbox';
+import Checkbox from '../util/Checkbox';
+import { memberGrade } from '../../constants/MemberGrade';
 
 function EachRegisteredMember(props) {
-  const memberGrade = {
-    president: '회장',
-    manager: '운영진',
-    normal: '일반',
-    graduate: '졸업생',
-  };
-
   const changeSelect = e => {
     props.getMemberInfo(props.studentID, e.target.checked);
   };
@@ -21,11 +15,11 @@ function EachRegisteredMember(props) {
       <td>{props.name}</td>
       <td>{props.studentID}</td>
       <td>
-        <MemberDetailsLink to={`/manage/memberDetail/${props.nickname}`}>
+        <MemberDetailsLink to={`/manage/memberinfo/${props.nickname}`}>
           {props.nickname}
         </MemberDetailsLink>
       </td>
-      <td>{props.tel}</td>
+      <td>{props.call}</td>
       <td>
         <Checkbox value={props.studentID} onChange={changeSelect} />
       </td>

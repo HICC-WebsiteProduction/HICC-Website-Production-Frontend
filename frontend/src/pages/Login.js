@@ -1,11 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import HeaderAndTitle from '../components/header/HeaderAndTitle';
-import theme from '../styles/Theme';
+import theme from './../styles/Theme';
+
+import HeaderAndTitle from './../components/header/HeaderAndTitle';
 import { useForm } from 'react-hook-form';
 import InputMemberInfo from '../components/input/InputMemberInfo';
-import InputMemberValidInfo from '../components/input/Regex';
-import Button from '../components/Button';
+import Button from './../components/util/Button';
+import Regex from './../constants/Regex';
+
 import { useNavigate } from 'react-router-dom';
 import { request } from '../utils/axios';
 import { useSetRecoilState } from 'recoil';
@@ -46,7 +48,7 @@ export default function Login(props) {
           errors={errors.ID}
           minLength={7}
           maxLength={7}
-          validPattern={InputMemberValidInfo.ID.validPattern}
+          pattern={Regex.ID.pattern}
           width={786}
         />
         <InputMemberInfo
@@ -60,7 +62,7 @@ export default function Login(props) {
           errors={errors.pw}
           minLength={8}
           maxLength={16}
-          validPattern={InputMemberValidInfo.PW.validPattern}
+          pattern={Regex.PW.pattern}
           width={786}
         />
         <ButtonContainer>

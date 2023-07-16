@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Post from '../components/Post';
 import HeaderAndTap from '../components/header/HeaderAndTap';
-import theme from '../styles/Theme';
+import theme from './../styles/Theme';
+import Post from './../components/noticeboard/Post';
 
 function Noticeboard() {
   const [currentBoard, setCurrentBoard] = useState('공지게시판');
