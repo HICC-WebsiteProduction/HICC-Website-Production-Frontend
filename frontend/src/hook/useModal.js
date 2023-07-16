@@ -19,7 +19,7 @@ export default function useModal(modalRef) {
       document.removeEventListener('mousedown', handleClickOutside);
       modalRef.current?.removeEventListener('click', () => setModalOpen(true));
     };
-  }, []);
+  }, [modalRef]);
 
   return modalOpen;
 }
