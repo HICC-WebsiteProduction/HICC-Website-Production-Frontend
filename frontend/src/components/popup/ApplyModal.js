@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import Button from '../util/Button';
+import { useResetRecoilState } from 'recoil';
+import { useRef } from 'react';
+import useCloseModal from '../../hook/useCloseModal';
+import { applyType } from '../../constants/ApplyType';
 
 export default function ApplyModal(props) {
   const {
@@ -11,38 +15,41 @@ export default function ApplyModal(props) {
     startDayDisabled,
     endDayDisabled,
   } = props;
+
+  const closeModalFunc = useResetRecoilState(applyType[itemName]);
+  const modalRef = useRef(null);
+  const closeModal = useCloseModal(modalRef, closeModalFunc);
+
   return (
-    <ApplyCabinetModalContainer>
-      <Header>{itemName} 대여 신청</Header>
-      <ApplyCabinetModalContent>
-        <InputRow>
-          <Label>{itemName} 번호</Label>
-          <Input value={itemNumber} disabled />
-        </InputRow>
-        <InputRow>
-          <Label>대여자</Label>
-          <Input value={'apple'} disabled />
-        </InputRow>
-        <InputRow>
-          <Label>대여일자</Label>
-          <Input type="date" value={startDay} disabled={startDayDisabled} />
-        </InputRow>
-        <InputRow>
-          <Label>반납일자</Label>
-          <Input type="date" value={endDay} disabled={endDayDisabled} />
-        </InputRow>
-      </ApplyCabinetModalContent>
-      <ApplyButton buttonName="신청하기" />
-    </ApplyCabinetModalContainer>
+    <>
+      <ApplyCabinetModalContainer ref={modalRef}>
+        <Header>{itemName} 대여 신청</Header>
+        <ApplyCabinetModalContent>
+          <InputRow>
+            <Label>{itemName} 번호</Label>
+            <Input value={itemNumber} disabled />
+          </InputRow>
+          <InputRow>
+            <Label>대여자</Label>
+            <Input value={'apple'} disabled />
+          </InputRow>
+          <InputRow>
+            <Label>대여일자</Label>
+            <Input type="date" value={startDay} disabled={startDayDisabled} />
+          </InputRow>
+          <InputRow>
+            <Label>반납일자</Label>
+            <Input type="date" value={endDay} disabled={endDayDisabled} />
+          </InputRow>
+        </ApplyCabinetModalContent>
+        <ApplyButton buttonName="신청하기" />
+      </ApplyCabinetModalContainer>
+    </>
   );
 }
 
 const ApplyCabinetModalContainer = styled.div`
   display: flex;
-  position: absolute;
-  top: 50%;
-  left: 20%;
-  z-index: 100;
   flex-direction: column;
   align-items: center;
   width: 700px;

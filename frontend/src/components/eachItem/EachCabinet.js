@@ -1,9 +1,13 @@
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
+import { useSetRecoilState } from 'recoil';
+import { cabinetModal } from '../../atom/cabinet';
 
 function EachCabinet({ cabinet }) {
   const myName = '김진호';
   const approveManagerMent = `관리자 승인 후\n사용 가능합니다.`;
+
+  const setCurrentIndex = useSetRecoilState(cabinetModal);
 
   return (
     <Cabinet key={`cabinet${cabinet.cabinetNumber}`} status={cabinet.status}>
@@ -46,7 +50,11 @@ function EachCabinet({ cabinet }) {
               <WaitingApprove>{cabinet.lender}</WaitingApprove>
             ) : (
               <>
-                <RentButton>대여 신청하기</RentButton>
+                <RentButton
+                  onClick={() => setCurrentIndex(cabinet.cabinetNumber)}
+                >
+                  대여 신청하기
+                </RentButton>
               </>
             )}
           </>
