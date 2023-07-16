@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import theme from '../styles/Theme';
 import { waitingMember } from './../dummy/watingMember';
+import EachWaitingMember from './eachItem/EachWatingMemer';
+import Checkbox from './Checkbox';
 
 function MemberAuthorizeWindow(props) {
   const memberListRef = React.createRef();
@@ -59,13 +61,13 @@ function MemberAuthorizeWindow(props) {
             <td>닉네임</td>
             <td>전화번호</td>
             <td>
-              <input type="checkbox" onClick={selectToggle} />
+              <Checkbox checkboxId="allcheck" onChange={selectToggle} />
             </td>
           </tr>
         </WaitingMemberHeader>
         <WaitingMemberList ref={memberListRef}>
           {waitingMemberList.map((member, index) => (
-            <WaitingMember
+            <EachWaitingMember
               key={`member${index}`}
               no={index + 1}
               name={member.name}
@@ -83,22 +85,6 @@ function MemberAuthorizeWindow(props) {
     </MemberAuthorizeContainer>
   );
 }
-
-function WaitingMember(props) {
-  return (
-    <MemberPresenter>
-      <td>{props.no}</td>
-      <td>{props.name}</td>
-      <td>{props.studentNo}</td>
-      <td>{props.nickname}</td>
-      <td>{props.call}</td>
-      <td>
-        <input type="checkbox" name="color" value="blue" />
-      </td>
-    </MemberPresenter>
-  );
-}
-
 export default MemberAuthorizeWindow;
 
 const MemberAuthorizeContainer = styled.div`
@@ -193,17 +179,6 @@ const GrantButton = styled.button`
   &:hover {
     cursor: pointer;
   }
-`;
-
-const MemberPresenter = styled.tr`
-  height: 40px;
-  border-bottom: 1px solid ${theme.colors.white};
-
-  color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-weight: 300;
-  font-size: ${theme.fontSizes.paragraph};
-  text-align: center;
 `;
 
 // function AuthConfirmDialog(props) {

@@ -2,11 +2,11 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { registerUser } from '../_actions/userAction';
-import theme from '../styles/Theme';
+import { registerUser } from '../../_actions/userAction';
+import theme from '../../styles/Theme';
 import InputMemberInfo from './InputMemberInfo';
-import InputMemberValidInfo from './InputMemberValidInfo';
-import ViewMemberInfo from './ViewMemberInfo';
+import Regex from './Regex';
+import ViewMemberInfo from '../ViewMemberInfo';
 
 export default function EditUserInfo(props) {
   const {
@@ -40,7 +40,7 @@ export default function EditUserInfo(props) {
           errors={errors.nickname}
           minLength={4}
           maxLength={16}
-          validPattern={InputMemberValidInfo.nickname.validPattern}
+          pattern={Regex.nickname.pattern}
           width={540}
         />
         <ViewMemberInfo
@@ -61,7 +61,7 @@ export default function EditUserInfo(props) {
           errors={errors.call}
           minLength={13}
           maxLength={13}
-          validPattern={InputMemberValidInfo.call.validPattern}
+          pattern={Regex.call.pattern}
           width={540}
         />
         <ViewMemberInfo
