@@ -1,13 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
-import HeaderAndTitle from '../components/header/HeaderAndTitle';
-import theme from '../styles/Theme';
+import theme from './../styles/Theme';
+
+import HeaderAndTitle from './../components/header/HeaderAndTitle';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import InputMemberInfo from '../components/InputMemberInfo';
-import InputMemberValidInfo from '../components/InputMemberValidInfo';
-import Button from '../components/Button';
+import InputMemberInfo from '../components/input/InputMemberInfo';
+import Button from './../components/util/Button';
+import Regex from './../constants/Regex';
+
 import { useNavigate } from 'react-router-dom';
+import { request } from '../utils/axios';
+import { useSetRecoilState } from 'recoil';
+import { user } from '../atom/user';
 
 export default function Login(props) {
   const {
@@ -15,9 +19,18 @@ export default function Login(props) {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const dispatch = useDispatch();
-  const onSubmit = data => {
-    console.log(data);
+  const setUser = useSetRecoilState(user);
+  const onSubmit = async data => {
+    try {
+      const response = await request('post', '/login', {
+        id: data.ID,
+        password: data.PW,
+      });
+      setUser(response.body);
+      navigate('/');
+    } catch (error) {
+      console.log(error);
+    }
   };
   const navigate = useNavigate();
   return (
@@ -35,7 +48,7 @@ export default function Login(props) {
           errors={errors.ID}
           minLength={7}
           maxLength={7}
-          validPattern={InputMemberValidInfo.ID.validPattern}
+          pattern={Regex.ID.pattern}
           width={786}
         />
         <InputMemberInfo
@@ -49,7 +62,7 @@ export default function Login(props) {
           errors={errors.pw}
           minLength={8}
           maxLength={16}
-          validPattern={InputMemberValidInfo.PW.validPattern}
+          pattern={Regex.PW.pattern}
           width={786}
         />
         <ButtonContainer>
@@ -60,7 +73,11 @@ export default function Login(props) {
               navigate('/signup');
             }}
           />
-          <LoginButton buttonType="submit" buttonName="로그인" />
+          <LoginButton
+            buttonType="submit"
+            buttonName="로그인"
+            onClick={onSubmit}
+          />
           <InduceJoinMent>회원이 아니라면</InduceJoinMent>
         </ButtonContainer>
       </InputForm>

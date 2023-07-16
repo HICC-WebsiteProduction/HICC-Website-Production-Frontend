@@ -4,7 +4,7 @@ import { BASE_URL } from '../config';
 const domain = BASE_URL;
 axios.defaults.withCredentials = true;
 
-export const request = (method, url, data) => {
+export const request = async (method, url, data) => {
   return axios({
     method,
     url: domain + url,

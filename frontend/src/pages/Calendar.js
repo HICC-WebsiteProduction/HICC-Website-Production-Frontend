@@ -5,7 +5,6 @@ import data from '../data/data.json';
 import HeaderAndTitle from '../components/header/HeaderAndTitle';
 import theme from '../styles/Theme';
 import ScheduleModal from '../components/popup/ScheduleModal';
-import useModal from '../hook/useModal';
 
 function CalendarBox(props) {
   const plans = [];

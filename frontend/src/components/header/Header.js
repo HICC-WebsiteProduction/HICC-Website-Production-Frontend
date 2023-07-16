@@ -3,13 +3,19 @@ import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell } from '@fortawesome/free-regular-svg-icons';
-import NoticeModal from '../NoticeModal';
 import { Link } from 'react-router-dom';
 import useModal from '../../hook/useModal';
+import { useRecoilValue } from 'recoil';
+import { user } from '../../atom/user';
+import MyinfoLayerPopup from '../popup/MyinfoLayerPopup';
+import NoticeLayerPopup from '../popup/noticeLayerPopup';
 
 export default function Header() {
   const noticeButtonRef = useRef(null);
+  const myInfoButtonRef = useRef(null);
   const noticeModal = useModal(noticeButtonRef);
+  const myInfoModal = useModal(myInfoButtonRef);
+  const isLogin = useRecoilValue(user).accessToken;
 
   return (
     <HeaderContainer>
@@ -22,11 +28,22 @@ export default function Header() {
           <Menu to="/rent/umbrellarent">대여</Menu>
         </Navigation>
         <UserContainer>
-          <NoticeButtonWrapper ref={noticeButtonRef}>
-            <FontAwesomeIcon icon={faBell} />
-            {noticeModal ? <NoticeModal /> : null}
-          </NoticeButtonWrapper>
-          <LoginLink to="/login">로그인</LoginLink>
+          {!isLogin ? (
+            <>
+              <LoginLink to="/login">로그인</LoginLink>
+            </>
+          ) : (
+            <>
+              <NoticeLayerPopupWrapper ref={noticeButtonRef}>
+                <FontAwesomeIcon icon={faBell} />
+                {noticeModal ? <NoticeLayerPopup /> : null}
+              </NoticeLayerPopupWrapper>
+              <MyinfoLayerPopupWrapper ref={myInfoButtonRef}>
+                내 정보
+                {myInfoModal ? <MyinfoLayerPopup /> : null}
+              </MyinfoLayerPopupWrapper>
+            </>
+          )}
         </UserContainer>
       </NavigationAndUser>
     </HeaderContainer>
@@ -81,7 +98,7 @@ const UserContainer = styled.div`
   align-items: center;
 `;
 
-const NoticeButtonWrapper = styled.div`
+const NoticeLayerPopupWrapper = styled.div`
   display: inline-block;
   position: relative;
   color: ${theme.colors.white};
@@ -92,6 +109,25 @@ const NoticeButtonWrapper = styled.div`
 `;
 
 const LoginLink = styled(Link)`
+  margin-left: 13px;
+  background-color: transparent;
+  border: none;
+  color: ${theme.colors.white};
+  font-family: 'Pretendard', sans-serif;
+  font-size: ${theme.fontSizes.navigation_menu};
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%;
+  text-decoration: none;
+  white-space: nowrap;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const MyinfoLayerPopupWrapper = styled.div`
+  display: inline-block;
+  position: relative;
   margin-left: 13px;
   background-color: transparent;
   border: none;
