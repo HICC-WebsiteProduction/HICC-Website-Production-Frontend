@@ -1,6 +1,7 @@
 import { rest } from 'msw';
 import user from './user.json';
 import allMember from './memberInfo.json';
+import notice from './notice.json';
 import { BASE_URL } from '../config';
 import { response200, response401 } from './response';
 
@@ -30,6 +31,13 @@ export const handlers = [
     const currentUser = allUser.find(member => member.nickname === user);
 
     const response = response200(currentUser);
+    return res(ctx.json(response));
+  }),
+
+  rest.get(`${BASE_URL}/notice/:user`, async (req, res, ctx) => {
+    // user에 맞는 정보를 가지고와야하니
+    const { user } = req.params;
+    const response = response200(notice);
     return res(ctx.json(response));
   }),
 ];

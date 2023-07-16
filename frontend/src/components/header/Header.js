@@ -1,21 +1,45 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell } from '@fortawesome/free-regular-svg-icons';
+import { faBell as faBellSolid } from '@fortawesome/free-solid-svg-icons';
+
 import { Link } from 'react-router-dom';
 import useModal from '../../hook/useModal';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { user } from '../../atom/user';
 import MyinfoLayerPopup from '../popup/MyinfoLayerPopup';
 import NoticeLayerPopup from '../popup/noticeLayerPopup';
+import { notice, unreadNotice } from '../../atom/notice';
+import { request } from '../../utils/axios';
 
 export default function Header() {
   const noticeButtonRef = useRef(null);
   const myInfoButtonRef = useRef(null);
   const noticeModal = useModal(noticeButtonRef);
   const myInfoModal = useModal(myInfoButtonRef);
+
   const isLogin = useRecoilValue(user).accessToken;
+  const username = useRecoilValue(user).nickname;
+
+  const setNotice = useSetRecoilState(notice);
+  const unreadNoticeCount = useRecoilValue(unreadNotice);
+
+  const fetchData = async () => {
+    try {
+      const response = await request('get', `/notice/${username}`);
+      setNotice(response.body.notice);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    if (isLogin) {
+      fetchData();
+    }
+  }, []);
 
   return (
     <HeaderContainer>
@@ -34,12 +58,17 @@ export default function Header() {
             </>
           ) : (
             <>
+              <UnreadNoticeCount existUnreadNotice={unreadNoticeCount > 0}>
+                {unreadNoticeCount}
+              </UnreadNoticeCount>
               <NoticeLayerPopupWrapper ref={noticeButtonRef}>
-                <FontAwesomeIcon icon={faBell} />
+                <NoticeIcon
+                  icon={unreadNoticeCount > 0 ? faBellSolid : faBell}
+                />
                 {noticeModal ? <NoticeLayerPopup /> : null}
               </NoticeLayerPopupWrapper>
               <MyinfoLayerPopupWrapper ref={myInfoButtonRef}>
-                내 정보
+                <MyInfoButton>내 정보</MyInfoButton>
                 {myInfoModal ? <MyinfoLayerPopup /> : null}
               </MyinfoLayerPopupWrapper>
             </>
@@ -98,14 +127,19 @@ const UserContainer = styled.div`
   align-items: center;
 `;
 
+const UnreadNoticeCount = styled.div`
+  display: ${props => (props.existUnreadNotice ? 'block' : 'none')};
+  margin-right: 4px;
+  color: ${theme.colors.white};
+  font-family: 'Pretendard';
+  font-size: ${theme.fontSizes.navigation_menu};
+  font-weight: 600;
+  line-height: 150%;
+`;
+
 const NoticeLayerPopupWrapper = styled.div`
   display: inline-block;
   position: relative;
-  color: ${theme.colors.white};
-  font-size: ${theme.fontSizes.label};
-  &:hover {
-    cursor: pointer;
-  }
 `;
 
 const LoginLink = styled(Link)`
@@ -131,6 +165,17 @@ const MyinfoLayerPopupWrapper = styled.div`
   margin-left: 13px;
   background-color: transparent;
   border: none;
+`;
+
+const NoticeIcon = styled(FontAwesomeIcon)`
+  color: ${theme.colors.white};
+  font-size: ${theme.fontSizes.label};
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const MyInfoButton = styled.div`
   color: ${theme.colors.white};
   font-family: 'Pretendard', sans-serif;
   font-size: ${theme.fontSizes.navigation_menu};

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import HeaderAndNavigation from '../components/header/HeaderAndNavigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,6 +8,10 @@ import { umbrellaStatus } from '../dummy/umbrellaStatus';
 import EachUmbrella from '../components/eachItem/EachUmbrella';
 import Caution from './../constants/Caution';
 import useMyRent from '../hook/useMyRent';
+import { umbrella, umbrellaModal } from '../atom/umbrella';
+import { useRecoilState } from 'recoil';
+import ApplyModal from '../components/popup/ApplyModal';
+import moment from 'moment';
 
 /*
 currentTabContents는 현재 탭의 정보로
@@ -15,14 +19,21 @@ name은 이름, link은 url, accent는 현재 메뉴면 true, 아니면 false를
 */
 
 export default function UmbrellaRent(props) {
+  const [init, setInit] = useRecoilState(umbrella);
+  const [umbrellaList, setUmbrellaList] = useRecoilState(umbrellaModal); // 사물함 리스트
   const myName = '김진호';
 
-  const [umbrellaList, setUmbrellaList] = useState([]);
   const umbrellaListIncludeMyRent = useMyRent(umbrellaStatus, myName);
 
   useEffect(() => {
-    setUmbrellaList(umbrellaListIncludeMyRent);
+    setInit(umbrellaListIncludeMyRent);
+    setUmbrellaList(init);
   }, []);
+
+  const now = new Date();
+  const sevenDaysAgo = new Date(now.setDate(now.getDate() + 7));
+
+  const modalRef = useRef(null);
 
   // 상위 링크를 표시하기 위함
   const ancestorMenuTree = [
@@ -54,6 +65,22 @@ export default function UmbrellaRent(props) {
               <EachUmbrella key={umbrella.umbrellaNumber} umbrella={umbrella} />
             ))}
         </UmbrellaGrid>
+
+        <ViewApplyModal ref={modalRef}>
+          {umbrellaList.map(
+            item =>
+              item.modalOpen && (
+                <ApplyModal
+                  itemName={`우산`}
+                  itemNumber={item.umbrellaNumber}
+                  startDay={moment(new Date()).format('yyyy-MM-DD')}
+                  endDay={moment(sevenDaysAgo).format('yyyy-MM-DD')}
+                  startDayDisabled={true}
+                  endDayDisabled={true}
+                />
+              ),
+          )}
+        </ViewApplyModal>
         <Caution />
       </UmbrellaCurrentState>
     </UmbrellaRentContainer>
@@ -96,4 +123,15 @@ const UmbrellaGrid = styled.div`
   grid-column-gap: 25px;
   width: 100%;
   height: 100%;
+`;
+
+const ViewApplyModal = styled.div`
+  display: flex;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  flex-direction: column;
+  align-items: center;
 `;

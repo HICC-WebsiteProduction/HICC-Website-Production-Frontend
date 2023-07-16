@@ -1,17 +1,13 @@
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
-import { useRef } from 'react';
-import useModal from '../../hook/useModal';
-import ApplyModal from '../popup/ApplyModal';
-import moment from 'moment';
+import { useSetRecoilState } from 'recoil';
+import { umbrellaModal } from '../../atom/umbrella';
 
 function EachUmbrella({ umbrella }) {
   const myName = '김진호';
-  const now = new Date();
-  const sevenDaysAgo = new Date(now.setDate(now.getDate() + 7));
 
-  const modalRef = useRef(null);
-  const applyModal = useModal(modalRef);
+  const setCurrentIndex = useSetRecoilState(umbrellaModal);
+
   return (
     <Umbrella
       key={`umbrella${umbrella.umbrellaNumber}`}
@@ -46,17 +42,11 @@ function EachUmbrella({ umbrella }) {
           </>
         ) : (
           <>
-            <RentButton ref={modalRef}>대여 신청하기</RentButton>
-            {applyModal ? (
-              <ApplyModal
-                itemName={`우산`}
-                itemNumber={umbrella.umbrellaNumber}
-                startDay={moment(new Date()).format('yyyy-MM-DD')}
-                endDay={moment(sevenDaysAgo).format('yyyy-MM-DD')}
-                startDayDisabled={true}
-                endDayDisabled={true}
-              />
-            ) : null}
+            <RentButton
+              onClick={() => setCurrentIndex(umbrella.umbrellaNumber)}
+            >
+              대여 신청하기
+            </RentButton>
           </>
         )}
       </UmbrellaDesc>

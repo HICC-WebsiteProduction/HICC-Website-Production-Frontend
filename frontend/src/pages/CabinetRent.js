@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import HeaderAndNavigation from '../components/header/HeaderAndNavigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,16 +10,24 @@ import ApplyModal from '../components/popup/ApplyModal';
 import Caution from './../constants/Caution';
 import moment from 'moment';
 import useMyRent from '../hook/useMyRent';
+import { useRecoilState } from 'recoil';
+import { cabinet, cabinetModal } from '../atom/cabinet';
 
 export default function CabinetRent(props) {
-  const [cabinetList, setCabinetList] = useState([]); // 사물함 리스트
+  const [init, setInit] = useRecoilState(cabinet);
+  const [cabinetList, setCabinetList] = useRecoilState(cabinetModal); // 사물함 리스트
+
   const myName = '김진호';
 
   const cabinetListIncludeMyRent = useMyRent(cabinetStatus, myName);
 
+  // 사물함 상태 초기 셋팅
   useEffect(() => {
-    setCabinetList(cabinetListIncludeMyRent);
+    setInit(cabinetListIncludeMyRent);
+    setCabinetList(init);
   }, []);
+
+  const modalRef = useRef(null);
 
   // 상위 링크를 표시하기 위함
   const ancestorMenuTree = [
@@ -50,14 +58,14 @@ export default function CabinetRent(props) {
               <EachCabinet key={cabinet.cabinetNumber} cabinet={cabinet} />
             ))}
         </CabinetGrid>
-        {/* 
-        <div ref={modalRef}>
-          {modalList.map(
+
+        <ViewApplyModal ref={modalRef}>
+          {cabinetList.map(
             item =>
               item.modalOpen && (
                 <ApplyModal
                   itemName={`사물함`}
-                  itemNumber={item.id}
+                  itemNumber={item.cabinetNumber}
                   startDay={moment(new Date()).format('yyyy-MM-DD')}
                   endDay={''}
                   startDayDisabled={true}
@@ -65,7 +73,7 @@ export default function CabinetRent(props) {
                 />
               ),
           )}
-        </div> */}
+        </ViewApplyModal>
         <Caution />
       </CabinetCurrentState>
     </CabinetRentContainer>
@@ -109,4 +117,15 @@ const CabinetGrid = styled.div`
   grid-column-gap: 25px;
   width: 100%;
   height: 100%;
+`;
+
+const ViewApplyModal = styled.div`
+  display: flex;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  flex-direction: column;
+  align-items: center;
 `;
