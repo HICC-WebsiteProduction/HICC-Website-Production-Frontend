@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import theme from '../../styles/Theme';
 
 import { useParams } from 'react-router-dom';
-import HeaderAndTitle from '../header/HeaderAndTitle';
 import MemberInfo from './MemberInfo';
 import confirmMessage from '../../constants/ConfirmMessage';
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +11,8 @@ import { useRecoilState } from 'recoil';
 import { memberinfo } from '../../atom/memberinfo';
 import useConfirm from '../../hook/useConfirm';
 import useAlert from '../../hook/useAlert';
+import Title from '../header/Title';
+import Header from '../header/Header';
 
 export default function MemberDetail() {
   const { user } = useParams();
@@ -83,7 +84,8 @@ export default function MemberDetail() {
 
   return (
     <MemberDetailContainer>
-      <HeaderAndTitle titleName="회원 정보" />
+      <Header />
+      <Title titleName="회원 정보" />
       {userinfo ? (
         <MemberProfile>
           <ProfileImage src={'/images/hongik.png'} />

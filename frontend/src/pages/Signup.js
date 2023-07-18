@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import theme from '../styles/Theme';
 import { useForm } from 'react-hook-form';
-import HeaderAndTitle from '../components/header/HeaderAndTitle';
 import InputMemberInfo from '../components/input/InputMemberInfo';
 import Button from '../components/util/Button';
 import Regex from '../constants/Regex';
@@ -10,6 +9,8 @@ import { useNavigate } from 'react-router-dom';
 import useAlert from '../hook/useAlert';
 import ConfirmMessage from '../constants/ConfirmMessage';
 import { request } from '../utils/axios';
+import Header from '../components/header/Header';
+import Title from '../components/header/Title';
 
 function Signup(props) {
   const {
@@ -59,7 +60,8 @@ function Signup(props) {
 
   return (
     <SignupContainer>
-      <HeaderAndTitle titleName="회원가입" />
+      <Header />
+      <Title titleName="회원가입" />
       <InputForm onSubmit={handleSubmit(onSubmit)}>
         <JoinAnnouncementMent>모든 항목에 응답해주세요</JoinAnnouncementMent>
         <InputMemberInfo

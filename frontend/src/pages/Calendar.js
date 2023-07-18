@@ -2,9 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import moment from 'moment';
 import data from '../data/data.json';
-import HeaderAndTitle from '../components/header/HeaderAndTitle';
 import theme from '../styles/Theme';
 import ScheduleModal from '../components/popup/ScheduleModal';
+import Title from '../components/header/Title';
+import Header from '../components/header/Header';
 
 function CalendarBox(props) {
   const plans = [];
@@ -97,7 +98,8 @@ function Calendar() {
 
   return (
     <MainContainer>
-      <HeaderAndTitle titleName="일정 캘린더" />
+      <Header />
+      <Title titleName="일정 캘린더" />
       <CalendarTop>
         <Blank />
         <CalendarTopContent>

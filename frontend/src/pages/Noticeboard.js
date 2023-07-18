@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import HeaderAndTap from '../components/header/HeaderAndTap';
 import theme from './../styles/Theme';
 import Post from './../components/noticeboard/Post';
+import Header from '../components/header/Header';
+import Tab from '../components/header/Tab';
 
 function Noticeboard() {
   const [currentBoard, setCurrentBoard] = useState('공지게시판');
@@ -28,7 +29,8 @@ function Noticeboard() {
 
   return (
     <NoticeBoardContainer>
-      <HeaderAndTap
+      <Header />
+      <Tab
         ancestorMenuTree={ancestorMenuTree}
         currentTabContents={currentTabContents}
         handleBoardChange={handleBoardChange}

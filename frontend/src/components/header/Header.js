@@ -111,6 +111,7 @@ const Navigation = styled.nav`
 `;
 
 const Menu = styled(Link)`
+  margin: 0 6px;
   padding: 0 20px;
   color: ${theme.colors.white};
   font-size: ${theme.fontSizes.navigation_menu};
@@ -163,12 +164,13 @@ const LoginLink = styled(Link)`
 const MyinfoLayerPopupWrapper = styled.div`
   display: inline-block;
   position: relative;
-  margin-left: 13px;
+  padding: 0 20px;
   background-color: transparent;
   border: none;
 `;
 
 const NoticeIcon = styled(FontAwesomeIcon)`
+  margin-left: 4px;
   color: ${theme.colors.white};
   font-size: ${theme.fontSizes.label};
   &:hover {

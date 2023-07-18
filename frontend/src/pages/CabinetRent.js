@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import HeaderAndNavigation from '../components/header/HeaderAndNavigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import theme from '../styles/Theme';
@@ -10,12 +9,17 @@ import ApplyModal from '../components/popup/ApplyModal';
 import Caution from './../constants/Caution';
 import moment from 'moment';
 import useMyRent from '../hook/useMyRent';
-import { useRecoilState } from 'recoil';
-import { cabinet, cabinetModal } from '../atom/cabinet';
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
+import { cabinet, cabinetModal, currentCabinetIndex } from '../atom/cabinet';
+import Header from '../components/header/Header';
+import Navigation from '../components/header/Navigation';
 
 export default function CabinetRent(props) {
   const [init, setInit] = useRecoilState(cabinet);
   const [cabinetList, setCabinetList] = useRecoilState(cabinetModal); // 사물함 리스트
+  const currentIndex = useRecoilValue(currentCabinetIndex); // 모달 백드롭 때문에
+
+  const resetCabinet = useResetRecoilState(cabinet);
 
   const myName = '김진호';
 
@@ -25,7 +29,13 @@ export default function CabinetRent(props) {
   useEffect(() => {
     setInit(cabinetListIncludeMyRent);
     setCabinetList(init);
+
+    return () => {
+      resetCabinet();
+    };
   }, []);
+
+  console.log(currentIndex);
 
   const modalRef = useRef(null);
 
@@ -41,7 +51,8 @@ export default function CabinetRent(props) {
 
   return (
     <CabinetRentContainer>
-      <HeaderAndNavigation
+      <Header />
+      <Navigation
         ancestorMenuTree={ancestorMenuTree}
         currentTabContents={currentTabContents}
       />
@@ -59,7 +70,7 @@ export default function CabinetRent(props) {
             ))}
         </CabinetGrid>
 
-        <ViewApplyModal ref={modalRef}>
+        <ViewApplyModal ref={modalRef} view={currentIndex !== -1}>
           {cabinetList.map(
             item =>
               item.modalOpen && (
@@ -74,7 +85,8 @@ export default function CabinetRent(props) {
               ),
           )}
         </ViewApplyModal>
-        <Caution />
+
+        <Caution item="cabinet" />
       </CabinetCurrentState>
     </CabinetRentContainer>
   );
@@ -120,12 +132,13 @@ const CabinetGrid = styled.div`
 `;
 
 const ViewApplyModal = styled.div`
-  display: flex;
+  display: ${props => (props.view ? 'block' : 'none')};
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 100;
-  flex-direction: column;
-  align-items: center;
+
+  width: 100vw;
+  height: 100vh;
+  left: 0px;
+  top: 0px;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1;
 `;

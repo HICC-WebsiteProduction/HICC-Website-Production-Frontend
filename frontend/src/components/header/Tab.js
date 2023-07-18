@@ -4,16 +4,20 @@ import styled from 'styled-components';
 import theme from '../../styles/Theme';
 
 // ancestorMenuTree 상위 메뉴를 받아와 링크로 만들어준다.
-export default function HeaderNavigation(props) {
+export default function Tab(props) {
+  const changeTab = index => {
+    props.handleBoardChange(props.currentTabContents[index].name);
+  };
+
   return (
-    <HeaderNavigationContainer>
+    <HeaderTabContainer>
       <AncestorMenu>
         {props.ancestorMenuTree.map((menu, idx) => (
           <>
             <AncestorMenuLink to={menu.link} key={`ancestor${idx}`}>
               {menu.name}
             </AncestorMenuLink>
-            <RightAngleBracket key={`bracket${idx}`}>{' > '}</RightAngleBracket>
+            <RightAngleBracket>{' > '}</RightAngleBracket>
           </>
         ))}
       </AncestorMenu>
@@ -21,25 +25,23 @@ export default function HeaderNavigation(props) {
         {props.currentTabContents.map((menu, idx) => (
           <>
             <CurrentMenuTabContents
-              to={menu.link}
+              onClick={() => changeTab(idx)}
               key={`current${idx}`}
               accent={menu.accent}
             >
               {menu.name}
             </CurrentMenuTabContents>
-            <VeticalBar key={`veticalBar${idx}`}>
-              {idx < props.currentTabContents.length - 1 ? ` | ` : ''}
-            </VeticalBar>
           </>
         ))}
       </CurrentMenuTab>
-    </HeaderNavigationContainer>
+    </HeaderTabContainer>
   );
 }
 
-const HeaderNavigationContainer = styled.div`
+const HeaderTabContainer = styled.div`
   width: 100%;
   height: 160px;
+  margin-bottom: 60px;
 `;
 
 const AncestorMenu = styled.nav`
@@ -48,7 +50,7 @@ const AncestorMenu = styled.nav`
   font-family: 'GmarketSansMedium', sans-serif;
   font-style: normal;
   font-weight: 500;
-  font-size: ${theme.fontSizes.paragraph};
+  font-size: 20px;
   line-height: 120%;
   text-decoration: none;
 `;
@@ -68,21 +70,26 @@ const CurrentMenuTab = styled.nav`
   text-align: center;
 `;
 
-const CurrentMenuTabContents = styled(Link)`
+const CurrentMenuTabContents = styled.span`
+  margin-left: 10px;
+  padding-left: 10px;
+  border-left: 1px solid ${theme.colors.white};
+
   color: ${theme.colors.white};
   font-family: ${props => (props.accent ? `GmarketSansMedium` : 'Pretendard')},
     sans-serif;
   font-style: normal;
   font-weight: ${props => (props.accent ? 500 : 300)};
-  font-size: ${theme.fontSizes.title};
+  font-size: 30px;
   line-height: 120%;
   text-decoration: none;
-`;
+  &:hover {
+    cursor: pointer;
+  }
 
-const VeticalBar = styled.span`
-  color: ${theme.colors.white};
-  font-family: sans-serif;
-  font-weight: 100;
-  font-size: ${theme.fontSizes.title};
-  text-decoration: none;
+  &:first-child {
+    margin-left: 0;
+    padding-left: 0;
+    border-left: none;
+  }
 `;

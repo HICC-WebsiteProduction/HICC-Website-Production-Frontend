@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import theme from './../styles/Theme';
 
-import HeaderAndTitle from './../components/header/HeaderAndTitle';
 import { useForm } from 'react-hook-form';
 import InputMemberInfo from '../components/input/InputMemberInfo';
 import Button from './../components/util/Button';
@@ -12,6 +11,8 @@ import { useNavigate } from 'react-router-dom';
 import { request } from '../utils/axios';
 import { useSetRecoilState } from 'recoil';
 import { user } from '../atom/user';
+import Title from '../components/header/Title';
+import Header from '../components/header/Header';
 
 export default function Login(props) {
   const {
@@ -35,7 +36,8 @@ export default function Login(props) {
   const navigate = useNavigate();
   return (
     <LoginContainer>
-      <HeaderAndTitle titleName="로그인" />
+      <Header />
+      <Title titleName="로그인" />
       <InputForm onSubmit={handleSubmit(onSubmit)}>
         <InputMemberInfo
           labelName="ID"

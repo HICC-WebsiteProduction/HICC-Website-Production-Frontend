@@ -2,13 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
 
-export default function HeaderManageTap(props) {
+export default function ManageTab(props) {
   const changeTab = index => {
     props.changeTabContent(index);
   };
 
   return (
-    <HeaderTabContainer>
+    <ManageTabContainer>
       <Title>관리페이지</Title>
       <CurrentMenuTab>
         {props.currentTabContents.map((menu, idx) => (
@@ -24,11 +24,11 @@ export default function HeaderManageTap(props) {
           </>
         ))}
       </CurrentMenuTab>
-    </HeaderTabContainer>
+    </ManageTabContainer>
   );
 }
 
-const HeaderTabContainer = styled.div`
+const ManageTabContainer = styled.div`
   width: 100%;
   height: 160px;
   margin-bottom: 60px;

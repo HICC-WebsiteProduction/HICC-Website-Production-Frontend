@@ -52,6 +52,13 @@ const ApplyCabinetModalContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+
   width: 700px;
   height: 400px;
   padding: 32px 64px;
