@@ -8,8 +8,12 @@ import { umbrellaStatus } from '../dummy/umbrellaStatus';
 import EachUmbrella from '../components/eachItem/EachUmbrella';
 import Caution from './../constants/Caution';
 import useMyRent from '../hook/useMyRent';
-import { umbrella, umbrellaModal } from '../atom/umbrella';
-import { useRecoilState } from 'recoil';
+import {
+  currentUmbrellaIndex,
+  umbrella,
+  umbrellaModal,
+} from '../atom/umbrella';
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import ApplyModal from '../components/popup/ApplyModal';
 import moment from 'moment';
 
@@ -21,6 +25,9 @@ name은 이름, link은 url, accent는 현재 메뉴면 true, 아니면 false를
 export default function UmbrellaRent(props) {
   const [init, setInit] = useRecoilState(umbrella);
   const [umbrellaList, setUmbrellaList] = useRecoilState(umbrellaModal); // 사물함 리스트
+  const currentIndex = useRecoilValue(currentUmbrellaIndex);
+  const resetUmbrella = useResetRecoilState(umbrella);
+
   const myName = '김진호';
 
   const umbrellaListIncludeMyRent = useMyRent(umbrellaStatus, myName);
@@ -28,6 +35,10 @@ export default function UmbrellaRent(props) {
   useEffect(() => {
     setInit(umbrellaListIncludeMyRent);
     setUmbrellaList(init);
+
+    return () => {
+      resetUmbrella();
+    };
   }, []);
 
   const now = new Date();
@@ -66,7 +77,7 @@ export default function UmbrellaRent(props) {
             ))}
         </UmbrellaGrid>
 
-        <ViewApplyModal ref={modalRef}>
+        <ViewApplyModal ref={modalRef} view={currentIndex !== -1}>
           {umbrellaList.map(
             item =>
               item.modalOpen && (
@@ -81,7 +92,7 @@ export default function UmbrellaRent(props) {
               ),
           )}
         </ViewApplyModal>
-        <Caution />
+        <Caution item="umbrella" />
       </UmbrellaCurrentState>
     </UmbrellaRentContainer>
   );
@@ -126,12 +137,13 @@ const UmbrellaGrid = styled.div`
 `;
 
 const ViewApplyModal = styled.div`
-  display: flex;
+  display: ${props => (props.view ? 'block' : 'none')};
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 100;
-  flex-direction: column;
-  align-items: center;
+
+  width: 100vw;
+  height: 100vh;
+  left: 0px;
+  top: 0px;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1;
 `;

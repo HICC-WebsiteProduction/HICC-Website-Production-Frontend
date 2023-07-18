@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useResetRecoilState } from 'recoil';
 import { umbrella, umbrellaModal } from '../../atom/umbrella';
 import { umbrellaStatus } from '../../dummy/umbrellaStatus';
 import EachUmbrellaManage from '../eachItem/EachUmbrellaManage';
@@ -10,10 +10,15 @@ import Button from '../util/Button';
 function UmbrellaRentWindow(props) {
   const [init, setInit] = useRecoilState(umbrella);
   const [umbrellaList, setUmbrellaList] = useRecoilState(umbrellaModal); // 사물함 리스트
+  const resetUmbrella = useResetRecoilState(umbrella);
 
   useEffect(() => {
     setInit(umbrellaStatus);
     setUmbrellaList(init);
+
+    return () => {
+      resetUmbrella();
+    };
   }, []);
 
   return (

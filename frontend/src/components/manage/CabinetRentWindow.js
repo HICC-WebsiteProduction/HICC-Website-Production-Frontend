@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useResetRecoilState } from 'recoil';
 import { cabinet, cabinetModal } from '../../atom/cabinet';
 import { cabinetStatus } from '../../dummy/cabinetStatus';
 import styled from 'styled-components';
@@ -11,9 +11,15 @@ function CabinetRentWindow(props) {
   const [init, setInit] = useRecoilState(cabinet);
   const [cabinetList, setCabinetList] = useRecoilState(cabinetModal); // 사물함 리스트
 
+  const resetCabinet = useResetRecoilState(cabinet);
+
   useEffect(() => {
     setInit(cabinetStatus);
     setCabinetList(init);
+
+    return () => {
+      resetCabinet();
+    };
   }, []);
 
   return (

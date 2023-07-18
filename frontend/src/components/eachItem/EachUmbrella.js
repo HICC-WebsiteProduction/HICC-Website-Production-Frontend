@@ -24,6 +24,8 @@ function EachUmbrella({ umbrella }) {
               ? '내가 대여'
               : umbrella.status === 'rent'
               ? '대여 중'
+              : umbrella.status === 'unavailable'
+              ? '대여 불가'
               : '대여 가능'}
           </UmbrellaRentStatusMent>
         </UmbrellaRentStatus>
@@ -40,6 +42,12 @@ function EachUmbrella({ umbrella }) {
               <Lender>{umbrella.lender}</Lender>
             )}
           </>
+        ) : umbrella.status === 'unavailable' ? (
+          <Lender>
+            {umbrella.unavailableReason === 'stolen'
+              ? '도난 상태'
+              : '분실 상태'}
+          </Lender>
         ) : (
           <>
             <RentButton

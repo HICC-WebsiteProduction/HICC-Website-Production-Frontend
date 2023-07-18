@@ -24,6 +24,8 @@ function EachCabinet({ cabinet }) {
               ? '대여 중'
               : cabinet.status === 'waiting'
               ? '승인 대기 중'
+              : cabinet.status === 'unavailable'
+              ? '대여 불가'
               : '대여 가능'}
           </CabinetRentStatusMent>
         </CabinetRentStatus>
@@ -45,9 +47,13 @@ function EachCabinet({ cabinet }) {
           </>
         ) : (
           <>
-            <ApproveManager>{approveManagerMent}</ApproveManager>
+            <ApproveManager status={cabinet.status}>
+              {approveManagerMent}
+            </ApproveManager>
             {cabinet.status === 'waiting' ? (
               <WaitingApprove>{cabinet.lender}</WaitingApprove>
+            ) : cabinet.status === 'unavailable' ? (
+              <WaitingApprove>-</WaitingApprove>
             ) : (
               <>
                 <RentButton
@@ -144,7 +150,7 @@ const EndDay = styled.div`
 
 const ApproveManager = styled.div`
   margin-bottom: 8px;
-  color: ${theme.colors.black};
+  color: ${props => theme.itemColorByState.itemStatus[props.status]};
   font-family: 'Pretendard';
   font-style: normal;
   font-weight: 300;
