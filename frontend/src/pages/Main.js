@@ -1,12 +1,10 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import Header from '../components/header/Header';
-import MainActivityContent from '../components/MainActivityContent';
-import NumberTable from '../components/NumberTable';
+import MainActivityContent from '../components/main/MainActivityContent';
 import logo from '../images/mainBanner.svg';
-import useScrollClipPath from '../components/hooks/useScrollClipPath';
-
-// const pixelToRem = size => `${size / 16}rem`;
+import useScrollClipPath from './../hook/useScrollClipPath';
+import NumberTable from '../components/main/NumberTable';
 
 const boxAnimation = keyframes`
   0%{

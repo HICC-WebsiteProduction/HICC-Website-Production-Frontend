@@ -24,12 +24,14 @@ const useScrollCount = (end, start = 0, duration = 3000, delay = 0) => {
   );
 
   useEffect(() => {
+    const observer = {};
+
     if (element.current) {
       observer.current = new IntersectionObserver(onScroll, { threshold: 0.7 });
       observer.current.observe(element.current);
     }
 
-    return () => observer && observer.disconnect();
+    return () => observer.current && observer.current.disconnect();
   }, [onScroll]);
 
   return {

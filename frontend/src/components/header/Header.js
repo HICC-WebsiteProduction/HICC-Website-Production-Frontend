@@ -17,6 +17,7 @@ import { request } from '../../utils/axios';
 export default function Header() {
   const noticeButtonRef = useRef(null);
   const myInfoButtonRef = useRef(null);
+
   const noticeModal = useModal(noticeButtonRef);
   const myInfoModal = useModal(myInfoButtonRef);
 

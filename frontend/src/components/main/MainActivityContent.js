@@ -1,33 +1,25 @@
 import React from 'react';
 import styled from 'styled-components';
-import coding from '../images/coding.png';
-import project from '../images/project.png';
-import meeting from '../images/meeting.png';
-import MT from '../images/MT.png';
-import mission from '../images/mission.png';
-import etc from '../images/etc.png';
-
-const pixelToRem = size => `${size / 16}rem`;
 
 export default function ActivityContent(props) {
-  let logo = coding;
+  let logo = '/images/coding.png';
   if (props.buttonName === '코딩 학술 세미나') {
-    logo = coding;
+    logo = '/images/coding.png';
   }
   if (props.buttonName === '프로젝트 발표 대회') {
-    logo = project;
+    logo = '/images/project.png';
   }
   if (props.buttonName === 'HICC 정규모임') {
-    logo = meeting;
+    logo = '/images/meeting.png';
   }
   if (props.buttonName === '분기 별 MT') {
-    logo = MT;
+    logo = '/images/MT.png';
   }
   if (props.buttonName === '조별 미션 및 친목 활동') {
-    logo = etc;
+    logo = '/images/etc.png';
   }
   if (props.buttonName === '그 외 활동') {
-    logo = mission;
+    logo = '/images/mission.png';
   }
   return (
     <ContentContainer>
@@ -48,9 +40,9 @@ const ContentContainer = styled.div`
 
 const Text = styled.div`
   position: relative;
-  top: ${pixelToRem(260)};
-  width: ${pixelToRem(210)};
-  height: ${pixelToRem(36)};
+  top: 260px;
+  width: 210px;
+  height: 36px;
   margin: 0 auto;
   line-height: 36px;
   font-style: normal;
@@ -63,11 +55,11 @@ const Text = styled.div`
 
 const Logo = styled.div`
   position: absolute;
-  left: ${pixelToRem(14)};
-  top: ${pixelToRem(10)};
-  width: ${pixelToRem(350)};
-  height: ${pixelToRem(230)};
+  left: 14px;
+  top: 10px;
+  width: 350px;
+  height: 230px;
   z-index: 1;
   border: none;
-  border-radius: ${pixelToRem(20)};
+  border-radius: 20px;
 `;

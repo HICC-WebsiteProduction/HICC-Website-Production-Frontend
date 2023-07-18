@@ -106,6 +106,8 @@ const Triangle = styled.div`
 
 const Header = styled.header`
   display: flex;
+  width: 100%;
+  margin-bottom: 20px;
 `;
 
 const Profile = styled.img`
@@ -115,7 +117,7 @@ const Profile = styled.img`
 `;
 
 const UserInfo = styled.div`
-  margin: 0 20px 20px 20px;
+  margin: 5px 20px 20px 20px;
 `;
 
 const Nickname = styled.div`

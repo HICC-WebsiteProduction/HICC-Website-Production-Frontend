@@ -5,6 +5,7 @@ export const cabinetStatus = [
     start: '2023.03.29',
     end: '2023.07.10',
     lender: '함윤호',
+    unavailableReason: '',
   },
   {
     cabinetNumber: 2,
@@ -12,20 +13,23 @@ export const cabinetStatus = [
     start: '',
     end: '',
     lender: '손기배',
+    unavailableReason: '',
   },
   {
     cabinetNumber: 3,
-    status: 'unrent',
+    status: 'unavailable',
     start: '',
     end: '',
     lender: '',
+    unavailableReason: '',
   },
   {
     cabinetNumber: 4,
-    status: 'unrent',
+    status: 'unavailable',
     start: '',
     end: '',
     lender: '',
+    unavailableReason: '',
   },
   {
     cabinetNumber: 5,
@@ -33,6 +37,7 @@ export const cabinetStatus = [
     start: '2023.03.29',
     end: '2023.07.10',
     lender: '윤찬호',
+    unavailableReason: '',
   },
   {
     cabinetNumber: 6,
@@ -40,6 +45,7 @@ export const cabinetStatus = [
     start: '2023.03.29',
     end: '2023.07.10',
     lender: '이지우',
+    unavailableReason: '',
   },
   {
     cabinetNumber: 7,
@@ -47,6 +53,7 @@ export const cabinetStatus = [
     start: '2023.03.29',
     end: '2023.07.10',
     lender: '김진호',
+    unavailableReason: '',
   },
   {
     cabinetNumber: 8,
@@ -54,6 +61,7 @@ export const cabinetStatus = [
     start: '2023.03.29',
     end: '2023.07.10',
     lender: '경수현',
+    unavailableReason: '',
   },
   {
     cabinetNumber: 9,
@@ -61,6 +69,7 @@ export const cabinetStatus = [
     start: '',
     end: '',
     lender: '',
+    unavailableReason: '',
   },
   {
     cabinetNumber: 10,
@@ -68,6 +77,7 @@ export const cabinetStatus = [
     start: '',
     end: '',
     lender: '',
+    unavailableReason: '',
   },
   {
     cabinetNumber: 11,
@@ -75,6 +85,7 @@ export const cabinetStatus = [
     start: '2023.03.29',
     end: '2023.07.10',
     lender: '오지현',
+    unavailableReason: '',
   },
   {
     cabinetNumber: 12,
@@ -82,6 +93,7 @@ export const cabinetStatus = [
     start: '2023.03.29',
     end: '2023.07.10',
     lender: '이윤서',
+    unavailableReason: '',
   },
   {
     cabinetNumber: 13,
@@ -89,6 +101,7 @@ export const cabinetStatus = [
     start: '2023.03.29',
     end: '2023.07.10',
     lender: '송현지',
+    unavailableReason: '',
   },
   {
     cabinetNumber: 14,
@@ -96,6 +109,7 @@ export const cabinetStatus = [
     start: '2023.03.29',
     end: '2023.07.10',
     lender: '구나영',
+    unavailableReason: '',
   },
   {
     cabinetNumber: 15,
@@ -103,6 +117,7 @@ export const cabinetStatus = [
     start: '',
     end: '',
     lender: '',
+    unavailableReason: '',
   },
   {
     cabinetNumber: 16,
@@ -110,5 +125,6 @@ export const cabinetStatus = [
     start: '2023.03.29',
     end: '2023.07.10',
     lender: '최세호',
+    unavailableReason: '',
   },
 ];
