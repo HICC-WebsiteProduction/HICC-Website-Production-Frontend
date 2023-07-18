@@ -1,14 +1,9 @@
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
-import { useSetRecoilState } from 'recoil';
-import { cabinetModal } from '../../atom/cabinet';
+import useSelect from '../../hook/useSelect';
 
-function EachCabinet({ cabinet }) {
-  const myName = '김진호';
-  const approveManagerMent = `관리자 승인 후\n사용 가능합니다.`;
-
-  const setCurrentIndex = useSetRecoilState(cabinetModal);
-
+function EachCabinetManage({ cabinet }) {
+  const [state, setState] = useSelect('unrent');
   return (
     <Cabinet key={`cabinet${cabinet.cabinetNumber}`} status={cabinet.status}>
       <CabinetNumber status={cabinet.status}>
@@ -18,43 +13,43 @@ function EachCabinet({ cabinet }) {
         <CabinetRentStatus>
           <CabinetRentCircleStatus status={cabinet.status} />
           <CabinetRentStatusMent status={cabinet.status}>
-            {cabinet.status === 'myRent'
-              ? '내가 대여'
-              : cabinet.status === 'rent'
+            {cabinet.status === 'rent'
               ? '대여 중'
               : cabinet.status === 'waiting'
               ? '승인 대기 중'
+              : cabinet.status === 'unavailable'
+              ? '대여 불가능'
               : '대여 가능'}
           </CabinetRentStatusMent>
         </CabinetRentStatus>
-        {cabinet.status === 'rent' || cabinet.status === 'myRent' ? (
+        {cabinet.status === 'rent' ? (
           <>
             <DayInfo>
-              <StartDay
-                myRent={cabinet.lender === myName}
-              >{`대여일자 | ${cabinet.start}`}</StartDay>
-              <EndDay
-                myRent={cabinet.lender === myName}
-              >{`반납일자 | ${cabinet.end}`}</EndDay>
+              <StartDay>{`대여일자 | ${cabinet.start}`}</StartDay>
+              <EndDay>{`반납일자 | ${cabinet.end}`}</EndDay>
             </DayInfo>
-            {cabinet.lender === myName ? (
-              <ReturnCabinetButton>반납하기</ReturnCabinetButton>
-            ) : (
-              <Lender>{cabinet.lender}</Lender>
-            )}
+
+            <Lender>{cabinet.lender}</Lender>
           </>
         ) : (
           <>
-            <ApproveManager>{approveManagerMent}</ApproveManager>
+            <ApproveManager status={cabinet.status}>
+              뭔가 메시지가 있으면 좋지 않을까?
+            </ApproveManager>
             {cabinet.status === 'waiting' ? (
               <WaitingApprove>{cabinet.lender}</WaitingApprove>
+            ) : cabinet.status === 'unavailable' ? (
+              <Lender>사용 불가</Lender>
             ) : (
               <>
-                <RentButton
-                  onClick={() => setCurrentIndex(cabinet.cabinetNumber)}
+                <StateSelectButton
+                  onChange={setState}
+                  value={state}
+                  defaultValue="unrent"
                 >
-                  대여 신청하기
-                </RentButton>
+                  <StateOption value="unavailable">사용 불가</StateOption>
+                  <StateOption value="unrent">사용 가능</StateOption>
+                </StateSelectButton>
               </>
             )}
           </>
@@ -64,7 +59,7 @@ function EachCabinet({ cabinet }) {
   );
 }
 
-export default EachCabinet;
+export default EachCabinetManage;
 
 const Cabinet = styled.div`
   display: flex;
@@ -143,8 +138,10 @@ const EndDay = styled.div`
 `;
 
 const ApproveManager = styled.div`
+  width: 100%;
+  height: 35px;
   margin-bottom: 8px;
-  color: ${theme.colors.black};
+  color: ${props => theme.itemColorByState.itemStatus[props.status]};
   font-family: 'Pretendard';
   font-style: normal;
   font-weight: 300;
@@ -152,25 +149,6 @@ const ApproveManager = styled.div`
   line-height: 110%;
   text-align: center;
   white-space: pre-line;
-`;
-
-const RentButton = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 160px;
-  height: 40px;
-  background-color: ${theme.colors.blue};
-  border-radius: 20px;
-
-  color: ${theme.colors.white};
-  font-weight: 300;
-  font-size: ${theme.fontSizes.font_normal};
-  line-height: 21px;
-
-  &:hover {
-    cursor: pointer;
-  }
 `;
 
 const Lender = styled.div`
@@ -203,21 +181,46 @@ const WaitingApprove = styled.div`
   text-align: center;
 `;
 
-// disable를 넣기 위해 따로 생성
-const ReturnCabinetButton = styled.button`
+const StateSelectButton = styled.select`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 160px;
   height: 40px;
-  background-color: ${theme.colors.purple};
+  background-color: ${theme.colors.blue};
   border: none;
   border-radius: 20px;
+  outline: none;
+
   color: ${theme.colors.white};
-  font-family: 'Pretendard', sans-serif;
-  font-style: normal;
   font-weight: 300;
   font-size: ${theme.fontSizes.font_normal};
   line-height: 21px;
+  text-align: center;
+
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 
   &:hover {
     cursor: pointer;
+  }
+`;
+
+const StateOption = styled.option`
+  width: 248px;
+  height: 40px;
+  background-color: ${theme.colors.white};
+  color: ${theme.colors.black};
+  font-family: 'Pretendard';
+  font-size: ${theme.fontSizes.font_normal};
+  font-weight: 300;
+
+  &:first-child {
+    border-radius: 20px 20px 0px 0px;
+  }
+
+  &:last-child {
+    border-radius: 0px 0px 20px 20px;
   }
 `;

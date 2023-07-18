@@ -65,36 +65,42 @@ const itemColorByState = {
     unrent: colors.white,
     myRent: colors.white,
     waiting: colors.white,
+    unavailable: 'transparent',
   },
   number: {
     rent: colors.white,
     unrent: colors.black,
     myRent: colors.black,
     wating: colors.white,
+    unavailable: colors.white,
   },
   indicator: {
     rent: 'transperent',
     unrent: colors.blue,
     myRent: colors.purple,
     waiting: colors.grey,
+    unavailable: 'transperent',
   },
   indicatorBorder: {
     rent: colors.white,
     unrent: colors.blue,
     myRent: colors.purple,
     waiting: colors.grey,
+    unavailable: colors.white,
   },
   itemStatus: {
     rent: colors.white,
     unrent: colors.pureBlack,
     myRent: colors.pureBlack,
     waiting: colors.pureBlack,
+    unavailable: colors.white,
   },
   button: {
     rent: colors.grey,
     unrent: colors.blue,
     myRent: colors.purple,
     wating: colors.grey,
+    unavailable: colors.grey,
   },
 };
 

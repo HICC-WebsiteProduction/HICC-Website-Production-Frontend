@@ -9,6 +9,7 @@ import Paging from '../paging/Paging';
 import Filter from './../util/Filter';
 import Button from './../util/Button';
 import { filterOptionValue } from './../../constants/FilterOptionValue';
+import useSelect from '../../hook/useSelect';
 
 export default function Post(props) {
   const [posts, setPosts] = useState(() => {
@@ -23,13 +24,13 @@ export default function Post(props) {
   const [postsPerPage, setPostsPerPage] = useState(10); // 페이지당 게시글 수
   const [filteredPostsCount, setFilteredPostsCount] = useState(0); // 현재 필터의 게시글 수
 
-  const [searchByPeriod, setSearchByPeriod] = useState(
+  const [searchByPeriod, setSearchByPeriod] = useSelect(
     filterOptionValue.period.whole,
   ); // 기간으로 검색
-  const [searchByIndex, setSearchByIndex] = useState(
+  const [searchByIndex, setSearchByIndex] = useSelect(
     filterOptionValue.index.writer,
   ); // 인덱스로 검색
-  const [searchByKeyword, setSearchByKeyword] = useState(''); // 키워드로 검색
+  const [searchByKeyword, setSearchByKeyword] = useSelect(''); // 키워드로 검색
 
   useEffect(() => {
     const posts = dummy.posts || [];
@@ -74,18 +75,6 @@ export default function Post(props) {
 
   const setPage = error => {
     setCurrentPage(error);
-  };
-
-  const onChangeSearchByPeriod = event => {
-    setSearchByPeriod(event.target.value);
-  };
-
-  const onChangeSearchByIndex = event => {
-    setSearchByIndex(event.target.value);
-  };
-
-  const onChangeSearchByKeyword = event => {
-    setSearchByKeyword(event.target.value);
   };
 
   return (
@@ -158,17 +147,17 @@ export default function Post(props) {
           <FilterContainer>
             <Filter
               optionValue={filterOptionValue.period}
-              onChange={onChangeSearchByPeriod}
+              onChange={setSearchByPeriod}
             />
             <Gap />
             <Filter
               optionValue={filterOptionValue.index}
-              onChange={onChangeSearchByIndex}
+              onChange={setSearchByIndex}
             />
             <Gap />
             <KeywordSearch
               placeholder="검색어를 입력하세요"
-              onChange={onChangeSearchByKeyword}
+              onChange={setSearchByKeyword}
             />
             <SearchButton buttonName="검색" />
           </FilterContainer>
