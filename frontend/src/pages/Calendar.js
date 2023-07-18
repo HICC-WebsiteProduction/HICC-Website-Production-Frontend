@@ -131,7 +131,7 @@ const CalendarButton = styled.button`
   background-color: transparent;
   border: none;
   color: ${theme.colors.white};
-  font-size: 30px;
+  font-size: ${theme.fontSizes.subtitle};
   &:hover {
     cursor: pointer;
   }
@@ -139,7 +139,9 @@ const CalendarButton = styled.button`
 
 const MainContainer = styled.div`
   position: relative;
+  width: ${theme.componentSize.maxWidth};
   height: 100vh;
+  margin: 0 auto;
   place-items: center;
   align-items: center;
   justify-content: center;
@@ -155,7 +157,7 @@ const CalendarTop = styled.div`
   font-family: 'SCDream';
   font-style: normal;
   font-weight: 800;
-  font-size: 30px;
+  font-size: ${theme.fontSizes.subtitle};
   text-align: center;
   line-height: 36px;
 `;
@@ -179,7 +181,7 @@ const AddScheduleButton = styled.button`
   font-family: 'Pretendard';
   font-style: normal;
   font-weight: 600;
-  font-size: 30px;
+  font-size: ${theme.fontSizes.subtitle};
   line-height: 36px;
 
   &:hover {
@@ -189,7 +191,7 @@ const AddScheduleButton = styled.button`
 
 const CalendarMain = styled.div`
   display: grid;
-  grid-template-columns: repeat(7, minmax(150px, 150px));
+  grid-template-columns: repeat(7, minmax(171px, 171px));
   grid-template-rows: 1fr repeat(6, minmax(200px, 200px));
   place-items: center;
   align-items: center;
@@ -197,26 +199,28 @@ const CalendarMain = styled.div`
 `;
 
 const CalendarDay = styled.div`
-  width: 150px;
+  width: 171px;
   height: 40px;
-  color: ${props => (props.isSunday ? '#FF8764' : theme.colors.white)};
+  color: ${props =>
+    props.isSunday ? theme.colors.cancleRed : theme.colors.white};
   font-family: 'Pretendard', sans-serif;
-  font-size: 25px;
+  font-size: ${theme.fontSizes.calendar};
   font-weight: 600;
   text-align: center;
 `;
 
 const CalendarBox2 = styled.div`
-  width: 150px;
+  width: 171px;
   height: 200px;
   border-top: 3px solid ${theme.colors.white};
 `;
 
 const CalendarDate = styled.div`
   margin-top: 16px;
-  color: ${props => (props.isSunday ? '#FF8764' : theme.colors.white)};
+  color: ${props =>
+    props.isSunday ? theme.colors.cancleRed : theme.colors.white};
   font-family: 'Pretendard', sans-serif;
-  font-size: 25px;
+  font-size: ${theme.fontSizes.calendar};
   font-weight: 600;
   text-align: center;
 `;

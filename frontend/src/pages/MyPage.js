@@ -1,40 +1,49 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import Header from '../components/header/Header';
 import theme from '../styles/Theme';
-import Post from '../components/Post';
-import Tabs from '../components/Tab';
-
-const pixelToRem = size => `${size / 16}rem`;
+import HeaderAndTap from '../components/header/HeaderAndTap';
+import { TabContentByIndexMypage } from '../components/header/TabContentByIndexMypage';
 
 function Mypage() {
   const MyComments = () => {
     return <div>내 작성 댓글 목록</div>;
   };
 
-  const tabs = [
-    {
-      title: '내 작성 글',
-      content: <Post postFilter="writer" filterCondition="최세호" />,
-    },
-    // 댓글 목록 구현 예정
-    { title: '내 작성 댓글', content: <MyComments /> },
+  const [currentTab, setCurrentTab] = useState('내 정보');
+
+  const handleTabChange = tabName => {
+    setCurrentTab(tabName);
+  };
+
+  // const tabs = [
+  //   {
+  //     title: '내 작성 글',
+  //     content: <Post postFilter="writer" filterCondition="최세호" />,
+  //   },
+  //   // 댓글 목록 구현 예정
+  //   { title: '내 작성 댓글', content: <MyComments /> },
+  // ];
+
+  const ancestorMenuTree = [
+    { name: '홈', link: '/' },
+    { name: '마이페이지', link: '/mypage' },
   ];
+
+  const currentTabContents = [
+    { name: '내 정보', accent: currentTab === '내 정보' },
+    { name: '내 작성글', accent: currentTab === '내 작성글' },
+    { name: '내 작성댓글', accent: currentTab === '내 작성댓글' },
+  ];
+
   return (
     <MypageContainer>
-      <Header />
-      <UserInfo>
-        <Link href="/myinfo">
-          <Logo />
-        </Link>
-        <Infobox>
-          <Nickname>
-            <Link href="/myinfo">최세호</Link>님
-          </Nickname>
-          <Level> 등급</Level>
-        </Infobox>
-      </UserInfo>
-      <Tabs tabs={tabs} />
+      <HeaderAndTap
+        ancestorMenuTree={ancestorMenuTree}
+        currentTabContents={currentTabContents}
+        handleBoardChange={handleTabChange}
+      />
+      {/* <Tabs tabs={tabs} /> */}
+      {TabContentByIndexMypage[currentTab]}
     </MypageContainer>
   );
 }
@@ -42,46 +51,7 @@ function Mypage() {
 export default Mypage;
 
 const MypageContainer = styled.div`
-  width: 100%;
+  width: ${theme.componentSize.maxWidth};
   height: 100vh;
-`;
-
-const UserInfo = styled.div`
-  ${theme.flexbox.flex};
-  justify-content: flex-start;
-  align-items: center;
-  height: ${pixelToRem(88)};
-  margin: 0 ${pixelToRem(20)};
-  padding-left: ${pixelToRem(71)};
-  border-bottom: ${pixelToRem(2)} dashed ${theme.colors.light_grey};
-`;
-const Logo = styled.div`
-  width: ${pixelToRem(100)};
-  height: ${pixelToRem(80)};
-  background-image: url('${'https://ssl.pstatic.net/static/common/myarea/myInfo.gif'}');
-  background-size: contain;
-  background-repeat: no-repeat;
-  margin-right: ${pixelToRem(14)};
-  border-radius: 70%;
-`;
-const Infobox = styled.div`
-  ${theme.flexbox.flex};
-  justify-content: space-around;
-  justify-content: center;
-  flex-direction: column;
-`;
-
-const Nickname = styled.div`
-  ${theme.flexbox.flex};
-  justify-content: flex-end;
-`;
-
-const Level = styled.div`
-  ${theme.flexbox.flex};
-  justify-content: flex-start;
-  align-content: flex-start;
-`;
-
-const Link = styled.a`
-  *
+  margin: 0 auto;
 `;

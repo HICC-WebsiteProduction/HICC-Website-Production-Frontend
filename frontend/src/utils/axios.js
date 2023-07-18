@@ -4,12 +4,17 @@ import { BASE_URL } from '../config';
 const domain = BASE_URL;
 axios.defaults.withCredentials = true;
 
-export const request = (method, url, data) => {
-  return axios({
+export const request = async (method, url, data, headers) => {
+  const config = {
     method,
     url: domain + url,
     data,
-  })
-    .then(res => res.data)
-    .catch(err => console.log(err));
+    headers,
+  };
+  try {
+    const response = await axios(config);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 };

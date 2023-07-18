@@ -1,28 +1,46 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell } from '@fortawesome/free-regular-svg-icons';
-import NoticeModal from '../NoticeModal';
+import { faBell as faBellSolid } from '@fortawesome/free-solid-svg-icons';
+
 import { Link } from 'react-router-dom';
+import useModal from '../../hook/useModal';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { user } from '../../atom/user';
+import MyinfoLayerPopup from '../popup/MyinfoLayerPopup';
+import NoticeLayerPopup from '../popup/noticeLayerPopup';
+import { notice, unreadNotice } from '../../atom/notice';
+import { request } from '../../utils/axios';
 
 export default function Header() {
-  const [noticeModalVisibility, setNoticeModalVisibility] = useState(false);
-  const noticeButtonRef = useRef();
+  const noticeButtonRef = useRef(null);
+  const myInfoButtonRef = useRef(null);
+  const noticeModal = useModal(noticeButtonRef);
+  const myInfoModal = useModal(myInfoButtonRef);
+
+  const isLogin = useRecoilValue(user).accessToken;
+  const username = useRecoilValue(user).nickname;
+
+  const setNotice = useSetRecoilState(notice);
+  const unreadNoticeCount = useRecoilValue(unreadNotice);
+
+  const fetchData = async () => {
+    try {
+      const response = await request('get', `/notice/${username}`);
+      setNotice(response.body.notice);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
-    const handler = event => {
-      if (!noticeButtonRef.current.contains(event.target)) {
-        setNoticeModalVisibility(false);
-      }
-    };
+    if (isLogin) {
+      fetchData();
+    }
+  }, []);
 
-    document.addEventListener('mousedown', handler);
-
-    return () => {
-      document.removeEventListener('mousedown', handler);
-    };
-  });
   return (
     <HeaderContainer>
       <Logo to={'/'} />
@@ -34,16 +52,27 @@ export default function Header() {
           <Menu to="/rent/umbrellarent">대여</Menu>
         </Navigation>
         <UserContainer>
-          <NoticeButtonWrapper ref={noticeButtonRef}>
-            <NoticeButton
-              type="button"
-              onClick={() => setNoticeModalVisibility(!noticeModalVisibility)}
-            >
-              <FontAwesomeIcon icon={faBell} />
-            </NoticeButton>
-            {noticeModalVisibility ? <NoticeModal /> : null}
-          </NoticeButtonWrapper>
-          <LoginLink to="/login">로그인</LoginLink>
+          {!isLogin ? (
+            <>
+              <LoginLink to="/login">로그인</LoginLink>
+            </>
+          ) : (
+            <>
+              <UnreadNoticeCount existUnreadNotice={unreadNoticeCount > 0}>
+                {unreadNoticeCount}
+              </UnreadNoticeCount>
+              <NoticeLayerPopupWrapper ref={noticeButtonRef}>
+                <NoticeIcon
+                  icon={unreadNoticeCount > 0 ? faBellSolid : faBell}
+                />
+                {noticeModal ? <NoticeLayerPopup /> : null}
+              </NoticeLayerPopupWrapper>
+              <MyinfoLayerPopupWrapper ref={myInfoButtonRef}>
+                <MyInfoButton>내 정보</MyInfoButton>
+                {myInfoModal ? <MyinfoLayerPopup /> : null}
+              </MyinfoLayerPopupWrapper>
+            </>
+          )}
         </UserContainer>
       </NavigationAndUser>
     </HeaderContainer>
@@ -54,7 +83,9 @@ export default function Header() {
 const HeaderContainer = styled.header`
   ${theme.flexbox.flex};
   justify-content: space-between;
+  width: ${theme.componentSize.maxWidth};
   height: 74px;
+  margin: 0 auto;
   padding: 0 ${theme.margin.margin_content};
   transform: rotate(-0.05deg);
 `;
@@ -81,7 +112,7 @@ const Navigation = styled.nav`
 const Menu = styled(Link)`
   padding: 0 20px;
   color: ${theme.colors.white};
-  font-size: 18px;
+  font-size: ${theme.fontSizes.navigation_menu};
   font-family: 'Pretendard', sans-serif;
   font-style: normal;
   font-weight: 600;
@@ -96,19 +127,19 @@ const UserContainer = styled.div`
   align-items: center;
 `;
 
-const NoticeButtonWrapper = styled.div`
-  display: inline-block;
-  position: relative;
+const UnreadNoticeCount = styled.div`
+  display: ${props => (props.existUnreadNotice ? 'block' : 'none')};
+  margin-right: 4px;
+  color: ${theme.colors.white};
+  font-family: 'Pretendard';
+  font-size: ${theme.fontSizes.navigation_menu};
+  font-weight: 600;
+  line-height: 150%;
 `;
 
-const NoticeButton = styled.button`
-  background-color: transparent;
-  border: none;
-  color: ${theme.colors.white};
-  font-size: 20px;
-  &:hover {
-    cursor: pointer;
-  }
+const NoticeLayerPopupWrapper = styled.div`
+  display: inline-block;
+  position: relative;
 `;
 
 const LoginLink = styled(Link)`
@@ -117,7 +148,37 @@ const LoginLink = styled(Link)`
   border: none;
   color: ${theme.colors.white};
   font-family: 'Pretendard', sans-serif;
-  font-size: 18px;
+  font-size: ${theme.fontSizes.navigation_menu};
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%;
+  text-decoration: none;
+  white-space: nowrap;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const MyinfoLayerPopupWrapper = styled.div`
+  display: inline-block;
+  position: relative;
+  margin-left: 13px;
+  background-color: transparent;
+  border: none;
+`;
+
+const NoticeIcon = styled(FontAwesomeIcon)`
+  color: ${theme.colors.white};
+  font-size: ${theme.fontSizes.label};
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const MyInfoButton = styled.div`
+  color: ${theme.colors.white};
+  font-family: 'Pretendard', sans-serif;
+  font-size: ${theme.fontSizes.navigation_menu};
   font-style: normal;
   font-weight: 600;
   line-height: 150%;

@@ -1,6 +1,6 @@
-import CabinetRentWindow from '../CabinetRentWindow';
-import MemberAuthorizeWindow from '../MemberAuthorizeWindow';
-import MemberInfoWindow from '../MemberInfoWindow';
+import CabinetRentWindow from './../manage/CabinetRentWindow';
+import MemberAuthorizeWindow from './../manage/MemberAuthorizeWindow';
+import MemberInfoWindow from './../manage/MemberInfoWindow';
 
 export const TabContentByIndex = {
   0: <MemberAuthorizeWindow />,

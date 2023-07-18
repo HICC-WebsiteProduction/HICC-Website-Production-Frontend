@@ -13,7 +13,7 @@ export default function HeaderNavigation(props) {
             <AncestorMenuLink to={menu.link} key={`ancestor${idx}`}>
               {menu.name}
             </AncestorMenuLink>
-            <RightAngleBracket>{' > '}</RightAngleBracket>
+            <RightAngleBracket key={`bracket${idx}`}>{' > '}</RightAngleBracket>
           </>
         ))}
       </AncestorMenu>
@@ -27,7 +27,7 @@ export default function HeaderNavigation(props) {
             >
               {menu.name}
             </CurrentMenuTabContents>
-            <VeticalBar>
+            <VeticalBar key={`veticalBar${idx}`}>
               {idx < props.currentTabContents.length - 1 ? ` | ` : ''}
             </VeticalBar>
           </>
@@ -48,7 +48,7 @@ const AncestorMenu = styled.nav`
   font-family: 'GmarketSansMedium', sans-serif;
   font-style: normal;
   font-weight: 500;
-  font-size: 20px;
+  font-size: ${theme.fontSizes.paragraph};
   line-height: 120%;
   text-decoration: none;
 `;
