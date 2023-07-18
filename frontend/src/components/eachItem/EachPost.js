@@ -5,7 +5,7 @@ function EachPost(props) {
   const { post, index, filteredPosts, indexOfFirstPost, handlePostClick } =
     props;
   return (
-    <PostList key={post.id} onClick={() => handlePostClick(post.id)}>
+    <PostList key={post.id}>
       <No>{filteredPosts.length - indexOfFirstPost - index}</No>
       <PostTitle>{post.title}</PostTitle>
       <Writer>{post.writer}</Writer>

@@ -13,6 +13,8 @@ import UmbrellaRent from './pages/UmbrellaRent';
 import PrivateRoute from './PrivateRoute';
 import { useRecoilValue } from 'recoil';
 import { user } from './atom/user';
+import CurrentPost from './components/noticeboard/CurrentPost';
+import Post from './components/noticeboard/Post';
 
 function Router() {
   const isLogin = useRecoilValue(user).accessToken;
@@ -34,6 +36,7 @@ function Router() {
         <Route path="/manage/memberinfo/:user" element={<MemberDetail />} />
         <Route path="/rent/umbrellarent" element={<UmbrellaRent />} />
         <Route path="/rent/cabinetrent" element={<CabinetRent />} />
+        <Route path="/post/:id" element={<CurrentPost />} />
       </Routes>
     </BrowserRouter>
   );

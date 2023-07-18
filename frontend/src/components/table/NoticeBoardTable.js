@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import EachPost from '../eachItem/EachPost';
+import { Link } from 'react-router-dom';
 
 /*
   10개 씩 컨텐츠를 전달해줘야합니다.
@@ -16,13 +17,18 @@ export default function NoticeBoardTable(props) {
       </NoticeBoardTableHeader>
       <NoticeBoardTableBody>
         {props.postList.map((post, index) => (
-          <EachPost
-            post={post}
-            index={index}
-            filteredPosts={props.filteredPosts}
-            indexOfFirstPost={props.indexOfFirstPost}
-            handlePostClick={props.handlePostClick}
-          />
+          <Link
+            to={`/post/${post.id}`}
+            onClick={() => props.handlePostClick(post.id)}
+          >
+            <EachPost
+              post={post}
+              index={index}
+              filteredPosts={props.filteredPosts}
+              indexOfFirstPost={props.indexOfFirstPost}
+              handlePostClick={props.handlePostClick}
+            />
+          </Link>
         ))}
       </NoticeBoardTableBody>
     </NoticeBoardTableContainer>

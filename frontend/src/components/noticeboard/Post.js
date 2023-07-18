@@ -42,7 +42,7 @@ export default function Post(props) {
     );
     setFilteredPosts(boardPosts.reverse());
     setFilteredPostsCount(boardPosts.length);
-    setCurrentPost(null);
+    // setCurrentPost(null);
     setIsCreatingPost(null);
     setCurrentPage(1);
   }, [props.filterCondition, posts]);
@@ -50,7 +50,12 @@ export default function Post(props) {
   const handlePostClick = postId => {
     const post = dummy.posts.find(post => post.id === postId);
     setCurrentPost(post);
+    console.log('현재 post: ', post);
   };
+
+  useEffect(() => {
+    console.log('현재2 post: ', currentPost);
+  }, [currentPost]);
 
   // 새 글 저장 후 실행할 함수
   const handleSave = newPost => {
@@ -59,9 +64,21 @@ export default function Post(props) {
     console.log('handleSave함수 실행됨');
 
     const updatedPosts = [...posts, newPost];
-    setPosts(updatedPosts);
     // const posts = dummy.posts || [];
     // setPosts(posts);
+  };
+
+  const updatePost = (postId, updatedData) => {
+    const updatedPosts = dummy.posts.map(post => {
+      if (post.id === postId) {
+        return {
+          ...post,
+          ...updatedData,
+        };
+      }
+      return post;
+    });
+    dummy.posts = updatedPosts;
   };
 
   const indexOfLastPost = currentPage * postsPerPage;
@@ -88,32 +105,24 @@ export default function Post(props) {
     setSearchByKeyword(event.target.value);
   };
 
+  const deletePost = postId => {
+    const updatedPosts = dummy.posts.filter(post => post.id !== postId);
+    dummy.posts = updatedPosts;
+    setPosts(dummy.posts);
+    setCurrentPost(null);
+  };
+
   return (
     <PostBox>
-      {currentPost ? (
-        <CurrentPost
-          currentPost={currentPost}
-          setCurrentPost={setCurrentPost}
-        />
-      ) : isCreatingPost ? (
+      {isCreatingPost ? (
         <>
           <NewPost
             board={props.filterCondition}
             writer="최세호"
             onSave={handleSave}
+            title={null}
+            content={null}
           />
-          <Button
-            onClick={() => {
-              const confirmed = window.confirm(
-                '         *정말로 취소하시겠습니까? \n (취소시 작성된 내용이 저장되지 않습니다)',
-              );
-              if (confirmed) {
-                setIsCreatingPost(null);
-              }
-            }}
-          >
-            취소
-          </Button>
         </>
       ) : (
         <>
@@ -128,12 +137,6 @@ export default function Post(props) {
               handlePostClick={handlePostClick}
             />
           </PostsContainer>
-          {/* 글쓰기 버튼 추가 */}
-          {/* currentPost 상태를 true로 바꿔서 새 글 작성 컴포넌트가 보이게 함 */}
-          {/* writer는 임의로 설정함 */}
-          {/* 실제로는 로그인한 사용자의 정보를 받아와야 함 */}
-          {/* onSave에 handleSave 함수를 전달함 */}
-          {/* 새 글 저장 후 실행됨 */}
           {props.showButton && (
             <WriteButton onClick={() => setIsCreatingPost(true)}>
               글쓰기
