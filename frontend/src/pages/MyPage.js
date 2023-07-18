@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import theme from '../styles/Theme';
-import HeaderAndTap from '../components/header/HeaderAndTap';
-import { TabContentByIndexMypage } from '../components/header/TabContentByIndexMypage';
+import { TabContentByIndexMypage } from '../constants/TabContentByIndexMypage';
+import Tab from '../components/header/Tab';
+import Header from '../components/header/Header';
 
 function Mypage() {
   const MyComments = () => {
@@ -37,7 +38,8 @@ function Mypage() {
 
   return (
     <MypageContainer>
-      <HeaderAndTap
+      <Header />
+      <Tab
         ancestorMenuTree={ancestorMenuTree}
         currentTabContents={currentTabContents}
         handleBoardChange={handleTabChange}

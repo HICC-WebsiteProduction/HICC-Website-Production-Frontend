@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import HeaderAndNavigation from '../components/header/HeaderAndNavigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUmbrella } from '@fortawesome/free-solid-svg-icons';
 import theme from '../styles/Theme';
@@ -16,6 +15,8 @@ import {
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import ApplyModal from '../components/popup/ApplyModal';
 import moment from 'moment';
+import Header from '../components/header/Header';
+import Navigation from '../components/header/Navigation';
 
 /*
 currentTabContents는 현재 탭의 정보로
@@ -58,7 +59,8 @@ export default function UmbrellaRent(props) {
 
   return (
     <UmbrellaRentContainer>
-      <HeaderAndNavigation
+      <Header />
+      <Navigation
         ancestorMenuTree={ancestorMenuTree}
         currentTabContents={currentTabContents}
       />

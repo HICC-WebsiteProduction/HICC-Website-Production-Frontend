@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import HeaderAndNavigation from '../components/header/HeaderAndNavigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import theme from '../styles/Theme';
@@ -12,6 +11,8 @@ import moment from 'moment';
 import useMyRent from '../hook/useMyRent';
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import { cabinet, cabinetModal, currentCabinetIndex } from '../atom/cabinet';
+import Header from '../components/header/Header';
+import Navigation from '../components/header/Navigation';
 
 export default function CabinetRent(props) {
   const [init, setInit] = useRecoilState(cabinet);
@@ -50,7 +51,8 @@ export default function CabinetRent(props) {
 
   return (
     <CabinetRentContainer>
-      <HeaderAndNavigation
+      <Header />
+      <Navigation
         ancestorMenuTree={ancestorMenuTree}
         currentTabContents={currentTabContents}
       />

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
-import NoticeTab from '../header/NoticeTab';
+import NoticeTab from './NoticeTab';
 import { noticeType } from '../../constants/NoticeType';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { noticeTab } from '../../atom/noticeTab';
@@ -62,7 +62,7 @@ const NoticeLayerPopupContainer = styled.div`
   display: flex;
   position: absolute;
   top: 50px;
-  left: -290px;
+  left: -280px;
   z-index: 100;
   flex-direction: column;
   align-items: center;
