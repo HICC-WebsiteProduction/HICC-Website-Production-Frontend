@@ -61,40 +61,6 @@ export default function NewPost(props) {
       props.finishChange();
     }
   };
-
-  // 서버랑 통신할때 핸들러
-  //   const handleSaveClick = () => {
-  //     // 입력값 검증
-  //     if (!title || !content) {
-  //       alert('제목과 내용을 모두 입력해주세요.');
-  //       return;
-  //     }
-
-  //     // 서버에 데이터 전송
-  //     const post = {
-  //       title,
-  //       content,
-  //       writer: props.writer,
-  //       date: new Date().toLocaleDateString(),
-  //     };
-  //     console.log('handleSaveClick 작동');
-
-  //     fetch('posts.json', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({ posts: [post] }),
-  //     })
-  //       .then(response => response.json())
-  //       .then(data => {
-  //         console.log(data);
-  //         alert('글이 성공적으로 저장되었습니다.');
-  //         props.onSave(); // 부모 컴포넌트의 onSave 함수 호출
-  //       })
-  //       .catch(error => console.error(error));
-  //   };
-
   return (
     <NewPostContainer>
       <NewPostTitle>새 글 작성</NewPostTitle>

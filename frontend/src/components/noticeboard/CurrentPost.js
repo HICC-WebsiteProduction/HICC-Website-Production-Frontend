@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import dummy from '../../dummy/posts.json';
+import { useNavigate } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComment } from '@fortawesome/free-solid-svg-icons';
@@ -20,7 +21,7 @@ export default function CurrentPost(props) {
   const [isChanging, setIsChanging] = useState(false);
   const [post, setPost] = useState(null);
   const { id } = useParams();
-
+  const navigate = useNavigate();
   useEffect(() => {
     const post = dummy.posts.find(post => post.id === Number(id));
     console.log(dummy);
@@ -43,6 +44,12 @@ export default function CurrentPost(props) {
   };
   const finishChange = () => {
     setIsChanging(false);
+  };
+
+  const deletePost = () => {
+    const updatedPosts = dummy.posts.filter(post => post.id !== id);
+    dummy.posts = updatedPosts;
+    navigate(-1);
   };
 
   return (
@@ -70,48 +77,48 @@ export default function CurrentPost(props) {
               </Button>
               <ChangeDelete>
                 <Button onClick={() => changingPost()}>수정</Button>
-                <Button onClick={() => props.deletePost(post.id)}>삭제</Button>
+                <Button onClick={() => deletePost(id)}>삭제</Button>
               </ChangeDelete>
             </ButtonContainer>
           </PostContainer>
           <CommentContainer>
-            <CommentHeader>
-              <CommentIcon>
+            <Header>
+              <Icon>
                 <FontAwesomeIcon icon={faComment} />
-              </CommentIcon>
+              </Icon>
               댓글
-            </CommentHeader>
-            <CommentWriteWrapper>
-              <CommentWriterProfile src={'/images/hongik.png'} />
-              <CommentWriteContainer>
-                <CommentWriterInfo>
-                  <CommentWriter>{post.writer}</CommentWriter>
-                  <CommentWriterGrade>{`운영진`}</CommentWriterGrade>
-                </CommentWriterInfo>
-                <CommentWriteInput
+            </Header>
+            <WriteWrapper>
+              <WriterProfile src={'/images/hongik.png'} />
+              <WriteContainer>
+                <WriterInfo>
+                  <Writer>{post.writer}</Writer>
+                  <WriterGrade>{`운영진`}</WriterGrade>
+                </WriterInfo>
+                <WriteInput
                   placeholder="댓글을 입력해주세요."
                   value={commentText}
                   onChange={onChange}
                   maxLength={limit}
                   spellCheck={false}
                 />
-                <CommentEnrollButton caution={commentText.length > limit - 10}>
-                  <NumOfCommentCharacter>{`${commentText.length} / ${limit}자`}</NumOfCommentCharacter>
+                <EnrollButton caution={commentText.length > limit - 10}>
+                  <NumOfCharacter>{`${commentText.length} / ${limit}자`}</NumOfCharacter>
                   <EnrollMent>등록</EnrollMent>
-                </CommentEnrollButton>
-              </CommentWriteContainer>
-            </CommentWriteWrapper>
-            <CommentListWrapper>
-              <CommentWriterProfile src={'/images/hongik.png'} />
-              <CommentListContainer>
-                <CommentWriterInfo>
-                  <CommentWriter>{`김진호`}</CommentWriter>
-                  <CommentWriterGrade>{`운영진`}</CommentWriterGrade>
-                  <CommentWritenTime>{`23.05.05 AM 02:53`}</CommentWritenTime>
-                </CommentWriterInfo>
-                <CommentContent>{dummyComment}</CommentContent>
-              </CommentListContainer>
-            </CommentListWrapper>
+                </EnrollButton>
+              </WriteContainer>
+            </WriteWrapper>
+            <ListWrapper>
+              <WriterProfile src={'/images/hongik.png'} />
+              <ListContainer>
+                <WriterInfo>
+                  <Writer>{`김진호`}</Writer>
+                  <WriterGrade>{`운영진`}</WriterGrade>
+                  <WritenTime>{`23.05.05 AM 02:53`}</WritenTime>
+                </WriterInfo>
+                <Content>{dummyComment}</Content>
+              </ListContainer>
+            </ListWrapper>
           </CommentContainer>
         </>
       )}
@@ -224,7 +231,7 @@ const CommentContainer = styled.div`
   margin: 150px auto;
 `;
 
-const CommentHeader = styled.h1`
+const Header = styled.h1`
   display: flex;
   color: ${theme.colors.white};
   font-family: 'GmarketSansMedium';
@@ -233,32 +240,32 @@ const CommentHeader = styled.h1`
   line-height: 100%;
 `;
 
-const CommentIcon = styled.div`
+const Icon = styled.div`
   margin-right: 20px;
 `;
 
-const CommentWriteWrapper = styled.div`
+const WriteWrapper = styled.div`
   display: flex;
   padding: 30px 50px;
   border-bottom: 1px solid ${theme.colors.white};
 `;
 
-const CommentWriterProfile = styled.img`
+const WriterProfile = styled.img`
   width: 78px;
   height: 78px;
   margin-right: 30px;
   border-radius: 50%;
 `;
 
-const CommentWriteContainer = styled.div``;
+const WriteContainer = styled.div``;
 
-const CommentWriterInfo = styled.div`
+const WriterInfo = styled.div`
   display: flex;
   justify-content: flex-start;
   margin-bottom: 15px;
 `;
 
-const CommentWriter = styled.div`
+const Writer = styled.div`
   margin-right: 10px;
   color: ${theme.colors.white};
 
@@ -268,7 +275,7 @@ const CommentWriter = styled.div`
   line-height: 150%;
 `;
 
-const CommentWriterGrade = styled.div`
+const WriterGrade = styled.div`
   padding: 0 5px;
   border: 1px solid ${theme.colors.white};
   color: ${theme.colors.white};
@@ -279,7 +286,7 @@ const CommentWriterGrade = styled.div`
   line-height: 150%;
 `;
 
-const CommentWriteInput = styled.textarea`
+const WriteInput = styled.textarea`
   width: 980px;
   height: 150px;
   margin-bottom: 12px;
@@ -302,7 +309,7 @@ const CommentWriteInput = styled.textarea`
   }
 `;
 
-const CommentEnrollButton = styled.button`
+const EnrollButton = styled.button`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -326,19 +333,19 @@ const CommentEnrollButton = styled.button`
   }
 `;
 
-const NumOfCommentCharacter = styled.div``;
+const NumOfCharacter = styled.div``;
 
 const EnrollMent = styled.div``;
 
-const CommentListWrapper = styled.div`
+const ListWrapper = styled.div`
   display: flex;
   padding: 30px 50px;
   border-bottom: 1px solid ${theme.colors.white};
 `;
 
-const CommentListContainer = styled.div``;
+const ListContainer = styled.div``;
 
-const CommentWritenTime = styled.div`
+const WritenTime = styled.div`
   margin-left: 10px;
   color: ${theme.colors.white};
   font-family: 'Pretendard';
@@ -347,7 +354,7 @@ const CommentWritenTime = styled.div`
   line-height: 150%;
 `;
 
-const CommentContent = styled.p`
+const Content = styled.p`
   margin-top: 8px;
   color: ${theme.colors.white};
   font-family: 'Pretendard';
