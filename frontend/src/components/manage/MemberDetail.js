@@ -6,20 +6,20 @@ import { useParams } from 'react-router-dom';
 import MemberInfo from './MemberInfo';
 import confirmMessage from '../../constants/ConfirmMessage';
 import { useNavigate } from 'react-router-dom';
-import { memberGrade } from '../../constants/MemberGrade';
 import { useRecoilState } from 'recoil';
 import { memberinfo } from '../../atom/memberinfo';
 import useConfirm from '../../hook/useConfirm';
 import useAlert from '../../hook/useAlert';
 import Title from '../header/Title';
 import Header from '../header/Header';
+import { memberRole } from '../../constants/MemberRole';
 
 export default function MemberDetail() {
   const { user } = useParams();
   const [userinfo, setUserinfo] = useState([]);
   const [memberInfo, setMemberInfo] = useRecoilState(memberinfo);
 
-  const [userGrade, setUserGrade] = useState('normal');
+  const [userGrade, setUserGrade] = useState(memberRole.GENERAL);
 
   const navigate = useNavigate();
 
@@ -92,17 +92,24 @@ export default function MemberDetail() {
           <MemberProfileList>
             <MemberInfo name="이름" param={userinfo.name} />
             <MemberInfo name="닉네임" param={userinfo.nickname} />
-            <MemberInfo name="학번" param={userinfo.studentID} />
-            <MemberInfo name="전화번호" param={userinfo.call} />
+            <MemberInfo name="학번" param={userinfo.id} />
+            <MemberInfo name="학과" parma={userinfo.major} />
+            <MemberInfo name="전화번호" param={userinfo.phoneNumber} />
             <GradeContainer>
-              <MemberInfo name="등급" param={memberGrade[userinfo.grade]} />
+              <MemberInfo name="등급" param={memberRole[userinfo.role]} />
               <ChangeGradeSelect
                 value={userGrade}
                 onChange={e => updateMemberGrade(e)}
               >
-                <ChangeGradeOption value="normal">일반</ChangeGradeOption>
-                <ChangeGradeOption value="graduate">졸업생</ChangeGradeOption>
-                <ChangeGradeOption value="manager">운영진</ChangeGradeOption>
+                <ChangeGradeOption value={memberRole.GENERAL}>
+                  일반
+                </ChangeGradeOption>
+                <ChangeGradeOption value={memberRole.GRADUATE}>
+                  졸업생
+                </ChangeGradeOption>
+                <ChangeGradeOption value={memberRole.EXECUTIVE}>
+                  운영진
+                </ChangeGradeOption>
               </ChangeGradeSelect>
               <GoAwayButton onClick={deleteUser}>강퇴</GoAwayButton>
             </GradeContainer>

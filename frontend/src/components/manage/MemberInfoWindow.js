@@ -8,6 +8,8 @@ import Checkbox from '../util/Checkbox';
 import EachRegisteredMember from '../eachItem/EachRegisteredMember';
 import { useRecoilState } from 'recoil';
 import { memberinfo } from '../../atom/memberinfo';
+import { memberRole } from './../../constants/MemberRole';
+import { request } from '../../utils/axios';
 
 function MemberInfoWindow(props) {
   const [memberInfo, setMemberInfo] = useRecoilState(memberinfo);
@@ -53,9 +55,12 @@ function MemberInfoWindow(props) {
 
   // 멤버 정보 더미데이터 불러옵니다.
   const fetchData = async () => {
-    const res = await fetch('memberInfo.json');
-    const data = await res.json();
-    return data.memberInfo;
+    try {
+      const respose = await request('get', '/admin/members', { id: 'C011001' });
+      console.log(respose);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -82,6 +87,7 @@ function MemberInfoWindow(props) {
             <td>등급</td>
             <td>이름</td>
             <td>학번</td>
+            <td>전공</td>
             <td>닉네임</td>
             <td>연락처</td>
             <td>
@@ -97,9 +103,10 @@ function MemberInfoWindow(props) {
                   key={index}
                   nickname={value.nickname}
                   name={value.name}
-                  studentID={value.studentID}
-                  call={value.call}
-                  grade={value.grade}
+                  major={value.major}
+                  id={value.id}
+                  phoneNumber={value.phoneNumber}
+                  role={value.role}
                   getMemberInfo={getSelectdMemberInfo}
                 />
               );
@@ -108,9 +115,9 @@ function MemberInfoWindow(props) {
       </MemberContainer>
       <ActionButtonContainer>
         <ChangeGradeSelect onChange={changeGradeSelect}>
-          <GradeOption value="normal">일반</GradeOption>
-          <GradeOption value="graduate">졸업생</GradeOption>
-          <GradeOption value="manager">운영진</GradeOption>
+          <GradeOption value={memberRole.GENERAL}>일반</GradeOption>
+          <GradeOption value={memberRole.GRADUATE}>졸업생</GradeOption>
+          <GradeOption value={memberRole.EXECUTIVE}>운영진</GradeOption>
         </ChangeGradeSelect>
         <ModifyButton onClick={confirmGrant}>등급 수정</ModifyButton>
       </ActionButtonContainer>
