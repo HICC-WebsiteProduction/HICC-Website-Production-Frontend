@@ -40,4 +40,9 @@ export const handlers = [
     const response = response200(notice);
     return res(ctx.json(response));
   }),
+
+  rest.post(`${BASE_URL}/admin/members`, async (req, res, ctx) => {
+    console.log(await req.json());
+    return res(ctx.json('hello'));
+  }),
 ];
