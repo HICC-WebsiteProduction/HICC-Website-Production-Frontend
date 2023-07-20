@@ -45,7 +45,7 @@ export default function MemberDetail() {
   const saveMember = async () => {
     const body = {
       id: 'C011001',
-      targetId: [...userinfo.id],
+      targetIdList: [userinfo.id],
       role: getKeyByValue(memberRole, userRole),
     };
 
@@ -66,7 +66,7 @@ export default function MemberDetail() {
   const alert = useAlert();
 
   const deleteMember = async () => {
-    if (userinfo.role === memberRole.PRESIDENT) {
+    if (memberRole[userinfo.role] === memberRole.PRESIDENT) {
       alert(true, '본인 강퇴는 안돼요...');
       return;
     }

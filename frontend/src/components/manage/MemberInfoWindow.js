@@ -22,7 +22,7 @@ function MemberInfoWindow(props) {
 
     const body = {
       id: 'C011001',
-      targetId: selectedMemberIdList,
+      targetIdList: selectedMemberIdList,
       role: getKeyByValue(memberRole, selectedRole),
     };
 
@@ -84,12 +84,11 @@ function MemberInfoWindow(props) {
   useEffect(() => {
     const loadMemberInfo = async () => {
       const result = await fetchData(); // array 내부는 Object
-      console.log(result);
       setMemberInfo(result);
     };
 
     loadMemberInfo();
-  }, [memberInfo, setMemberInfo]);
+  }, []);
 
   return (
     <MemberInfoContainer>
