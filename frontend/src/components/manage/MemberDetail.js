@@ -33,7 +33,7 @@ export default function MemberDetail() {
         nickname: user,
       };
       try {
-        const response = await request('post', `/admin/memberDetail`, body);
+        const response = await request('post', `/admin/member/detail`, body);
         setUserinfo(response);
       } catch (error) {
         console.log(error);
@@ -63,12 +63,9 @@ export default function MemberDetail() {
     '회원등급 변경에 성공했습니다.',
   );
 
-  const alert = useAlert();
-
   const deleteMember = async () => {
     if (memberRole[userinfo.role] === memberRole.PRESIDENT) {
-      alert(true, '본인 강퇴는 안돼요...');
-      return;
+      return '본인 강퇴는 안돼요...';
     }
 
     const body = {

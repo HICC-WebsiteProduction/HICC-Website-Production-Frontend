@@ -41,8 +41,20 @@ export const handlers = [
     return res(ctx.json(response));
   }),
 
-  rest.post(`${BASE_URL}/admin/members`, async (req, res, ctx) => {
-    console.log(await req.json());
-    return res(ctx.json('hello'));
+  rest.post(`${BASE_URL}/admin/member/detail`, async (req, res, ctx) => {
+    const response = {
+      id: 'C011001',
+      role: 'EXECUTIVE',
+      phoneNumber: '010-2134-2134',
+      nickname: 'ezwoo',
+      name: '이지우',
+      major: 'computer',
+    };
+    return res(ctx.json(response));
+  }),
+
+  rest.post(`${BASE_URL}/admin/expel`, async (req, res, ctx) => {
+    const response = 'success';
+    return res(ctx.json(response));
   }),
 ];
