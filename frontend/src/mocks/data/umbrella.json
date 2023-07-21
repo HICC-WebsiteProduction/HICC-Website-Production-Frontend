@@ -1,0 +1,86 @@
+[
+    {
+      "umbrellaNumber": 1,
+      "status": "rent",
+      "end": "2023.05.22",
+      "lender": "이지우",
+      "unavailableReason": null
+    },
+    {
+      "umbrellaNumber": 2,
+      "status": "rent",
+      "end": "2023.05.22",
+      "lender": "경수현",
+      "unavailableReason": null
+    },
+    {
+      "umbrellaNumber": 3,
+      "status": "unavailable",
+      "end": null,
+      "lender": null,
+      "unavailableReason": "stolen"
+    },
+    {
+      "umbrellaNumber": 4,
+      "status": "unrent",
+      "end": null,
+      "lender": null,
+      "unavailableReason": null
+    },
+    {
+      "umbrellaNumber": 5,
+      "status": "rent",
+      "end": "2023.05.22",
+      "lender": "김진호",
+      "unavailableReason": null
+    },
+    {
+      "umbrellaNumber": 6,
+      "status": "rent",
+      "end": "2023.05.22",
+      "lender": "신민서",
+      "unavailableReason": null
+    },
+    {
+      "umbrellaNumber": 7,
+      "status": "unavailable",
+      "end": null,
+      "lender": null,
+      "unavailableReason": "loss"
+    },
+    {
+      "umbrellaNumber": 8,
+      "status": "unrent",
+      "end": null,
+      "lender": null,
+      "unavailableReason": null
+    },
+    {
+      "umbrellaNumber": 9,
+      "status": "rent",
+      "end": "2023.05.22",
+      "lender": "안성민",
+      "unavailableReason": null
+    },
+    {
+      "umbrellaNumber": 10,
+      "status": "rent",
+      "end": "2023.05.22",
+      "lender": "이승훈",
+      "unavailableReason": null
+    },
+    {
+      "umbrellaNumber": 11,
+      "status": "unrent",
+      "end": null,
+      "lender": null,
+      "unavailableReason": null
+    },
+    {
+      "umbrellaNumber": 12,
+      "status": "rent",
+      "end": "2023.05.22",
+      "lender": "최서영",
+      "unavailableReason": null
+    }
+  ]
