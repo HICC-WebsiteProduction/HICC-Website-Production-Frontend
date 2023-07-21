@@ -57,7 +57,7 @@ function MemberInfoWindow(props) {
   }, []);
 
   // 변경정보를 받아와 멤버정보를 수정합니다.
-  const changeGrade = async () => {
+  const confirmGrant = async () => {
     const checkedIdList = checkboxList
       .filter(member => member.isChecked)
       .map(member => member.id);
@@ -76,9 +76,9 @@ function MemberInfoWindow(props) {
   };
 
   // 회원 등급 변경 버튼을 눌렀을 때 실행되는 함수
-  const confirmGrant = useConfirm(
+  const changeGrade = useConfirm(
     ConfirmMessage.gradeChange,
-    changeGrade,
+    confirmGrant,
     '회원 등급 변경에 성공하였습니다.',
   );
 
@@ -132,7 +132,7 @@ function MemberInfoWindow(props) {
           <GradeOption value={memberRole.GRADUATE}>졸업생</GradeOption>
           <GradeOption value={memberRole.EXECUTIVE}>운영진</GradeOption>
         </ChangeGradeSelect>
-        <ModifyButton onClick={confirmGrant}>등급 수정</ModifyButton>
+        <ModifyButton onClick={changeGrade}>등급 수정</ModifyButton>
       </ActionButtonContainer>
     </MemberInfoContainer>
   );

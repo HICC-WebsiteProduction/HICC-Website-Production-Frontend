@@ -49,7 +49,8 @@ function MemberAuthorizeWindow(props) {
     loadWaitingMember();
   }, []);
 
-  const denyMember = async () => {
+  // 승인 거절을 눌렀을 때 실행되는 함수
+  const confirmDeny = async () => {
     const checkedIdList = checkboxList
       .filter(member => member.isChecked)
       .map(member => member.id);
@@ -66,7 +67,8 @@ function MemberAuthorizeWindow(props) {
     }
   };
 
-  const approveMember = async () => {
+  // 승인 허가를 눌렀을 때 실행되는 함수
+  const confirmGrant = async () => {
     const checkedIdList = checkboxList
       .filter(member => member.isChecked)
       .map(member => member.id);
@@ -83,15 +85,15 @@ function MemberAuthorizeWindow(props) {
     }
   };
 
-  const confirmDeny = useConfirm(
+  const denyMember = useConfirm(
     ConfirmMessage.denyMembership,
-    denyMember,
+    confirmDeny,
     '승인이 거부되었습니다.',
   );
 
-  const confirmGrant = useConfirm(
+  const approveMember = useConfirm(
     ConfirmMessage.approveMembership,
-    approveMember,
+    confirmGrant,
     '승인이 허가되었습니다.',
   );
 
@@ -139,8 +141,8 @@ function MemberAuthorizeWindow(props) {
         </WaitingMemberList>
       </WaitingMemberContainer>
       <ActionButtonContainer>
-        <DenyButton onClick={confirmDeny}>가입 거부</DenyButton>
-        <GrantButton onClick={confirmGrant}>가입 승인</GrantButton>
+        <DenyButton onClick={denyMember}>가입 거부</DenyButton>
+        <GrantButton onClick={approveMember}>가입 승인</GrantButton>
       </ActionButtonContainer>
     </MemberAuthorizeContainer>
   );
