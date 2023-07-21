@@ -1,34 +1,99 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import theme from './../../styles/Theme';
 
-import { waitingMember } from '../../dummy/watingMember';
 import EachWaitingMember from '../eachItem/EachWatingMember';
 import Checkbox from './../util/Checkbox';
 import useCheckbox from '../../hook/useCheckbox';
+import { request } from '../../utils/axios';
+import useConfirm from '../../hook/useConfirm';
+import ConfirmMessage from '../../constants/ConfirmMessage';
 
 function MemberAuthorizeWindow(props) {
-  const confirmGrant = data => {
-    // open dialog box
+  const [waitingMember, setWaitingMember] = useState([]);
+
+  const {
+    checkboxList,
+    setCheckboxList,
+    checkAll,
+    checkAllHandler,
+    checkHandler,
+  } = useCheckbox([]);
+
+  const fetchData = async () => {
+    try {
+      const response = await request('post', '/admin/applicant', {
+        id: 'C011001',
+      });
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
   };
-
-  const confirmDeny = data => {
-    // open dialog box
-  };
-
-  const waitingMemberList = waitingMember;
-
-  const initialList = waitingMemberList.map(member => ({
-    id: member.id,
-    isChecked: false,
-  }));
-
-  const { checkboxList, checkAll, checkAllHandler, checkHandler } =
-    useCheckbox(initialList);
 
   useEffect(() => {
-    console.log(checkboxList);
-  }, [checkboxList]);
+    const loadWaitingMember = async () => {
+      const result = await fetchData();
+      setWaitingMember(result);
+
+      // checkbox 초기 상태 설정
+      if (result.length > 0) {
+        const initialList = result.map(member => ({
+          id: member.id,
+          isChecked: false,
+        }));
+        setCheckboxList(initialList);
+      }
+    };
+
+    loadWaitingMember();
+  }, []);
+
+  const denyMember = async () => {
+    const checkedIdList = checkboxList
+      .filter(member => member.isChecked)
+      .map(member => member.id);
+
+    const body = {
+      id: 'C011001',
+      targetIdList: checkedIdList,
+    };
+
+    try {
+      await request('post', '/admin/deny', body);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const approveMember = async () => {
+    const checkedIdList = checkboxList
+      .filter(member => member.isChecked)
+      .map(member => member.id);
+
+    const body = {
+      id: 'C011001',
+      targetIdList: checkedIdList,
+    };
+
+    try {
+      await request('post', '/admin/approve', body);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const confirmDeny = useConfirm(
+    ConfirmMessage.denyMembership,
+    denyMember,
+    '승인이 거부되었습니다.',
+  );
+
+  const confirmGrant = useConfirm(
+    ConfirmMessage.approveMembership,
+    approveMember,
+    '승인이 허가되었습니다.',
+  );
 
   return (
     <MemberAuthorizeContainer>
@@ -56,8 +121,9 @@ function MemberAuthorizeWindow(props) {
           </tr>
         </WaitingMemberHeader>
         <WaitingMemberList>
-          {waitingMemberList &&
-            waitingMemberList.map((member, index) => (
+          {waitingMember &&
+            checkboxList.length > 0 &&
+            waitingMember.map((member, index) => (
               <EachWaitingMember
                 key={`memberauthorize${index}`}
                 nickname={member.nickname}

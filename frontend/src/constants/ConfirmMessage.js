@@ -11,6 +11,11 @@ const ConfirmMessage = {
     '가입을 거부/승인하시겠습니까?!!!!!\n진짜? 정말? 후회 없죠?',
   gradeChange: '이 결정...\n후회하지 않을 자신 있습니까..?',
   getOutMember: '저에게 죄가 있다면..\n달게 받는 수밖에....',
+  denyMembership: `왜...왜..요?
+  당신의 선택으로
+  예비동아리원이 한 명 줄었습니다^^`,
+  approveMembership: `당신의 선택...
+  후회하지 않을 자신 있으십니까?`,
 };
 
 export default ConfirmMessage;

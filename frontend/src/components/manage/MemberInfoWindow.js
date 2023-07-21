@@ -70,16 +70,6 @@ function MemberInfoWindow(props) {
 
     try {
       await request('post', '/admin/modify', body);
-
-      const updatedMemberInfo = memberInfo.map(member => {
-        if (checkedIdList.includes(member.id)) {
-          return { ...member, grade: selectedRole };
-        } else {
-          return member;
-        }
-      });
-
-      setMemberInfo(updatedMemberInfo);
     } catch (error) {
       console.log(error);
     }
