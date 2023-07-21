@@ -5,7 +5,7 @@ import theme from '../styles/Theme';
 import '../styles/sweetalert2.css';
 import useAlert from './useAlert';
 
-const useConfirm = (title, confirm, confirmSuccessMessage) => {
+const useConfirm = (title, confirm, confirmSuccessMessage, dismiss = null) => {
   const errorAlert = useAlert();
   if (!confirm || typeof confirm !== 'function') return;
 
@@ -52,6 +52,9 @@ const useConfirm = (title, confirm, confirmSuccessMessage) => {
               errorAlert(true, res);
             }
           });
+        } else if (result.isDismissed) {
+          if (dismiss === null || typeof dismiss !== 'function') return;
+          dismiss();
         }
       });
   };
