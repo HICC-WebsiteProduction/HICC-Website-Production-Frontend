@@ -1,41 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import theme from './../../styles/Theme';
 
 import { waitingMember } from '../../dummy/watingMember';
 import EachWaitingMember from '../eachItem/EachWatingMember';
 import Checkbox from './../util/Checkbox';
+import useCheckbox from '../../hook/useCheckbox';
 
 function MemberAuthorizeWindow(props) {
-  const memberListRef = React.createRef();
-  let toggleNext = false;
-
-  const selectToggle = () => {
-    const memberList = memberListRef.current.children;
-    let checkedAny = false;
-
-    // if checked any, remove every checkbox
-    for (const element of memberList) {
-      let tdList = element.children;
-      if (tdList[tdList.length - 1].children[0].checked === true) {
-        checkedAny = true;
-        break;
-      }
-    }
-    if (checkedAny === true) {
-      toggleNext = false;
-    }
-
-    // transition : toggle check
-    for (const element of memberList) {
-      let tdList = element.children;
-      console.log(tdList[tdList.length - 1].children[0].checked);
-      tdList[tdList.length - 1].children[0].checked = toggleNext;
-    }
-
-    toggleNext = !toggleNext;
-  };
-
   const confirmGrant = data => {
     // open dialog box
   };
@@ -45,6 +17,18 @@ function MemberAuthorizeWindow(props) {
   };
 
   const waitingMemberList = waitingMember;
+
+  const initialList = waitingMemberList.map(member => ({
+    id: member.id,
+    isChecked: false,
+  }));
+
+  const { checkboxList, checkAll, checkAllHandler, checkHandler } =
+    useCheckbox(initialList);
+
+  useEffect(() => {
+    console.log(checkboxList);
+  }, [checkboxList]);
 
   return (
     <MemberAuthorizeContainer>
@@ -56,27 +40,36 @@ function MemberAuthorizeWindow(props) {
       <WaitingMemberContainer>
         <WaitingMemberHeader>
           <tr>
-            <td>NO.</td>
+            <td>등급</td>
             <td>이름</td>
             <td>학번</td>
+            <td>전공</td>
             <td>닉네임</td>
-            <td>전화번호</td>
+            <td>연락처</td>
             <td>
-              <Checkbox checkboxId="allcheck" onChange={selectToggle} />
+              <Checkbox
+                checkboxId="allcheck"
+                checked={checkAll}
+                onChange={event => checkAllHandler(event.target.checked)}
+              />
             </td>
           </tr>
         </WaitingMemberHeader>
-        <WaitingMemberList ref={memberListRef}>
-          {waitingMemberList.map((member, index) => (
-            <EachWaitingMember
-              key={`member${index}`}
-              no={index + 1}
-              name={member.name}
-              studentNo={member.studentNo}
-              nickname={member.nickname}
-              call={member.call}
-            />
-          ))}
+        <WaitingMemberList>
+          {waitingMemberList &&
+            waitingMemberList.map((member, index) => (
+              <EachWaitingMember
+                key={`memberauthorize${index}`}
+                nickname={member.nickname}
+                name={member.name}
+                major={member.major}
+                id={member.id}
+                phoneNumber={member.phoneNumber}
+                role={member.role}
+                isChecked={checkboxList[index].isChecked}
+                onChange={checkHandler}
+              />
+            ))}
         </WaitingMemberList>
       </WaitingMemberContainer>
       <ActionButtonContainer>
@@ -181,43 +174,3 @@ const GrantButton = styled.button`
     cursor: pointer;
   }
 `;
-
-// function AuthConfirmDialog(props) {
-//   return (
-//     <AuthConfirmDialogContainer>
-//       <AuthComfirmDialogMessage>
-//         <span>가입을 거부/승인 하시겠습니까?!!!!!</span>
-//         <span>진짜? 정말? 후회 없죠?</span>
-//       </AuthComfirmDialogMessage>
-//       <AuthConfirmDialogButtonContainer>
-//         <AuthConfirmDialogCancel>Cancel</AuthConfirmDialogCancel>
-//         <AuthConfirmDialogOk>OK</AuthConfirmDialogOk>
-//       </AuthConfirmDialogButtonContainer>
-//     </AuthConfirmDialogContainer>
-//   );
-// }
-
-// const AuthConfirmDialogContainer = styled.div`
-//   height: ${pixelToRem(400)};
-//   width: ${pixelToRem(800)};
-
-//   background: lightgray;
-// `;
-
-// const AuthComfirmDialogMessage = styled.div`
-//   width: 100%;
-//   height: 55%;
-// `;
-
-// const AuthConfirmDialogButtonContainer = styled.div`
-//   width: 100%;
-//   height: 45%;
-// `;
-
-// const AuthConfirmDialogCancel = styled.button`
-//   *
-// `;
-
-// const AuthConfirmDialogOk = styled.button`
-//   *
-// `;

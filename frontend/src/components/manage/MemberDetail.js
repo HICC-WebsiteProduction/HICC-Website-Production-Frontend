@@ -7,23 +7,19 @@ import MemberInfo from './MemberInfo';
 import confirmMessage from '../../constants/ConfirmMessage';
 import { useNavigate } from 'react-router-dom';
 import useConfirm from '../../hook/useConfirm';
-import useAlert from '../../hook/useAlert';
 import Title from '../header/Title';
 import Header from '../header/Header';
 import { memberRole } from '../../constants/MemberRole';
 import { request } from '../../utils/axios';
 import getKeyByValue from '../../utils/getKeyByValue';
+import useSelect from '../../hook/useSelect';
 
 export default function MemberDetail() {
   const { user } = useParams();
   const [userinfo, setUserinfo] = useState([]);
 
-  const [userRole, setUserRole] = useState(memberRole.GENERAL);
+  const [selectedRole, setSelectedRole] = useSelect(memberRole.GENERAL);
   const navigate = useNavigate();
-
-  const updateMemberRole = e => {
-    setUserRole(e.target.value);
-  };
 
   // 회원정보 로드
   useEffect(() => {
@@ -46,7 +42,7 @@ export default function MemberDetail() {
     const body = {
       id: 'C011001',
       targetIdList: [userinfo.id],
-      role: getKeyByValue(memberRole, userRole),
+      role: getKeyByValue(memberRole, selectedRole),
     };
 
     try {
@@ -103,8 +99,8 @@ export default function MemberDetail() {
             <GradeContainer>
               <MemberInfo name="등급" param={memberRole[userinfo.role]} />
               <ChangeGradeSelect
-                value={userRole}
-                onChange={e => updateMemberRole(e)}
+                value={selectedRole}
+                onChange={e => setSelectedRole(e)}
               >
                 <ChangeGradeOption value={memberRole.GENERAL}>
                   일반

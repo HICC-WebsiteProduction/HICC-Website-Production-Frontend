@@ -1,19 +1,26 @@
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
-import { useState } from 'react';
 import Checkbox from './../util/Checkbox';
+import { memberRole } from '../../constants/MemberRole';
 
 function EachWaitingMember(props) {
-  const [checked, setChecked] = useState(false);
+  const { role, name, id, major, nickname, phoneNumber, isChecked, onChange } =
+    props;
+
+  const changeSelect = e => {
+    onChange(id, e.target.checked);
+  };
+
   return (
     <MemberPresenter>
-      <td>{props.no}</td>
-      <td>{props.name}</td>
-      <td>{props.studentNo}</td>
-      <td>{props.nickname}</td>
-      <td>{props.call}</td>
+      <td>{memberRole[role]}</td>
+      <td>{name}</td>
+      <td>{id}</td>
+      <td>{major}</td>
+      <td>{nickname}</td>
+      <td>{phoneNumber}</td>
       <td>
-        <Checkbox checkboxId={props.no} />
+        <Checkbox value={id} checked={isChecked} onChange={changeSelect} />
       </td>
     </MemberPresenter>
   );

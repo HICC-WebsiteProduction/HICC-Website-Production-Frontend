@@ -3,26 +3,68 @@ import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import ConfirmMessage from '../../constants/ConfirmMessage';
 
-import useConfirm from '../../hook/useConfirm';
-import Checkbox from '../util/Checkbox';
-import EachRegisteredMember from '../eachItem/EachRegisteredMember';
-import { useRecoilState } from 'recoil';
-import { memberinfo } from '../../atom/memberinfo';
+import useConfirm from './../../hook/useConfirm';
+import Checkbox from './../util/Checkbox';
+import EachRegisteredMember from './../eachItem/EachRegisteredMember';
+import getKeyByValue from './../../utils/getKeyByValue';
+import useSelect from './../../hook/useSelect';
+
 import { memberRole } from './../../constants/MemberRole';
-import { request } from '../../utils/axios';
-import getKeyByValue from '../../utils/getKeyByValue';
+import { request } from './../../utils/axios';
+import useCheckbox from '../../hook/useCheckbox';
 
 function MemberInfoWindow(props) {
-  const [memberInfo, setMemberInfo] = useRecoilState(memberinfo);
-  const [selectedMemberIdList, setSelectedMemberIdList] = useState([]);
-  const [selectedRole, setSelectedRole] = useState(memberRole.GENERAL);
+  const [memberInfo, setMemberInfo] = useState([]);
+  const [selectedRole, setSelectedRole] = useSelect(memberRole.GENERAL);
 
+  const {
+    checkboxList,
+    setCheckboxList,
+    checkAll,
+    checkAllHandler,
+    checkHandler,
+  } = useCheckbox([]);
+
+  // 멤버 정보 더미데이터 불러옵니다.
+  const fetchData = async () => {
+    try {
+      const response = await request('post', '/admin/member', {
+        id: 'C011001',
+      });
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // 정보 로드
+  useEffect(() => {
+    const loadMemberInfo = async () => {
+      const result = await fetchData(); // array 내부는 Object
+      setMemberInfo(result);
+
+      // checkbox 초기 상태 설정
+      if (result.length > 0) {
+        const initialList = result.map(member => ({
+          id: member.id,
+          isChecked: false,
+        }));
+        setCheckboxList(initialList);
+      }
+    };
+
+    loadMemberInfo();
+  }, []);
+
+  // 변경정보를 받아와 멤버정보를 수정합니다.
   const changeGrade = async () => {
-    // 변경정보를 받아와 멤버정보를 수정합니다.
+    const checkedIdList = checkboxList
+      .filter(member => member.isChecked)
+      .map(member => member.id);
 
     const body = {
       id: 'C011001',
-      targetIdList: selectedMemberIdList,
+      targetIdList: checkedIdList,
       role: getKeyByValue(memberRole, selectedRole),
     };
 
@@ -30,7 +72,7 @@ function MemberInfoWindow(props) {
       await request('post', '/admin/modify', body);
 
       const updatedMemberInfo = memberInfo.map(member => {
-        if (selectedMemberIdList.includes(member.id)) {
+        if (checkedIdList.includes(member.id)) {
           return { ...member, grade: selectedRole };
         } else {
           return member;
@@ -50,46 +92,6 @@ function MemberInfoWindow(props) {
     '회원 등급 변경에 성공하였습니다.',
   );
 
-  // 회원 등급 선택 값을 변경하였을 때 실행되는 함수
-  const changeGradeSelect = event => {
-    setSelectedRole(event.target.value);
-  };
-
-  // 체크된 멤버를 관리하는 함수
-  const getSelectedMemberInfo = (memberID, checked) => {
-    if (checked) {
-      const updatedList = [...selectedMemberIdList];
-      updatedList.push(memberID);
-      setSelectedMemberIdList(updatedList);
-    } else {
-      const updatedList = selectedMemberIdList.filter(
-        item => item !== memberID,
-      );
-      setSelectedMemberIdList(updatedList);
-    }
-  };
-
-  // 멤버 정보 더미데이터 불러옵니다.
-  const fetchData = async () => {
-    try {
-      const response = await request('post', '/admin/members', {
-        id: 'C011001',
-      });
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    const loadMemberInfo = async () => {
-      const result = await fetchData(); // array 내부는 Object
-      setMemberInfo(result);
-    };
-
-    loadMemberInfo();
-  }, []);
-
   return (
     <MemberInfoContainer>
       <MemberListTitle>
@@ -106,12 +108,17 @@ function MemberInfoWindow(props) {
             <td>닉네임</td>
             <td>연락처</td>
             <td>
-              <Checkbox checkboxId="allcheck" />
+              <Checkbox
+                checkboxId="allcheck"
+                checked={checkAll}
+                onChange={event => checkAllHandler(event.target.checked)}
+              />
             </td>
           </tr>
         </MemberHeader>
         <MemberList>
           {memberInfo &&
+            checkboxList.length > 0 &&
             memberInfo.map((value, index) => {
               return (
                 <EachRegisteredMember
@@ -122,14 +129,15 @@ function MemberInfoWindow(props) {
                   id={value.id}
                   phoneNumber={value.phoneNumber}
                   role={value.role}
-                  getMemberInfo={getSelectedMemberInfo}
+                  isChecked={checkboxList[index].isChecked}
+                  onChange={checkHandler}
                 />
               );
             })}
         </MemberList>
       </MemberContainer>
       <ActionButtonContainer>
-        <ChangeGradeSelect onChange={changeGradeSelect}>
+        <ChangeGradeSelect onChange={setSelectedRole}>
           <GradeOption value={memberRole.GENERAL}>일반</GradeOption>
           <GradeOption value={memberRole.GRADUATE}>졸업생</GradeOption>
           <GradeOption value={memberRole.EXECUTIVE}>운영진</GradeOption>

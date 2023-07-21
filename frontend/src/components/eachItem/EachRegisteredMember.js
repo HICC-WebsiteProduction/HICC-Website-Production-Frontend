@@ -5,24 +5,27 @@ import Checkbox from '../util/Checkbox';
 import { memberRole } from '../../constants/MemberRole';
 
 function EachRegisteredMember(props) {
+  const { nickname, name, major, id, phoneNumber, role, isChecked, onChange } =
+    props;
+
   const changeSelect = e => {
-    props.getMemberInfo(props.id, e.target.checked);
+    onChange(id, e.target.checked);
   };
 
   return (
     <MemberPresenter>
-      <td>{memberRole[props.role]}</td>
-      <td>{props.name}</td>
-      <td>{props.id}</td>
-      <td>{props.major}</td>
+      <td>{memberRole[role]}</td>
+      <td>{name}</td>
+      <td>{id}</td>
+      <td>{major}</td>
       <td>
-        <MemberDetailsLink to={`/manage/memberinfo/${props.nickname}`}>
-          {props.nickname}
+        <MemberDetailsLink to={`/manage/memberinfo/${nickname}`}>
+          {nickname}
         </MemberDetailsLink>
       </td>
-      <td>{props.phoneNumber}</td>
+      <td>{phoneNumber}</td>
       <td>
-        <Checkbox value={props.id} onChange={changeSelect} />
+        <Checkbox value={id} checked={isChecked} onChange={changeSelect} />
       </td>
     </MemberPresenter>
   );
