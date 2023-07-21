@@ -1,27 +1,38 @@
 import React from 'react';
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
+import { useRecoilState } from 'recoil';
+import { manageTab } from '../../atom/tab/manage';
 
 export default function ManageTab(props) {
+  const [memu, setMemu] = useRecoilState(manageTab);
+
   const changeTab = index => {
-    props.changeTabContent(index);
+    setMemu(index);
   };
+
+  const manageTabContents = [
+    { name: '회원 승인', accent: memu === 0 },
+    { name: '회원 정보', accent: memu === 1 },
+    { name: '우산 대여', accent: memu === 2 },
+    { name: '사물함 대여', accent: memu === 3 },
+  ];
 
   return (
     <ManageTabContainer>
       <Title>관리페이지</Title>
       <CurrentMenuTab>
-        {props.currentTabContents.map((menu, idx) => (
-          <>
+        {manageTabContents.map((menu, idx) => (
+          <React.Fragment key={`manage${idx}`}>
             <CurrentMenuTabContents
               onClick={() => changeTab(idx)}
               key={`current${idx}`}
               accent={menu.accent}
             >
               {menu.name}
-              <Indicator accent={menu.accent} />
+              <Indicator key={`indicator${idx}`} accent={menu.accent} />
             </CurrentMenuTabContents>
-          </>
+          </React.Fragment>
         ))}
       </CurrentMenuTab>
     </ManageTabContainer>

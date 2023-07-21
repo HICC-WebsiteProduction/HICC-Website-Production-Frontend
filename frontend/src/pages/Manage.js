@@ -1,32 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { ManageMenu } from '../constants/ManageMenu';
 import theme from '../styles/Theme';
 import Header from '../components/header/Header';
 import ManageTab from '../components/header/ManageTab';
+import { useRecoilValue } from 'recoil';
+import { manageTab } from '../atom/tab/manage';
 
 function Manage(props) {
-  const [memu, setMemu] = useState(0);
-
-  const changeTabContent = index => {
-    setMemu(index);
-  };
-
-  const currentTabContents = [
-    { name: '회원 승인', accent: memu === 0 },
-    { name: '회원 정보', accent: memu === 1 },
-    { name: '우산 대여', accent: memu === 2 },
-    { name: '사물함 대여', accent: memu === 3 },
-  ];
+  const menu = useRecoilValue(manageTab);
 
   return (
     <ManageContainer>
       <Header />
-      <ManageTab
-        currentTabContents={currentTabContents}
-        changeTabContent={changeTabContent}
-      />
-      {ManageMenu[memu]}
+      <ManageTab />
+      {ManageMenu[menu]}
     </ManageContainer>
   );
 }
