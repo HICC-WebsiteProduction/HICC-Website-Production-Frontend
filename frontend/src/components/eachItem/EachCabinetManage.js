@@ -1,57 +1,100 @@
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import useSelect from '../../hook/useSelect';
+import Button from '../util/Button';
+import { useSetRecoilState, useRecoilState } from 'recoil';
+import { cabinetModal, cabinet } from '../../atom/cabinet';
 
-function EachCabinetManage({ cabinet }) {
-  const [state, setState] = useSelect('unrent');
+function EachCabinetManage({ eachCabinet }) {
+  const [state, setState] = useSelect(eachCabinet.status);
+
+  const [cabinetList, setCabinetList] = useRecoilState(cabinet);
+  const setCurrentIndex = useSetRecoilState(cabinetModal);
+
+  // 우산의 상태를 변경하는 함수
+  const modifyCabinetState = event => {
+    setState(event);
+
+    const updatedState = cabinetList.map(cabinet => {
+      if (cabinet.cabinetNumber === eachCabinet.cabinetNumber) {
+        return {
+          ...cabinet,
+          status: event.target.value,
+        };
+      } else {
+        return cabinet;
+      }
+    });
+
+    setCabinetList(updatedState);
+  };
+
   return (
-    <Cabinet key={`cabinet${cabinet.cabinetNumber}`} status={cabinet.status}>
-      <CabinetNumber status={cabinet.status}>
-        {cabinet.cabinetNumber}
+    <Cabinet
+      key={`cabinet${eachCabinet.cabinetNumber}`}
+      status={eachCabinet.status}
+    >
+      <CabinetNumber status={eachCabinet.status}>
+        {eachCabinet.cabinetNumber}
       </CabinetNumber>
       <CabinetDesc>
         <CabinetRentStatus>
-          <CabinetRentCircleStatus status={cabinet.status} />
-          <CabinetRentStatusMent status={cabinet.status}>
-            {cabinet.status === 'rent'
+          <CabinetRentCircleStatus status={eachCabinet.status} />
+          <CabinetRentStatusMent status={eachCabinet.status}>
+            {eachCabinet.status === 'rent'
               ? '대여 중'
-              : cabinet.status === 'waiting'
+              : eachCabinet.status === 'waiting'
               ? '승인 대기 중'
-              : cabinet.status === 'unavailable'
+              : eachCabinet.status === 'unavailable'
               ? '대여 불가능'
               : '대여 가능'}
           </CabinetRentStatusMent>
         </CabinetRentStatus>
-        {cabinet.status === 'rent' ? (
+        {eachCabinet.status === 'rent' ? (
           <>
             <DayInfo>
-              <StartDay>{`대여일자 | ${cabinet.start}`}</StartDay>
-              <EndDay>{`반납일자 | ${cabinet.end}`}</EndDay>
+              <StartDay>{`대여일자 | ${eachCabinet.start}`}</StartDay>
+              <EndDay>{`반납일자 | ${eachCabinet.end}`}</EndDay>
             </DayInfo>
 
-            <Lender>{cabinet.lender}</Lender>
+            <Lender>{eachCabinet.lender}</Lender>
+          </>
+        ) : eachCabinet.status === 'waiting' ? (
+          <>
+            <ApproveManager status={eachCabinet.status}>
+              뭔가 메시지가 있으면 좋지 않을까?
+            </ApproveManager>
+            <WaitingApprove
+              buttonName="승인"
+              onClick={() => setCurrentIndex(eachCabinet.cabinetNumber)}
+            />
+          </>
+        ) : eachCabinet.status === 'unavailable' ? (
+          <>
+            <ApproveManager status={eachCabinet.status}>
+              {`현재 이 사물함은
+                  사용이 불가합니다.`}
+            </ApproveManager>
+            <StateSelectButton
+              onChange={event => modifyCabinetState(event)}
+              value={state}
+              status={eachCabinet.status}
+            >
+              <StateOption value="unrent">사용 가능</StateOption>
+              <StateOption value="unavailable">사용 불가</StateOption>
+            </StateSelectButton>
           </>
         ) : (
           <>
-            <ApproveManager status={cabinet.status}>
-              뭔가 메시지가 있으면 좋지 않을까?
-            </ApproveManager>
-            {cabinet.status === 'waiting' ? (
-              <WaitingApprove>{cabinet.lender}</WaitingApprove>
-            ) : cabinet.status === 'unavailable' ? (
-              <Lender>사용 불가</Lender>
-            ) : (
-              <>
-                <StateSelectButton
-                  onChange={setState}
-                  value={state}
-                  defaultValue="unrent"
-                >
-                  <StateOption value="unavailable">사용 불가</StateOption>
-                  <StateOption value="unrent">사용 가능</StateOption>
-                </StateSelectButton>
-              </>
-            )}
+            <NoWaitingMent>{`승인 대기자 없음`}</NoWaitingMent>
+            <StateSelectButton
+              onChange={event => modifyCabinetState(event)}
+              value={state}
+              status={eachCabinet.status}
+            >
+              <StateOption value="unrent">사용 가능</StateOption>
+              <StateOption value="unavailable">사용 불가</StateOption>
+            </StateSelectButton>
           </>
         )}
       </CabinetDesc>
@@ -141,7 +184,8 @@ const ApproveManager = styled.div`
   width: 100%;
   height: 35px;
   margin-bottom: 8px;
-  color: ${props => theme.itemColorByState.itemStatus[props.status]};
+  color: ${props =>
+    props.status === 'waiting' ? theme.colors.black : theme.colors.grey};
   font-family: 'Pretendard';
   font-style: normal;
   font-weight: 300;
@@ -149,6 +193,21 @@ const ApproveManager = styled.div`
   line-height: 110%;
   text-align: center;
   white-space: pre-line;
+`;
+
+const NoWaitingMent = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 35px;
+  margin-bottom: 8px;
+  color: ${theme.colors.black};
+  font-family: 'Pretendard';
+  font-weight: 300;
+  font-size: ${theme.fontSizes.font_normal};
+  text-align: center;
 `;
 
 const Lender = styled.div`
@@ -162,14 +221,13 @@ const Lender = styled.div`
   font-family: 'Pretendard';
   font-weight: 300;
   font-size: ${theme.fontSizes.font_normal};
-  line-height: 21px;
   text-align: center;
+  line-height: 21px;
 `;
 
-const WaitingApprove = styled.div`
+const WaitingApprove = styled(Button)`
   width: 160px;
   height: 40px;
-  padding-top: 9px;
   background-color: ${theme.itemColorByState.button.wating};
   border-radius: 20px;
 
@@ -187,12 +245,13 @@ const StateSelectButton = styled.select`
   align-items: center;
   width: 160px;
   height: 40px;
-  background-color: ${theme.colors.blue};
+  background-color: ${props => theme.itemColorByState.button[props.status]};
   border: none;
   border-radius: 20px;
   outline: none;
 
-  color: ${theme.colors.white};
+  color: ${props =>
+    props.status === 'unrent' ? theme.colors.white : theme.colors.black};
   font-weight: 300;
   font-size: ${theme.fontSizes.font_normal};
   line-height: 21px;
