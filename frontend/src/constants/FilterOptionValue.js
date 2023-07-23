@@ -9,4 +9,9 @@ export const filterOptionValue = {
     title: '제목',
     postId: '글번호',
   },
+  member: {
+    role: '등급 순',
+    name: '이름 순',
+    id: '학번 순',
+  },
 };

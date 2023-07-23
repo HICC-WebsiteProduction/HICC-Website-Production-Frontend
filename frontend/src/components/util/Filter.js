@@ -3,6 +3,7 @@ import theme from './../../styles/Theme';
 
 export default function Filter(props) {
   const options = Object.keys(props.optionValue);
+
   return (
     <FilterContainer onChange={props.onChange}>
       {options.map((option, idx) => (

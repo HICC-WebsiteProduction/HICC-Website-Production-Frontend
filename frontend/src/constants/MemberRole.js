@@ -5,3 +5,11 @@ export const memberRole = {
   GRADUATE: '졸업생',
   GUEST: '승인대기자',
 };
+
+export const rolePriority = {
+  PRESIDENT: 1,
+  EXECUTIVE: 2,
+  GENERAL: 3,
+  GRADUATE: 4,
+  GUEST: 5,
+};

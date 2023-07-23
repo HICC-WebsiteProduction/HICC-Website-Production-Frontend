@@ -9,13 +9,18 @@ import EachRegisteredMember from './../eachItem/EachRegisteredMember';
 import getKeyByValue from './../../utils/getKeyByValue';
 import useSelect from './../../hook/useSelect';
 
-import { memberRole } from './../../constants/MemberRole';
+import { memberRole, rolePriority } from './../../constants/MemberRole';
 import { request } from './../../utils/axios';
 import useCheckbox from '../../hook/useCheckbox';
+import { filterOptionValue } from '../../constants/FilterOptionValue';
+import Filter from '../util/Filter';
+import Button from '../util/Button';
 
 function MemberInfoWindow(props) {
   const [memberInfo, setMemberInfo] = useState([]);
   const [selectedRole, setSelectedRole] = useSelect(memberRole.GENERAL);
+  const [sort, setSort] = useSelect(filterOptionValue.member.role);
+  const [keyword, setkeyword] = useState('');
 
   const {
     checkboxList,
@@ -56,6 +61,10 @@ function MemberInfoWindow(props) {
     loadMemberInfo();
   }, []);
 
+  useEffect(() => {
+    console.log(checkboxList);
+  }, [checkboxList]);
+
   // 변경정보를 받아와 멤버정보를 수정합니다.
   const confirmGrant = async () => {
     const checkedIdList = checkboxList
@@ -73,6 +82,63 @@ function MemberInfoWindow(props) {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  // 등급 순, 이름 순, 학번 순으로 정렬하는 함수
+  // 정렬이 완료되면 체크박스는 모두 해제된다.
+  const sortMember = event => {
+    setSort(event);
+    const sortBy = event.target.value;
+
+    if (sortBy === '이름 순') {
+      const sortedMember = [...memberInfo].sort(sortByName);
+      const sortedChecklist = sortedMember.map(member => ({
+        id: member.id,
+        isChecked: false,
+      }));
+      setMemberInfo(sortedMember);
+      setCheckboxList(sortedChecklist);
+    }
+
+    if (sortBy === '학번 순') {
+      const sortedMember = [...memberInfo].sort(sortById);
+      const sortedChecklist = sortedMember.map(member => ({
+        id: member.id,
+        isChecked: false,
+      }));
+      setMemberInfo(sortedMember);
+      setCheckboxList(sortedChecklist);
+    }
+
+    if (sortBy === '등급 순') {
+      const sortedMember = [...memberInfo].sort(sortByRole);
+      const sortedChecklist = sortedMember.map(member => ({
+        id: member.id,
+        isChecked: false,
+      }));
+      setMemberInfo(sortedMember);
+      setCheckboxList(sortedChecklist);
+    }
+  };
+
+  const sortByName = (a, b) => {
+    if (a.name > b.name) return 1;
+    if (a.name < b.name) return -1;
+    return 0;
+  };
+
+  const sortById = (a, b) => {
+    if (a.id > b.id) return 1;
+    if (a.id < b.id) return -1;
+    return 0;
+  };
+
+  const sortByRole = (a, b) => {
+    return rolePriority[a.role] - rolePriority[b.role];
+  };
+
+  const searchMember = () => {
+    console.log(keyword);
   };
 
   // 회원 등급 변경 버튼을 눌렀을 때 실행되는 함수
@@ -112,7 +178,7 @@ function MemberInfoWindow(props) {
             memberInfo.map((value, index) => {
               return (
                 <EachRegisteredMember
-                  key={index}
+                  key={value.id}
                   nickname={value.nickname}
                   name={value.name}
                   major={value.major}
@@ -126,6 +192,18 @@ function MemberInfoWindow(props) {
             })}
         </MemberList>
       </MemberContainer>
+
+      <FilterContainer>
+        <Filter optionValue={filterOptionValue.member} onChange={sortMember} />
+        <Gap />
+        <KeywordSearch
+          placeholder="검색어를 입력하세요"
+          value={keyword}
+          onChange={event => setkeyword(event.target.value)}
+        />
+        <SearchButton buttonName="검색" onClick={searchMember} />
+      </FilterContainer>
+
       <ActionButtonContainer>
         <ChangeGradeSelect onChange={setSelectedRole}>
           <GradeOption value={memberRole.GENERAL}>일반</GradeOption>
@@ -240,4 +318,50 @@ const ModifyButton = styled.button`
   &:hover {
     cursor: pointer;
   }
+`;
+
+const FilterContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  width: ${theme.componentSize.maxWidth};
+  margin: 50px auto;
+`;
+
+const Gap = styled.div`
+  width: 20px;
+  height: 20px;
+`;
+
+const KeywordSearch = styled.input`
+  width: 250px;
+  height: 45px;
+  padding: 6.5px 10px;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid ${theme.colors.white};
+  outline: none;
+
+  color: ${theme.colors.white};
+  font-family: 'Pretendard';
+  font-weight: 300;
+  font-size: ${theme.fontSizes.paragraph};
+  line-height: 150%;
+
+  &::placeholder {
+    color: ${theme.colors.white};
+  }
+`;
+
+const SearchButton = styled(Button)`
+  width: 80px;
+  height: 45px;
+  margin-left: 20px;
+
+  background-color: ${theme.colors.green};
+  border-radius: 40px;
+  color: ${theme.colors.white};
+  font-family: 'Pretendard';
+  font-weight: 500;
+  font-size: ${theme.fontSizes.paragraph};
+  line-height: 150%;
 `;

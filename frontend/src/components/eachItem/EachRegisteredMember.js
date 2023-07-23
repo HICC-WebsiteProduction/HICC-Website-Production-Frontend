@@ -13,7 +13,7 @@ function EachRegisteredMember(props) {
   };
 
   return (
-    <MemberPresenter>
+    <MemberPresenter key={id}>
       <td>{memberRole[role]}</td>
       <td>{name}</td>
       <td>{id}</td>
