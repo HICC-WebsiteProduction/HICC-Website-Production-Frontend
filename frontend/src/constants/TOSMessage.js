@@ -1,3 +1,4 @@
+// 약관동의 메시지
 export const TOSMessage = `
 회원가입 시점에 hicc가 이용자로부터 수집하는 개인정보는 아래와 같습니다.
 

@@ -5,15 +5,16 @@ import { cabinet, cabinetModal } from '../../atom/cabinet';
 import useConfirm from '../../hook/useConfirm';
 import { request } from '../../utils/axios';
 
+// 사물함 대여페이지에서 사용하는 사물함들
 function EachCabinet({ eachCabinet }) {
-  const myName = '김진호';
+  const myName = '김진호'; // 추후에 user atom에서 가져와서 사용할 예정
   const approveManagerMent = `관리자 승인 후\n사용 가능합니다.`;
 
-  const setCurrentIndex = useSetRecoilState(cabinetModal);
-  const [cabinetList, setCabinetList] = useRecoilState(cabinet);
+  const setCurrentIndex = useSetRecoilState(cabinetModal); // 모달 창 작동을 위해
+  const [cabinetList, setCabinetList] = useRecoilState(cabinet); // 사물함 상태 변경을 위해
 
   // 사물함 반납 처리
-  // 대여자의 id를 넘긴다.
+  // 대여자의 id를 넘긴다. 추후에 백엔드 개발자와 협의할 예정
   const confirmGrant = async () => {
     const body = {
       targetId: 'B731070',
@@ -21,6 +22,7 @@ function EachCabinet({ eachCabinet }) {
     try {
       const response = await request('post', '/locker/return', body);
 
+      // 선택한 사물함을 반납함 (myRent -> unrent)
       const updatedList = cabinetList.map(cabinet => {
         if (cabinet.cabinetNumber === eachCabinet.cabinetNumber) {
           return {
@@ -43,6 +45,7 @@ function EachCabinet({ eachCabinet }) {
     }
   };
 
+  // 반납할 때 확인 창을 띄우는 함수 (useConfirm custom hook)
   const returnCabinet = useConfirm(
     '정말 반납하시겠습니까?',
     confirmGrant,

@@ -23,15 +23,16 @@ currentTabContents는 현재 탭의 정보로
 name은 이름, link은 url, accent는 현재 메뉴면 true, 아니면 false를 주면 됩니다.
 */
 
+// 우산 대여 페이지
 export default function UmbrellaRent(props) {
-  const [init, setInit] = useRecoilState(umbrella);
-  const [umbrellaList, setUmbrellaList] = useRecoilState(umbrellaModal); // 사물함 리스트
-  const currentIndex = useRecoilValue(currentUmbrellaIndex);
-  const resetUmbrella = useResetRecoilState(umbrella);
+  const [init, setInit] = useRecoilState(umbrella); // 우산 리스트
+  const [umbrellaList, setUmbrellaList] = useRecoilState(umbrellaModal); // 우산 리스트 (모달 창)
+  const currentIndex = useRecoilValue(currentUmbrellaIndex); // 현재 인덱스 (모달)
+  const resetUmbrella = useResetRecoilState(umbrella); // 우산 상태 초기화
 
   const myName = '김진호';
 
-  const checkMyRent = useMyRent();
+  const checkMyRent = useMyRent(); // 내가 대여 처리
 
   const fetchData = async () => {
     try {
@@ -57,8 +58,8 @@ export default function UmbrellaRent(props) {
     };
   }, []);
 
-  const now = new Date();
-  const sevenDaysAgo = new Date(now.setDate(now.getDate() + 7));
+  const now = new Date(); //  오늘 날짜
+  const sevenDaysAgo = new Date(now.setDate(now.getDate() + 7)); // 우산 반납은 7일 후로 고정
 
   const modalRef = useRef(null);
 

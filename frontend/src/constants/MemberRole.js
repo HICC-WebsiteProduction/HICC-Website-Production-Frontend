@@ -1,3 +1,4 @@
+// 멤버 등급 enum
 export const memberRole = {
   PRESIDENT: '회장',
   EXECUTIVE: '운영진',
@@ -6,6 +7,7 @@ export const memberRole = {
   GUEST: '승인대기자',
 };
 
+// 멤버 등급 우선순위 => 정렬을 할 때 사용
 export const rolePriority = {
   PRESIDENT: 1,
   EXECUTIVE: 2,

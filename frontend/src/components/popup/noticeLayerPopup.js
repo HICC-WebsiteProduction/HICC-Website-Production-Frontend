@@ -9,12 +9,16 @@ import { notificationMessage } from '../../constants/NoticeMessage';
 import calculateDueDate from '../util/CalculateDueDate';
 import useScrollGradient from '../../hook/useScrollGradient';
 
+// 알림 팝업 창을 보여줌
 function NoticeLayerPopup() {
-  const currentIndex = useRecoilValue(noticeTab);
-  const [notice, setNotice] = useRecoilState(noticeType[currentIndex]);
+  const currentIndex = useRecoilValue(noticeTab); // 현재 탭(전체, 게시판, 일정, 대여)을 가져옴
+  const [notice, setNotice] = useRecoilState(noticeType[currentIndex]); // 탭 별 알림을 저장
   const scrollRef = useRef(null);
   const showGradient = useScrollGradient(scrollRef);
+  // 스크롤 바를 없앴을 때 하단에 내용이 더 있는 것을 그라데이션으로 표현
+  // 내용이 더 있다면 그라데이션 보여주고, 없으면 그라데이션 제거
 
+  // 알림 읽음 처리
   const readNotice = noticeId => {
     setNotice(prev => {
       return prev.map(notice => {

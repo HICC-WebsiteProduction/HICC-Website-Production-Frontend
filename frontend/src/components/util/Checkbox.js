@@ -3,6 +3,7 @@ import theme from '../../styles/Theme';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { getSVGURL } from '../../utils/getSVGURL';
 
+// 체크박스 스타일을 커스텀해서 새로 만든 체크박스
 function Checkbox(props) {
   return (
     <StyledInput

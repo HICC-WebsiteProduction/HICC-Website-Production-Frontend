@@ -5,14 +5,15 @@ import { umbrella, umbrellaModal } from '../../atom/umbrella';
 import { request } from '../../utils/axios';
 import useConfirm from '../../hook/useConfirm';
 
+// 우산 대여페이지에서 사용하는 우산들
 function EachUmbrella({ eachUmbrella }) {
-  const myName = '김진호';
+  const myName = '김진호'; // 추후에 user atom에서 가져와서 사용할 예정
 
-  const setCurrentIndex = useSetRecoilState(umbrellaModal);
-  const [umbrellaList, setUmbrellaList] = useRecoilState(umbrella);
+  const setCurrentIndex = useSetRecoilState(umbrellaModal); // 모달 창 관리를 위해
+  const [umbrellaList, setUmbrellaList] = useRecoilState(umbrella); // 우산 정보를 변경하기 위해
 
   // 우산 반납 처리
-  // 대여자의 id를 넘긴다.
+  // 대여자의 id를 넘긴다. 추후에 백엔드 개발자와 협의할 예정
   const confirmGrant = async () => {
     const body = {
       targetId: 'B731070',
@@ -20,6 +21,7 @@ function EachUmbrella({ eachUmbrella }) {
     try {
       const response = await request('post', '/umbrella/return', body);
 
+      // 우산을 프론트에서 반납처리한다.
       const updatedList = umbrellaList.map(umbrella => {
         if (umbrella.umbrellaNumber === eachUmbrella.umbrellaNumber) {
           return {
@@ -42,6 +44,7 @@ function EachUmbrella({ eachUmbrella }) {
     }
   };
 
+  // 우산 반납 확인 창을 띄우는 함수
   const returnUmbrella = useConfirm(
     '정말 반납하시겠습니까?',
     confirmGrant,

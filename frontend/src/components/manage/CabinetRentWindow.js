@@ -9,12 +9,13 @@ import { request } from '../../utils/axios';
 import ApproveModal from '../popup/ApproveModal';
 import useConfirm from '../../hook/useConfirm';
 
+// 사물함 관리 페이지를 담당
 function CabinetRentWindow(props) {
-  const [init, setInit] = useRecoilState(cabinet);
-  const [cabinetList, setCabinetList] = useRecoilState(cabinetModal); // 사물함 리스트
+  const [init, setInit] = useRecoilState(cabinet); // 서버에서 가져온 사물함 상태들
+  const [cabinetList, setCabinetList] = useRecoilState(cabinetModal); // 사물함 리스트 (모달 창 포함)
   const currentIndex = useRecoilValue(currentCabinetIndex); // 모달 백드롭 때문에
 
-  const resetCabinet = useResetRecoilState(cabinet);
+  const resetCabinet = useResetRecoilState(cabinet); // 사물함 상태 초기화
 
   const fetchData = async () => {
     try {
@@ -25,6 +26,7 @@ function CabinetRentWindow(props) {
     }
   };
 
+  // setInit에 서버의 상태 저장, 모달 창에 대한 상태는 다른 곳에 저장
   useEffect(() => {
     const loadCabinetStatus = async () => {
       const result = await fetchData();
@@ -45,11 +47,15 @@ function CabinetRentWindow(props) {
     return new Promise(resolve => resolve(1));
   };
 
+  // 저장 확인 창에서 취소를 누르면 서버의 상태로 되돌어가야하기때문
+  // 리코일 저장소를 리셋하고, 페이지를 리로드한다.
+  // 그렇게 되면 서버에서 다시 fetch하게되어 서버의 상태로 되돌아갈 수 있다.
   const confirmDismiss = () => {
     resetCabinet();
     window.location.reload();
   };
 
+  // 저장 버튼을 누르면 실행되는 확인 창
   const saveState = useConfirm(
     '저장하시겠습니까?',
     confirmGrant,

@@ -14,16 +14,17 @@ import Header from '../components/header/Header';
 import Navigation from '../components/header/Navigation';
 import { request } from '../utils/axios';
 
+// 사물함 대여 페이지
 export default function CabinetRent(props) {
-  const [init, setInit] = useRecoilState(cabinet);
-  const [cabinetList, setCabinetList] = useRecoilState(cabinetModal); // 사물함 리스트
+  const [init, setInit] = useRecoilState(cabinet); // 사물함 리스트
+  const [cabinetList, setCabinetList] = useRecoilState(cabinetModal); // 사물함 리스트 (모달 창)
   const currentIndex = useRecoilValue(currentCabinetIndex); // 모달 백드롭 때문에
 
-  const resetCabinet = useResetRecoilState(cabinet);
+  const resetCabinet = useResetRecoilState(cabinet); // 사물함 상태 초기화
 
   const myName = '김진호';
 
-  const checkMyRent = useMyRent();
+  const checkMyRent = useMyRent(); // 내가 대여 처리
 
   const fetchData = async () => {
     try {

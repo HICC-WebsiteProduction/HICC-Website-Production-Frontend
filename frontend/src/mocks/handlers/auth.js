@@ -4,12 +4,13 @@ import { BASE_URL } from '../../config';
 import { response200, response401 } from '../response';
 
 export const authHandlers = [
-  // login success
+  // 로그인 기능
   rest.post(`${BASE_URL}/login`, async (req, res, ctx) => {
     const response = response200(user[0]);
     return res(ctx.json(response));
   }),
 
+  // 닉네임 중복체크
   rest.get(`${BASE_URL}/signup/:nickname`, async (req, res, ctx) => {
     const { nickname } = req.params;
     const userData = ['apple', 'banana', 'blue'];

@@ -7,6 +7,7 @@ import ManageTab from '../components/header/ManageTab';
 import { useRecoilValue } from 'recoil';
 import { manageTab } from '../atom/tab/manage';
 
+// 관리페이지
 function Manage(props) {
   const menu = useRecoilValue(manageTab);
 

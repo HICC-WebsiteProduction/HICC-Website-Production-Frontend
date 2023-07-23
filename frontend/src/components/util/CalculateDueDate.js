@@ -1,3 +1,5 @@
+// 남은 시간, 분, 초를 계산해서 반환해주는 함수
+// 정확하지 않아 수정해줌
 function calculateDueDate(dueDate) {
   const now = new Date();
   const time = new Date(Date.parse(dueDate));

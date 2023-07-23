@@ -12,6 +12,7 @@ import { request } from '../utils/axios';
 import Header from '../components/header/Header';
 import Title from '../components/header/Title';
 
+// 회원가입 페이지
 function Signup(props) {
   const {
     register,
@@ -20,6 +21,7 @@ function Signup(props) {
     watch,
   } = useForm();
 
+  // 닉네임 중복체크를 하지 않았으면 중복 체크 요구
   const onSubmit = data => {
     if (!isNicknameChecked) {
       alert(true, '중복체크를 해주세요');
@@ -33,12 +35,13 @@ function Signup(props) {
 
   const alert = useAlert();
 
-  const [isNicknameChecked, setIsNicknameChecked] = useState(false);
+  const [isNicknameChecked, setIsNicknameChecked] = useState(false); // 닉네임 중복 체크 여부
 
   // 한 글자씩 늦게 반영되는 오류 발생
   // watch를 사용하여 해결완료
   const inputNickname = watch('nickname');
 
+  // 닉네임 중복체크 함수
   const checkDuplicate = async () => {
     try {
       console.log(inputNickname);
@@ -54,6 +57,7 @@ function Signup(props) {
     }
   };
 
+  // 중복체크 후 수정했을 때 다시 중복체크 상태 해제
   useEffect(() => {
     setIsNicknameChecked(false);
   }, [inputNickname]);

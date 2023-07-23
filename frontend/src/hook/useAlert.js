@@ -4,7 +4,9 @@ import styled from 'styled-components';
 import theme from '../styles/Theme';
 import '../styles/sweetalert2.css';
 
+// 경고창을 띄우기 위한 커스텀 훅
 const useAlert = () => {
+  // isError (에러이면 true, 정상이면 false), message: 메시지
   const alert = (isError, message) => {
     const mySwal = withReactContent(Swal);
 

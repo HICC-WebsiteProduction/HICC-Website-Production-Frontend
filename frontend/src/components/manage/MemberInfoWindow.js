@@ -16,12 +16,14 @@ import { filterOptionValue } from '../../constants/FilterOptionValue';
 import Filter from '../util/Filter';
 import Button from '../util/Button';
 
+// 회원 목록을 담당
 function MemberInfoWindow(props) {
-  const [memberInfo, setMemberInfo] = useState([]);
-  const [selectedRole, setSelectedRole] = useSelect(memberRole.GENERAL);
-  const [sort, setSort] = useSelect(filterOptionValue.member.role);
-  const [keyword, setkeyword] = useState('');
+  const [memberInfo, setMemberInfo] = useState([]); // 회원 정보를 담고 있다.
+  const [selectedRole, setSelectedRole] = useSelect(memberRole.GENERAL); // 회원 등급을 조정
+  const [sort, setSort] = useSelect(filterOptionValue.member.role); // 정렬 기준을 조정
+  const [keyword, setkeyword] = useState(''); // 검색창
 
+  // 체크 박스를 위해
   const {
     checkboxList,
     setCheckboxList,
@@ -66,6 +68,8 @@ function MemberInfoWindow(props) {
   }, [checkboxList]);
 
   // 변경정보를 받아와 멤버정보를 수정합니다.
+  // 백엔드 개발자와 협의 완료
+  // 변경 인원 중에 회장이 있으면 막아야하는데 아직 미구현
   const confirmGrant = async () => {
     const checkedIdList = checkboxList
       .filter(member => member.isChecked)
@@ -85,6 +89,13 @@ function MemberInfoWindow(props) {
       console.log(error);
     }
   };
+  
+  // 회원 등급 변경 버튼을 눌렀을 때 실행되는 함수
+  const changeGrade = useConfirm(
+    ConfirmMessage.gradeChange,
+    confirmGrant,
+    '회원 등급 변경에 성공하였습니다.',
+  );
 
   // 등급 순, 이름 순, 학번 순으로 정렬하는 함수
   // 정렬이 완료되면 체크박스는 모두 해제된다.
@@ -139,16 +150,11 @@ function MemberInfoWindow(props) {
     return rolePriority[a.role] - rolePriority[b.role];
   };
 
+  // 검색 결과를 보여주는 함수
+  // 아직 미구현
   const searchMember = () => {
     console.log(keyword);
   };
-
-  // 회원 등급 변경 버튼을 눌렀을 때 실행되는 함수
-  const changeGrade = useConfirm(
-    ConfirmMessage.gradeChange,
-    confirmGrant,
-    '회원 등급 변경에 성공하였습니다.',
-  );
 
   return (
     <MemberInfoContainer>

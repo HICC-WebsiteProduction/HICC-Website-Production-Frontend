@@ -3,10 +3,13 @@ import theme from '../../styles/Theme';
 import Checkbox from './../util/Checkbox';
 import { memberRole } from '../../constants/MemberRole';
 
+// 회원 승인 페이지에서 승인 대기자를 보여주는 기능
+// 등급, 이름, 학번, 전공, 닉네임, 전화번호, 체크여부, onChange를 넘겨받음
 function EachWaitingMember(props) {
   const { role, name, id, major, nickname, phoneNumber, isChecked, onChange } =
     props;
 
+  // 등록된 회원과 기능 동일 (학번과, 체크여부 넘겨줌)
   const changeSelect = e => {
     onChange(id, e.target.checked);
   };
