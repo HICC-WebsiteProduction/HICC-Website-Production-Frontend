@@ -1,7 +1,7 @@
-import { currentCabinetIndex } from '../atom/cabinet';
-import { currentUmbrellaIndex } from '../atom/umbrella';
+import { cabinet, currentCabinetIndex } from './../atom/cabinet';
+import { umbrella, currentUmbrellaIndex } from './../atom/umbrella';
 
 export const applyType = {
-  사물함: currentCabinetIndex,
-  우산: currentUmbrellaIndex,
+  사물함: { item: cabinet, index: currentCabinetIndex },
+  우산: { item: umbrella, index: currentUmbrellaIndex },
 };

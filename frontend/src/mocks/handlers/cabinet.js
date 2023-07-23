@@ -7,4 +7,14 @@ export const cabinetHandlers = [
     const response = cabinet;
     return res(ctx.json(response));
   }),
+
+  rest.post(`${BASE_URL}/locker/rent`, async (req, res, ctx) => {
+    const response = 'success';
+    return res(ctx.json(response));
+  }),
+
+  rest.post(`${BASE_URL}/locker/return`, async (req, res, ctx) => {
+    const response = 'success';
+    return res(ctx.json(response));
+  }),
 ];

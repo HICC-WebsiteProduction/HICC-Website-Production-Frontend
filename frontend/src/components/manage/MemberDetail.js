@@ -61,19 +61,21 @@ export default function MemberDetail() {
 
   const deleteMember = async () => {
     if (memberRole[userinfo.role] === memberRole.PRESIDENT) {
-      return '본인 강퇴는 안돼요...';
-    }
+      return new Promise(reject => {
+        reject('본인 강퇴는 안 돼요');
+      });
+    } else {
+      const body = {
+        id: 'C011001',
+        targetId: userinfo.id,
+      };
 
-    const body = {
-      id: 'C011001',
-      targetId: userinfo.id,
-    };
-
-    try {
-      await request('post', '/admin/expel', body);
-      navigate('/manage');
-    } catch (error) {
-      console.log(error);
+      try {
+        await request('post', '/admin/expel', body);
+        navigate('/manage');
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 

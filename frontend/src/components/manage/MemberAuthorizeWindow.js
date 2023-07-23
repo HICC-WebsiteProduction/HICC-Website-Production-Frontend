@@ -62,6 +62,8 @@ function MemberAuthorizeWindow(props) {
 
     try {
       await request('post', '/admin/deny', body);
+      // 정상적인 결과는 resolve로 1을 전달해준다.
+      return new Promise(resolve => resolve(1));
     } catch (error) {
       console.log(error);
     }
@@ -80,6 +82,8 @@ function MemberAuthorizeWindow(props) {
 
     try {
       await request('post', '/admin/approve', body);
+      // 정상적인 결과는 resolve로 1을 전달해준다.
+      return new Promise(resolve => resolve(1));
     } catch (error) {
       console.log(error);
     }

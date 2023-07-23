@@ -35,6 +35,9 @@ function UmbrellaRentWindow(props) {
 
   const confirmGrant = () => {
     console.log('반영 성공');
+
+    // 정상적인 결과는 resolve로 1을 전달해준다.
+    return new Promise(resolve => resolve(1));
   };
 
   const confirmDismiss = () => {

@@ -30,7 +30,8 @@ const useConfirm = (title, confirm, confirmSuccessMessage, dismiss = null) => {
           result.then(res => {
             console.log(res);
             // confirm의 반환 타입이 string이 아니라면 (정상적으로 confirm이 실행)
-            // 아니라면 반환된 메시지를 errorAlert에 넣어서  실행 (중간에 오류를 터뜨림)
+            // 대표 값으로 1을 리턴하도록 정했음
+            // 아니라면 반환된 메시지를 errorAlert에 넣어서 실행 (중간에 오류를 터뜨림)
             if (typeof res !== 'string') {
               mySwal
                 .fire({

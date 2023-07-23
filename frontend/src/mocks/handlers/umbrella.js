@@ -7,4 +7,14 @@ export const umbrellaHandlers = [
     const response = umbrella;
     return res(ctx.json(response));
   }),
+
+  rest.post(`${BASE_URL}/umbrella/rent`, async (req, res, ctx) => {
+    const response = 'success';
+    return res(ctx.json(response));
+  }),
+
+  rest.post(`${BASE_URL}/umbrella/return`, async (req, res, ctx) => {
+    const response = 'success';
+    return res(ctx.json(response));
+  }),
 ];
