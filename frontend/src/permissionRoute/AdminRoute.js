@@ -1,21 +1,18 @@
 import { Navigate } from 'react-router';
-import useAlert from './../hook/useAlert';
+import useAlert from '../hook/useAlert';
 import { rolePriority } from './../constants/MemberRole';
+import ConfirmMessage from '../constants/ConfirmMessage';
 
-// 재학생만 (회장, 운영진, 일반) 들어갈 수 있다.
-function UndergraduateRoute({
-  authenticated,
-  permission,
-  component: Component,
-}) {
+// 회장과 운영진만 들어갈 수 있다.
+function AdminRoute({ authenticated, permission, component: Component }) {
   const alert = useAlert();
-  return authenticated && rolePriority[permission] <= 3 ? (
+  return authenticated && rolePriority[permission] <= 2 ? (
     Component
-  ) : authenticated && rolePriority[permission] > 3 ? (
-    <Navigate to="/" {...alert(true, '재학생만 이용할 수 있습니다.')} />
+  ) : authenticated && rolePriority[permission] > 2 ? (
+    <Navigate to="/" {...alert(true, ConfirmMessage.noPermission)} />
   ) : (
     <Navigate to="/" {...alert(true, '로그인 후 이용해주세요.')} />
   );
 }
 
-export default UndergraduateRoute;
+export default AdminRoute;

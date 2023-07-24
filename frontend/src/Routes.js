@@ -10,13 +10,13 @@ import MemberDetail from './components/manage/MemberDetail';
 import Login from './pages/Login';
 import CabinetRent from './pages/CabinetRent';
 import UmbrellaRent from './pages/UmbrellaRent';
-import PrivateRoute from './permissionRoute/PrivateRoute';
 import { useRecoilValue } from 'recoil';
 import { user } from './atom/user';
 import TOS from './pages/TOS';
-import AdminRoute from './permissionRoute/AdminRoute';
 import PresidentRoute from './permissionRoute/PresidentRoute';
-import UndergraduateRoute from './permissionRoute/AdminRoute';
+import AdminRoute from './permissionRoute/AdminRoute';
+import PrivateRoute from './permissionRoute/PrivateRoute';
+import UndergraduateRoute from './permissionRoute/UndergraduateRoute';
 
 function Router() {
   const isLogin = useRecoilValue(user).accessToken;
