@@ -89,7 +89,7 @@ function MemberInfoWindow(props) {
       console.log(error);
     }
   };
-  
+
   // 회원 등급 변경 버튼을 눌렀을 때 실행되는 함수
   const changeGrade = useConfirm(
     ConfirmMessage.gradeChange,

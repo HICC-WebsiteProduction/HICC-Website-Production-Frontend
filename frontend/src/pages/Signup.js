@@ -11,6 +11,8 @@ import ConfirmMessage from '../constants/ConfirmMessage';
 import { request } from '../utils/axios';
 import Header from '../components/header/Header';
 import Title from '../components/header/Title';
+import { useRecoilValue } from 'recoil';
+import agree from '../atom/agree';
 
 // 회원가입 페이지
 function Signup(props) {
@@ -20,6 +22,19 @@ function Signup(props) {
     formState: { errors },
     watch,
   } = useForm();
+
+  const navigate = useNavigate();
+  const alert = useAlert();
+
+  const isAgree = useRecoilValue(agree);
+
+  // 약관동의를 하지 않은 상태에서 바로 회원가입 페이지 접근을 막음
+  useEffect(() => {
+    if (!isAgree) {
+      alert(true, '약관동의를 먼저 해주세요');
+      navigate('/tos');
+    }
+  }, [alert, isAgree, navigate]);
 
   // 닉네임 중복체크를 하지 않았으면 중복 체크 요구
   const onSubmit = data => {
@@ -31,9 +46,6 @@ function Signup(props) {
     alert(false, '가입이 정상적으로 완료되었습니다.');
     navigate('/');
   };
-  const navigate = useNavigate();
-
-  const alert = useAlert();
 
   const [isNicknameChecked, setIsNicknameChecked] = useState(false); // 닉네임 중복 체크 여부
 

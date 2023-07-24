@@ -1,13 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
-import NoticeTab from './NoticeTab';
 import { noticeType } from '../../constants/NoticeType';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { noticeTab } from '../../atom/noticeTab';
 import { notificationMessage } from '../../constants/NoticeMessage';
 import calculateDueDate from '../util/CalculateDueDate';
 import useScrollGradient from '../../hook/useScrollGradient';
+import { noticeTab } from './../../atom/tab/noticeTab';
+import NoticeTab from './NoticeTab';
 
 // 알림 팝업 창을 보여줌
 function NoticeLayerPopup() {

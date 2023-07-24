@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import { useRecoilState } from 'recoil';
-import { noticeTab } from '../../atom/noticeTab';
+import { noticeTab } from './../../atom/tab/noticeTab';
 
 // 알림 상단 탭을 보여주며 변경해주는 기능
 function NoticeTab() {

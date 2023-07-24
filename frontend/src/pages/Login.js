@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import theme from './../styles/Theme';
 
@@ -9,12 +9,13 @@ import Regex from './../constants/Regex';
 
 import { useNavigate } from 'react-router-dom';
 import { request } from '../utils/axios';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { user } from '../atom/user';
 import Title from '../components/header/Title';
 import Header from '../components/header/Header';
+import agree from '../atom/agree';
 
-// 로그인 
+// 로그인
 export default function Login(props) {
   const {
     register,
@@ -37,6 +38,18 @@ export default function Login(props) {
     }
   };
   const navigate = useNavigate();
+  const isAgree = useRecoilValue(agree);
+  const [goPage, setGoPage] = useState('/tos');
+
+  // 약관 동의를 했으면 회원가입 페이지로, 아니라면 약관동의 페이지로 셋팅
+  useEffect(() => {
+    if (!isAgree) {
+      setGoPage('/tos');
+    } else {
+      setGoPage('/signup');
+    }
+  }, [isAgree]);
+
   return (
     <LoginContainer>
       <Header />
@@ -75,7 +88,7 @@ export default function Login(props) {
             buttonType="button"
             buttonName="가입신청"
             onClick={() => {
-              navigate('/signup');
+              navigate(goPage);
             }}
           />
           <LoginButton

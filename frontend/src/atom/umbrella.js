@@ -13,7 +13,7 @@ export const currentUmbrellaIndex = atom({
 });
 
 // 우산에 모달을 확장시켰음
-// 우산 리스트와 현재 인덱스의 변화를 받아 현재 몇 번 째 우산 모달이 켜져있는지 체크함
+// 우산 리스트와 현재 인덱스의 변화를 받아 현재 누른 버튼의 모달을 켜줌
 export const umbrellaModal = selector({
   key: 'umbrellaModal',
 
