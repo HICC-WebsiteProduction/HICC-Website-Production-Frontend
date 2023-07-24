@@ -91,11 +91,7 @@ export default function Login(props) {
               navigate(goPage);
             }}
           />
-          <LoginButton
-            buttonType="submit"
-            buttonName="로그인"
-            onClick={onSubmit}
-          />
+          <LoginButton buttonType="submit" buttonName="로그인" />
           <InduceJoinMent>회원이 아니라면</InduceJoinMent>
         </ButtonContainer>
       </InputForm>

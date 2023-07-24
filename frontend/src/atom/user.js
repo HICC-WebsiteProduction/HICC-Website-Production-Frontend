@@ -5,12 +5,12 @@ import { atom } from 'recoil';
 export const user = atom({
   key: 'user',
   default: {
-    studentID: '',
     nickname: '',
     name: '',
+    id: '',
+    phoneNumber: '',
+    role: '',
     major: '',
-    call: '',
-    grade: '',
     accessToken: '',
   },
   effects: [localStorageEffectUser('user')],
