@@ -65,7 +65,7 @@ export default function Post(props) {
 
     const updatedPosts = [...posts, newPost];
     // const posts = dummy.posts || [];
-    dummy.posts = updatedPosts;
+
     setPosts(updatedPosts);
   };
 

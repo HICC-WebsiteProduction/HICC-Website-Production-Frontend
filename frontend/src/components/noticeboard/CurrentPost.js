@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import dummy from '../../dummy/posts.json';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComment } from '@fortawesome/free-solid-svg-icons';
@@ -41,6 +41,7 @@ export default function CurrentPost(props) {
   };
   const changingPost = () => {
     setIsChanging(true);
+    navigate('/newpost', { id });
   };
   const finishChange = () => {
     setIsChanging(false);

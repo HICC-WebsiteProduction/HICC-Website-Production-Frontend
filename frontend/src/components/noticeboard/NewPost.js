@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import dummy from '../../dummy/posts.json';
+import { useParams } from 'react-router';
 // import ReactQuill from 'react-quill';
 // import 'react-quill/dist/quill.snow.css';
 
@@ -12,6 +13,7 @@ export default function NewPost(props) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [isChange, setIsChange] = useState(null);
+  const { id } = useParams();
 
   // 제목 입력 핸들러
   const handleTitleChange = e => {
@@ -80,7 +82,6 @@ export default function NewPost(props) {
     </NewPostContainer>
   );
 }
-
 // 새 글 작성 컨테이너
 const NewPostContainer = styled.div`
   width: 80%;
@@ -88,33 +89,27 @@ const NewPostContainer = styled.div`
   padding: ${pixelToRem(20)};
   border: 1px solid ${theme.colors.gray};
 `;
-
 // 새 글 작성 제목
 const NewPostTitle = styled.h2`
   text-align: center;
 `;
-
 // 입력 박스
 const InputBox = styled.div`
   margin-bottom: ${pixelToRem(10)};
 `;
-
 // 입력 라벨
 const InputLabel = styled.label`
   display: block;
 `;
-
 // 입력창
 const Input = styled.input`
   width: 100%;
 `;
-
 // 텍스트 영역
 const TextArea = styled.textarea`
   width: 100%;
   height: ${pixelToRem(200)};
 `;
-
 // 버튼
 const Button = styled.button`
   width: ${pixelToRem(102)};
