@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import dummy from '../../dummy/posts.json';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComment } from '@fortawesome/free-solid-svg-icons';
@@ -42,7 +42,7 @@ export default function CurrentPost(props) {
   //게시글 수정 핸들러
   const changingPost = () => {
     setIsChanging(true);
-    navigate('/newpost', { id });
+    navigate('/changepost', { state: { id, post } });
   };
   //게시글 수정 종료 핸들러
   const finishChange = () => {
@@ -75,9 +75,7 @@ export default function CurrentPost(props) {
             </PostHeader>
             <PostContent>{post.content}</PostContent>
             <ButtonContainer>
-              <Button onClick={() => props.setCurrentPost(null)}>
-                목록으로
-              </Button>
+              <Button onClick={() => navigate(-1)}>목록으로</Button>
               <ChangeDelete>
                 <Button onClick={() => changingPost()}>수정</Button>
                 <Button onClick={() => deletePost(id)}>삭제</Button>

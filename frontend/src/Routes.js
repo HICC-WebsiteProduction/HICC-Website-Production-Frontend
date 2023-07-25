@@ -16,6 +16,7 @@ import { user } from './atom/user';
 import CurrentPost from './components/noticeboard/CurrentPost';
 import Post from './components/noticeboard/Post';
 import NewPost from './components/noticeboard/NewPost';
+import ChangePost from './components/noticeboard/ChangePost';
 
 function Router() {
   const isLogin = useRecoilValue(user).accessToken;
@@ -38,7 +39,7 @@ function Router() {
         <Route path="/rent/umbrellarent" element={<UmbrellaRent />} />
         <Route path="/rent/cabinetrent" element={<CabinetRent />} />
         <Route path="/post/:id" element={<CurrentPost />} />
-        <Route path="/newpost" element={<NewPost />} />
+        <Route path="/changepost" element={<ChangePost />} />
       </Routes>
     </BrowserRouter>
   );
