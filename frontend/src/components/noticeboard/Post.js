@@ -31,6 +31,7 @@ export default function Post(props) {
     },
     index: {
       writer: '작성자',
+
       title: '제목',
       postId: '글번호',
     },
@@ -139,7 +140,7 @@ export default function Post(props) {
         filteredPostsByKeyword = posts.filter(post => post.id === postId);
       } else {
         // 유효하지 않은 숫자를 입력한 경우
-        filteredPostsByKeyword = [];
+        filteredPostsByKeyword = posts;
       }
     } else {
       // 기타 경우는 전체 게시글을 보여줌
@@ -158,6 +159,11 @@ export default function Post(props) {
   };
   const handleSearchButtonClick = () => {
     onChangeSearchByKeyword(inputKeyword);
+  };
+  const handleOnKeyPress = e => {
+    if (e.key === 'Enter') {
+      onChangeSearchByKeyword(inputKeyword); // Enter 입력이 되면 클릭 이벤트 실행
+    }
   };
 
   return (
@@ -209,6 +215,7 @@ export default function Post(props) {
             <KeywordSearch
               placeholder="검색어를 입력하세요"
               onChange={e => setInputKeyword(e.target.value)}
+              onKeyPress={handleOnKeyPress}
             />
             <SearchButton buttonName="검색" onClick={handleSearchButtonClick} />
           </FilterContainer>
