@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
-import dummy from '../../dummy/posts.json';
-import { useParams } from 'react-router';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const pixelToRem = size => `${size / 16}rem`;

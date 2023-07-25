@@ -8,7 +8,7 @@ import CurrentPost from './CurrentPost';
 import Paging from '../paging/Paging';
 import Filter from './../util/Filter';
 import Button from './../util/Button';
-import { filterOptionValue } from './../../constants/FilterOptionValue';
+// import { filterOptionValue } from './../../constants/FilterOptionValue';
 
 export default function Post(props) {
   const [posts, setPosts] = useState(() => {
@@ -22,6 +22,19 @@ export default function Post(props) {
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호
   const [postsPerPage, setPostsPerPage] = useState(10); // 페이지당 게시글 수
   const [filteredPostsCount, setFilteredPostsCount] = useState(0); // 현재 필터의 게시글 수
+
+  const filterOptionValue = {
+    period: {
+      whole: '전체기간',
+      oneMonth: '1개월',
+      HalfYear: '6개월',
+    },
+    index: {
+      writer: '작성자',
+      title: '제목',
+      postId: '글번호',
+    },
+  };
 
   const [searchByPeriod, setSearchByPeriod] = useState(
     filterOptionValue.period.whole,
@@ -102,9 +115,39 @@ export default function Post(props) {
   const onChangeSearchByIndex = event => {
     setSearchByIndex(event.target.value);
   };
-
+  // 검색 필터에 따라 검색 기능
   const onChangeSearchByKeyword = event => {
-    setSearchByKeyword(event.target.value);
+    const keyword = event.target.value;
+    setSearchByKeyword(keyword);
+
+    // filterOptionValue.index 에 따라 검색 필터 설정
+    let filteredPostsByKeyword;
+    if (searchByIndex === filterOptionValue.index.writer) {
+      // 작성자로 검색
+      filteredPostsByKeyword = posts.filter(post =>
+        post.writer.toLowerCase().includes(keyword.toLowerCase()),
+      );
+    } else if (searchByIndex === filterOptionValue.index.title) {
+      // 제목으로 검색
+      filteredPostsByKeyword = posts.filter(post =>
+        post.title.toLowerCase().includes(keyword.toLowerCase()),
+      );
+    } else if (searchByIndex === filterOptionValue.index.postId) {
+      // 글번호로 검색
+      const postId = parseInt(keyword);
+      if (!isNaN(postId)) {
+        filteredPostsByKeyword = posts.filter(post => post.id === postId);
+      } else {
+        // 유효하지 않은 숫자를 입력한 경우
+        filteredPostsByKeyword = [];
+      }
+    } else {
+      // 기타 경우는 전체 게시글을 보여줌
+      filteredPostsByKeyword = posts;
+    }
+
+    setFilteredPosts(filteredPostsByKeyword);
+    setFilteredPostsCount(filteredPostsByKeyword.length);
   };
   // 게시글 삭제
   const deletePost = postId => {
