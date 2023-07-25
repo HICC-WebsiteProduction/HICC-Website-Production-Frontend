@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router';
 import useAlert from '../hook/useAlert';
-import { rolePriority } from './../constants/MemberRole';
+import { rolePriority } from '../constants/MemberRole';
 import ConfirmMessage from '../constants/ConfirmMessage';
 
 // 회장과 운영진만 들어갈 수 있다.

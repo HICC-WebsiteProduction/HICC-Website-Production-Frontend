@@ -12,7 +12,7 @@ function EachCabinetManage({ eachCabinet }) {
   const [cabinetList, setCabinetList] = useRecoilState(cabinet); // 사물함의 상태를 기억하기 위해
   const setCurrentIndex = useSetRecoilState(cabinetModal); // 모달 창 관리를 위해
 
-  // 우산의 상태를 변경하는 함수
+  // 사물함 상태를 변경하는 함수
   const modifyCabinetState = event => {
     setState(event);
 

@@ -18,7 +18,7 @@ import { cabinet } from '../../atom/cabinet';
 export default function ApproveModal(props) {
   const { itemName, itemNumber, lender, start, end } = props;
 
-  const closeModalFunc = useResetRecoilState(applyType[itemName]);
+  const closeModalFunc = useResetRecoilState(applyType[itemName].index);
   // 모달 창 종료를 위해 모달 오픈 여부를 모두 false로 리셋함
 
   const modalRef = useRef(null);
