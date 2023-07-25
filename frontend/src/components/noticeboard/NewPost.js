@@ -121,4 +121,7 @@ const Button = styled.button`
   &:hover {
     cursor: pointer;
   }
+  &:active {
+    opacity: 0.3;
+  }
 `;

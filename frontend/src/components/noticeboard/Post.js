@@ -22,7 +22,7 @@ export default function Post(props) {
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호
   const [postsPerPage, setPostsPerPage] = useState(10); // 페이지당 게시글 수
   const [filteredPostsCount, setFilteredPostsCount] = useState(0); // 현재 필터의 게시글 수
-
+  const [inputKeyword, setInputKeyword] = useState(''); //검색어 state로 저장
   const filterOptionValue = {
     period: {
       whole: '전체기간',
@@ -116,8 +116,8 @@ export default function Post(props) {
     setSearchByIndex(event.target.value);
   };
   // 검색 필터에 따라 검색 기능
-  const onChangeSearchByKeyword = event => {
-    const keyword = event.target.value;
+  const onChangeSearchByKeyword = keyword => {
+    // const keyword = event.target.value;
     setSearchByKeyword(keyword);
 
     // filterOptionValue.index 에 따라 검색 필터 설정
@@ -155,6 +155,9 @@ export default function Post(props) {
     dummy.posts = updatedPosts;
     setPosts(dummy.posts);
     setCurrentPost(null);
+  };
+  const handleSearchButtonClick = () => {
+    onChangeSearchByKeyword(inputKeyword);
   };
 
   return (
@@ -205,9 +208,9 @@ export default function Post(props) {
             <Gap />
             <KeywordSearch
               placeholder="검색어를 입력하세요"
-              onChange={onChangeSearchByKeyword}
+              onChange={e => setInputKeyword(e.target.value)}
             />
-            <SearchButton buttonName="검색" />
+            <SearchButton buttonName="검색" onClick={handleSearchButtonClick} />
           </FilterContainer>
         </>
       )}
@@ -228,6 +231,9 @@ const WriteButton = styled.button`
   color: ${theme.colors.white};
   &:hover {
     cursor: pointer;
+  }
+  &:active {
+    opacity: 0.3;
   }
 `;
 
@@ -283,4 +289,7 @@ const SearchButton = styled(Button)`
   font-weight: 500;
   font-size: ${theme.fontSizes.paragraph};
   line-height: 150%;
+  &:active {
+    opacity: 0.3;
+  }
 `;

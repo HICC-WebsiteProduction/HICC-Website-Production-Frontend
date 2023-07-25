@@ -254,6 +254,9 @@ const Button = styled.button`
   &:hover {
     cursor: pointer;
   }
+  &:active {
+    opacity: 0.3;
+  }
 `;
 
 const CommentContainer = styled.div`
@@ -360,6 +363,9 @@ const EnrollButton = styled.button`
 
   &:hover {
     cursor: pointer;
+  }
+  &:active {
+    opacity: 0.3;
   }
 `;
 
