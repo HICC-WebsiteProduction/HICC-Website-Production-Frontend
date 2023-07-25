@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 /*
   10개 씩 컨텐츠를 전달해줘야합니다.
 */
+//게시글 목록 컴포넌트
 export default function NoticeBoardTable(props) {
   return (
     <NoticeBoardTableContainer>

@@ -1,7 +1,7 @@
 import React from 'react';
 import Pagination from 'react-js-pagination';
 import '../../styles/paging.css';
-
+//페이징 라이브러리
 export default function Paging({ page, count, setPage }) {
   return (
     <>

@@ -6,7 +6,7 @@ import Post from './../components/noticeboard/Post';
 
 function Noticeboard() {
   const [currentBoard, setCurrentBoard] = useState('공지게시판');
-
+  //게시판 변경 핸들러
   const handleBoardChange = boardName => {
     setCurrentBoard(boardName);
   };

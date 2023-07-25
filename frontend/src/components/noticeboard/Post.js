@@ -16,7 +16,7 @@ export default function Post(props) {
     return initialPosts;
   });
 
-  const [currentPost, setCurrentPost] = useState(null);
+  const [currentPost, setCurrentPost] = useState(null); //현재 선택한 게시글
   const [filteredPosts, setFilteredPosts] = useState(posts); // 현재 필터의 게시글 전체
   const [isCreatingPost, setIsCreatingPost] = useState(false);
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호
@@ -30,7 +30,7 @@ export default function Post(props) {
     filterOptionValue.index.writer,
   ); // 인덱스로 검색
   const [searchByKeyword, setSearchByKeyword] = useState(''); // 키워드로 검색
-
+  // 더미로 초기값 설정
   useEffect(() => {
     const posts = dummy.posts || [];
     setPosts(posts);
@@ -46,13 +46,13 @@ export default function Post(props) {
     setIsCreatingPost(null);
     setCurrentPage(1);
   }, [props.filterCondition, posts]);
-
+  //게시글 선택 핸들러
   const handlePostClick = postId => {
     const post = dummy.posts.find(post => post.id === postId);
     setCurrentPost(post);
     console.log('현재 post: ', post);
   };
-
+  //로그 확인
   useEffect(() => {
     console.log('현재2 post: ', currentPost);
   }, [currentPost]);
@@ -68,7 +68,7 @@ export default function Post(props) {
 
     setPosts(updatedPosts);
   };
-
+  //게시글 업데이트
   const updatePost = (postId, updatedData) => {
     const updatedPosts = dummy.posts.map(post => {
       if (post.id === postId) {
@@ -82,15 +82,16 @@ export default function Post(props) {
     dummy.posts = updatedPosts;
   };
 
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
-  const pageNumbers = [];
+  const indexOfLastPost = currentPage * postsPerPage; //마지막 게시글 인덱스
+  const indexOfFirstPost = indexOfLastPost - postsPerPage; //첫번째 게시글 인덱스
+  const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost); //게시판에 해당하는 게시글
+  const pageNumbers = []; //페이징
   for (let i = 1; i <= Math.ceil(filteredPosts.length / postsPerPage); i++) {
     pageNumbers.push(i);
   }
 
   const setPage = error => {
+    //페이지 설정
     setCurrentPage(error);
   };
 
@@ -105,7 +106,7 @@ export default function Post(props) {
   const onChangeSearchByKeyword = event => {
     setSearchByKeyword(event.target.value);
   };
-
+  // 게시글 삭제
   const deletePost = postId => {
     const updatedPosts = dummy.posts.filter(post => post.id !== postId);
     dummy.posts = updatedPosts;

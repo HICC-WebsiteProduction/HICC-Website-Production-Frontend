@@ -39,14 +39,16 @@ export default function CurrentPost(props) {
   const onChange = event => {
     setCommentText(event.target.value);
   };
+  //게시글 수정 핸들러
   const changingPost = () => {
     setIsChanging(true);
     navigate('/newpost', { id });
   };
+  //게시글 수정 종료 핸들러
   const finishChange = () => {
     setIsChanging(false);
   };
-
+  //게시글 삭제 핸들러
   const deletePost = () => {
     const updatedPosts = dummy.posts.filter(post => post.id !== id);
     dummy.posts = updatedPosts;
