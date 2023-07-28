@@ -18,6 +18,7 @@ export default function NoticeBoardTable(props) {
         {props.postList.map((post, index) => (
           <EachPost
             post={post}
+            key={`eachPost${index}`}
             index={index}
             filteredPosts={props.filteredPosts}
             indexOfFirstPost={props.indexOfFirstPost}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
@@ -13,25 +13,22 @@ export default function Tab(props) {
     <HeaderTabContainer>
       <AncestorMenu>
         {props.ancestorMenuTree.map((menu, idx) => (
-          <>
-            <AncestorMenuLink to={menu.link} key={`ancestor${idx}`}>
-              {menu.name}
-            </AncestorMenuLink>
+          <Fragment key={`ancestor${idx}`}>
+            <AncestorMenuLink to={menu.link}>{menu.name}</AncestorMenuLink>
             <RightAngleBracket>{' > '}</RightAngleBracket>
-          </>
+          </Fragment>
         ))}
       </AncestorMenu>
       <CurrentMenuTab>
         {props.currentTabContents.map((menu, idx) => (
-          <>
+          <Fragment key={`current${idx}`}>
             <CurrentMenuTabContents
               onClick={() => changeTab(idx)}
-              key={`current${idx}`}
               accent={menu.accent}
             >
               {menu.name}
             </CurrentMenuTabContents>
-          </>
+          </Fragment>
         ))}
       </CurrentMenuTab>
     </HeaderTabContainer>
