@@ -37,10 +37,10 @@ export default CustomScrollBar;
 const CustomScrollBarStyle = styled(Scrollbars)`
   position: relative !important;
   overflow: hidden;
-  width: 783px !important;
-  height: 50% !important;
+  width: 786px !important;
+  height: 271px !important;
   margin: 40px auto !important;
 
   background-color: #edf0f8;
-  border-radius: 10px !important;
+  border-radius: 20px !important;
 `;

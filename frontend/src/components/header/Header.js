@@ -84,12 +84,18 @@ export default function Header() {
 
 const HeaderContainer = styled.header`
   ${theme.flexbox.flex};
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
   justify-content: space-between;
   width: ${theme.componentSize.maxWidth};
   height: 74px;
   margin: 0 auto;
   padding: 0 ${theme.margin.margin_content};
   transform: rotate(-0.05deg);
+  background-color: ${theme.colors.black};
 `;
 
 const Logo = styled(Link)`

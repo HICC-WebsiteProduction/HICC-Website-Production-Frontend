@@ -138,7 +138,12 @@ const TOSDesc = styled.div`
   background-color: ${theme.colors.white};
   border-radius: 20px;
 
+  font-family: 'Pretendard';
+  font-size: ${theme.fontSizes.font_normal};
+  font-weight: 300;
+
   white-space: pre-line;
+  line-height: 150%;
 `;
 
 const ButtonContainer = styled.div`
