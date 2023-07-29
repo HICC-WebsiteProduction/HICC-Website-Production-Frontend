@@ -5,9 +5,9 @@ import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import Button from '../util/Button';
 import EachCabinetManage from '../eachItem/EachCabinetManage';
-import { request } from '../../utils/axios';
 import ApproveModal from '../popup/ApproveModal';
 import useConfirm from '../../hook/useConfirm';
+import useFetch from '../../hook/useFetch';
 
 // 사물함 관리 페이지를 담당
 function CabinetRentWindow(props) {
@@ -17,28 +17,19 @@ function CabinetRentWindow(props) {
 
   const resetCabinet = useResetRecoilState(cabinet); // 사물함 상태 초기화
 
-  const fetchData = async () => {
-    try {
-      const response = await request('get', '/locker');
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { data, loading, error } = useFetch('/locker');
 
   // setInit에 서버의 상태 저장, 모달 창에 대한 상태는 다른 곳에 저장
   useEffect(() => {
-    const loadCabinetStatus = async () => {
-      const result = await fetchData();
-      setInit(result);
+    if (data) {
+      setInit(data);
       setCabinetList(init);
-    };
-    loadCabinetStatus();
+    }
 
     return () => {
       resetCabinet();
     };
-  }, []);
+  }, [data]);
 
   const confirmGrant = () => {
     console.log('반영 성공');

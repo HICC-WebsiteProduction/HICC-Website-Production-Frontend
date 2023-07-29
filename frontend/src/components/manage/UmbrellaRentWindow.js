@@ -5,34 +5,25 @@ import { useRecoilState, useResetRecoilState } from 'recoil';
 import { umbrella } from '../../atom/umbrella';
 import EachUmbrellaManage from '../eachItem/EachUmbrellaManage';
 import Button from '../util/Button';
-import { request } from '../../utils/axios';
 import useConfirm from '../../hook/useConfirm';
+import useFetch from '../../hook/useFetch';
 
 // 우산 관리 페이지를 담당
 function UmbrellaRentWindow(props) {
   const [umbrellaList, setUmbrellaList] = useRecoilState(umbrella); // 우산 리스트
   const resetUmbrella = useResetRecoilState(umbrella); // 우산 상태 초기화
 
-  const fetchData = async () => {
-    try {
-      const response = await request('get', '/umbrella');
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { data, loading, error } = useFetch('/umbrella');
 
   useEffect(() => {
-    const loadUmbrellaStatus = async () => {
-      const result = await fetchData();
-      setUmbrellaList(result);
-    };
-    loadUmbrellaStatus();
+    if (data) {
+      setUmbrellaList(data);
+    }
 
     return () => {
       resetUmbrella();
     };
-  }, []);
+  }, [data]);
 
   // 우산 상태를 저장하는 기능
   // 아직 백엔드 통신 코드는 작성하지 않음

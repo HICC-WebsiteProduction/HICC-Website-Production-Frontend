@@ -9,17 +9,17 @@ export default function Navigation(props) {
     <NavigationContainer>
       <AncestorMenu>
         {props.ancestorMenuTree.map((menu, idx) => (
-          <>
+          <React.Fragment key={`menuTree${idx}`}>
             <AncestorMenuLink to={menu.link} key={`ancestor${idx}`}>
               {menu.name}
             </AncestorMenuLink>
             <RightAngleBracket key={`bracket${idx}`}>{' > '}</RightAngleBracket>
-          </>
+          </React.Fragment>
         ))}
       </AncestorMenu>
       <CurrentMenuTab>
         {props.currentTabContents.map((menu, idx) => (
-          <>
+          <React.Fragment key={`currentTab${idx}`}>
             <CurrentMenuTabContents
               to={menu.link}
               key={`current${idx}`}
@@ -30,7 +30,7 @@ export default function Navigation(props) {
             <VeticalBar key={`veticalBar${idx}`}>
               {idx < props.currentTabContents.length - 1 ? ` | ` : ''}
             </VeticalBar>
-          </>
+          </React.Fragment>
         ))}
       </CurrentMenuTab>
     </NavigationContainer>

@@ -16,7 +16,7 @@ import ApplyModal from '../components/popup/ApplyModal';
 import moment from 'moment';
 import Header from '../components/header/Header';
 import Navigation from '../components/header/Navigation';
-import { request } from '../utils/axios';
+import useFetch from '../hook/useFetch';
 
 /*
 currentTabContents는 현재 탭의 정보로
@@ -34,29 +34,19 @@ export default function UmbrellaRent(props) {
 
   const checkMyRent = useMyRent(); // 내가 대여 처리
 
-  const fetchData = async () => {
-    try {
-      const response = await request('get', '/umbrella');
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { data, loading, error } = useFetch('/umbrella');
 
   useEffect(() => {
-    const loadUmbrellaStatus = async () => {
-      const result = await fetchData();
-      const umbrellaListIncludeMyRent = checkMyRent(result, myName);
+    if (data) {
+      const umbrellaListIncludeMyRent = checkMyRent(data, myName);
       setInit(umbrellaListIncludeMyRent);
       setUmbrellaList(init);
-    };
-
-    loadUmbrellaStatus();
+    }
 
     return () => {
       resetUmbrella();
     };
-  }, []);
+  }, [data]);
 
   const now = new Date(); //  오늘 날짜
   const sevenDaysAgo = new Date(now.setDate(now.getDate() + 7)); // 우산 반납은 7일 후로 고정
@@ -69,8 +59,8 @@ export default function UmbrellaRent(props) {
     { name: '대여', link: '/rent/umbrellarent' },
   ];
   const currentTabContents = [
-    { name: '우산 대여', link: '/rent/umbrellarent', accent: true },
-    { name: '사물함 대여', link: '/rent/cabinetrent', accent: false },
+    { name: '우산 대여', link: '/rent/umbrellarent', accent: 1 },
+    { name: '사물함 대여', link: '/rent/cabinetrent', accent: 0 },
   ];
 
   return (

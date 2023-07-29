@@ -13,6 +13,7 @@ import { memberRole } from '../../constants/MemberRole';
 import { request } from '../../utils/axios';
 import getKeyByValue from '../../utils/getKeyByValue';
 import useSelect from '../../hook/useSelect';
+import useFetch from '../../hook/useFetch';
 
 // 회원 상세 페이지를 담당
 export default function MemberDetail() {
@@ -22,22 +23,14 @@ export default function MemberDetail() {
   const [selectedRole, setSelectedRole] = useSelect(memberRole.GENERAL); // 회원 등급 선택
   const navigate = useNavigate();
 
+  const { data, loading, error } = useFetch(`/admin/member/detail/${user}`);
+
   // 회원정보 로드
   useEffect(() => {
-    const loadUserInfo = async () => {
-      const body = {
-        id: 'C011001',
-        nickname: user,
-      };
-      try {
-        const response = await request('post', `/admin/member/detail`, body);
-        setUserinfo(response);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    loadUserInfo();
-  }, [user]);
+    if (data) {
+      setUserinfo(data);
+    }
+  }, [user, data]);
 
   // 회원 정보를 저장할 때 실행되는 함수
   // 이 파트는 실제 백엔드와 협의하여 제작함

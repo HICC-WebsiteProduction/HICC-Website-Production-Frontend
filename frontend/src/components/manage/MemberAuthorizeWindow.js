@@ -8,6 +8,7 @@ import useCheckbox from '../../hook/useCheckbox';
 import { request } from '../../utils/axios';
 import useConfirm from '../../hook/useConfirm';
 import ConfirmMessage from '../../constants/ConfirmMessage';
+import useFetch from '../../hook/useFetch';
 
 // 회원 승인 화면을 담당
 function MemberAuthorizeWindow(props) {
@@ -22,34 +23,22 @@ function MemberAuthorizeWindow(props) {
     checkHandler,
   } = useCheckbox([]);
 
-  const fetchData = async () => {
-    try {
-      const response = await request('post', '/admin/applicant', {
-        id: 'C011001',
-      });
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { data, loading, error } = useFetch('/admin/applicant');
 
   useEffect(() => {
-    const loadWaitingMember = async () => {
-      const result = await fetchData();
-      setWaitingMember(result);
+    if (data) {
+      setWaitingMember(data);
 
       // checkbox 초기 상태 설정
-      if (result.length > 0) {
-        const initialList = result.map(member => ({
+      if (data.length > 0) {
+        const initialList = data.map(member => ({
           id: member.id,
           isChecked: false,
         }));
         setCheckboxList(initialList);
       }
-    };
-
-    loadWaitingMember();
-  }, []);
+    }
+  }, [data]);
 
   // 승인 거절을 눌렀을 때 실행되는 함수
   // 이 파트는 실제 백엔드와 협의하여 제작함

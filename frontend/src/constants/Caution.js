@@ -16,8 +16,8 @@ export default function Caution({ item }) {
         <CautionTitle>대여 시 주의사항</CautionTitle>
       </CautionHeader>
       <CautionContent>
-        {match[item].map(message => (
-          <CautionLine>{message}</CautionLine>
+        {match[item].map((message, idx) => (
+          <CautionLine key={`${item}-${idx}`}>{message}</CautionLine>
         ))}
       </CautionContent>
     </CautionContainer>

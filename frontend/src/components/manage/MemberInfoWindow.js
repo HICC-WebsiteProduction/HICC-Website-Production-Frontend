@@ -15,6 +15,7 @@ import useCheckbox from '../../hook/useCheckbox';
 import { filterOptionValue } from '../../constants/FilterOptionValue';
 import Filter from '../util/Filter';
 import Button from '../util/Button';
+import useFetch from '../../hook/useFetch';
 
 // 회원 목록을 담당
 function MemberInfoWindow(props) {
@@ -32,36 +33,23 @@ function MemberInfoWindow(props) {
     checkHandler,
   } = useCheckbox([]);
 
-  // 멤버 정보 더미데이터 불러옵니다.
-  const fetchData = async () => {
-    try {
-      const response = await request('post', '/admin/member', {
-        id: 'C011001',
-      });
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { data, loading, error } = useFetch('/admin/member');
 
   // 정보 로드
   useEffect(() => {
-    const loadMemberInfo = async () => {
-      const result = await fetchData(); // array 내부는 Object
-      setMemberInfo(result);
+    if (data) {
+      setMemberInfo(data);
 
       // checkbox 초기 상태 설정
-      if (result.length > 0) {
-        const initialList = result.map(member => ({
+      if (data.length > 0) {
+        const initialList = data.map(member => ({
           id: member.id,
           isChecked: false,
         }));
         setCheckboxList(initialList);
       }
-    };
-
-    loadMemberInfo();
-  }, []);
+    }
+  }, [data]);
 
   useEffect(() => {
     console.log(checkboxList);

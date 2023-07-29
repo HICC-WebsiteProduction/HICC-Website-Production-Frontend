@@ -3,9 +3,9 @@ import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import Button from '../util/Button';
-import { request } from '../../utils/axios';
 import EachReviewCard from '../eachItem/EachReviewCard';
 import useScrollGradient from '../../hook/useScrollGradient';
+import useFetch from '../../hook/useFetch';
 
 // 일단은 별도의 페이지로 제작한 후 나중에 협의하에 게시판 안으로 밀어넣어보자
 function Restaurant(props) {
@@ -18,23 +18,13 @@ function Restaurant(props) {
 
   const kakao = window.kakao;
 
-  const fetchData = async () => {
-    try {
-      const response = await request('get', '/noticeboard/restaurant');
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { data, loading, error } = useFetch('/noticeboard/restaurant');
 
   useEffect(() => {
-    const loadRestaurantList = async () => {
-      const result = await fetchData();
-      setRestaurantList(result);
-    };
-
-    loadRestaurantList();
-  }, []);
+    if (data) {
+      setRestaurantList(data);
+    }
+  }, [data]);
 
   const markerClick = placeid => {
     const currentRestaurant = restaurantList.filter(
