@@ -27,6 +27,7 @@ function Banner() {
 export default Banner;
 
 const BannerFrame = styled.div`
+  width: 1200px;
   height: 100%;
   margin: 0 auto;
   background-image: url('${logo}');

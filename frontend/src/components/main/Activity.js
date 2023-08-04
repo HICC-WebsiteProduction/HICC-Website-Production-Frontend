@@ -24,7 +24,7 @@ export default Activity;
 
 const ActivityContainer = styled.div`
   position: relative;
-  width: 1920px;
+  width: 1200px;
   height: 900px;
   margin: 0 auto;
 `;
@@ -32,7 +32,7 @@ const ActivityContainer = styled.div`
 const ActivityTitle = styled.div`
   position: absolute;
   top: 50px;
-  left: 363px;
+  //left: 363px;
   width: 463px;
   height: 48px;
   margin-top: 50px;
@@ -48,7 +48,7 @@ const ActivityContentContainer = styled.div`
   gap: 30px;
   position: absolute;
   top: 178px;
-  left: 363px;
+  //left: 363px;
   width: 1194px;
   height: 630px;
   align-items: center;
