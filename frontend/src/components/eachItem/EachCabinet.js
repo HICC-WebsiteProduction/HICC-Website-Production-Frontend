@@ -1,63 +1,108 @@
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
-import { useSetRecoilState } from 'recoil';
-import { cabinetModal } from '../../atom/cabinet';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { cabinet, cabinetModal } from '../../atom/cabinet';
+import useConfirm from '../../hook/useConfirm';
+import { request } from '../../utils/axios';
 
-function EachCabinet({ cabinet }) {
+function EachCabinet({ eachCabinet }) {
   const myName = '김진호';
   const approveManagerMent = `관리자 승인 후\n사용 가능합니다.`;
 
   const setCurrentIndex = useSetRecoilState(cabinetModal);
+  const [cabinetList, setCabinetList] = useRecoilState(cabinet);
+
+  // 사물함 반납 처리
+  // 대여자의 id를 넘긴다.
+  const confirmGrant = async () => {
+    const body = {
+      targetId: 'B731070',
+    };
+    try {
+      const response = await request('post', '/locker/return', body);
+
+      const updatedList = cabinetList.map(cabinet => {
+        if (cabinet.cabinetNumber === eachCabinet.cabinetNumber) {
+          return {
+            ...cabinet,
+            status: 'unrent',
+            start: null,
+            end: null,
+            lender: null,
+          };
+        } else {
+          return cabinet;
+        }
+      });
+      setCabinetList(updatedList);
+
+      // 정상적인 결과는 resolve로 1을 전달해준다.
+      return new Promise(resolve => resolve(1));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const returnCabinet = useConfirm(
+    '정말 반납하시겠습니까?',
+    confirmGrant,
+    '반납처리가 완료되었습니다.',
+  );
 
   return (
-    <Cabinet key={`cabinet${cabinet.cabinetNumber}`} status={cabinet.status}>
-      <CabinetNumber status={cabinet.status}>
-        {cabinet.cabinetNumber}
+    <Cabinet
+      key={`cabinet${eachCabinet.cabinetNumber}`}
+      status={eachCabinet.status}
+    >
+      <CabinetNumber status={eachCabinet.status}>
+        {eachCabinet.cabinetNumber}
       </CabinetNumber>
       <CabinetDesc>
         <CabinetRentStatus>
-          <CabinetRentCircleStatus status={cabinet.status} />
-          <CabinetRentStatusMent status={cabinet.status}>
-            {cabinet.status === 'myRent'
+          <CabinetRentCircleStatus status={eachCabinet.status} />
+          <CabinetRentStatusMent status={eachCabinet.status}>
+            {eachCabinet.status === 'myRent'
               ? '내가 대여'
-              : cabinet.status === 'rent'
+              : eachCabinet.status === 'rent'
               ? '대여 중'
-              : cabinet.status === 'waiting'
+              : eachCabinet.status === 'waiting'
               ? '승인 대기 중'
-              : cabinet.status === 'unavailable'
+              : eachCabinet.status === 'unavailable'
               ? '대여 불가'
               : '대여 가능'}
           </CabinetRentStatusMent>
         </CabinetRentStatus>
-        {cabinet.status === 'rent' || cabinet.status === 'myRent' ? (
+        {eachCabinet.status === 'rent' || eachCabinet.status === 'myRent' ? (
           <>
             <DayInfo>
               <StartDay
-                myRent={cabinet.lender === myName}
-              >{`대여일자 | ${cabinet.start}`}</StartDay>
+                myRent={eachCabinet.lender === myName}
+              >{`대여일자 | ${eachCabinet.start}`}</StartDay>
               <EndDay
-                myRent={cabinet.lender === myName}
-              >{`반납일자 | ${cabinet.end}`}</EndDay>
+                myRent={eachCabinet.lender === myName}
+              >{`반납일자 | ${eachCabinet.end}`}</EndDay>
             </DayInfo>
-            {cabinet.lender === myName ? (
-              <ReturnCabinetButton>반납하기</ReturnCabinetButton>
+            {eachCabinet.lender === myName ? (
+              <ReturnCabinetButton onClick={returnCabinet}>
+                반납하기
+              </ReturnCabinetButton>
             ) : (
-              <Lender>{cabinet.lender}</Lender>
+              <Lender>{eachCabinet.lender}</Lender>
             )}
           </>
         ) : (
           <>
-            <ApproveManager status={cabinet.status}>
+            <ApproveManager status={eachCabinet.status}>
               {approveManagerMent}
             </ApproveManager>
-            {cabinet.status === 'waiting' ? (
-              <WaitingApprove>{cabinet.lender}</WaitingApprove>
-            ) : cabinet.status === 'unavailable' ? (
+            {eachCabinet.status === 'waiting' ? (
+              <WaitingApprove>{eachCabinet.lender}</WaitingApprove>
+            ) : eachCabinet.status === 'unavailable' ? (
               <WaitingApprove>-</WaitingApprove>
             ) : (
               <>
                 <RentButton
-                  onClick={() => setCurrentIndex(cabinet.cabinetNumber)}
+                  onClick={() => setCurrentIndex(eachCabinet.cabinetNumber)}
                 >
                   대여 신청하기
                 </RentButton>

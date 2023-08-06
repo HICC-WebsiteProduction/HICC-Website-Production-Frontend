@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import theme from '../styles/Theme';
-import { cabinetStatus } from './../dummy/cabinetStatus';
 import EachCabinet from '../components/eachItem/EachCabinet';
 import ApplyModal from '../components/popup/ApplyModal';
 import Caution from './../constants/Caution';
@@ -13,6 +12,7 @@ import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import { cabinet, cabinetModal, currentCabinetIndex } from '../atom/cabinet';
 import Header from '../components/header/Header';
 import Navigation from '../components/header/Navigation';
+import { request } from '../utils/axios';
 
 export default function CabinetRent(props) {
   const [init, setInit] = useRecoilState(cabinet);
@@ -23,19 +23,31 @@ export default function CabinetRent(props) {
 
   const myName = '김진호';
 
-  const cabinetListIncludeMyRent = useMyRent(cabinetStatus, myName);
+  const checkMyRent = useMyRent();
 
-  // 사물함 상태 초기 셋팅
+  const fetchData = async () => {
+    try {
+      const response = await request('get', '/locker');
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    setInit(cabinetListIncludeMyRent);
-    setCabinetList(init);
+    const loadCabinetStatus = async () => {
+      const result = await fetchData();
+      const cabinetListIncludeMyRent = checkMyRent(result, myName);
+      setInit(cabinetListIncludeMyRent);
+      setCabinetList(init);
+    };
+
+    loadCabinetStatus();
 
     return () => {
       resetCabinet();
     };
   }, []);
-
-  console.log(currentIndex);
 
   const modalRef = useRef(null);
 
@@ -66,7 +78,7 @@ export default function CabinetRent(props) {
         <CabinetGrid>
           {cabinetList.length > 0 &&
             cabinetList.map(cabinet => (
-              <EachCabinet key={cabinet.cabinetNumber} cabinet={cabinet} />
+              <EachCabinet key={cabinet.cabinetNumber} eachCabinet={cabinet} />
             ))}
         </CabinetGrid>
 
@@ -77,8 +89,9 @@ export default function CabinetRent(props) {
                 <ApplyModal
                   itemName={`사물함`}
                   itemNumber={item.cabinetNumber}
+                  lender={myName}
                   startDay={moment(new Date()).format('yyyy-MM-DD')}
-                  endDay={''}
+                  endDay={undefined}
                   startDayDisabled={true}
                   endDayDisabled={false}
                 />

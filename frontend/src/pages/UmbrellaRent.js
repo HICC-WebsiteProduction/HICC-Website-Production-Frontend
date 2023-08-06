@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUmbrella } from '@fortawesome/free-solid-svg-icons';
 import theme from '../styles/Theme';
-import { umbrellaStatus } from '../dummy/umbrellaStatus';
 import EachUmbrella from '../components/eachItem/EachUmbrella';
 import Caution from './../constants/Caution';
 import useMyRent from '../hook/useMyRent';
@@ -17,6 +16,7 @@ import ApplyModal from '../components/popup/ApplyModal';
 import moment from 'moment';
 import Header from '../components/header/Header';
 import Navigation from '../components/header/Navigation';
+import { request } from '../utils/axios';
 
 /*
 currentTabContents는 현재 탭의 정보로
@@ -31,11 +31,26 @@ export default function UmbrellaRent(props) {
 
   const myName = '김진호';
 
-  const umbrellaListIncludeMyRent = useMyRent(umbrellaStatus, myName);
+  const checkMyRent = useMyRent();
+
+  const fetchData = async () => {
+    try {
+      const response = await request('get', '/umbrella');
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    setInit(umbrellaListIncludeMyRent);
-    setUmbrellaList(init);
+    const loadUmbrellaStatus = async () => {
+      const result = await fetchData();
+      const umbrellaListIncludeMyRent = checkMyRent(result, myName);
+      setInit(umbrellaListIncludeMyRent);
+      setUmbrellaList(init);
+    };
+
+    loadUmbrellaStatus();
 
     return () => {
       resetUmbrella();
@@ -75,7 +90,10 @@ export default function UmbrellaRent(props) {
         <UmbrellaGrid>
           {umbrellaList.length > 0 &&
             umbrellaList.map(umbrella => (
-              <EachUmbrella key={umbrella.umbrellaNumber} umbrella={umbrella} />
+              <EachUmbrella
+                key={umbrella.umbrellaNumber}
+                eachUmbrella={umbrella}
+              />
             ))}
         </UmbrellaGrid>
 
@@ -86,6 +104,7 @@ export default function UmbrellaRent(props) {
                 <ApplyModal
                   itemName={`우산`}
                   itemNumber={item.umbrellaNumber}
+                  lender={myName}
                   startDay={moment(new Date()).format('yyyy-MM-DD')}
                   endDay={moment(sevenDaysAgo).format('yyyy-MM-DD')}
                   startDayDisabled={true}

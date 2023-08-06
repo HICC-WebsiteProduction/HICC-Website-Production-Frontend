@@ -19,7 +19,7 @@ export const manageHandlers = [
   rest.post(`${BASE_URL}/admin/member/detail`, async (req, res, ctx) => {
     const response = {
       id: 'C011001',
-      role: 'EXECUTIVE',
+      role: 'PRESIDENT',
       phoneNumber: '010-2134-2134',
       nickname: 'ezwoo',
       name: '이지우',
