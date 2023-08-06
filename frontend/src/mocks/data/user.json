@@ -1,11 +1,11 @@
 [
   {
-    "studentID": "C211000",
-    "nickname": "apple",
+    "nickname": "ezwoo",
     "name": "이지우",
+    "id": "C211000",
+    "phoneNumber": "010-1234-5678",
+    "role": "PRESIDENT",
     "major": "컴퓨터공학과",
-    "call": "010-1234-5678",
-    "grade": "president",
     "accessToken": "auth"
   }
 ]

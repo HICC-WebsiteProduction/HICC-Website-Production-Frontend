@@ -5,6 +5,7 @@ import Button from '../util/Button';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { user } from '../../atom/user';
 import { useNavigate } from 'react-router';
+import { memberRole } from './../../constants/MemberRole';
 
 // 내 정보를 클릭했을 때 실행되는 팝업
 function MyinfoLayerPopup() {
@@ -28,7 +29,7 @@ function MyinfoLayerPopup() {
         <Profile src="/images/profile.png" />
         <UserInfo>
           <Nickname>{userinfo.nickname}</Nickname>
-          <Grade>{userinfo.grade}</Grade>
+          <Grade>{memberRole[userinfo.role]}</Grade>
           <Name>{userinfo.name}</Name>
         </UserInfo>
       </Header>

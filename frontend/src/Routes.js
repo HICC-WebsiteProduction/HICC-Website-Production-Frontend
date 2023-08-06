@@ -10,13 +10,17 @@ import MemberDetail from './components/manage/MemberDetail';
 import Login from './pages/Login';
 import CabinetRent from './pages/CabinetRent';
 import UmbrellaRent from './pages/UmbrellaRent';
-import PrivateRoute from './PrivateRoute';
 import { useRecoilValue } from 'recoil';
 import { user } from './atom/user';
 import TOS from './pages/TOS';
+import PresidentRoute from './permissionRoute/PresidentRoute';
+import AdminRoute from './permissionRoute/AdminRoute';
+import PrivateRoute from './permissionRoute/PrivateRoute';
+import UndergraduateRoute from './permissionRoute/UndergraduateRoute';
 
 function Router() {
   const isLogin = useRecoilValue(user).accessToken;
+  const role = useRecoilValue(user).role;
   return (
     <BrowserRouter>
       <Routes>
@@ -25,17 +29,66 @@ function Router() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/tos" element={<TOS />} />
         <Route path="/calendar" element={<Calendar />} />
-        <Route path="/mypage" element={<MyPage />} />
-        <Route path="/manage" element={<Manage />} />
+        <Route
+          path="/mypage"
+          element={
+            <PrivateRoute
+              authenticated={isLogin}
+              permission={role}
+              component={<MyPage />}
+            />
+          }
+        />
+        <Route
+          path="/manage"
+          element={
+            <AdminRoute
+              authenticated={isLogin}
+              permission={role}
+              component={<Manage />}
+            />
+          }
+        />
         <Route
           path="/noticeboard"
           element={
-            <PrivateRoute authenticated={isLogin} component={<Noticeboard />} />
+            <PrivateRoute
+              authenticated={isLogin}
+              permission={role}
+              component={<Noticeboard />}
+            />
           }
         />
-        <Route path="/manage/memberinfo/:user" element={<MemberDetail />} />
-        <Route path="/rent/umbrellarent" element={<UmbrellaRent />} />
-        <Route path="/rent/cabinetrent" element={<CabinetRent />} />
+        <Route
+          path="/manage/memberinfo/:user"
+          element={
+            <PresidentRoute
+              authenticated={isLogin}
+              permission={role}
+              component={<MemberDetail />}
+            />
+          }
+        />
+        <Route
+          path="/rent/umbrellarent"
+          element={
+            <UndergraduateRoute
+              authenticated={isLogin}
+              permission={role}
+              component={<UmbrellaRent />}
+            />
+          }
+        />
+        <Route
+          path="/rent/cabinetrent"
+          element={
+            <UndergraduateRoute
+              authenticated={isLogin}
+              permission={role}
+              component={<CabinetRent />}
+            />
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
