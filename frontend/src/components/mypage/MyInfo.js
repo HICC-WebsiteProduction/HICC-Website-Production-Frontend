@@ -42,7 +42,7 @@ function Profile() {
       <ProfileWrapper>
         <ProfileImageContainer>
           <ProfilePicture src={profileImage} alt="프로필 사진" />
-          <ProfileInput type="file" onChange={handleProfileImageChange} />
+          <SelectProfile>사진선택</SelectProfile>
         </ProfileImageContainer>
         <>
           {isEditing ? (
@@ -66,7 +66,10 @@ function Profile() {
           {isEditing ? (
             <EditButton onClick={handleSaveButtonClick}>저장</EditButton>
           ) : (
-            <EditButton onClick={handleEditButtonClick}>정보 수정</EditButton>
+            <>
+              <EditButton onClick={handleEditButtonClick}>수정</EditButton>
+              <WithdrawalButton>회원 탈퇴 신청</WithdrawalButton>
+            </>
           )}
         </ButtonContainer>
       </ProfileWrapper>
@@ -86,6 +89,7 @@ const ProfileWrapper = styled.div`
 const ProfileImageContainer = styled.div`
   display: flex;
   flex-direction: column;
+  margin-right: 60px;
 `;
 
 const ProfilePicture = styled.img`
@@ -94,6 +98,35 @@ const ProfilePicture = styled.img`
   border-radius: 50%;
 `;
 
+const SelectProfile = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 180px;
+  height: 60px;
+  background: ${theme.colors.blue};
+  border-radius: 20px;
+  margin-top: 30px;
+  outline: none;
+
+  color: ${theme.colors.white};
+  font-family: 'Pretendard';
+  font-weight: 600;
+  font-size: ${theme.fontSizes.label};
+  line-height: 150%;
+
+  &:hover {
+    cursor: pointer;
+  }
+  &:active {
+    opacity: 0.3;
+  }
+`;
+const ButtonContainer = styled.div`
+  position: absolute;
+  top: 540px;
+  left: 205px;
+`;
 const EditButton = styled.button`
   width: 786px;
   height: 60px;
@@ -112,11 +145,29 @@ const EditButton = styled.button`
   &:hover {
     cursor: pointer;
   }
+  &:active {
+    opacity: 0.3;
+  }
 `;
+const WithdrawalButton = styled.button`
+  width: 786px;
+  height: 60px;
+  margin-bottom: 50px;
+  border: none;
+  border-radius: 20px;
+  background: ${theme.colors.cancleRed};
+  outline: none;
 
-const ProfileInput = styled.input``;
+  color: ${theme.colors.white};
+  font-family: 'Pretendard';
+  font-weight: 600;
+  font-size: ${theme.fontSizes.label};
+  line-height: 150%;
 
-const ButtonContainer = styled.div`
-  position: absolute;
-  top: 540px;
+  &:hover {
+    cursor: pointer;
+  }
+  &:active {
+    opacity: 0.3;
+  }
 `;
