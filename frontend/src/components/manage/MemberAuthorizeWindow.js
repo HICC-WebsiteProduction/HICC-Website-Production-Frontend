@@ -9,6 +9,7 @@ import { request } from '../../utils/axios';
 import useConfirm from '../../hook/useConfirm';
 import ConfirmMessage from '../../constants/ConfirmMessage';
 import useFetch from '../../hook/useFetch';
+import Loading from './../util/Loading';
 
 // 회원 승인 화면을 담당
 function MemberAuthorizeWindow(props) {
@@ -122,7 +123,10 @@ function MemberAuthorizeWindow(props) {
           </tr>
         </WaitingMemberHeader>
         <WaitingMemberList>
-          {waitingMember &&
+          {loading ? (
+            <Loading />
+          ) : (
+            waitingMember &&
             checkboxList.length > 0 &&
             waitingMember.map((member, index) => (
               <EachWaitingMember
@@ -136,7 +140,8 @@ function MemberAuthorizeWindow(props) {
                 isChecked={checkboxList[index].isChecked}
                 onChange={checkHandler}
               />
-            ))}
+            ))
+          )}
         </WaitingMemberList>
       </WaitingMemberContainer>
       <ActionButtonContainer>

@@ -7,6 +7,10 @@ export const manageHandlers = [
   // 승인 대기자 조회
   rest.get(`${BASE_URL}/admin/applicant`, async (req, res, ctx) => {
     const response = applicant;
+
+    // 2초 후에 응답 보내기
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
     return res(ctx.json(response));
   }),
 
