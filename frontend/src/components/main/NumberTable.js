@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import useScrollCount from './../../hook/useScrollCount';
+import useScrollCount from '../../hook/useScrollCount';
 
 const FIGURE_ITEMS = [
   {
@@ -48,7 +48,7 @@ export default NumberTable;
 
 const NumberTableContainer = styled.div`
   position: relative;
-  width: 1920px;
+  width: 1200px;
   height: 550px;
   margin: 0 auto;
 `;
@@ -56,7 +56,7 @@ const NumberTableContainer = styled.div`
 const NumberTitle = styled.div`
   position: relative;
   top: 50px;
-  left: 350px;
+  //left: 350px;
   width: 370px;
   height: 48px;
   font-size: 40px;
@@ -72,7 +72,7 @@ const NumberContentContainer = styled.div`
   grid-template-columns: repeat(3, minmax(378px, 378px));
   position: relative;
   top: 178px;
-  left: 363px;
+  //left: 363px;
   gap: 31px;
   width: 1196px;
   height: 250px;
