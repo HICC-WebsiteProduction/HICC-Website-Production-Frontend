@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import moment from 'moment';
 import data from '../data/data.json';
@@ -6,6 +6,7 @@ import theme from '../styles/Theme';
 import ScheduleModal from '../components/popup/ScheduleModal';
 import Title from '../components/header/Title';
 import Header from '../components/header/Header';
+import useModal from '../hook/useModal';
 
 function CalendarBox(props) {
   const plans = [];
@@ -55,28 +56,12 @@ function Calendar() {
   const [date, setDate] = useState(moment());
 
   const modalRef = useRef(null);
-  const [modalOpen, setModalOpen] = useState(false);
-
-  useEffect(() => {
-    const handleClickOutside = event => {
-      if (
-        modalRef.current == null ||
-        !modalRef.current.contains(event.target)
-      ) {
-        setModalOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [modalRef]);
+  const modalOpen = useModal(modalRef);
 
   const daysInMonth = date.daysInMonth(); //달의 마지막날
   const firstDayOfMonth = moment(date).startOf('month').format('d'); //달의 시작날 수
 
   const dayArray = ['일', '월', '화', '수', '목', '금', '토']; //요일
-
   const days = [];
 
   for (let i = 0; i < firstDayOfMonth; i++) {
@@ -86,7 +71,6 @@ function Calendar() {
   for (let d = 1; d <= daysInMonth; d++) {
     days.push(d);
   }
-  console.log(days);
 
   const goToPrevMonth = () => {
     setDate(moment(date).subtract(1, 'month'));
@@ -107,9 +91,10 @@ function Calendar() {
           {date.year()}년 {date.month() + 1}월
           <CalendarButton onClick={goToNextMonth}>{'>'}</CalendarButton>
         </CalendarTopContent>
-        <AddScheduleButton
-          onClick={() => setModalOpen(!modalOpen)}
-        >{`일정추가 +`}</AddScheduleButton>
+        <AddScheduleModal ref={modalRef}>
+          {`일정추가 +`}
+          {modalOpen && <ScheduleModal />}
+        </AddScheduleModal>
       </CalendarTop>
       <CalendarMain>
         {dayArray.map((day, idx) => (
@@ -119,9 +104,6 @@ function Calendar() {
           <CalendarBox date={day} isSunday={idx % 7 === 0}></CalendarBox>
         ))}
       </CalendarMain>
-      <div ref={modalRef}>
-        {modalOpen && <ScheduleModal onClose={() => setModalOpen(false)} />}
-      </div>
     </MainContainer>
   );
 }
@@ -175,9 +157,7 @@ const CalendarTopContent = styled.div`
   transform: translate(-50%, 0);
 `;
 
-const AddScheduleButton = styled.button`
-  background-color: transparent;
-  border: none;
+const AddScheduleModal = styled.div`
   color: ${theme.colors.white};
 
   font-family: 'Pretendard';

@@ -5,29 +5,30 @@ import applicant from '../data/watingMember.json';
 
 export const manageHandlers = [
   // 승인 대기자 조회
-  rest.post(`${BASE_URL}/admin/applicant`, async (req, res, ctx) => {
+  rest.get(`${BASE_URL}/admin/applicant`, async (req, res, ctx) => {
     const response = applicant;
+
+    // 2초 후에 응답 보내기
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
     return res(ctx.json(response));
   }),
 
   // 모든 회원정보 조회
-  rest.post(`${BASE_URL}/admin/member`, async (req, res, ctx) => {
+  rest.get(`${BASE_URL}/admin/member`, async (req, res, ctx) => {
     const response = allMember;
     return res(ctx.json(response));
   }),
 
   // 회원 상세정보 조회
-  rest.post(`${BASE_URL}/admin/member/detail`, async (req, res, ctx) => {
-    const response = {
-      id: 'C011001',
-      role: 'PRESIDENT',
-      phoneNumber: '010-2134-2134',
-      nickname: 'ezwoo',
-      name: '이지우',
-      major: 'computer',
-    };
-    return res(ctx.json(response));
-  }),
+  rest.get(
+    `${BASE_URL}/admin/member/detail/:nickname`,
+    async (req, res, ctx) => {
+      const { nickname } = req.params;
+      const response = allMember.find(member => member.nickname === nickname);
+      return res(ctx.json(response));
+    },
+  ),
 
   // 회원 강퇴
   rest.post(`${BASE_URL}/admin/expel`, async (req, res, ctx) => {

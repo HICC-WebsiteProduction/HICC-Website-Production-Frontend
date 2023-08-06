@@ -1,10 +1,122 @@
 [
-  {"nickname": "ezwoo", "name": "이지우", "id": "C211000", "phoneNumber": "010-1234-5678", "role": "PRESIDENT", "major": "컴퓨터공학과"},
-  {"nickname": "banana", "name": "경수현", "id": "C031000", "phoneNumber": "010-1234-5678", "role": "EXECUTIVE", "major": "경영학과"},
-  {"nickname": "pineapple", "name": "김진호", "id": "B731000", "phoneNumber": "010-1234-5678", "role": "EXECUTIVE", "major": "경영학과"},
-  {"nickname": "melon", "name": "김효진", "id": "C119000", "phoneNumber": "010-1234-5678", "role": "EXECUTIVE", "major": "신소재화공"},
-  {"nickname": "strawberry", "name": "김화윤", "id": "C219001", "phoneNumber": "010-1234-5678", "role": "GENERAL", "major": "신소재화공"},
-  {"nickname": "orange", "name": "장민지", "id": "C211003", "phoneNumber": "010-1234-5678", "role": "GENERAL", "major": "컴퓨터공학과"},
-  {"nickname": "pear", "name": "윤찬호", "id": "B915000", "phoneNumber": "010-1234-5678", "role": "GENERAL", "major": "컴퓨터공학과"},
-  {"nickname": "peach", "name": "김준호", "id": "C015000", "phoneNumber": "010-1234-5678", "role": "GRADUATE", "major": "전자전기공학과"}
+  {
+    "nickname": "ezwoo",
+    "name": "이지우",
+    "id": "C211000",
+    "phoneNumber":"010-1234-5678",
+    "role": "PRESIDENT",
+    "major": "컴퓨터공학과"
+  },
+  {
+    "nickname": "banana",
+    "name": "경수현",
+    "id": "C031000",
+    "phoneNumber": "010-1234-5678",
+    "role": "EXECUTIVE",
+    "major": "경영학과"
+  },
+  {
+    "nickname": "pineapple",
+    "name": "김진호",
+    "id": "B731000",
+    "phoneNumber": "010-1234-5678",
+    "role": "EXECUTIVE",
+    "major": "경영학과"
+  },
+  {
+    "nickname": "melon",
+    "name": "김효진",
+    "id": "C119000",
+    "phoneNumber": "010-1234-5678",
+    "role": "EXECUTIVE",
+    "major": "신소재화공"
+  },
+  {
+    "nickname": "strawberry",
+    "name": "김화윤",
+    "id": "C219001",
+    "phoneNumber": "010-1234-5678",
+    "role": "GENERAL",
+    "major": "신소재화공"
+  },
+  {
+    "nickname": "orange",
+    "name": "장민지",
+    "id": "C211003",
+    "phoneNumber": "010-1234-5678",
+    "role": "GENERAL",
+    "major": "컴퓨터공학과"
+  },
+  {
+    "nickname": "pear",
+    "name": "윤찬호",
+    "id": "B915000",
+    "phoneNumber": "010-1234-5678",
+    "role": "GENERAL",
+    "major": "컴퓨터공학과"
+  },
+  {
+    "nickname": "peach",
+    "name": "김준호",
+    "id": "C015000",
+    "phoneNumber": "010-1234-5678",
+    "role": "GRADUATE",
+    "major": "전자전기공학과"
+  },
+  {
+    "nickname": "sseho",
+    "name": "최세호",
+    "id": "B811003",
+    "phoneNumber": "010-1234-5678",
+    "role": "GENERAL",
+    "major": "컴퓨터공학과"
+  },
+  {
+    "nickname": "binaryho",
+    "name": "이진호",
+    "id": "B715003",
+    "phoneNumber": "010-1234-5678",
+    "role": "GENERAL",
+    "major": "전자전기공학과"
+  },
+  {
+    "nickname": "yoonseo",
+    "name": "이윤서",
+    "id": "C046003",
+    "phoneNumber": "010-1234-5678",
+    "role": "GENERAL",
+    "major": "시각디자인학과"
+  },
+  {
+    "nickname": "nayeong",
+    "name": "구나영",
+    "id": "C148003",
+    "phoneNumber": "010-1234-5678",
+    "role": "GENERAL",
+    "major": "판화과"
+  },
+  {
+    "nickname": "shjhi",
+    "name": "송현지",
+    "id": "C135003",
+    "phoneNumber": "010-1234-5678",
+    "role": "GENERAL",
+    "major": "자율전공학과"
+  },
+  {
+    "nickname": "anseongmin",
+    "name": "안성민",
+    "id": "C215003",
+    "phoneNumber": "010-1234-5678",
+    "role": "GENERAL",
+    "major": "전자전기공학과"
+  },
+  {
+    "nickname": "seoyeong",
+    "name": "최서영",
+    "id": "C235003",
+    "phoneNumber": "010-1234-5678",
+    "role": "GENERAL",
+    "major": "자율전공학과"
+  }
 ]

@@ -15,13 +15,28 @@ import useCheckbox from '../../hook/useCheckbox';
 import { filterOptionValue } from '../../constants/FilterOptionValue';
 import Filter from '../util/Filter';
 import Button from '../util/Button';
+import useFetch from '../../hook/useFetch';
+import useInput from '../../hook/useInput';
+
+import { usePagination } from 'react-use-pagination';
+import Paging from '../paging/Paging';
 
 // 회원 목록을 담당
 function MemberInfoWindow(props) {
   const [memberInfo, setMemberInfo] = useState([]); // 회원 정보를 담고 있다.
+  const [curPageMember, setCurPageMember] = useState([]); // 현재 페이지 멤버
+  const pageSize = 10; // 페이지 사이즈
+
   const [selectedRole, setSelectedRole] = useSelect(memberRole.GENERAL); // 회원 등급을 조정
   const [sort, setSort] = useSelect(filterOptionValue.member.role); // 정렬 기준을 조정
-  const [keyword, setkeyword] = useState(''); // 검색창
+  const [keyword, setkeyword] = useInput(''); // 검색창
+
+  // pagination
+  const { currentPage, startIndex, endIndex, setPage } = usePagination({
+    totalItems: memberInfo.length,
+    initialPageSize: pageSize,
+    initialPage: 0,
+  });
 
   // 체크 박스를 위해
   const {
@@ -32,40 +47,38 @@ function MemberInfoWindow(props) {
     checkHandler,
   } = useCheckbox([]);
 
-  // 멤버 정보 더미데이터 불러옵니다.
-  const fetchData = async () => {
-    try {
-      const response = await request('post', '/admin/member', {
-        id: 'C011001',
-      });
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { data, loading, error } = useFetch('/admin/member');
 
   // 정보 로드
   useEffect(() => {
-    const loadMemberInfo = async () => {
-      const result = await fetchData(); // array 내부는 Object
-      setMemberInfo(result);
+    if (data) {
+      setMemberInfo(data);
+      setCurPageMember(data.slice(0, pageSize));
 
       // checkbox 초기 상태 설정
-      if (result.length > 0) {
-        const initialList = result.map(member => ({
+      if (data.length > 0) {
+        const initialList = data.slice(0, pageSize).map(member => ({
           id: member.id,
           isChecked: false,
         }));
         setCheckboxList(initialList);
       }
-    };
+    }
+  }, [data]);
 
-    loadMemberInfo();
-  }, []);
-
+  // 페이지가 변동될 때마다 새로 체크박스 관리를 해주어야하기 때문
+  // 두 라이브러리 호환문제로 인해 endIndex + 1 처리
   useEffect(() => {
-    console.log(checkboxList);
-  }, [checkboxList]);
+    const currentPageMember = memberInfo.slice(startIndex, endIndex + 1);
+    setCurPageMember(currentPageMember);
+
+    const checkboxList = currentPageMember.map(member => ({
+      id: member.id,
+      isChecked: false,
+    }));
+
+    setCheckboxList(checkboxList);
+  }, [currentPage]);
 
   // 변경정보를 받아와 멤버정보를 수정합니다.
   // 백엔드 개발자와 협의 완료
@@ -105,31 +118,37 @@ function MemberInfoWindow(props) {
 
     if (sortBy === '이름 순') {
       const sortedMember = [...memberInfo].sort(sortByName);
+      const currentPageMember = sortedMember.slice(0, pageSize);
       const sortedChecklist = sortedMember.map(member => ({
         id: member.id,
         isChecked: false,
       }));
       setMemberInfo(sortedMember);
+      setCurPageMember(currentPageMember);
       setCheckboxList(sortedChecklist);
     }
 
     if (sortBy === '학번 순') {
       const sortedMember = [...memberInfo].sort(sortById);
+      const currentPageMember = sortedMember.slice(0, pageSize);
       const sortedChecklist = sortedMember.map(member => ({
         id: member.id,
         isChecked: false,
       }));
       setMemberInfo(sortedMember);
+      setCurPageMember(currentPageMember);
       setCheckboxList(sortedChecklist);
     }
 
     if (sortBy === '등급 순') {
       const sortedMember = [...memberInfo].sort(sortByRole);
+      const currentPageMember = sortedMember.slice(0, pageSize);
       const sortedChecklist = sortedMember.map(member => ({
         id: member.id,
         isChecked: false,
       }));
       setMemberInfo(sortedMember);
+      setCurPageMember(currentPageMember);
       setCheckboxList(sortedChecklist);
     }
   };
@@ -151,9 +170,34 @@ function MemberInfoWindow(props) {
   };
 
   // 검색 결과를 보여주는 함수
-  // 아직 미구현
   const searchMember = () => {
-    console.log(keyword);
+    if (keyword.trim() === '') return;
+
+    // 닉네임, 이름, 학번, 전화번호, 전공 검색
+    // 어 등급은 그냥 정렬로 확인하세요...ㅋㅋㅋㅋㅋㅋ
+    const searchResult = memberInfo.filter(
+      member =>
+        member.nickname.toLowerCase().includes(keyword.toLowerCase()) ||
+        member.name.includes(keyword) ||
+        member.id.toLowerCase().includes(keyword.toLowerCase()) ||
+        member.phoneNumber.includes(keyword) ||
+        member.major.includes(keyword),
+    );
+
+    const currentPageMember = searchResult.slice(0, pageSize);
+    const newChecklist = searchResult.map(member => ({
+      id: member.id,
+      isChecked: false,
+    }));
+
+    setMemberInfo(searchResult);
+    setCurPageMember(currentPageMember);
+    setCheckboxList(newChecklist);
+  };
+
+  // 두 라이브러리 호환문제로 page-1 처리
+  const setPages = page => {
+    setPage(page - 1);
   };
 
   return (
@@ -183,7 +227,8 @@ function MemberInfoWindow(props) {
         <MemberList>
           {memberInfo &&
             checkboxList.length > 0 &&
-            memberInfo.map((value, index) => {
+            curPageMember &&
+            curPageMember.map((value, index) => {
               return (
                 <EachRegisteredMember
                   key={value.id}
@@ -201,13 +246,20 @@ function MemberInfoWindow(props) {
         </MemberList>
       </MemberContainer>
 
+      <Paging
+        page={currentPage + 1}
+        pageSize={pageSize}
+        count={memberInfo.length}
+        setPage={setPages}
+      />
+
       <FilterContainer>
         <Filter optionValue={filterOptionValue.member} onChange={sortMember} />
         <Gap />
         <KeywordSearch
           placeholder="검색어를 입력하세요"
           value={keyword}
-          onChange={event => setkeyword(event.target.value)}
+          onChange={setkeyword}
         />
         <SearchButton buttonName="검색" onClick={searchMember} />
       </FilterContainer>

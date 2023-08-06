@@ -13,6 +13,7 @@ import { cabinet, cabinetModal, currentCabinetIndex } from '../atom/cabinet';
 import Header from '../components/header/Header';
 import Navigation from '../components/header/Navigation';
 import { request } from '../utils/axios';
+import useFetch from '../hook/useFetch';
 
 // 사물함 대여 페이지
 export default function CabinetRent(props) {
@@ -26,29 +27,19 @@ export default function CabinetRent(props) {
 
   const checkMyRent = useMyRent(); // 내가 대여 처리
 
-  const fetchData = async () => {
-    try {
-      const response = await request('get', '/locker');
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { data, loading, error } = useFetch('/locker');
 
   useEffect(() => {
-    const loadCabinetStatus = async () => {
-      const result = await fetchData();
-      const cabinetListIncludeMyRent = checkMyRent(result, myName);
+    if (data) {
+      const cabinetListIncludeMyRent = checkMyRent(data, myName);
       setInit(cabinetListIncludeMyRent);
       setCabinetList(init);
-    };
-
-    loadCabinetStatus();
+    }
 
     return () => {
       resetCabinet();
     };
-  }, []);
+  }, [data]);
 
   const modalRef = useRef(null);
 
@@ -58,8 +49,8 @@ export default function CabinetRent(props) {
     { name: '대여', link: '/rent/umbrellarent' },
   ];
   const currentTabContents = [
-    { name: '우산 대여', link: '/rent/umbrellarent', accent: false },
-    { name: '사물함 대여', link: '/rent/cabinetrent', accent: true },
+    { name: '우산 대여', link: '/rent/umbrellarent', accent: 0 },
+    { name: '사물함 대여', link: '/rent/cabinetrent', accent: 1 },
   ];
 
   return (

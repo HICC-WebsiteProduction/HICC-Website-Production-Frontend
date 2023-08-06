@@ -108,16 +108,18 @@ function MyContainer({ className, children }) {
   // 날짜 선택 창 상단에 보이는 부분
   // 선택한 년월일을 확인할 수 있음
   return (
-    <DatePickerContainer className={className}>
-      <DatePickerTop>
-        <ShowYear>{`${selectedDate.getFullYear()}년`}</ShowYear>
-        <ShowDate>{`${
-          selectedDate.getMonth() + 1
-        }월 ${selectedDate.getDate()}일 ${
-          week[selectedDate.getDay()]
-        }요일`}</ShowDate>
-      </DatePickerTop>
-      <DatePickerBody>{children}</DatePickerBody>
+    <DatePickerContainer>
+      <DatePickerInner className={className}>
+        <DatePickerTop>
+          <ShowYear>{`${selectedDate.getFullYear()}년`}</ShowYear>
+          <ShowDate>{`${
+            selectedDate.getMonth() + 1
+          }월 ${selectedDate.getDate()}일 ${
+            week[selectedDate.getDay()]
+          }요일`}</ShowDate>
+        </DatePickerTop>
+        <DatePickerBody>{children}</DatePickerBody>
+      </DatePickerInner>
     </DatePickerContainer>
   );
 }
@@ -182,9 +184,20 @@ const DatePickerBody = styled.div`
   position: relative;
 `;
 
-const DatePickerContainer = styled(CalendarContainer)`
-  position: fixed;
-  top: 10%;
+const DatePickerInner = styled(CalendarContainer)`
+  position: absolute;
+  top: 0;
   left: 50%;
+  z-index: 1000;
   transform: translateX(-50%);
+`;
+
+const DatePickerContainer = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
 `;

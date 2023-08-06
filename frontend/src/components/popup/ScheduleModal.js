@@ -55,8 +55,8 @@ export default function ScheduleModal(props) {
       </ScheduleModalHeader>
       <ScheduleInputContainer onSubmit={onSubmit}>
         <InputRow>
-          <InputRowLable>제목</InputRowLable>
-          <Input required />
+          <InputRowLable>일정 제목</InputRowLable>
+          <Input required height={30} />
         </InputRow>
         <InputRow>
           <InputRowLable>날짜</InputRowLable>
@@ -65,22 +65,15 @@ export default function ScheduleModal(props) {
             value={moment(selectDate).format('yyyy-MM-DD')}
             disabled
             required
+            height={30}
           />
           <DatePickerContainer>
             <CustomDatePicker />
           </DatePickerContainer>
         </InputRow>
         <InputRow>
-          <InputRowLable>시간</InputRowLable>
-          <Input type="time" />
-        </InputRow>
-        <InputRow>
-          <InputRowLable>장소</InputRowLable>
-          <Input required />
-        </InputRow>
-        <InputRow>
           <InputRowLable>세부사항</InputRowLable>
-          <Input required />
+          <Input required height={78} />
         </InputRow>
         <ButtonContainer>
           <CancleButton buttonName="취소" onClick={props.onClose} />
@@ -150,6 +143,7 @@ const ScheduleInputContainer = styled.form`
 
 const InputRow = styled.div`
   position: relative;
+  width: 580px;
   margin-bottom: 10px;
 `;
 
@@ -159,11 +153,12 @@ const InputRowLable = styled.div`
   font-family: 'Pretendard';
   font-size: 20px;
   font-weight: 300;
+  text-align: left;
 `;
 
 const Input = styled.input`
   width: 580px;
-  height: 40px;
+  height: ${props => `${props.height}px`};
   background-color: transparent;
   border: none;
   border-bottom: 1px solid rgba(237, 240, 248, 0.7);
