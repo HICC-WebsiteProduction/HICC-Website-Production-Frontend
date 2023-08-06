@@ -1,20 +1,24 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
-import NoticeTab from '../header/NoticeTab';
 import { noticeType } from '../../constants/NoticeType';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { noticeTab } from '../../atom/noticeTab';
 import { notificationMessage } from '../../constants/NoticeMessage';
 import calculateDueDate from '../util/CalculateDueDate';
 import useScrollGradient from '../../hook/useScrollGradient';
+import { noticeTab } from './../../atom/tab/noticeTab';
+import NoticeTab from './NoticeTab';
 
+// 알림 팝업 창을 보여줌
 function NoticeLayerPopup() {
-  const currentIndex = useRecoilValue(noticeTab);
-  const [notice, setNotice] = useRecoilState(noticeType[currentIndex]);
+  const currentIndex = useRecoilValue(noticeTab); // 현재 탭(전체, 게시판, 일정, 대여)을 가져옴
+  const [notice, setNotice] = useRecoilState(noticeType[currentIndex]); // 탭 별 알림을 저장
   const scrollRef = useRef(null);
-  const showGradient = useScrollGradient(scrollRef);
+  const { showGradient, showGradientTop } = useScrollGradient(scrollRef);
+  // 스크롤 바를 없앴을 때 하단에 내용이 더 있는 것을 그라데이션으로 표현
+  // 내용이 더 있다면 그라데이션 보여주고, 없으면 그라데이션 제거
 
+  // 알림 읽음 처리
   const readNotice = noticeId => {
     setNotice(prev => {
       return prev.map(notice => {
@@ -37,7 +41,11 @@ function NoticeLayerPopup() {
         <Title>알림</Title>
         <NoticeTab />
       </Header>
-      <NoticeSection ref={scrollRef} showGradient={showGradient}>
+      <NoticeSection
+        ref={scrollRef}
+        showGradient={showGradient}
+        showGradientTop={showGradientTop}
+      >
         {notice.map(notice => (
           <NoticeContent
             onClick={() => readNotice(notice.id)}
@@ -62,7 +70,7 @@ const NoticeLayerPopupContainer = styled.div`
   display: flex;
   position: absolute;
   top: 50px;
-  left: -290px;
+  left: -280px;
   z-index: 100;
   flex-direction: column;
   align-items: center;
@@ -83,6 +91,7 @@ const Triangle = styled.div`
   transform: translateX(-50%);
   width: 15px;
   height: 15px;
+
   &::before {
     content: ' ';
     display: block;
@@ -99,6 +108,7 @@ const Triangle = styled.div`
     top: 3px;
     right: -5px;
   }
+
   &::after {
     content: ' ';
     display: block;
@@ -149,6 +159,18 @@ const NoticeSection = styled.section`
     width: 90%;
     height: ${props => (props.showGradient ? '100px' : '0')};
     background: linear-gradient(transparent, ${theme.colors.black});
+    transition: height 0.3s ease;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 30%;
+    left: 20px;
+    z-index: 100;
+    width: 90%;
+    height: ${props => (props.showGradientTop ? '50px' : '0')};
+    background: linear-gradient(${theme.colors.black}, transparent);
     transition: height 0.3s ease;
   }
 `;

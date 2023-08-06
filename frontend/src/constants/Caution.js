@@ -1,23 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
-import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import theme from '../styles/Theme';
+import { Cabinet, Umbrella } from './CautionMessage';
 
-export default function Caution() {
+// 우산, 사물함 대여 주의사항을 반환
+// 아이템을 props로 받아 아이템에 맞는 주의사항을 반환
+export default function Caution({ item }) {
+  const match = {
+    cabinet: Cabinet,
+    umbrella: Umbrella,
+  };
   return (
     <CautionContainer>
       <CautionHeader>
-        <CautionIcon>
-          <FontAwesomeIcon icon={faCircleExclamation} />
-        </CautionIcon>
         <CautionTitle>대여 시 주의사항</CautionTitle>
       </CautionHeader>
       <CautionContent>
-        {`1. 대여 후 꼭 반납해주세요.
-            2. 대여 / 반납 처리를 꼭 해주세요
-            3. 등등
-            4. 아래 공간이 많이 남을 것 같으니 주의 사항 또는 이용 방법? 적어두는 것도 괜찮을 것 같아요`}
+        {match[item].map(message => (
+          <CautionLine>{message}</CautionLine>
+        ))}
       </CautionContent>
     </CautionContainer>
   );
@@ -41,19 +42,19 @@ const CautionHeader = styled.header`
   line-height: 100%;
 `;
 
-const CautionIcon = styled.div`
-  margin-right: 20px;
-  color: ${theme.colors.white};
-`;
-
 const CautionTitle = styled.span`
   color: ${theme.colors.white};
 `;
 
-const CautionContent = styled.div`
+const CautionContent = styled.ul`
   padding: 32px;
   border: 1px solid ${theme.colors.white};
   border-radius: 20px;
+`;
+
+const CautionLine = styled.li`
+  margin-left: 20px;
+  list-style-type: circle;
 
   color: ${theme.colors.white};
   font-family: 'Pretendard';

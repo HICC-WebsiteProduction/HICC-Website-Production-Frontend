@@ -1,49 +1,101 @@
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
-import { useSetRecoilState } from 'recoil';
-import { umbrellaModal } from '../../atom/umbrella';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { umbrella, umbrellaModal } from '../../atom/umbrella';
+import { request } from '../../utils/axios';
+import useConfirm from '../../hook/useConfirm';
 
-function EachUmbrella({ umbrella }) {
-  const myName = '김진호';
+// 우산 대여페이지에서 사용하는 우산들
+function EachUmbrella({ eachUmbrella }) {
+  const myName = '김진호'; // 추후에 user atom에서 가져와서 사용할 예정
 
-  const setCurrentIndex = useSetRecoilState(umbrellaModal);
+  const setCurrentIndex = useSetRecoilState(umbrellaModal); // 모달 창 관리를 위해
+  const [umbrellaList, setUmbrellaList] = useRecoilState(umbrella); // 우산 정보를 변경하기 위해
 
+  // 우산 반납 처리
+  // 대여자의 id를 넘긴다. 추후에 백엔드 개발자와 협의할 예정
+  const confirmGrant = async () => {
+    const body = {
+      targetId: 'B731070',
+    };
+    try {
+      const response = await request('post', '/umbrella/return', body);
+
+      // 우산을 프론트에서 반납처리한다.
+      const updatedList = umbrellaList.map(umbrella => {
+        if (umbrella.umbrellaNumber === eachUmbrella.umbrellaNumber) {
+          return {
+            ...umbrella,
+            status: 'unrent',
+            start: null,
+            end: null,
+            lender: null,
+          };
+        } else {
+          return umbrella;
+        }
+      });
+      setUmbrellaList(updatedList);
+
+      // 정상적인 결과는 resolve로 1을 전달해준다.
+      return new Promise(resolve => resolve(1));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // 우산 반납 확인 창을 띄우는 함수
+  const returnUmbrella = useConfirm(
+    '정말 반납하시겠습니까?',
+    confirmGrant,
+    '반납처리가 완료되었습니다.',
+  );
   return (
     <Umbrella
-      key={`umbrella${umbrella.umbrellaNumber}`}
-      status={umbrella.status}
+      key={`umbrella${eachUmbrella.umbrellaNumber}`}
+      status={eachUmbrella.status}
     >
-      <UmbrellaNumber status={umbrella.status}>
-        {umbrella.umbrellaNumber}
+      <UmbrellaNumber status={eachUmbrella.status}>
+        {eachUmbrella.umbrellaNumber}
       </UmbrellaNumber>
       <UmbrellaDesc>
         <UmbrellaRentStatus>
-          <CabinetRentCircleStatus status={umbrella.status} />
-          <UmbrellaRentStatusMent status={umbrella.status}>
-            {umbrella.status === 'myRent'
+          <CabinetRentCircleStatus status={eachUmbrella.status} />
+          <UmbrellaRentStatusMent status={eachUmbrella.status}>
+            {eachUmbrella.status === 'myRent'
               ? '내가 대여'
-              : umbrella.status === 'rent'
+              : eachUmbrella.status === 'rent'
               ? '대여 중'
+              : eachUmbrella.status === 'unavailable'
+              ? '대여 불가'
               : '대여 가능'}
           </UmbrellaRentStatusMent>
         </UmbrellaRentStatus>
-        {umbrella.status === 'rent' || umbrella.status === 'myRent' ? (
+        {eachUmbrella.status === 'rent' || eachUmbrella.status === 'myRent' ? (
           <>
             <DayInfo>
               <EndDay
-                myRent={umbrella.lender === myName}
-              >{`${umbrella.end} 까지`}</EndDay>
+                myRent={eachUmbrella.lender === myName}
+              >{`${eachUmbrella.end} 까지`}</EndDay>
             </DayInfo>
-            {umbrella.lender === myName ? (
-              <ReturnUmbrellaButton>반납하기</ReturnUmbrellaButton>
+            {eachUmbrella.lender === myName ? (
+              <ReturnUmbrellaButton onClick={returnUmbrella}>
+                반납하기
+              </ReturnUmbrellaButton>
             ) : (
-              <Lender>{umbrella.lender}</Lender>
+              <Lender>{eachUmbrella.lender}</Lender>
             )}
           </>
+        ) : eachUmbrella.status === 'unavailable' ? (
+          <Lender>
+            {eachUmbrella.unavailableReason === 'stolen'
+              ? '도난 상태'
+              : '분실 상태'}
+          </Lender>
         ) : (
           <>
             <RentButton
-              onClick={() => setCurrentIndex(umbrella.umbrellaNumber)}
+              onClick={() => setCurrentIndex(eachUmbrella.umbrellaNumber)}
             >
               대여 신청하기
             </RentButton>

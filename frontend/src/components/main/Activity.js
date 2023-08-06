@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import ActivityContent from './ActivityContent';
-import useScrollClipPath from '../hooks/useScrollClipPath';
+import useScrollClipPath from '../../hook/useScrollClipPath';
 
 function Activity() {
   const animatedItem2 = useScrollClipPath('top', 0.5, 0);

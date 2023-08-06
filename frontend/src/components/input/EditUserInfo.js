@@ -6,6 +6,8 @@ import InputMemberInfo from './InputMemberInfo';
 import ViewMemberInfo from './ViewMemberInfo';
 import Regex from './../../constants/Regex';
 
+// 내 정보에서 유저 정보를 수정할 때 보여줌
+// react-hook-form 라이브러리를 활용하였음
 export default function EditUserInfo(props) {
   const {
     register,
@@ -18,6 +20,8 @@ export default function EditUserInfo(props) {
     },
   });
 
+  // 제출할 때 실행되는 함수
+  // 아직 미구현
   const onSubmit = data => {
     console.log(data);
   };

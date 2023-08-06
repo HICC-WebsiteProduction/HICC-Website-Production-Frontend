@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 import theme from './../../styles/Theme';
 
+// 회원 목록의 정렬, 게시글의 정렬을 위해 쓰임
 export default function Filter(props) {
   const options = Object.keys(props.optionValue);
+
   return (
     <FilterContainer onChange={props.onChange}>
       {options.map((option, idx) => (

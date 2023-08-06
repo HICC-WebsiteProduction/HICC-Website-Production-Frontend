@@ -2,6 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
 
+// 내 정보에서 한 줄을 보여주는 기능, 수정은 불가능하도록 설정
+/*
+  labelName: 레이블 이름
+  type: input type
+  width: 가로 길이
+  value: 해당 value
+  authorityCheck: 수정 권한이 없을 때 메시지와 색을 표현하기 위해
+*/
 export default function ViewMemberInfo(props) {
   return (
     <InputRow width={props.width}>

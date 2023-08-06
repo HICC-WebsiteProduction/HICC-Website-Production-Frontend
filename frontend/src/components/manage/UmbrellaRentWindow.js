@@ -1,20 +1,61 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
-import { useRecoilState } from 'recoil';
-import { umbrella, umbrellaModal } from '../../atom/umbrella';
-import { umbrellaStatus } from '../../dummy/umbrellaStatus';
+import { useRecoilState, useResetRecoilState } from 'recoil';
+import { umbrella } from '../../atom/umbrella';
 import EachUmbrellaManage from '../eachItem/EachUmbrellaManage';
 import Button from '../util/Button';
+import { request } from '../../utils/axios';
+import useConfirm from '../../hook/useConfirm';
 
+// 우산 관리 페이지를 담당
 function UmbrellaRentWindow(props) {
-  const [init, setInit] = useRecoilState(umbrella);
-  const [umbrellaList, setUmbrellaList] = useRecoilState(umbrellaModal); // 사물함 리스트
+  const [umbrellaList, setUmbrellaList] = useRecoilState(umbrella); // 우산 리스트
+  const resetUmbrella = useResetRecoilState(umbrella); // 우산 상태 초기화
+
+  const fetchData = async () => {
+    try {
+      const response = await request('get', '/umbrella');
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    setInit(umbrellaStatus);
-    setUmbrellaList(init);
+    const loadUmbrellaStatus = async () => {
+      const result = await fetchData();
+      setUmbrellaList(result);
+    };
+    loadUmbrellaStatus();
+
+    return () => {
+      resetUmbrella();
+    };
   }, []);
+
+  // 우산 상태를 저장하는 기능
+  // 아직 백엔드 통신 코드는 작성하지 않음
+  const confirmGrant = () => {
+    console.log('반영 성공');
+
+    // 정상적인 결과는 resolve로 1을 전달해준다.
+    return new Promise(resolve => resolve(1));
+  };
+
+  // 저장 확인 창에서 취소를 눌렀을 때 초기화 후 서버 값 재로딩
+  const confirmDismiss = () => {
+    resetUmbrella();
+    window.location.reload();
+  };
+
+  // 저장 버튼을 누르면 실행되는 확인 창
+  const saveState = useConfirm(
+    '저장하시겠습니까?',
+    confirmGrant,
+    '저장 성공',
+    confirmDismiss,
+  );
 
   return (
     <UmbrellaRentWindowContainer>
@@ -28,13 +69,13 @@ function UmbrellaRentWindow(props) {
             umbrellaList.map(umbrella => (
               <EachUmbrellaManage
                 key={umbrella.umbrellaNumber}
-                umbrella={umbrella}
+                eachUmbrella={umbrella}
               />
             ))}
         </UmbrellaGrid>
       </UmbrellaCurrentState>
       <SaveButtonContainer>
-        <SaveButton buttonName="저장" />
+        <SaveButton buttonName="저장" onClick={saveState} />
       </SaveButtonContainer>
     </UmbrellaRentWindowContainer>
   );

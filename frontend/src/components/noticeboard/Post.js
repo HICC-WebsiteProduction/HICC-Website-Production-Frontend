@@ -73,6 +73,7 @@ export default function Post(props) {
     pageNumbers.push(i);
   }
 
+  // 페이지네이션 라이브러리에 페이지를 전달해주는 함수
   const setPage = error => {
     setCurrentPage(error);
   };

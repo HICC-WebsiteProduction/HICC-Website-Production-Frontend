@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import ViewMemberInfo from './../input/ViewMemberInfo';
 
+// 내 정보를 보여주는 기능
 export default function UserInfo({ nickname, level, phone, studentId, major }) {
   return (
     <UserInfoWrapper>

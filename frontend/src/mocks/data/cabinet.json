@@ -1,0 +1,115 @@
+[
+    {
+      "cabinetNumber": 1,
+      "status": "rent",
+      "start": "2023-03-29",
+      "end": "2023-07-10",
+      "lender": "함윤호"
+    },
+    {
+      "cabinetNumber": 2,
+      "status": "waiting",
+      "start": "2023-07-22",
+      "end": "2023-09-30",
+      "lender": "손기배"
+    },
+    {
+      "cabinetNumber": 3,
+      "status": "unavailable",
+      "start": null,
+      "end": null,
+      "lender": null
+
+    },
+    {
+      "cabinetNumber": 4,
+      "status": "unavailable",
+      "start": null,
+      "end": null,
+      "lender": null
+    },
+    {
+      "cabinetNumber": 5,
+      "status": "rent",
+      "start": "2023-03-29",
+      "end": "2023-07-10",
+      "lender": "윤찬호"
+    },
+    {
+      "cabinetNumber": 6,
+      "status": "rent",
+      "start": "2023-03-29",
+      "end": "2023-07-10",
+      "lender": "이지우"
+    },
+    {
+      "cabinetNumber": 7,
+      "status": "rent",
+      "start": "2023-03-29",
+      "end": "2023-07-10",
+      "lender": "김진호"
+    },
+    {
+      "cabinetNumber": 8,
+      "status": "rent",
+      "start": "2023-03-29",
+      "end": "2023-07-10",
+      "lender": "경수현"
+    },
+    {
+      "cabinetNumber": 9,
+      "status": "unrent",
+      "start": null,
+      "end": null,
+      "lender": null
+    },
+    {
+      "cabinetNumber": 10,
+      "status": "unrent",
+      "start": null,
+      "end": null,
+      "lender": null
+    },
+    {
+      "cabinetNumber": 11,
+      "status": "rent",
+      "start": "2023-03-29",
+      "end": "2023-07-10",
+      "lender": "오지현"
+    },
+    {
+      "cabinetNumber": 12,
+      "status": "rent",
+      "start": "2023-03-29",
+      "end": "2023-07-10",
+      "lender": "이윤서"
+    },
+    {
+      "cabinetNumber": 13,
+      "status": "rent",
+      "start": "2023-03-29",
+      "end": "2023-07-10",
+      "lender": "송현지"
+    },
+    {
+      "cabinetNumber": 14,
+      "status": "rent",
+      "start": "2023-03-29",
+      "end": "2023-07-10",
+      "lender": "구나영"
+    },
+    {
+      "cabinetNumber": 15,
+      "status": "unrent",
+      "start": null,
+      "end": null,
+      "lender": null
+    },
+    {
+      "cabinetNumber": 16,
+      "status": "rent",
+      "start": "2023-03-29",
+      "end": "2023-07-10",
+      "lender": "최세호"
+    }
+  ]

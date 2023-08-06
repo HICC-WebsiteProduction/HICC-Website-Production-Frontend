@@ -1,41 +1,81 @@
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import useSelect from '../../hook/useSelect';
+import { useRecoilState } from 'recoil';
+import { umbrella } from '../../atom/umbrella';
 
-function EachUmbrellaManage({ umbrella }) {
-  const [state, setState] = useSelect('unrent');
+// 우산 관리 페이지에서 사용하는 우산들
+function EachUmbrellaManage({ eachUmbrella }) {
+  const [state, setState] = useSelect(eachUmbrella.unavailableReason); // 우산 상태 변경 (도난, 분실, 사용가능)
+
+  const [umbrellaList, setUmbrellaList] = useRecoilState(umbrella); // 우산 상태 기억을 위해
+
+  // 우산의 상태를 변경하는 함수
+  const modifyUmbrellaState = event => {
+    setState(event);
+
+    // 클릭한 우산 상태가 unrent(사용가능)이라면 사용가능 아니면 다른 상태들로 변환
+    const updatedState = umbrellaList.map(umbrella => {
+      if (umbrella.umbrellaNumber === eachUmbrella.umbrellaNumber) {
+        return {
+          ...umbrella,
+          status: event.target.value === 'unrent' ? 'unrent' : 'unavailable',
+          unavailableReason:
+            event.target.value === 'unrent' ? null : event.target.value,
+        };
+      } else {
+        return umbrella;
+      }
+    });
+
+    setUmbrellaList(updatedState);
+  };
+
   return (
     <Umbrella
-      key={`umbrella${umbrella.umbrellaNumber}`}
-      status={umbrella.status}
+      key={`umbrella${eachUmbrella.umbrellaNumber}`}
+      status={eachUmbrella.status}
     >
-      <UmbrellaNumber status={umbrella.status}>
-        {umbrella.umbrellaNumber}
+      <UmbrellaNumber status={eachUmbrella.status}>
+        {eachUmbrella.umbrellaNumber}
       </UmbrellaNumber>
       <UmbrellaDesc>
         <UmbrellaRentStatus>
-          <CabinetRentCircleStatus status={umbrella.status} />
-          <UmbrellaRentStatusMent status={umbrella.status}>
-            {umbrella.status === 'unavailable'
+          <CabinetRentCircleStatus status={eachUmbrella.status} />
+          <UmbrellaRentStatusMent status={eachUmbrella.status}>
+            {eachUmbrella.status === 'unavailable'
               ? '대여 불가능'
-              : umbrella.status === 'rent'
+              : eachUmbrella.status === 'rent'
               ? '대여 중'
               : '대여 가능'}
           </UmbrellaRentStatusMent>
         </UmbrellaRentStatus>
-        {umbrella.status === 'rent' ? (
+        {eachUmbrella.status === 'rent' ? (
           <>
             <DayInfo>
-              <EndDay>{`${umbrella.end} 까지`}</EndDay>
+              <EndDay>{`${eachUmbrella.end} 까지`}</EndDay>
             </DayInfo>
-            <Lender>{umbrella.lender}</Lender>
+            <Lender>{eachUmbrella.lender}</Lender>
           </>
-        ) : umbrella.status === 'unrent' ? (
+        ) : eachUmbrella.status === 'unrent' ? (
           <>
             <StateSelectButton
-              onChange={setState}
+              onChange={event => modifyUmbrellaState(event)}
               value={state}
-              defaultValue="unrent"
+              defaultValue={'unrent'}
+              status={eachUmbrella.status}
+            >
+              <StateOption value="stolen">도난</StateOption>
+              <StateOption value="loss">분실</StateOption>
+              <StateOption value="unrent">선택(사용가능)</StateOption>
+            </StateSelectButton>
+          </>
+        ) : eachUmbrella.status === 'unavailable' ? (
+          <>
+            <StateSelectButton
+              onChange={event => modifyUmbrellaState(event)}
+              value={state}
+              status={eachUmbrella.status}
             >
               <StateOption value="stolen">도난</StateOption>
               <StateOption value="loss">분실</StateOption>
@@ -44,7 +84,7 @@ function EachUmbrellaManage({ umbrella }) {
           </>
         ) : (
           <Lender>
-            {umbrella.unavailableReason === 'stolen'
+            {eachUmbrella.unavailableReason === 'stolen'
               ? '도난 상태'
               : '분실 상태'}
           </Lender>
@@ -138,12 +178,14 @@ const StateSelectButton = styled.select`
   align-items: center;
   width: 248px;
   height: 40px;
-  background-color: ${theme.colors.blue};
+  background-color: ${props =>
+    props.status === 'unrent' ? theme.colors.blue : theme.colors.grey};
   border: none;
   border-radius: 20px;
   outline: none;
 
-  color: ${theme.colors.white};
+  color: ${props =>
+    props.status === 'unrent' ? theme.colors.white : theme.colors.black};
   font-weight: 300;
   font-size: ${theme.fontSizes.font_normal};
   line-height: 21px;

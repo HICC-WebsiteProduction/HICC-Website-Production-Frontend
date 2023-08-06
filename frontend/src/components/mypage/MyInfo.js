@@ -4,11 +4,13 @@ import UserInfo from './UserInfo';
 import theme from '../../styles/Theme';
 import EditUserInfo from './../input/EditUserInfo';
 
+// 내 정보를 보여준다
 function Profile() {
   const [profileImage, setProfileImage] = useState(
     'https://ssl.pstatic.net/static/common/myarea/myInfo.gif',
-  );
+  ); // 프로필 이미지, 아직 데모이다.
 
+  // 새로운 이미지로 변경하는 함수
   const handleProfileImageChange = event => {
     const newImage = event.target.value;
     setProfileImage(newImage);

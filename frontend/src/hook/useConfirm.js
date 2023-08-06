@@ -3,8 +3,19 @@ import Swal from 'sweetalert2';
 import styled from 'styled-components';
 import theme from '../styles/Theme';
 import '../styles/sweetalert2.css';
+import useAlert from './useAlert';
 
-const useConfirm = (title, confirm, confirmSuccessMessage) => {
+/*
+  useConfirm
+  title: 확인 창에서 보여지는 메시지 : string
+  confirm: 확인을 누를 때 실행되는 함수 : function
+  confirmSuccessMessage: 실행이 성공적으로 됐을 때 보여지는 메시지 : string
+  dismiss: 확인 창에서 취소를 누를 때 실행되는 함수 : function | null (없어도 된다.)
+
+  확인을 누르고 정상적으로 실행된 후 확인을 누르면 페이지 새로고침 이벤트 일어남
+*/
+const useConfirm = (title, confirm, confirmSuccessMessage, dismiss = null) => {
+  const errorAlert = useAlert();
   if (!confirm || typeof confirm !== 'function') return;
 
   const alert = () => {
@@ -24,18 +35,36 @@ const useConfirm = (title, confirm, confirmSuccessMessage) => {
       })
       .then(result => {
         if (result.isConfirmed) {
-          confirm();
-          mySwal.fire({
-            title: <AlertTitle>{confirmSuccessMessage}</AlertTitle>,
-            html: '',
-            icon: 'success',
-            heightAuto: false,
-            confirmButtonColor: theme.colors.blue,
-            customClass: {
-              title: 'custom-title-class',
-              icon: 'custom-icon-class',
-            },
+          const result = confirm();
+          result.then(res => {
+            console.log(res);
+            // confirm의 반환 타입이 string이 아니라면 (정상적으로 confirm이 실행)
+            // 대표 값으로 1을 리턴하도록 정했음
+            // 아니라면 반환된 메시지를 errorAlert에 넣어서 실행 (중간에 오류를 터뜨림)
+            if (typeof res !== 'string') {
+              mySwal
+                .fire({
+                  title: <AlertTitle>{confirmSuccessMessage}</AlertTitle>,
+                  html: '',
+                  icon: 'success',
+                  heightAuto: false,
+                  confirmButtonColor: theme.colors.blue,
+                  customClass: {
+                    title: 'custom-title-class',
+                    icon: 'custom-icon-class',
+                  },
+                })
+                .then(() => {
+                  // 확인 버튼을 누르면 페이지 새로고침 (서버에서 다시 정보를 받아와야하기 때문)
+                  window.location.reload();
+                });
+            } else {
+              errorAlert(true, res);
+            }
           });
+        } else if (result.isDismissed) {
+          if (dismiss === null || typeof dismiss !== 'function') return;
+          dismiss();
         }
       });
   };

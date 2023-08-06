@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import theme from '../styles/Theme';
 import { useForm } from 'react-hook-form';
-import HeaderAndTitle from '../components/header/HeaderAndTitle';
 import InputMemberInfo from '../components/input/InputMemberInfo';
 import Button from '../components/util/Button';
 import Regex from '../constants/Regex';
@@ -10,7 +9,12 @@ import { useNavigate } from 'react-router-dom';
 import useAlert from '../hook/useAlert';
 import ConfirmMessage from '../constants/ConfirmMessage';
 import { request } from '../utils/axios';
+import Header from '../components/header/Header';
+import Title from '../components/header/Title';
+import { useRecoilValue } from 'recoil';
+import agree from '../atom/agree';
 
+// 회원가입 페이지
 function Signup(props) {
   const {
     register,
@@ -19,6 +23,20 @@ function Signup(props) {
     watch,
   } = useForm();
 
+  const navigate = useNavigate();
+  const alert = useAlert();
+
+  const isAgree = useRecoilValue(agree);
+
+  // 약관동의를 하지 않은 상태에서 바로 회원가입 페이지 접근을 막음
+  useEffect(() => {
+    if (!isAgree) {
+      alert(true, '약관동의를 먼저 해주세요');
+      navigate('/tos');
+    }
+  }, [alert, isAgree, navigate]);
+
+  // 닉네임 중복체크를 하지 않았으면 중복 체크 요구
   const onSubmit = data => {
     if (!isNicknameChecked) {
       alert(true, '중복체크를 해주세요');
@@ -28,16 +46,14 @@ function Signup(props) {
     alert(false, '가입이 정상적으로 완료되었습니다.');
     navigate('/');
   };
-  const navigate = useNavigate();
 
-  const alert = useAlert();
-
-  const [isNicknameChecked, setIsNicknameChecked] = useState(false);
+  const [isNicknameChecked, setIsNicknameChecked] = useState(false); // 닉네임 중복 체크 여부
 
   // 한 글자씩 늦게 반영되는 오류 발생
   // watch를 사용하여 해결완료
   const inputNickname = watch('nickname');
 
+  // 닉네임 중복체크 함수
   const checkDuplicate = async () => {
     try {
       console.log(inputNickname);
@@ -53,13 +69,15 @@ function Signup(props) {
     }
   };
 
+  // 중복체크 후 수정했을 때 다시 중복체크 상태 해제
   useEffect(() => {
     setIsNicknameChecked(false);
   }, [inputNickname]);
 
   return (
     <SignupContainer>
-      <HeaderAndTitle titleName="회원가입" />
+      <Header />
+      <Title titleName="회원가입" />
       <InputForm onSubmit={handleSubmit(onSubmit)}>
         <JoinAnnouncementMent>모든 항목에 응답해주세요</JoinAnnouncementMent>
         <InputMemberInfo

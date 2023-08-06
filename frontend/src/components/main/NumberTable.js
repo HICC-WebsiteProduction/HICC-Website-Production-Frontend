@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import useScrollCount from '../hooks/useScrollCount';
+import useScrollCount from '../../hook/useScrollCount';
 
 const FIGURE_ITEMS = [
   {

@@ -5,16 +5,19 @@ import Button from '../util/Button';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { user } from '../../atom/user';
 import { useNavigate } from 'react-router';
+import { memberRole } from './../../constants/MemberRole';
 
+// 내 정보를 클릭했을 때 실행되는 팝업
 function MyinfoLayerPopup() {
-  const userinfo = useRecoilValue(user);
-  const reset = useResetRecoilState(user);
+  const userinfo = useRecoilValue(user); // 유저 정보
+  const reset = useResetRecoilState(user); // 로그아웃을 위해
   const navigate = useNavigate();
 
   const goMyPage = () => {
     navigate('/mypage');
   };
 
+  // 리코일 상태 리셋, 홈으로 이동
   const logout = () => {
     reset();
     navigate('/');
@@ -26,7 +29,7 @@ function MyinfoLayerPopup() {
         <Profile src="/images/profile.png" />
         <UserInfo>
           <Nickname>{userinfo.nickname}</Nickname>
-          <Grade>{userinfo.grade}</Grade>
+          <Grade>{memberRole[userinfo.role]}</Grade>
           <Name>{userinfo.name}</Name>
         </UserInfo>
       </Header>

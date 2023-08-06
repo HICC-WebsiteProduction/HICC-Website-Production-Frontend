@@ -1,6 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 import logo from '../../images/mainBanner.svg';
-import useScrollClipPath from '../hooks/useScrollClipPath';
+import useScrollClipPath from '../../hook/useScrollClipPath';
 
 const boxAnimation = keyframes`
   0%{
