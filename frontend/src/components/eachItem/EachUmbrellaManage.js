@@ -4,15 +4,17 @@ import useSelect from '../../hook/useSelect';
 import { useRecoilState } from 'recoil';
 import { umbrella } from '../../atom/umbrella';
 
+// 우산 관리 페이지에서 사용하는 우산들
 function EachUmbrellaManage({ eachUmbrella }) {
-  const [state, setState] = useSelect(eachUmbrella.unavailableReason);
+  const [state, setState] = useSelect(eachUmbrella.unavailableReason); // 우산 상태 변경 (도난, 분실, 사용가능)
 
-  const [umbrellaList, setUmbrellaList] = useRecoilState(umbrella);
+  const [umbrellaList, setUmbrellaList] = useRecoilState(umbrella); // 우산 상태 기억을 위해
 
   // 우산의 상태를 변경하는 함수
   const modifyUmbrellaState = event => {
     setState(event);
 
+    // 클릭한 우산 상태가 unrent(사용가능)이라면 사용가능 아니면 다른 상태들로 변환
     const updatedState = umbrellaList.map(umbrella => {
       if (umbrella.umbrellaNumber === eachUmbrella.umbrellaNumber) {
         return {

@@ -14,13 +14,16 @@ import { user } from '../atom/user';
 import Title from '../components/header/Title';
 import Header from '../components/header/Header';
 
+// 로그인 
 export default function Login(props) {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const setUser = useSetRecoilState(user);
+
+  const setUser = useSetRecoilState(user); // 로그인 상태 저장을 위해
+
   const onSubmit = async data => {
     try {
       const response = await request('post', '/login', {

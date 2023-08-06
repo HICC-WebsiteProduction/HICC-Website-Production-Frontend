@@ -6,6 +6,7 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 const pixelToRem = size => `${size / 16}rem`;
 
+// 사용하지 않음 => 나중에 내 개인 플젝에 옮겨놓기 위헤 삭제하지 않았습니다...ㅋㅋ
 export default function SearchWindow() {
   // 연관검색어를 보여주기 위해 임의로 넣은 더미데이터를 불러오는 코드입니다.
   // https://velog.io/@gbwlxhd97/%EA%B2%80%EC%83%89%EC%B0%BD-%EC%9E%90%EB%8F%99%EC%99%84%EC%84%B1-%EB%A7%8C%EB%93%A4%EA%B8%B0-featreact

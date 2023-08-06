@@ -13,26 +13,32 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { date } from './../../atom/date';
 require('react-datepicker/dist/react-datepicker.css');
 
+// 날짜 선택창을 직접 만들기를 요청하여
+// react-datepicker 라이브러리를 활용하여 제작
 export default function CustomDatePicker(props) {
-  const [selectedDate, setSelectedDate] = useRecoilState(date);
-  const [month, setMonth] = useState(new Date().getMonth() + 1);
-  const [datePickerOpen, setDatePickerOpen] = useState(true);
+  const [selectedDate, setSelectedDate] = useRecoilState(date); // 현재 선택한 날짜
+  const [month, setMonth] = useState(new Date().getMonth() + 1); // 현재 선택한 월
+  const [datePickerOpen, setDatePickerOpen] = useState(true); // 날짜 선택창 켜져있는지 확인
 
+  // 날짜 아이콘을 누르면 날짜 선택 창이 켜지길 원해서
   const CustomInput = forwardRef(({ onClick }, ref) => (
     <DatePickerButton onClick={onClick} ref={ref}>
       <FontAwesomeIcon icon={faCalendarDays} />
     </DatePickerButton>
   ));
 
+  // 월을 바꿀 때 일어나는 함수
   const handleMonthChange = date => {
     setMonth(date.getMonth());
     console.log(month);
   };
 
+  // 일을 바꿀 때 일어나는 함수
   const handleDaySelect = date => {
     setSelectedDate(date);
   };
 
+  // 날짜 선택창을 끄는 함수 (아직 작동하지 않음)
   const onClose = event => {
     event.preventDefault();
     setDatePickerOpen(false);
@@ -99,6 +105,8 @@ function MyContainer({ className, children }) {
   const selectedDate = useRecoilValue(date);
   const week = ['일', '월', '화', '수', '목', '금', '토'];
 
+  // 날짜 선택 창 상단에 보이는 부분
+  // 선택한 년월일을 확인할 수 있음
   return (
     <DatePickerContainer className={className}>
       <DatePickerTop>

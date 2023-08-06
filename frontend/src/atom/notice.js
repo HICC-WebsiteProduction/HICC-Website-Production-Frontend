@@ -1,10 +1,12 @@
 import { atom, selector } from 'recoil';
 
+// 알림 내역 저장소
 export const notice = atom({
   key: 'notice',
   default: [],
 });
 
+// 전체 알림을 받아 읽지 않은 알림의 수를 세준다
 export const unreadNotice = selector({
   key: 'unreadNotice',
   get: ({ get }) => {
@@ -16,6 +18,8 @@ export const unreadNotice = selector({
   },
 });
 
+// 게시판에서 온 알림을 관리한다.
+// 알림을 읽었다면 읽음 처리를 해준다.
 export const noticeBoard = selector({
   key: 'noticeBoard',
   get: ({ get }) => {
@@ -39,6 +43,8 @@ export const noticeBoard = selector({
   },
 });
 
+// 일정에서 온 알림을 관리한다.
+// 알림을 읽었다면 읽음 처리를 해준다.
 export const noticeSchedule = selector({
   key: 'noticeSchedule',
   get: ({ get }) => {
@@ -62,6 +68,8 @@ export const noticeSchedule = selector({
   },
 });
 
+// 대여에서 온 알림을 관리한다.
+// 알림을 읽었다면 읽음 처리를 해준다.
 export const noticeRent = selector({
   key: 'noticeRent',
   get: ({ get }) => {

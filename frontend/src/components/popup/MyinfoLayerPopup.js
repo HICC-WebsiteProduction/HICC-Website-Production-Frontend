@@ -6,15 +6,17 @@ import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { user } from '../../atom/user';
 import { useNavigate } from 'react-router';
 
+// 내 정보를 클릭했을 때 실행되는 팝업
 function MyinfoLayerPopup() {
-  const userinfo = useRecoilValue(user);
-  const reset = useResetRecoilState(user);
+  const userinfo = useRecoilValue(user); // 유저 정보
+  const reset = useResetRecoilState(user); // 로그아웃을 위해
   const navigate = useNavigate();
 
   const goMyPage = () => {
     navigate('/mypage');
   };
 
+  // 리코일 상태 리셋, 홈으로 이동
   const logout = () => {
     reset();
     navigate('/');

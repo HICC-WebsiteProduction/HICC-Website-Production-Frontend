@@ -1,3 +1,4 @@
+// 정렬 옵션들을 갖고 있음
 export const filterOptionValue = {
   period: {
     whole: '전체기간',

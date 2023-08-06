@@ -5,6 +5,23 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import Button from '../util/Button';
 
+// 회원정보를 입력할 때 (내 정보 수정, 회원가입)
+// 한 줄을 반환해주는 함수
+/*
+  labelName: 레이블 이름
+  name: react-hook-form에서 각 input에 key로 활용할 이름
+  specificPlaceholder: 특정한 플레이스홀더 (정규식 설명이 들어감)
+  required: 입력 내용이 필수인지
+  checkDuplicate: 중복 체크가 필요한 지 (function | false)
+  type: input의 type을 전달받음
+  register: 해당 input을 react-hook-form에 등록함
+  errors: 정규식이나 조건에 맞지 않은 입력이 들어왔을 때 경고를 보여줌
+  minLength: 입력의 최소 길이
+  maxLength: 입력의 최대 길이
+  pattern: 각 입력의 정규식
+  width: 입력 창의 길이 (다른 곳에서도 사용하기 위해 가변적으로 설계)
+*/
+
 export default function InputMemberInfo(props) {
   return (
     <InputRow width={props.width}>

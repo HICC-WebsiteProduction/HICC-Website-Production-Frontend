@@ -17,6 +17,7 @@ const noticeIcon = {
   rent: faCartPlus,
 };
 
+// 사용하지 않음 => 전체 읽기 기능만 추출한 후 제거 예정
 export default function NotificationTapContent(props) {
   const [notice, setNotice] = useState([]);
   const fetchData = () => {

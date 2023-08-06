@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import theme from '../styles/Theme';
 import { Cabinet, Umbrella } from './CautionMessage';
 
+// 우산, 사물함 대여 주의사항을 반환
+// 아이템을 props로 받아 아이템에 맞는 주의사항을 반환
 export default function Caution({ item }) {
   const match = {
     cabinet: Cabinet,

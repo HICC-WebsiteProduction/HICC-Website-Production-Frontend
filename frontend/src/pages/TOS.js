@@ -6,6 +6,7 @@ import Title from '../components/header/Title';
 import Checkbox from '../components/util/Checkbox';
 import { TOSMessage } from '../constants/TOSMessage';
 
+// 약관동의 페이지
 function TOS() {
   const headName = '이지우';
   const headNumber = '010-0000-0000';

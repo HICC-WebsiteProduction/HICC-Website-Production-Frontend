@@ -7,8 +7,9 @@ import { useRecoilValue } from 'recoil';
 import { date } from '../../atom/date';
 import moment from 'moment';
 
+// 일정 캘린더 내 일정 작성을 누를 때 뜨는 팝업창
 export default function ScheduleModal(props) {
-  const [selectOption, setSelectOption] = useState('default');
+  const [selectOption, setSelectOption] = useState('default'); // 학술, 친목, 학교행사 선택
 
   const onChangeSelect = event => {
     setSelectOption(event.target.value);
@@ -18,7 +19,7 @@ export default function ScheduleModal(props) {
     event.preventDefault();
   };
 
-  const selectDate = useRecoilValue(date);
+  const selectDate = useRecoilValue(date); // 선택된 날짜 가져오기
 
   return (
     <ScheduleModalContainer>

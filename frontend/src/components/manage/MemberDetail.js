@@ -14,11 +14,12 @@ import { request } from '../../utils/axios';
 import getKeyByValue from '../../utils/getKeyByValue';
 import useSelect from '../../hook/useSelect';
 
+// 회원 상세 페이지를 담당
 export default function MemberDetail() {
-  const { user } = useParams();
-  const [userinfo, setUserinfo] = useState([]);
+  const { user } = useParams(); // url에서 user의 닉네임을 추출
+  const [userinfo, setUserinfo] = useState([]); // 회원의 정보를 저장
 
-  const [selectedRole, setSelectedRole] = useSelect(memberRole.GENERAL);
+  const [selectedRole, setSelectedRole] = useSelect(memberRole.GENERAL); // 회원 등급 선택
   const navigate = useNavigate();
 
   // 회원정보 로드
@@ -38,7 +39,9 @@ export default function MemberDetail() {
     loadUserInfo();
   }, [user]);
 
-  const saveMember = async () => {
+  // 회원 정보를 저장할 때 실행되는 함수
+  // 이 파트는 실제 백엔드와 협의하여 제작함
+  const confirmGrantSave = async () => {
     const body = {
       id: 'C011001',
       targetIdList: [userinfo.id],
@@ -53,13 +56,17 @@ export default function MemberDetail() {
     }
   };
 
+  // 회원 정보를 저장할 때 실행되는 확인 창
   const saveMemberInfo = useConfirm(
     confirmMessage.gradeChange,
-    saveMember,
+    confirmGrantSave,
     '회원등급 변경에 성공했습니다.',
   );
 
-  const deleteMember = async () => {
+  // 회원 정보를 저장할 때 실행되는 함수
+  // 이 파트는 실제 백엔드와 협의하여 제작함
+  // 삭제할 때 삭제할 회원이 회장이면 에러 메시지를 띄움으로서 삭제를 막음
+  const confirmGrantDelete = async () => {
     if (memberRole[userinfo.role] === memberRole.PRESIDENT) {
       return new Promise(reject => {
         reject('본인 강퇴는 안 돼요');
@@ -79,9 +86,10 @@ export default function MemberDetail() {
     }
   };
 
+  // 회원 삭제 확인 창을 띄운다.
   const deleteUser = useConfirm(
     confirmMessage.getOutMember,
-    deleteMember,
+    confirmGrantDelete,
     '삭제에 성공했습니다.',
   );
 

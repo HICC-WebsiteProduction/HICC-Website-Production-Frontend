@@ -5,6 +5,7 @@ import Post from './../components/noticeboard/Post';
 import Header from '../components/header/Header';
 import Tab from '../components/header/Tab';
 
+// 게시판 페이지
 function Noticeboard() {
   const [currentBoard, setCurrentBoard] = useState('공지게시판');
 

@@ -4,13 +4,16 @@ import theme from '../../styles/Theme';
 import { useRecoilState } from 'recoil';
 import { manageTab } from '../../atom/tab/manage';
 
+// 헤더 아래 관리페이지의 탭
 export default function ManageTab(props) {
-  const [memu, setMemu] = useRecoilState(manageTab);
+  const [memu, setMemu] = useRecoilState(manageTab); // 관리페이지 탭
 
   const changeTab = index => {
     setMemu(index);
   };
 
+  // 관리 페이지 탭 내용들
+  // accent는 현재 클릭한 탭이 강조되도록 해줌
   const manageTabContents = [
     { name: '회원 승인', accent: memu === 0 },
     { name: '회원 정보', accent: memu === 1 },

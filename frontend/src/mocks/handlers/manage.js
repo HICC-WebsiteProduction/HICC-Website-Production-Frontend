@@ -16,6 +16,7 @@ export const manageHandlers = [
     return res(ctx.json(response));
   }),
 
+  // 회원 상세정보 조회
   rest.post(`${BASE_URL}/admin/member/detail`, async (req, res, ctx) => {
     const response = {
       id: 'C011001',
@@ -28,6 +29,7 @@ export const manageHandlers = [
     return res(ctx.json(response));
   }),
 
+  // 회원 강퇴
   rest.post(`${BASE_URL}/admin/expel`, async (req, res, ctx) => {
     const response = 'success';
     return res(ctx.json(response));

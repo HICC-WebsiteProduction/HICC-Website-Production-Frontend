@@ -5,16 +5,18 @@ import Button from '../util/Button';
 import { useSetRecoilState, useRecoilState } from 'recoil';
 import { cabinetModal, cabinet } from '../../atom/cabinet';
 
+// 사물함 관리페이지에서 사용하는 사물함들
 function EachCabinetManage({ eachCabinet }) {
-  const [state, setState] = useSelect(eachCabinet.status);
+  const [state, setState] = useSelect(eachCabinet.status); // 사물함의 상태 변경 (사용불가, 가능)
 
-  const [cabinetList, setCabinetList] = useRecoilState(cabinet);
-  const setCurrentIndex = useSetRecoilState(cabinetModal);
+  const [cabinetList, setCabinetList] = useRecoilState(cabinet); // 사물함의 상태를 기억하기 위해
+  const setCurrentIndex = useSetRecoilState(cabinetModal); // 모달 창 관리를 위해
 
   // 우산의 상태를 변경하는 함수
   const modifyCabinetState = event => {
     setState(event);
 
+    // 사용불가, 가능 상태를 변경해준다.
     const updatedState = cabinetList.map(cabinet => {
       if (cabinet.cabinetNumber === eachCabinet.cabinetNumber) {
         return {

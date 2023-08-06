@@ -8,6 +8,16 @@ import { applyType } from '../../constants/ApplyType';
 import useConfirm from '../../hook/useConfirm';
 import { request } from '../../utils/axios';
 
+// 대여 신청 팝업 창
+/*
+  itemName: 사물함, 우산
+  itemNumber: 사물함 번호, 우산 번호
+  lender: 대여자 - 대여 신청자
+  startDay: 대여 시작일
+  endDay: 대여 반납일
+  startDayDisabled: 대여 시작일 선택불가여부 (오늘 날짜로 고정)
+  endDayDisabled: 대여 반납일 선택불가여부 (사물함 선택 가능, 우산은 7일로 고정)
+*/
 export default function ApplyModal(props) {
   const {
     itemName,
@@ -20,12 +30,12 @@ export default function ApplyModal(props) {
   } = props;
 
   const closeModalFunc = useResetRecoilState(applyType[itemName].index);
+  // 모달 창 종료를 위해 모달 오픈 여부를 모두 false로 리셋함
   const modalRef = useRef(null);
-  const closeModal = useCloseModal(modalRef, closeModalFunc);
+  const closeModal = useCloseModal(modalRef, closeModalFunc); // 모달 창 닫음을 수행
 
-  const [itemList, setItemList] = useRecoilState(applyType[itemName].item);
-
-  const [date, setDate] = useState();
+  const [itemList, setItemList] = useRecoilState(applyType[itemName].item); // 대여 상태 변환
+  const [date, setDate] = useState(); // 날짜 선택을 위해
 
   const onChange = event => {
     setDate(event.target.value);
@@ -42,7 +52,7 @@ export default function ApplyModal(props) {
       const body = {
         targetId: 'B731070',
       };
-      // 사물함일 경우
+      // 사물함일 경우 승인 대기 상태로 전환
       if (itemName === '사물함') {
         try {
           const response = request('post', '/locker/rent', body);
@@ -64,7 +74,7 @@ export default function ApplyModal(props) {
           console.log(error);
         }
       } else {
-        // 우산일 경우
+        // 우산일 경우 내가 대여 상태로 변환
         try {
           const response = request('post', '/umbrella/rent', body);
           const updatedList = itemList.map(umbrella => {
@@ -90,6 +100,7 @@ export default function ApplyModal(props) {
     }
   };
 
+  // 신청 확인 창을 띄운다.
   const apply = useConfirm(
     '정말 신청하시겠습니까?',
     confirmGrant,

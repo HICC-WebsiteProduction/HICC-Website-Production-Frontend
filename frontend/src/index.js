@@ -10,6 +10,7 @@ import Routes from './Routes';
 import { worker } from './mocks/browsers';
 import { RecoilRoot } from 'recoil';
 
+// msw 실행을 위해
 if (process.env.NODE_ENV === 'development') {
   worker.start();
 }

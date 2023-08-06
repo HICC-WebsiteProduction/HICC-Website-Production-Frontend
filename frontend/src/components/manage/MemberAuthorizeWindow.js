@@ -9,9 +9,11 @@ import { request } from '../../utils/axios';
 import useConfirm from '../../hook/useConfirm';
 import ConfirmMessage from '../../constants/ConfirmMessage';
 
+// 회원 승인 화면을 담당
 function MemberAuthorizeWindow(props) {
-  const [waitingMember, setWaitingMember] = useState([]);
+  const [waitingMember, setWaitingMember] = useState([]); // 승인 대기자를 담음
 
+  // 체크박스 관리를 위해
   const {
     checkboxList,
     setCheckboxList,
@@ -50,6 +52,7 @@ function MemberAuthorizeWindow(props) {
   }, []);
 
   // 승인 거절을 눌렀을 때 실행되는 함수
+  // 이 파트는 실제 백엔드와 협의하여 제작함
   const confirmDeny = async () => {
     const checkedIdList = checkboxList
       .filter(member => member.isChecked)
@@ -70,6 +73,7 @@ function MemberAuthorizeWindow(props) {
   };
 
   // 승인 허가를 눌렀을 때 실행되는 함수
+  // 이 파트는 실제 백엔드와 협의하여 제작함
   const confirmGrant = async () => {
     const checkedIdList = checkboxList
       .filter(member => member.isChecked)
@@ -89,12 +93,14 @@ function MemberAuthorizeWindow(props) {
     }
   };
 
+  // 승인 거절을 눌렀을 때 실행되는 확인 창
   const denyMember = useConfirm(
     ConfirmMessage.denyMembership,
     confirmDeny,
     '승인이 거부되었습니다.',
   );
 
+  // 승인 허용을 눌렀을 때 실행되는 확인 창
   const approveMember = useConfirm(
     ConfirmMessage.approveMembership,
     confirmGrant,

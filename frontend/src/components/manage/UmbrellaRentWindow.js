@@ -8,9 +8,10 @@ import Button from '../util/Button';
 import { request } from '../../utils/axios';
 import useConfirm from '../../hook/useConfirm';
 
+// 우산 관리 페이지를 담당
 function UmbrellaRentWindow(props) {
-  const [umbrellaList, setUmbrellaList] = useRecoilState(umbrella);
-  const resetUmbrella = useResetRecoilState(umbrella);
+  const [umbrellaList, setUmbrellaList] = useRecoilState(umbrella); // 우산 리스트
+  const resetUmbrella = useResetRecoilState(umbrella); // 우산 상태 초기화
 
   const fetchData = async () => {
     try {
@@ -33,6 +34,8 @@ function UmbrellaRentWindow(props) {
     };
   }, []);
 
+  // 우산 상태를 저장하는 기능
+  // 아직 백엔드 통신 코드는 작성하지 않음
   const confirmGrant = () => {
     console.log('반영 성공');
 
@@ -40,11 +43,13 @@ function UmbrellaRentWindow(props) {
     return new Promise(resolve => resolve(1));
   };
 
+  // 저장 확인 창에서 취소를 눌렀을 때 초기화 후 서버 값 재로딩
   const confirmDismiss = () => {
     resetUmbrella();
     window.location.reload();
   };
 
+  // 저장 버튼을 누르면 실행되는 확인 창
   const saveState = useConfirm(
     '저장하시겠습니까?',
     confirmGrant,

@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
 
+// 회원 상세 정보에서 한 줄을 보여주는 기능
 export default function MemberInfo(props) {
   return (
     <InputRow>

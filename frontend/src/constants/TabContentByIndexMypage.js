@@ -1,6 +1,7 @@
 import MyInfo from '../components/mypage/MyInfo';
 import Post from '../components/noticeboard/Post';
 
+// 마이페이지에서 탭 이동
 export const TabContentByIndexMypage = {
   '내 정보': <MyInfo />,
   '내 작성글': (

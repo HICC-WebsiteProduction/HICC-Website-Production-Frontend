@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
 
+// 헤더 아래 제목을 보여줄 때 사용
 export default function Title(props) {
   return (
     <TitleContainer>

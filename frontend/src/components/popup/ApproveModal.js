@@ -7,16 +7,26 @@ import useCloseModal from '../../hook/useCloseModal';
 import { applyType } from '../../constants/ApplyType';
 import { cabinet } from '../../atom/cabinet';
 
+// 대여 승인 팝업 창
+/*
+  itemName: 사물함, 우산
+  itemNumber: 사물함 번호, 우산 번호
+  lender: 대여자 - 대여 신청자
+  startDay: 대여 시작일
+  endDay: 대여 반납일
+*/
 export default function ApproveModal(props) {
   const { itemName, itemNumber, lender, start, end } = props;
 
   const closeModalFunc = useResetRecoilState(applyType[itemName]);
+  // 모달 창 종료를 위해 모달 오픈 여부를 모두 false로 리셋함
+
   const modalRef = useRef(null);
-  const closeModal = useCloseModal(modalRef, closeModalFunc);
+  const closeModal = useCloseModal(modalRef, closeModalFunc); // 모달 창 닫음을 수행
 
-  const [cabinetList, setCabinetList] = useRecoilState(cabinet);
+  const [cabinetList, setCabinetList] = useRecoilState(cabinet); // 사물함 상태 변환 (승인은 사물함 밖에 없음)
 
-  // 신청 거절
+  // 신청 거절 - unrent 상태로 전환
   const RejectApply = () => {
     const updatedState = cabinetList.map(cabinet => {
       if (cabinet.cabinetNumber === itemNumber) {
@@ -37,7 +47,7 @@ export default function ApproveModal(props) {
     closeModalFunc();
   };
 
-  // 신청 수락
+  // 신청 수락 - rent 상태로 전환
   const ApproveApply = () => {
     const updatedState = cabinetList.map(cabinet => {
       if (cabinet.cabinetNumber === itemNumber) {
