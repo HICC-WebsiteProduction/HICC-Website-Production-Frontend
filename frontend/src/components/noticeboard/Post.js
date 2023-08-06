@@ -142,6 +142,7 @@ export default function Post(props) {
           </Pagination> */}
           <Paging
             page={currentPage}
+            pageSize={postsPerPage}
             count={filteredPostsCount}
             setPage={setPage}
           />

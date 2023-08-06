@@ -78,5 +78,14 @@
     "phoneNumber": "010-9999-9999",
     "role": "GUEST",
     "major": "컴퓨터공학과"
-  }
+  },
+  {"name": "이지우원", "id": "C211001", "nickname": "ezwoo", "phoneNumber": "010-1234-5678", "role": "GUEST", "major": "컴퓨터공학과"},
+  {"nickname": "banana", "name": "이지우투", "id": "C031001", "phoneNumber": "010-1234-5678", "role": "GUEST", "major": "경영학과"},
+  {"nickname": "pineapple", "name": "이지우쓰리", "id": "B731001", "phoneNumber": "010-1234-5678", "role": "GUEST", "major": "경영학과"},
+  {"nickname": "melon", "name": "이지우포", "id": "C119001", "phoneNumber": "010-1234-5678", "role": "GUEST", "major": "신소재화공"},
+  {"nickname": "strawberry", "name": "이지우파이브", "id": "C219002", "phoneNumber": "010-1234-5678", "role": "GUEST", "major": "신소재화공"},
+  {"nickname": "orange", "name": "이지우식스", "id": "C211004", "phoneNumber": "010-1234-5678", "role": "GUEST", "major": "컴퓨터공학과"},
+  {"nickname": "pear", "name": "이지우세븐", "id": "B915010", "phoneNumber": "010-1234-5678", "role": "GUEST", "major": "컴퓨터공학과"},
+  {"nickname": "peach", "name": "이지우에잇", "id": "C015001", "phoneNumber": "010-1234-5678", "role": "GUEST", "major": "전자전기공학과"}
+
 ]
