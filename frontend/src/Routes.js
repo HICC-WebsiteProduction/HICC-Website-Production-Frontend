@@ -13,6 +13,7 @@ import UmbrellaRent from './pages/UmbrellaRent';
 import PrivateRoute from './PrivateRoute';
 import { useRecoilValue } from 'recoil';
 import { user } from './atom/user';
+import TOS from './pages/TOS';
 
 function Router() {
   const isLogin = useRecoilValue(user).accessToken;
@@ -22,6 +23,7 @@ function Router() {
         <Route path="/" element={<Main />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/tos" element={<TOS />} />
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/manage" element={<Manage />} />

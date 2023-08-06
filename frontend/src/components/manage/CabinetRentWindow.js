@@ -1,26 +1,60 @@
-import React, { useEffect } from 'react';
-import { useRecoilState, useResetRecoilState } from 'recoil';
-import { cabinet, cabinetModal } from '../../atom/cabinet';
-import { cabinetStatus } from '../../dummy/cabinetStatus';
+import React, { useEffect, useRef } from 'react';
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
+import { cabinet, cabinetModal, currentCabinetIndex } from '../../atom/cabinet';
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import Button from '../util/Button';
 import EachCabinetManage from '../eachItem/EachCabinetManage';
+import { request } from '../../utils/axios';
+import ApproveModal from '../popup/ApproveModal';
+import useConfirm from '../../hook/useConfirm';
 
 function CabinetRentWindow(props) {
   const [init, setInit] = useRecoilState(cabinet);
   const [cabinetList, setCabinetList] = useRecoilState(cabinetModal); // 사물함 리스트
+  const currentIndex = useRecoilValue(currentCabinetIndex); // 모달 백드롭 때문에
 
   const resetCabinet = useResetRecoilState(cabinet);
 
+  const fetchData = async () => {
+    try {
+      const response = await request('get', '/locker');
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    setInit(cabinetStatus);
-    setCabinetList(init);
+    const loadCabinetStatus = async () => {
+      const result = await fetchData();
+      setInit(result);
+      setCabinetList(init);
+    };
+    loadCabinetStatus();
 
     return () => {
       resetCabinet();
     };
   }, []);
+
+  const confirmGrant = () => {
+    console.log('반영 성공');
+  };
+
+  const confirmDismiss = () => {
+    resetCabinet();
+    window.location.reload();
+  };
+
+  const saveState = useConfirm(
+    '저장하시겠습니까?',
+    confirmGrant,
+    '저장 성공',
+    confirmDismiss,
+  );
+
+  const modalRef = useRef(null);
 
   return (
     <CabinetRentWindowContainer>
@@ -34,13 +68,28 @@ function CabinetRentWindow(props) {
             cabinetList.map(cabinet => (
               <EachCabinetManage
                 key={cabinet.cabinetNumber}
-                cabinet={cabinet}
+                eachCabinet={cabinet}
               />
             ))}
         </CabinetGrid>
+        <ViewApplyModal ref={modalRef} view={currentIndex !== -1}>
+          {cabinetList.map(
+            item =>
+              item.modalOpen && (
+                <ApproveModal
+                  key={`canbinetModal`}
+                  itemName={`사물함`}
+                  itemNumber={item.cabinetNumber}
+                  lender={item.lender}
+                  start={item.start}
+                  end={item.end}
+                />
+              ),
+          )}
+        </ViewApplyModal>
       </CabinetCurrentState>
       <SaveButtonContainer>
-        <SaveButton buttonName="저장" />
+        <SaveButton buttonName="저장" onClick={saveState} />
       </SaveButtonContainer>
     </CabinetRentWindowContainer>
   );
@@ -101,4 +150,16 @@ const CabinetGrid = styled.div`
   grid-column-gap: 25px;
   width: 100%;
   height: 100%;
+`;
+
+const ViewApplyModal = styled.div`
+  display: ${props => (props.view ? 'block' : 'none')};
+  position: fixed;
+
+  width: 100%;
+  height: 100%;
+  left: 0px;
+  top: 0px;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1;
 `;

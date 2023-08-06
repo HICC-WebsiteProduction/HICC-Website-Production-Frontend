@@ -2,24 +2,52 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import { useRecoilState, useResetRecoilState } from 'recoil';
-import { umbrella, umbrellaModal } from '../../atom/umbrella';
-import { umbrellaStatus } from '../../dummy/umbrellaStatus';
+import { umbrella } from '../../atom/umbrella';
 import EachUmbrellaManage from '../eachItem/EachUmbrellaManage';
 import Button from '../util/Button';
+import { request } from '../../utils/axios';
+import useConfirm from '../../hook/useConfirm';
 
 function UmbrellaRentWindow(props) {
-  const [init, setInit] = useRecoilState(umbrella);
-  const [umbrellaList, setUmbrellaList] = useRecoilState(umbrellaModal); // 사물함 리스트
+  const [umbrellaList, setUmbrellaList] = useRecoilState(umbrella);
   const resetUmbrella = useResetRecoilState(umbrella);
 
+  const fetchData = async () => {
+    try {
+      const response = await request('get', '/umbrella');
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    setInit(umbrellaStatus);
-    setUmbrellaList(init);
+    const loadUmbrellaStatus = async () => {
+      const result = await fetchData();
+      setUmbrellaList(result);
+    };
+    loadUmbrellaStatus();
 
     return () => {
       resetUmbrella();
     };
   }, []);
+
+  const confirmGrant = () => {
+    console.log('반영 성공');
+  };
+
+  const confirmDismiss = () => {
+    resetUmbrella();
+    window.location.reload();
+  };
+
+  const saveState = useConfirm(
+    '저장하시겠습니까?',
+    confirmGrant,
+    '저장 성공',
+    confirmDismiss,
+  );
 
   return (
     <UmbrellaRentWindowContainer>
@@ -33,13 +61,13 @@ function UmbrellaRentWindow(props) {
             umbrellaList.map(umbrella => (
               <EachUmbrellaManage
                 key={umbrella.umbrellaNumber}
-                umbrella={umbrella}
+                eachUmbrella={umbrella}
               />
             ))}
         </UmbrellaGrid>
       </UmbrellaCurrentState>
       <SaveButtonContainer>
-        <SaveButton buttonName="저장" />
+        <SaveButton buttonName="저장" onClick={saveState} />
       </SaveButtonContainer>
     </UmbrellaRentWindowContainer>
   );

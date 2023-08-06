@@ -1,50 +1,101 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import theme from './../../styles/Theme';
 
-import { waitingMember } from '../../dummy/watingMember';
 import EachWaitingMember from '../eachItem/EachWatingMember';
 import Checkbox from './../util/Checkbox';
+import useCheckbox from '../../hook/useCheckbox';
+import { request } from '../../utils/axios';
+import useConfirm from '../../hook/useConfirm';
+import ConfirmMessage from '../../constants/ConfirmMessage';
 
 function MemberAuthorizeWindow(props) {
-  const memberListRef = React.createRef();
-  let toggleNext = false;
+  const [waitingMember, setWaitingMember] = useState([]);
 
-  const selectToggle = () => {
-    const memberList = memberListRef.current.children;
-    let checkedAny = false;
+  const {
+    checkboxList,
+    setCheckboxList,
+    checkAll,
+    checkAllHandler,
+    checkHandler,
+  } = useCheckbox([]);
 
-    // if checked any, remove every checkbox
-    for (const element of memberList) {
-      let tdList = element.children;
-      if (tdList[tdList.length - 1].children[0].checked === true) {
-        checkedAny = true;
-        break;
+  const fetchData = async () => {
+    try {
+      const response = await request('post', '/admin/applicant', {
+        id: 'C011001',
+      });
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    const loadWaitingMember = async () => {
+      const result = await fetchData();
+      setWaitingMember(result);
+
+      // checkbox 초기 상태 설정
+      if (result.length > 0) {
+        const initialList = result.map(member => ({
+          id: member.id,
+          isChecked: false,
+        }));
+        setCheckboxList(initialList);
       }
-    }
-    if (checkedAny === true) {
-      toggleNext = false;
-    }
+    };
 
-    // transition : toggle check
-    for (const element of memberList) {
-      let tdList = element.children;
-      console.log(tdList[tdList.length - 1].children[0].checked);
-      tdList[tdList.length - 1].children[0].checked = toggleNext;
-    }
+    loadWaitingMember();
+  }, []);
 
-    toggleNext = !toggleNext;
+  // 승인 거절을 눌렀을 때 실행되는 함수
+  const confirmDeny = async () => {
+    const checkedIdList = checkboxList
+      .filter(member => member.isChecked)
+      .map(member => member.id);
+
+    const body = {
+      id: 'C011001',
+      targetIdList: checkedIdList,
+    };
+
+    try {
+      await request('post', '/admin/deny', body);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const confirmGrant = data => {
-    // open dialog box
+  // 승인 허가를 눌렀을 때 실행되는 함수
+  const confirmGrant = async () => {
+    const checkedIdList = checkboxList
+      .filter(member => member.isChecked)
+      .map(member => member.id);
+
+    const body = {
+      id: 'C011001',
+      targetIdList: checkedIdList,
+    };
+
+    try {
+      await request('post', '/admin/approve', body);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const confirmDeny = data => {
-    // open dialog box
-  };
+  const denyMember = useConfirm(
+    ConfirmMessage.denyMembership,
+    confirmDeny,
+    '승인이 거부되었습니다.',
+  );
 
-  const waitingMemberList = waitingMember;
+  const approveMember = useConfirm(
+    ConfirmMessage.approveMembership,
+    confirmGrant,
+    '승인이 허가되었습니다.',
+  );
 
   return (
     <MemberAuthorizeContainer>
@@ -56,32 +107,42 @@ function MemberAuthorizeWindow(props) {
       <WaitingMemberContainer>
         <WaitingMemberHeader>
           <tr>
-            <td>NO.</td>
+            <td>등급</td>
             <td>이름</td>
             <td>학번</td>
+            <td>전공</td>
             <td>닉네임</td>
-            <td>전화번호</td>
+            <td>연락처</td>
             <td>
-              <Checkbox checkboxId="allcheck" onChange={selectToggle} />
+              <Checkbox
+                checkboxId="allcheck"
+                checked={checkAll}
+                onChange={event => checkAllHandler(event.target.checked)}
+              />
             </td>
           </tr>
         </WaitingMemberHeader>
-        <WaitingMemberList ref={memberListRef}>
-          {waitingMemberList.map((member, index) => (
-            <EachWaitingMember
-              key={`member${index}`}
-              no={index + 1}
-              name={member.name}
-              studentNo={member.studentNo}
-              nickname={member.nickname}
-              call={member.call}
-            />
-          ))}
+        <WaitingMemberList>
+          {waitingMember &&
+            checkboxList.length > 0 &&
+            waitingMember.map((member, index) => (
+              <EachWaitingMember
+                key={`memberauthorize${index}`}
+                nickname={member.nickname}
+                name={member.name}
+                major={member.major}
+                id={member.id}
+                phoneNumber={member.phoneNumber}
+                role={member.role}
+                isChecked={checkboxList[index].isChecked}
+                onChange={checkHandler}
+              />
+            ))}
         </WaitingMemberList>
       </WaitingMemberContainer>
       <ActionButtonContainer>
-        <DenyButton onClick={confirmDeny}>가입 거부</DenyButton>
-        <GrantButton onClick={confirmGrant}>가입 승인</GrantButton>
+        <DenyButton onClick={denyMember}>가입 거부</DenyButton>
+        <GrantButton onClick={approveMember}>가입 승인</GrantButton>
       </ActionButtonContainer>
     </MemberAuthorizeContainer>
   );
@@ -181,43 +242,3 @@ const GrantButton = styled.button`
     cursor: pointer;
   }
 `;
-
-// function AuthConfirmDialog(props) {
-//   return (
-//     <AuthConfirmDialogContainer>
-//       <AuthComfirmDialogMessage>
-//         <span>가입을 거부/승인 하시겠습니까?!!!!!</span>
-//         <span>진짜? 정말? 후회 없죠?</span>
-//       </AuthComfirmDialogMessage>
-//       <AuthConfirmDialogButtonContainer>
-//         <AuthConfirmDialogCancel>Cancel</AuthConfirmDialogCancel>
-//         <AuthConfirmDialogOk>OK</AuthConfirmDialogOk>
-//       </AuthConfirmDialogButtonContainer>
-//     </AuthConfirmDialogContainer>
-//   );
-// }
-
-// const AuthConfirmDialogContainer = styled.div`
-//   height: ${pixelToRem(400)};
-//   width: ${pixelToRem(800)};
-
-//   background: lightgray;
-// `;
-
-// const AuthComfirmDialogMessage = styled.div`
-//   width: 100%;
-//   height: 55%;
-// `;
-
-// const AuthConfirmDialogButtonContainer = styled.div`
-//   width: 100%;
-//   height: 45%;
-// `;
-
-// const AuthConfirmDialogCancel = styled.button`
-//   *
-// `;
-
-// const AuthConfirmDialogOk = styled.button`
-//   *
-// `;

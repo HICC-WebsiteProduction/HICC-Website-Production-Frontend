@@ -6,51 +6,51 @@ import { useParams } from 'react-router-dom';
 import MemberInfo from './MemberInfo';
 import confirmMessage from '../../constants/ConfirmMessage';
 import { useNavigate } from 'react-router-dom';
-import { memberGrade } from '../../constants/MemberGrade';
-import { useRecoilState } from 'recoil';
-import { memberinfo } from '../../atom/memberinfo';
 import useConfirm from '../../hook/useConfirm';
-import useAlert from '../../hook/useAlert';
 import Title from '../header/Title';
 import Header from '../header/Header';
+import { memberRole } from '../../constants/MemberRole';
+import { request } from '../../utils/axios';
+import getKeyByValue from '../../utils/getKeyByValue';
+import useSelect from '../../hook/useSelect';
 
 export default function MemberDetail() {
   const { user } = useParams();
   const [userinfo, setUserinfo] = useState([]);
-  const [memberInfo, setMemberInfo] = useRecoilState(memberinfo);
 
-  const [userGrade, setUserGrade] = useState('normal');
-
+  const [selectedRole, setSelectedRole] = useSelect(memberRole.GENERAL);
   const navigate = useNavigate();
 
-  const updateMemberGrade = e => {
-    setUserGrade(e.target.value);
-  };
-
-  // 리코일에 전체 멤버 정보 들고있고, 찾아서 현재 유저를 보여주는 방식
-  // 서버를 도입하면 이렇게 하는 방식에서 변경되어야 함
+  // 회원정보 로드
   useEffect(() => {
-    const currentUser = memberInfo.find(member => member.nickname === user);
-    setUserinfo(currentUser);
-  }, [memberInfo, user]);
+    const loadUserInfo = async () => {
+      const body = {
+        id: 'C011001',
+        nickname: user,
+      };
+      try {
+        const response = await request('post', `/admin/member/detail`, body);
+        setUserinfo(response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    loadUserInfo();
+  }, [user]);
 
-  // 실제 서버가 연결된다면 아래와 같은 과정 필요 없이 (recoii)
-  // 서버에 put 요청하면 된다
-  const saveMember = () => {
-    // 현재 멤버 등급 변경
-    // recoil에서 값을 불러와 객체를 복사할 때는 깊은 복사를 사용할 것
-    let newUserInfo = Object.assign({}, userinfo);
-    newUserInfo.grade = userGrade;
-    setUserinfo(newUserInfo);
+  const saveMember = async () => {
+    const body = {
+      id: 'C011001',
+      targetIdList: [userinfo.id],
+      role: getKeyByValue(memberRole, selectedRole),
+    };
 
-    // 전체 멤버상태 변경
-    // recoil에서 값을 불러와 배얼을 복사할 때는 깊은 복사를 사용할 것
-    const totalUser = [...memberInfo];
-    const userIdx = totalUser.findIndex(member => member.nickname === user);
-    totalUser[userIdx] = newUserInfo;
-    setMemberInfo(totalUser);
-
-    navigate('/manage');
+    try {
+      await request('post', '/admin/modify', body);
+      navigate('/manage');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const saveMemberInfo = useConfirm(
@@ -59,21 +59,22 @@ export default function MemberDetail() {
     '회원등급 변경에 성공했습니다.',
   );
 
-  const alert = useAlert();
-
-  // recoil을 사용하여 유저를 찾아서 특정 유저를 지워버림
-  const deleteMember = () => {
-    if (userinfo.grade === 'president') {
-      alert(true, '본인 강퇴는 안돼요...');
-      return;
+  const deleteMember = async () => {
+    if (memberRole[userinfo.role] === memberRole.PRESIDENT) {
+      return '본인 강퇴는 안돼요...';
     }
 
-    const totalUser = [...memberInfo];
-    const userIdx = totalUser.findIndex(member => member.nickname === user);
-    totalUser.splice(userIdx, 1);
-    setMemberInfo(totalUser);
+    const body = {
+      id: 'C011001',
+      targetId: userinfo.id,
+    };
 
-    navigate('/manage');
+    try {
+      await request('post', '/admin/expel', body);
+      navigate('/manage');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const deleteUser = useConfirm(
@@ -92,17 +93,24 @@ export default function MemberDetail() {
           <MemberProfileList>
             <MemberInfo name="이름" param={userinfo.name} />
             <MemberInfo name="닉네임" param={userinfo.nickname} />
-            <MemberInfo name="학번" param={userinfo.studentID} />
-            <MemberInfo name="전화번호" param={userinfo.call} />
+            <MemberInfo name="학번" param={userinfo.id} />
+            <MemberInfo name="학과" param={userinfo.major} />
+            <MemberInfo name="전화번호" param={userinfo.phoneNumber} />
             <GradeContainer>
-              <MemberInfo name="등급" param={memberGrade[userinfo.grade]} />
+              <MemberInfo name="등급" param={memberRole[userinfo.role]} />
               <ChangeGradeSelect
-                value={userGrade}
-                onChange={e => updateMemberGrade(e)}
+                value={selectedRole}
+                onChange={e => setSelectedRole(e)}
               >
-                <ChangeGradeOption value="normal">일반</ChangeGradeOption>
-                <ChangeGradeOption value="graduate">졸업생</ChangeGradeOption>
-                <ChangeGradeOption value="manager">운영진</ChangeGradeOption>
+                <ChangeGradeOption value={memberRole.GENERAL}>
+                  일반
+                </ChangeGradeOption>
+                <ChangeGradeOption value={memberRole.GRADUATE}>
+                  졸업생
+                </ChangeGradeOption>
+                <ChangeGradeOption value={memberRole.EXECUTIVE}>
+                  운영진
+                </ChangeGradeOption>
               </ChangeGradeSelect>
               <GoAwayButton onClick={deleteUser}>강퇴</GoAwayButton>
             </GradeContainer>

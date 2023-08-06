@@ -2,26 +2,30 @@ import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import { Link } from 'react-router-dom';
 import Checkbox from '../util/Checkbox';
-import { memberGrade } from '../../constants/MemberGrade';
+import { memberRole } from '../../constants/MemberRole';
 
 function EachRegisteredMember(props) {
+  const { nickname, name, major, id, phoneNumber, role, isChecked, onChange } =
+    props;
+
   const changeSelect = e => {
-    props.getMemberInfo(props.studentID, e.target.checked);
+    onChange(id, e.target.checked);
   };
 
   return (
-    <MemberPresenter>
-      <td>{memberGrade[props.grade]}</td>
-      <td>{props.name}</td>
-      <td>{props.studentID}</td>
+    <MemberPresenter key={id}>
+      <td>{memberRole[role]}</td>
+      <td>{name}</td>
+      <td>{id}</td>
+      <td>{major}</td>
       <td>
-        <MemberDetailsLink to={`/manage/memberinfo/${props.nickname}`}>
-          {props.nickname}
+        <MemberDetailsLink to={`/manage/memberinfo/${nickname}`}>
+          {nickname}
         </MemberDetailsLink>
       </td>
-      <td>{props.call}</td>
+      <td>{phoneNumber}</td>
       <td>
-        <Checkbox value={props.studentID} onChange={changeSelect} />
+        <Checkbox value={id} checked={isChecked} onChange={changeSelect} />
       </td>
     </MemberPresenter>
   );
