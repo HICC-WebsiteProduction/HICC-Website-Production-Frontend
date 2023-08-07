@@ -6,6 +6,7 @@ import Activity from '../components/main/Activity';
 import NumberTable from '../components/main/NumberTable';
 import HongMap from '../components/main/HongMap';
 import JoinHICC from '../components/main/JoinHICC';
+import Footer from '../components/main/Footer';
 
 function Main() {
   return (
@@ -16,6 +17,7 @@ function Main() {
       <NumberTable />
       <HongMap />
       <JoinHICC />
+      <Footer />
     </MainContainer>
   );
 }
