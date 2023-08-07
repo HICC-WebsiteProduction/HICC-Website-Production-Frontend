@@ -9,6 +9,7 @@ function JoinHICC() {
       </ContentContainer>
       <Image>
         <Button>가입신청</Button>
+        <Text>HICC는 상시 가입이 가능합니다.</Text>
       </Image>
     </Frame>
   );
@@ -68,4 +69,17 @@ const Button = styled.button`
   font-weight: 500;
   line-height: 54px;
   text-align: center;
+`;
+
+const Text = styled.div`
+  position: absolute;
+  width: 310px;
+  height: 36px;
+  top: 211px;
+  font-family: Pretendard;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 36px;
+  text-align: left;
+  color: #edf0f8;
 `;
