@@ -17,9 +17,11 @@ function Banner() {
   const animatedItem = useScrollClipPath('left', 1.5, 0);
   return (
     <BannerFrame>
-      <BannerTxt {...animatedItem}>
-        Hong Ik <br /> Computer Club
-      </BannerTxt>
+      <BannerTextContainer>
+        <BannerTxt {...animatedItem}>
+          Hong Ik <br /> Computer Club
+        </BannerTxt>
+      </BannerTextContainer>
     </BannerFrame>
   );
 }
@@ -27,9 +29,12 @@ function Banner() {
 export default Banner;
 
 const BannerFrame = styled.div`
-  width: 1200px;
-  height: 100%;
+  position: relative;
+  width: 100%;
+  height: 880px;
   margin: 0 auto;
+  place-content: center;
+  z-index: -1;
   background-image: url('${logo}');
   background-size: cover;
   background-position: center center;
@@ -37,13 +42,25 @@ const BannerFrame = styled.div`
   grid-area: logo;
   object-fit: contain;
   animation: ${boxAnimation} 0.2s linear alternate;
+  display: flex;
+  justify-content: center;
+`;
+
+const BannerTextContainer = styled.div`
+  margin: 0 auto;
+  position: relative;
+  width: 1200px;
+  height: 880px;
+  display: flex;
+  justify-content: center;
+  place-items: center;
+  //place-content: center;
 `;
 
 const BannerTxt = styled.div`
-  position: relative;
+  position: absolute;
   width: 100%;
   top: 55%;
-  left: 20%;
   font-size: xxx-large;
   font-weight: bold;
   color: #edf0f8;
