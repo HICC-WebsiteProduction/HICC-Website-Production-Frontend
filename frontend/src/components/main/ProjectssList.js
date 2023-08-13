@@ -78,12 +78,12 @@ const StyledSlider = styled(Slider)`
   }
 
   .slick-prev {
-    left: 400px;
+    left: 390px;
     z-index: 10;
   }
 
   .slick-next {
-    right: 400px;
+    right: 390px;
     z-index: 10;
   }
 
