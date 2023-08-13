@@ -53,7 +53,7 @@ const GlobalStyle = createGlobalStyle`
     }
     
     body {
-        margin: 0 ${theme.margin.margin_browser};
+        margin: 0;
         background-color: #2C2C33;
     }
 `;
