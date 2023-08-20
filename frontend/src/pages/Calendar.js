@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import moment from 'moment';
 import data from '../data/data.json';
 import theme from '../styles/Theme';
@@ -7,28 +7,103 @@ import ScheduleModal from '../components/popup/ScheduleModal';
 import Title from '../components/header/Title';
 import Header from '../components/header/Header';
 import useModal from '../hook/useModal';
+import ScheduleModalSaved from '../components/popup/ScheduleModalSaved';
+
+const ScheduleEnum = {
+  학술: 'academic',
+  학교행사: 'hongikEvent',
+  친목: 'amity',
+};
+
+function CalenderPlan2(props) {
+  const modalRef = useRef(null);
+  const [modalOpen, closeModal] = useModal(modalRef);
+
+  return (
+    <CalendarPlan
+      key="{plan}"
+      background={ScheduleEnum[props.scheduleType]}
+      ref={modalRef}
+    >
+      {props.title}
+      {modalOpen && (
+        <ScheduleModalSaved
+          closeModal={closeModal} // 모달을 닫는 동작
+          title={props.title}
+          scheduleType={props.scheduleType}
+          date={props.date}
+          description={props.description}
+        />
+      )}
+    </CalendarPlan>
+  );
+}
 
 function CalendarBox(props) {
-  const plans = [];
+  const modalRef = useRef(null);
+  const [modalOpen, _] = useModal(modalRef);
+  const [planModalOpen, setModalOpen] = useState(false);
+  const showModal = () => {
+    if (planModalOpen === false) {
+      setModalOpen(true);
+    } else {
+      setModalOpen(false);
+    }
+  };
 
   const dayPlans = data.filter(plan => moment(plan.date).date() === props.date);
+
   if (dayPlans.length > 5) {
-    console.log('full');
-    for (let i = 0; i < 4; i++) {
-      plans.push(
-        <CalendarPlan key={props.date * 10 + i}>
-          {dayPlans[i].title}
-        </CalendarPlan>,
-      );
-    }
-    plans.push(
-      <CalendarPlan key={`load${props.date}`}>{'· · · · ·'}</CalendarPlan>,
-    );
+    // console.log('full');
     return (
       <CalendarBox2>
         <CalendarDate isSunday={props.isSunday}>{props.date}</CalendarDate>
-        {plans}
+        {dayPlans.slice(0, 4).map(plan => (
+          <CalenderPlan2
+            title={plan.title}
+            scheduleType={plan.scheduleType}
+            date={plan.date}
+            description={plan.description}
+          />
+        ))}
+        {!planModalOpen && (
+          <CalendarPlanButton onClick={showModal}>
+            {'+'}
+            {dayPlans.length - 4}
+          </CalendarPlanButton>
+        )}
+        {planModalOpen &&
+          dayPlans
+            .slice(4, dayPlans.length)
+            .map(plan => (
+              <CalenderPlan2
+                title={plan.title}
+                scheduleType={plan.scheduleType}
+                date={plan.date}
+                description={plan.description}
+              />
+            ))}
+        {planModalOpen && (
+          <CalendarPlanButton onClick={showModal}>{'△'}</CalendarPlanButton>
+        )}
+        {/*{dayPlans.length > 4 && (*/}
+        {/*  <CalendarPlan key="{plan}">{'· · · · ·'}</CalendarPlan>*/}
+        {/*)}*/}
       </CalendarBox2>
+      // <CalendarBox2>
+      //   <CalendarDate isSunday={props.isSunday}>{props.date}</CalendarDate>
+      //   {dayPlans.slice(0, 4).map(plan => (
+      //     <CalenderPlan2
+      //       title={plan.title}
+      //       scheduleType={plan.scheduleType}
+      //       date={plan.date}
+      //       description={plan.description}
+      //     />
+      //   ))}
+      //   {dayPlans.length > 4 && (
+      //     <CalendarPlan key="{plan}">{'· · · · ·'}</CalendarPlan>
+      //   )}
+      // </CalendarBox2>
     );
   }
 
@@ -36,19 +111,14 @@ function CalendarBox(props) {
     <CalendarBox2>
       <CalendarDate isSunday={props.isSunday}>{props.date}</CalendarDate>
       {dayPlans.map(plan => (
-        <CalendarPlan key="{plan}">{plan.title}</CalendarPlan>
+        <CalenderPlan2
+          title={plan.title}
+          scheduleType={plan.scheduleType}
+          date={plan.date}
+          description={plan.description}
+        />
       ))}
     </CalendarBox2>
-  );
-}
-
-function Modal() {
-  return (
-    <ModalDiv>
-      <h4>제목</h4>
-      <p>날짜</p>
-      <p>상세내용</p>
-    </ModalDiv>
   );
 }
 
@@ -56,7 +126,7 @@ function Calendar() {
   const [date, setDate] = useState(moment());
 
   const modalRef = useRef(null);
-  const modalOpen = useModal(modalRef);
+  const [modalOpen, closeModal] = useModal(modalRef);
 
   const daysInMonth = date.daysInMonth(); //달의 마지막날
   const firstDayOfMonth = moment(date).startOf('month').format('d'); //달의 시작날 수
@@ -93,7 +163,7 @@ function Calendar() {
         </CalendarTopContent>
         <AddScheduleModal ref={modalRef}>
           {`일정추가 +`}
-          {modalOpen && <ScheduleModal />}
+          {modalOpen && <ScheduleModal closeModal={closeModal} />}
         </AddScheduleModal>
       </CalendarTop>
       <CalendarMain>
@@ -101,7 +171,9 @@ function Calendar() {
           <CalendarDay isSunday={idx === 0}>{day}</CalendarDay>
         ))}
         {days.map((day, idx) => (
-          <CalendarBox date={day} isSunday={idx % 7 === 0}></CalendarBox>
+          <CalendearRows>
+            <CalendarBox date={day} isSunday={idx % 7 === 0}></CalendarBox>
+          </CalendearRows>
         ))}
       </CalendarMain>
     </MainContainer>
@@ -173,11 +245,17 @@ const AddScheduleModal = styled.div`
 
 const CalendarMain = styled.div`
   display: grid;
-  grid-template-columns: repeat(7, minmax(171px, 171px));
-  grid-template-rows: 1fr repeat(6, minmax(200px, 200px));
-  place-items: center;
-  align-items: center;
-  justify-content: center;
+  grid-template-columns: repeat(7, minmax(170px, 170px));
+  //grid-template-rows: 1fr repeat(6, min(240px, 400px));
+  //place-items: center;
+  //align-items: center;
+  //justify-content: center;
+`;
+
+const CalendearRows = styled.div`
+  //display: flex;
+  grid-template-rows: 1fr repeat(6, min(230px));
+  margin-bottom: 10px;
 `;
 
 const CalendarDay = styled.div`
@@ -193,7 +271,7 @@ const CalendarDay = styled.div`
 
 const CalendarBox2 = styled.div`
   width: 171px;
-  height: 200px;
+  min-height: 200px;
   border-top: 3px solid ${theme.colors.white};
 `;
 
@@ -208,21 +286,33 @@ const CalendarDate = styled.div`
 `;
 
 const CalendarPlan = styled.div`
+  position: relative;
   margin-top: 3%;
   margin-left: 0.7%;
   width: 99.2%;
-  height: 14%;
+  height: 30px;
   font-weight: 400;
   border-radius: 9px;
-  background-color: #f95a5a;
+  background-color: ${props => theme.scheduleTypeColor[props.background]};
   color: white;
   text-align: center;
-  line-height: 160%;
+  line-height: 30px;
+  cursor: pointer;
 `;
 
-const ModalDiv = styled.div`
-  margin-top: 20px;
-  padding: 20px;
-  background-color: #61dafb;
-  text-align: left;
+const CalendarPlanButton = styled.button`
+  position: relative;
+  margin-top: 3%;
+  margin-left: 0.7%;
+  width: 99.2%;
+  height: 30px;
+  font-weight: 700;
+  font-size: medium;
+  border-radius: 9px;
+  background-color: #2c2c33;
+  color: white;
+  text-align: center;
+  line-height: 30px;
+  border: none;
+  cursor: pointer;
 `;

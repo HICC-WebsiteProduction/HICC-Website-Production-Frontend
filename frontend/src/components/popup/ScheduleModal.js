@@ -76,7 +76,7 @@ export default function ScheduleModal(props) {
           <Input required height={78} />
         </InputRow>
         <ButtonContainer>
-          <CancleButton buttonName="취소" onClick={props.onClose} />
+          <CancleButton buttonName="취소" onClick={props.closeModal} />
           <SubmitButton buttonType="submit" buttonName="저장" />
         </ButtonContainer>
       </ScheduleInputContainer>
@@ -92,6 +92,7 @@ const ScheduleModalContainer = styled.div`
   width: 620px;
   height: 750px;
   background-color: ${theme.colors.black};
+  z-index: 1080;
 `;
 
 const ScheduleModalHeader = styled.div`
