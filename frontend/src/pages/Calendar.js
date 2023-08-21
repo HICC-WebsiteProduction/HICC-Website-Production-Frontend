@@ -56,7 +56,7 @@ function Calendar() {
   const [date, setDate] = useState(moment());
 
   const modalRef = useRef(null);
-  const modalOpen = useModal(modalRef);
+  const [modalOpen] = useModal(modalRef);
 
   const daysInMonth = date.daysInMonth(); //달의 마지막날
   const firstDayOfMonth = moment(date).startOf('month').format('d'); //달의 시작날 수

@@ -19,8 +19,8 @@ export default function Header() {
   const noticeButtonRef = useRef(null); // 알림 창 버튼
   const myInfoButtonRef = useRef(null); // 내 정보 버튼
 
-  const noticeModal = useModal(noticeButtonRef); // 알림 모달 창 상태 (boolean)
-  const myInfoModal = useModal(myInfoButtonRef); // 내 정보 상태 (boolean)
+  const [noticeModal] = useModal(noticeButtonRef); // 알림 모달 창 상태 (boolean)
+  const [myInfoModal] = useModal(myInfoButtonRef); // 내 정보 상태 (boolean)
 
   const isLogin = useRecoilValue(user).accessToken; // 로그인 여부 user의 accessToken으로 체크
   const username = useRecoilValue(user).nickname; // 닉네임

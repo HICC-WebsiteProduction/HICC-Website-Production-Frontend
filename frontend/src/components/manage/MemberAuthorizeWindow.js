@@ -10,21 +10,12 @@ import useConfirm from '../../hook/useConfirm';
 import ConfirmMessage from '../../constants/ConfirmMessage';
 import useFetch from '../../hook/useFetch';
 import Loading from './../util/Loading';
-import { usePagination } from 'react-use-pagination';
-import Paging from '../paging/Paging';
+import useCSPagination from '../../hook/useCSPagination';
+import { PAGE_SIZE } from './../../constants/pageSize';
 
 // 회원 승인 화면을 담당
 function MemberAuthorizeWindow(props) {
   const [waitingMember, setWaitingMember] = useState([]); // 승인 대기자를 담음
-  const [curPageMember, setCurPageMember] = useState([]); // 현재 페이지 멤버
-  const pageSize = 10; // 페이지 사이즈
-
-  // pagination
-  const { currentPage, startIndex, endIndex, setPage } = usePagination({
-    totalItems: waitingMember.length,
-    initialPageSize: pageSize,
-    initialPage: 0,
-  });
 
   // 체크박스 관리를 위해
   const {
@@ -35,36 +26,30 @@ function MemberAuthorizeWindow(props) {
     checkHandler,
   } = useCheckbox([]);
 
+  // pagination
+  const { curPageItem, renderCSPagination } = useCSPagination(
+    waitingMember,
+    PAGE_SIZE,
+  );
+
   const { data, loading, error } = useFetch('/admin/applicant');
 
   useEffect(() => {
     if (data) {
       setWaitingMember(data);
-      setCurPageMember(data.slice(0, pageSize));
-
-      // checkbox 초기 상태 설정
-      if (data.length > 0) {
-        const initialList = data.slice(0, pageSize).map(member => ({
-          id: member.id,
-          isChecked: false,
-        }));
-        setCheckboxList(initialList);
-      }
     }
   }, [data]);
 
   // 페이지가 변동될 때마다 새로 체크박스 관리를 해주어야하기 때문
   useEffect(() => {
-    const currentPageMember = waitingMember.slice(startIndex, endIndex + 1);
-    setCurPageMember(currentPageMember);
-
-    const checkboxList = currentPageMember.map(member => ({
+    const checkboxList = curPageItem.map(member => ({
+      ...member,
       id: member.id,
       isChecked: false,
     }));
-
     setCheckboxList(checkboxList);
-  }, [currentPage]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [curPageItem]);
 
   // 승인 거절을 눌렀을 때 실행되는 함수
   // 이 파트는 실제 백엔드와 협의하여 제작함
@@ -122,10 +107,6 @@ function MemberAuthorizeWindow(props) {
     '승인이 허가되었습니다.',
   );
 
-  const setPages = page => {
-    setPage(page - 1);
-  };
-
   return (
     <MemberAuthorizeContainer>
       <MemberAuthorizeListTitle>
@@ -155,10 +136,8 @@ function MemberAuthorizeWindow(props) {
           {loading ? (
             <Loading />
           ) : (
-            waitingMember &&
             checkboxList.length > 0 &&
-            curPageMember &&
-            curPageMember.map((member, index) => (
+            checkboxList.map((member, index) => (
               <EachWaitingMember
                 key={`memberauthorize${index}`}
                 nickname={member.nickname}
@@ -174,12 +153,7 @@ function MemberAuthorizeWindow(props) {
           )}
         </WaitingMemberList>
       </WaitingMemberContainer>
-      <Paging
-        page={currentPage + 1}
-        pageSize={pageSize}
-        count={waitingMember.length}
-        setPage={setPages}
-      />
+      {renderCSPagination()}
       <ActionButtonContainer>
         <DenyButton onClick={denyMember}>가입 거부</DenyButton>
         <GrantButton onClick={approveMember}>가입 승인</GrantButton>
