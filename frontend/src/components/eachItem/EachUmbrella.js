@@ -4,6 +4,7 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import { umbrella, umbrellaModal } from '../../atom/umbrella';
 import { request } from '../../utils/axios';
 import useConfirm from '../../hook/useConfirm';
+import moment from 'moment';
 
 // 우산 대여페이지에서 사용하는 우산들
 function EachUmbrella({ eachUmbrella }) {
@@ -11,6 +12,8 @@ function EachUmbrella({ eachUmbrella }) {
 
   const setCurrentIndex = useSetRecoilState(umbrellaModal); // 모달 창 관리를 위해
   const [umbrellaList, setUmbrellaList] = useRecoilState(umbrella); // 우산 정보를 변경하기 위해
+
+  const isOverDue = moment(eachUmbrella.end).isBefore(new Date());
 
   // 우산 반납 처리
   // 대여자의 id를 넘긴다. 추후에 백엔드 개발자와 협의할 예정
@@ -83,7 +86,9 @@ function EachUmbrella({ eachUmbrella }) {
                 반납하기
               </ReturnUmbrellaButton>
             ) : (
-              <Lender>{eachUmbrella.lender}</Lender>
+              <Lender isOverDue={isOverDue ? 1 : 0}>
+                {eachUmbrella.lender}
+              </Lender>
             )}
           </>
         ) : eachUmbrella.status === 'unavailable' ? (
@@ -208,7 +213,7 @@ const Lender = styled.div`
   background-color: ${theme.colors.grey};
   border-radius: 20px;
 
-  color: ${theme.colors.black};
+  color: ${props => (props.isOverDue ? theme.colors.red : theme.colors.black)};
   font-weight: 300;
   font-size: ${theme.fontSizes.font_normal};
   line-height: 21px;
