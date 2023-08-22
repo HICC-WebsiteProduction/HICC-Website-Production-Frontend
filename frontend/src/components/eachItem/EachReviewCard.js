@@ -1,26 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
+import StarRating from './../util/StarRating';
 
 function EachReviewCard({ eachReview }) {
-  const MAX = 5;
-
-  // 별점을 리턴해주는 함수
-  const starRating = rating => {
-    const starArray = [];
-
-    for (let star = 1; star <= MAX; star++) {
-      starArray.push(
-        <Star key={`star${star}-${eachReview.id}`} accent={star <= rating}>
-          <FontAwesomeIcon icon={faStar} />
-        </Star>,
-      );
-    }
-    return starArray;
-  };
-
   return (
     <ReviewCard>
       <UserInfo>
@@ -28,7 +11,7 @@ function EachReviewCard({ eachReview }) {
         <Nickname>{`ezwoo`}</Nickname>
       </UserInfo>
       <ReviewContent>
-        <StarRating>{starRating(eachReview.star)}</StarRating>
+        <StarRating edit={false} value={eachReview.star} isHalf={true} />
         <Content>{`리뷰 내용
 마싰어요
 맛있어요
@@ -73,17 +56,6 @@ const Nickname = styled.div`
 
 const ReviewContent = styled.div`
   width: 100%;
-`;
-
-const StarRating = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  width: 100%;
-`;
-
-const Star = styled.div`
-  color: ${props => (props.accent ? theme.colors.blue : 'rgba(0, 0, 0, 0.20)')};
-  font-size: ${theme.fontSizes.subtitle};
 `;
 
 const Content = styled.p`
