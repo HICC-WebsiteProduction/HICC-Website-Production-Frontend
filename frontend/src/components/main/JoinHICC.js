@@ -49,6 +49,7 @@ const Image = styled.div`
   height: 300px;
   top: 150px;
   background-image: url('${img}');
+  background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
   display: flex;

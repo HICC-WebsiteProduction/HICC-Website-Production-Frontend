@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import CustomDatePicker from './../datePicker/datePicker';
 import Button from './../util/Button';
-import { useRecoilValue } from 'recoil';
-import { date } from '../../atom/date';
-import moment from 'moment';
+// import { useRecoilValue } from 'recoil';
+// import { date } from '../../atom/date';
 
 // 일정 캘린더 내 일정 작성을 누를 때 뜨는 팝업창
 export default function ScheduleModal(props) {
@@ -18,20 +17,24 @@ export default function ScheduleModal(props) {
   const onSubmit = event => {
     event.preventDefault();
   };
+  const modalRef = useRef(null);
 
-  const selectDate = useRecoilValue(date); // 선택된 날짜 가져오기
+  const onClose = () => {
+    props.closeModal();
+  };
 
+  // const selectDate = useRecoilValue(date); // 선택된 날짜 가져오기
   return (
-    <ScheduleModalContainer>
+    <ScheduleModalContainer ref={modalRef}>
       <ScheduleModalHeader>
-        <ScheduleModalTitle>일정 제목</ScheduleModalTitle>
+        <ScheduleModalTitle>{props.title}</ScheduleModalTitle>
         <SelectScheduleType
           value={selectOption}
           color={theme.scheduleTypeColor[selectOption]}
           onChange={onChangeSelect}
         >
           <SelectScheduleTypeOption value="default" style={{ display: 'none' }}>
-            일정 종류
+            {props.scheduleType}
           </SelectScheduleTypeOption>
           <SelectScheduleTypeOption
             value="amity"
@@ -56,28 +59,22 @@ export default function ScheduleModal(props) {
       <ScheduleInputContainer onSubmit={onSubmit}>
         <InputRow>
           <InputRowLable>일정 제목</InputRowLable>
-          <Input required height={30} />
+          <Input required height={30} defaultValue={props.title}></Input>
         </InputRow>
         <InputRow>
           <InputRowLable>날짜</InputRowLable>
-          <Input
-            type="date"
-            value={moment(selectDate).format('yyyy-MM-DD')}
-            disabled
-            required
-            height={30}
-          />
+          <Input type="date" value={props.date} disabled required height={30} />
           <DatePickerContainer>
             <CustomDatePicker />
           </DatePickerContainer>
         </InputRow>
         <InputRow>
           <InputRowLable>세부사항</InputRowLable>
-          <Input required height={78} />
+          <Input required height={78} defaultValue={props.description}></Input>
         </InputRow>
         <ButtonContainer>
-          <CancleButton buttonName="취소" onClick={props.closeModal} />
-          <SubmitButton buttonType="submit" buttonName="저장" />
+          <CancleButton buttonName="취소" onClick={onClose} />
+          <SubmitButton buttonType="submit" buttonName="수정" />
         </ButtonContainer>
       </ScheduleInputContainer>
     </ScheduleModalContainer>
@@ -90,9 +87,9 @@ const ScheduleModalContainer = styled.div`
   left: 50%;
   transform: translate(-50%, 0);
   width: 620px;
-  height: 750px;
+  //height: 750px;
   background-color: ${theme.colors.black};
-  z-index: 1080;
+  z-index: 1050;
 `;
 
 const ScheduleModalHeader = styled.div`
@@ -109,6 +106,7 @@ const ScheduleModalTitle = styled.div`
   font-family: 'GmarketSansMedium';
   font-weight: 500;
   font-size: 30px;
+  color: #2c2c33;
 `;
 
 const SelectScheduleType = styled.select`

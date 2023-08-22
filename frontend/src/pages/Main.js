@@ -7,6 +7,8 @@ import NumberTable from '../components/main/NumberTable';
 import HongMap from '../components/main/HongMap';
 import JoinHICC from '../components/main/JoinHICC';
 import Footer from '../components/main/Footer';
+import Projects from '../components/main/Projects';
+import RecentNews from '../components/main/RecentNews';
 
 function Main() {
   return (
@@ -15,6 +17,8 @@ function Main() {
       <Banner />
       <Activity />
       <NumberTable />
+      <RecentNews />
+      <Projects />
       <HongMap />
       <JoinHICC />
       <Footer />
@@ -29,4 +33,8 @@ const MainContainer = styled.div`
   width: 100%;
   margin: 0 auto;
   place-items: center;
+  align-items: center;
+  justify-content: center;
+  //display: flex;
+  //flex-direction: column;
 `;

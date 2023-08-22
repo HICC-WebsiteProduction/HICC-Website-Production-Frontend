@@ -27,6 +27,8 @@ const ActivityContainer = styled.div`
   width: 1200px;
   height: 900px;
   margin: 0 auto;
+  //overflow: scroll;
+  border: 1px solid #2c2c33;
 `;
 
 const ActivityTitle = styled.div`

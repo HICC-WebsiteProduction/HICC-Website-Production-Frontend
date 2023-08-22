@@ -54,7 +54,7 @@ const NumberTableContainer = styled.div`
 `;
 
 const NumberTitle = styled.div`
-  position: relative;
+  position: absolute;
   top: 50px;
   //left: 350px;
   width: 370px;
@@ -63,7 +63,7 @@ const NumberTitle = styled.div`
   font-weight: 600;
   line-height: 48px;
   color: #edf0f8;
-  text-align: center;
+  text-align: left;
 `;
 
 const NumberContentContainer = styled.div`
