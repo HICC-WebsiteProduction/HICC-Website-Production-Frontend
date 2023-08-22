@@ -1,15 +1,12 @@
-import { forwardRef, useState } from 'react';
+import { useState } from 'react';
 import DatePicker, { CalendarContainer } from 'react-datepicker';
 import { ko } from 'date-fns/esm/locale';
 import styled from 'styled-components';
 import { getYear, getMonth } from 'date-fns';
 import '../../styles/datepicker.css';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
-
 import theme from '../../styles/Theme';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import { date } from './../../atom/date';
 require('react-datepicker/dist/react-datepicker.css');
 
@@ -17,15 +14,8 @@ require('react-datepicker/dist/react-datepicker.css');
 // react-datepicker 라이브러리를 활용하여 제작
 export default function CustomDatePicker(props) {
   const [selectedDate, setSelectedDate] = useRecoilState(date); // 현재 선택한 날짜
+  const resetSelectedDate = useResetRecoilState(date); // 선택 초기화
   const [month, setMonth] = useState(new Date().getMonth() + 1); // 현재 선택한 월
-  const [datePickerOpen, setDatePickerOpen] = useState(true); // 날짜 선택창 켜져있는지 확인
-
-  // 날짜 아이콘을 누르면 날짜 선택 창이 켜지길 원해서
-  const CustomInput = forwardRef(({ onClick }, ref) => (
-    <DatePickerButton onClick={onClick} ref={ref}>
-      <FontAwesomeIcon icon={faCalendarDays} />
-    </DatePickerButton>
-  ));
 
   // 월을 바꿀 때 일어나는 함수
   const handleMonthChange = date => {
@@ -38,10 +28,8 @@ export default function CustomDatePicker(props) {
     setSelectedDate(date);
   };
 
-  // 날짜 선택창을 끄는 함수 (아직 작동하지 않음)
-  const onClose = event => {
-    event.preventDefault();
-    setDatePickerOpen(false);
+  const datePickerClose = () => {
+    resetSelectedDate();
   };
 
   return (
@@ -76,29 +64,28 @@ export default function CustomDatePicker(props) {
           ? 'selectedDay'
           : 'unSelectedDay'
       }
-      customInput={<CustomInput />}
-      isOpen={datePickerOpen}
     >
       <DatePickerFooter>
-        <SelectButton onClick={onClose}>취소</SelectButton>
-        <SelectButton>확인</SelectButton>
+        <SelectButton type="button" onClick={datePickerClose}>
+          취소
+        </SelectButton>
+        <SelectButton type="button">확인</SelectButton>
       </DatePickerFooter>
     </DatePickerWrapper>
   );
 }
 
 const DatePickerWrapper = styled(DatePicker)`
-  display: ${props => (props.isOpen ? 'block' : 'none')};
-`;
-
-const DatePickerButton = styled.button`
-  background-color: transparent;
   border: none;
-  color: ${theme.colors.purple};
+  background-color: transparent;
+
+  color: ${theme.colors.white};
+  font-family: 'Pretendard';
   font-size: 20px;
-  &:hover {
-    cursor: pointer;
-  }
+  font-style: normal;
+  font-weight: 300;
+
+  outline: none;
 `;
 
 function MyContainer({ className, children }) {
@@ -185,7 +172,7 @@ const DatePickerBody = styled.div`
 `;
 
 const DatePickerInner = styled(CalendarContainer)`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 50%;
   z-index: 1000;

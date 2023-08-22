@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import { noticeType } from '../../constants/NoticeType';
@@ -36,10 +36,6 @@ function NoticeLayerPopup() {
       return prev.map(notice => ({ ...notice, state: 'read' }));
     });
   };
-
-  useEffect(() => {
-    console.log(notice);
-  }, [notice]);
 
   return (
     <NoticeLayerPopupContainer>

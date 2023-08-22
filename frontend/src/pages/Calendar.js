@@ -56,7 +56,7 @@ function Calendar() {
   const [date, setDate] = useState(moment());
 
   const modalRef = useRef(null);
-  const [modalOpen] = useModal(modalRef);
+  const [modalOpen, closeModal] = useModal(modalRef);
 
   const daysInMonth = date.daysInMonth(); //달의 마지막날
   const firstDayOfMonth = moment(date).startOf('month').format('d'); //달의 시작날 수
@@ -93,7 +93,8 @@ function Calendar() {
         </CalendarTopContent>
         <AddScheduleModal ref={modalRef}>
           {`일정추가 +`}
-          {modalOpen && <ScheduleModal />}
+          {modalOpen && <ScheduleModal closeModal={closeModal} />}
+          {<Backdrop view={modalOpen} />}
         </AddScheduleModal>
       </CalendarTop>
       <CalendarMain>
@@ -225,4 +226,19 @@ const ModalDiv = styled.div`
   padding: 20px;
   background-color: #61dafb;
   text-align: left;
+`;
+
+const Backdrop = styled.div`
+  display: ${props => (props.view ? 'block' : 'none')};
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+
+  &:hover {
+    cursor: alias;
+  }
 `;

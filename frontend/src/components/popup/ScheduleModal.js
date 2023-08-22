@@ -5,7 +5,8 @@ import CustomDatePicker from './../datePicker/datePicker';
 import Button from './../util/Button';
 import { useRecoilValue } from 'recoil';
 import { date } from '../../atom/date';
-import moment from 'moment';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
 
 // 일정 캘린더 내 일정 작성을 누를 때 뜨는 팝업창
 export default function ScheduleModal(props) {
@@ -60,15 +61,9 @@ export default function ScheduleModal(props) {
         </InputRow>
         <InputRow>
           <InputRowLable>날짜</InputRowLable>
-          <Input
-            type="date"
-            value={moment(selectDate).format('yyyy-MM-DD')}
-            disabled
-            required
-            height={30}
-          />
           <DatePickerContainer>
             <CustomDatePicker />
+            <DateIcon icon={faCalendarDays} />
           </DatePickerContainer>
         </InputRow>
         <InputRow>
@@ -76,7 +71,7 @@ export default function ScheduleModal(props) {
           <Input required height={78} />
         </InputRow>
         <ButtonContainer>
-          <CancleButton buttonName="취소" onClick={props.onClose} />
+          <CancleButton buttonName="취소" onClick={props.closeModal} />
           <SubmitButton buttonType="submit" buttonName="저장" />
         </ButtonContainer>
       </ScheduleInputContainer>
@@ -88,6 +83,7 @@ const ScheduleModalContainer = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
+  z-index: 100;
   transform: translate(-50%, 0);
   width: 620px;
   height: 750px;
@@ -170,10 +166,26 @@ const Input = styled.input`
   font-weight: 300;
 `;
 
-const DatePickerContainer = styled.div`
-  position: absolute;
-  top: 35px;
-  right: 25px;
+const DatePickerContainer = styled.label`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 580px;
+  height: 40px;
+
+  border-bottom: 1px solid rgba(237, 240, 248, 0.7);
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const DateIcon = styled(FontAwesomeIcon)`
+  color: ${theme.colors.purple};
+  font-size: 20px;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const ButtonContainer = styled.div`
