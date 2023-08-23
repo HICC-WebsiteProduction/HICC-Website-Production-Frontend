@@ -65,7 +65,7 @@ export default function UmbrellaRent(props) {
 
   return (
     <UmbrellaRentContainer>
-      <Header />
+      <Header background={true} />
       <Navigation
         ancestorMenuTree={ancestorMenuTree}
         currentTabContents={currentTabContents}

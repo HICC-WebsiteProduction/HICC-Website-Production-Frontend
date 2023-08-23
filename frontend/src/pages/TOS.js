@@ -47,7 +47,7 @@ function TOS() {
 
   return (
     <TOSContainer>
-      <Header />
+      <Header background={true} />
       <Title titleName="회원가입" />
       <HeadNumber>
         {`아직 HICC의 회원이 아닌 경우, 홈페이지 회원가입에 앞서 회장에게 연락하고

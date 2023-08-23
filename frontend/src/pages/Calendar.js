@@ -152,7 +152,7 @@ function Calendar() {
 
   return (
     <MainContainer>
-      <Header />
+      <Header background={true} />
       <Title titleName="일정 캘린더" />
       <CalendarTop>
         <Blank />

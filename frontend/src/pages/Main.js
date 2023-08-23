@@ -13,7 +13,7 @@ import RecentNews from '../components/main/RecentNews';
 function Main() {
   return (
     <MainContainer>
-      <Header />
+      <Header background={false} />
       <Banner />
       <Activity />
       <NumberTable />

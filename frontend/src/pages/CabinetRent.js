@@ -55,7 +55,7 @@ export default function CabinetRent(props) {
 
   return (
     <CabinetRentContainer>
-      <Header />
+      <Header background={true} />
       <Navigation
         ancestorMenuTree={ancestorMenuTree}
         currentTabContents={currentTabContents}

@@ -38,7 +38,7 @@ function Mypage() {
 
   return (
     <MypageContainer>
-      <Header />
+      <Header background={true} />
       <Tab
         ancestorMenuTree={ancestorMenuTree}
         currentTabContents={currentTabContents}

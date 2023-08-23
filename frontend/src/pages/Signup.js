@@ -76,7 +76,7 @@ function Signup(props) {
 
   return (
     <SignupContainer>
-      <Header />
+      <Header background={true} />
       <Title titleName="회원가입" />
       <InputForm onSubmit={handleSubmit(onSubmit)}>
         <JoinAnnouncementMent>모든 항목에 응답해주세요</JoinAnnouncementMent>

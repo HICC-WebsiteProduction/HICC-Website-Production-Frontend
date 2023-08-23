@@ -13,7 +13,7 @@ function Manage(props) {
 
   return (
     <ManageContainer>
-      <Header />
+      <Header background={true} />
       <ManageTab />
       {ManageMenu[menu]}
     </ManageContainer>
