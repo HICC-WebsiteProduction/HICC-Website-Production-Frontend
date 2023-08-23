@@ -3,51 +3,66 @@
     "id": 1,
     "date": "2023-03-15",
     "title": "동아리 박람회",
+    "scheduleType": "학교행사",
     "description": "Discuss project scope and timeline"
 },
-{
-  "id": 2,
-  "date": "2023-03-16",
-  "title": "Meeting with client",
-  "description": "Discuss project scope and timeline"
-},
+  {
+    "id": 2,
+    "date": "2023-03-15",
+    "title": "동아리 박람회2",
+    "scheduleType": "학교행사",
+    "description": "Discuss project scope and timeline"
+  },
 {
   "id": 3,
   "date": "2023-03-16",
-  "title": "Meeting with client",
+  "title": "신입생 환영회",
+  "scheduleType": "친목",
   "description": "Discuss project scope and timeline"
 },
 {
   "id": 4,
   "date": "2023-03-16",
-  "title": "Meeting with client",
+  "title": "C언어 세미나",
+  "scheduleType": "학술",
   "description": "Discuss project scope and timeline"
-}
-,
+},
 {
   "id": 5,
   "date": "2023-03-16",
   "title": "Meeting with client",
-  "description": "Discuss project scope and timeline"
+  "scheduleType": "학술",
+  "description": "Discuss project scope and timeline1"
 }
 ,
 {
   "id": 6,
   "date": "2023-03-16",
   "title": "Meeting with client",
-  "description": "Discuss project scope and timeline"
+  "scheduleType": "학술",
+  "description": "Discuss project scope and timeline2"
 }
 ,
 {
   "id": 7,
   "date": "2023-03-16",
   "title": "Meeting with client",
-  "description": "Discuss project scope and timeline"
+  "scheduleType": "학술",
+  "description": "Discuss project scope and timeline1"
+}
+,
+{
+  "id": 8,
+  "date": "2023-03-16",
+  "title": "Meeting with client",
+  "scheduleType": "학술",
+  "description": "Discuss project scope and timeline2"
 },
-  {
-    "id": 8,
-    "date": "2023-03-2",
-    "title": "Meeting with client",
-    "description": "Discuss project scope and timeline"
-  }
+{
+  "id": 9,
+  "date": "2023-03-02",
+  "title": "Meeting with client",
+  "scheduleType": "학술",
+  "description": "Discuss project scope and timeline"
+}
 ]

@@ -100,8 +100,8 @@ const HeaderContainer = styled.header`
 
 const Logo = styled(Link)`
   width: 100px;
-  height: 34px;
-  background-image: url('/images/hicc_logo.png');
+  height: 90px;
+  background-image: url('/images/hicc logo-03.svg');
   background-size: contain;
   background-repeat: no-repeat;
 `;

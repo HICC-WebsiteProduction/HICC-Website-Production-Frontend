@@ -48,22 +48,22 @@ export default NumberTable;
 
 const NumberTableContainer = styled.div`
   position: relative;
-  width: 1920px;
+  width: 1200px;
   height: 550px;
   margin: 0 auto;
 `;
 
 const NumberTitle = styled.div`
-  position: relative;
+  position: absolute;
   top: 50px;
-  left: 350px;
+  //left: 350px;
   width: 370px;
   height: 48px;
   font-size: 40px;
   font-weight: 600;
   line-height: 48px;
   color: #edf0f8;
-  text-align: center;
+  text-align: left;
 `;
 
 const NumberContentContainer = styled.div`
@@ -72,7 +72,7 @@ const NumberContentContainer = styled.div`
   grid-template-columns: repeat(3, minmax(378px, 378px));
   position: relative;
   top: 178px;
-  left: 363px;
+  //left: 363px;
   gap: 31px;
   width: 1196px;
   height: 250px;
