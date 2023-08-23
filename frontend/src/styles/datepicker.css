@@ -1,11 +1,13 @@
 .react-datepicker {
   position: fixed;
-  left: -70%;
 }
+
 
 .react-datepicker-popper {
   position: fixed !important;
   transform: none !important;
+  width: 100vw !important;
+  height: 100vh !important;
 }
 
 .datepicker-container {

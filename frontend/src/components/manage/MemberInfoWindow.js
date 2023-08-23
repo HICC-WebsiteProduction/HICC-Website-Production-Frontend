@@ -18,25 +18,22 @@ import Button from '../util/Button';
 import useFetch from '../../hook/useFetch';
 import useInput from '../../hook/useInput';
 
-import { usePagination } from 'react-use-pagination';
-import Paging from '../paging/Paging';
+import useCSPagination from '../../hook/useCSPagination';
+import { PAGE_SIZE } from '../../constants/pageSize';
 
 // 회원 목록을 담당
 function MemberInfoWindow(props) {
   const [memberInfo, setMemberInfo] = useState([]); // 회원 정보를 담고 있다.
-  const [curPageMember, setCurPageMember] = useState([]); // 현재 페이지 멤버
-  const pageSize = 10; // 페이지 사이즈
 
   const [selectedRole, setSelectedRole] = useSelect(memberRole.GENERAL); // 회원 등급을 조정
+  // eslint-disable-next-line no-unused-vars
   const [sort, setSort] = useSelect(filterOptionValue.member.role); // 정렬 기준을 조정
   const [keyword, setkeyword] = useInput(''); // 검색창
 
-  // pagination
-  const { currentPage, startIndex, endIndex, setPage } = usePagination({
-    totalItems: memberInfo.length,
-    initialPageSize: pageSize,
-    initialPage: 0,
-  });
+  const { curPageItem, renderCSPagination } = useCSPagination(
+    memberInfo,
+    PAGE_SIZE,
+  );
 
   // 체크 박스를 위해
   const {
@@ -53,32 +50,21 @@ function MemberInfoWindow(props) {
   useEffect(() => {
     if (data) {
       setMemberInfo(data);
-      setCurPageMember(data.slice(0, pageSize));
-
-      // checkbox 초기 상태 설정
-      if (data.length > 0) {
-        const initialList = data.slice(0, pageSize).map(member => ({
-          id: member.id,
-          isChecked: false,
-        }));
-        setCheckboxList(initialList);
-      }
     }
   }, [data]);
 
   // 페이지가 변동될 때마다 새로 체크박스 관리를 해주어야하기 때문
   // 두 라이브러리 호환문제로 인해 endIndex + 1 처리
   useEffect(() => {
-    const currentPageMember = memberInfo.slice(startIndex, endIndex + 1);
-    setCurPageMember(currentPageMember);
-
-    const checkboxList = currentPageMember.map(member => ({
+    const checkboxList = curPageItem.map(member => ({
+      ...member,
       id: member.id,
       isChecked: false,
     }));
 
     setCheckboxList(checkboxList);
-  }, [currentPage]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [curPageItem]);
 
   // 변경정보를 받아와 멤버정보를 수정합니다.
   // 백엔드 개발자와 협의 완료
@@ -118,38 +104,17 @@ function MemberInfoWindow(props) {
 
     if (sortBy === '이름 순') {
       const sortedMember = [...memberInfo].sort(sortByName);
-      const currentPageMember = sortedMember.slice(0, pageSize);
-      const sortedChecklist = sortedMember.map(member => ({
-        id: member.id,
-        isChecked: false,
-      }));
       setMemberInfo(sortedMember);
-      setCurPageMember(currentPageMember);
-      setCheckboxList(sortedChecklist);
     }
 
     if (sortBy === '학번 순') {
       const sortedMember = [...memberInfo].sort(sortById);
-      const currentPageMember = sortedMember.slice(0, pageSize);
-      const sortedChecklist = sortedMember.map(member => ({
-        id: member.id,
-        isChecked: false,
-      }));
       setMemberInfo(sortedMember);
-      setCurPageMember(currentPageMember);
-      setCheckboxList(sortedChecklist);
     }
 
     if (sortBy === '등급 순') {
       const sortedMember = [...memberInfo].sort(sortByRole);
-      const currentPageMember = sortedMember.slice(0, pageSize);
-      const sortedChecklist = sortedMember.map(member => ({
-        id: member.id,
-        isChecked: false,
-      }));
       setMemberInfo(sortedMember);
-      setCurPageMember(currentPageMember);
-      setCheckboxList(sortedChecklist);
     }
   };
 
@@ -184,20 +149,7 @@ function MemberInfoWindow(props) {
         member.major.includes(keyword),
     );
 
-    const currentPageMember = searchResult.slice(0, pageSize);
-    const newChecklist = searchResult.map(member => ({
-      id: member.id,
-      isChecked: false,
-    }));
-
     setMemberInfo(searchResult);
-    setCurPageMember(currentPageMember);
-    setCheckboxList(newChecklist);
-  };
-
-  // 두 라이브러리 호환문제로 page-1 처리
-  const setPages = page => {
-    setPage(page - 1);
   };
 
   return (
@@ -225,10 +177,8 @@ function MemberInfoWindow(props) {
           </tr>
         </MemberHeader>
         <MemberList>
-          {memberInfo &&
-            checkboxList.length > 0 &&
-            curPageMember &&
-            curPageMember.map((value, index) => {
+          {checkboxList.length > 0 &&
+            checkboxList.map((value, index) => {
               return (
                 <EachRegisteredMember
                   key={value.id}
@@ -245,14 +195,7 @@ function MemberInfoWindow(props) {
             })}
         </MemberList>
       </MemberContainer>
-
-      <Paging
-        page={currentPage + 1}
-        pageSize={pageSize}
-        count={memberInfo.length}
-        setPage={setPages}
-      />
-
+      {renderCSPagination()}
       <FilterContainer>
         <Filter optionValue={filterOptionValue.member} onChange={sortMember} />
         <Gap />

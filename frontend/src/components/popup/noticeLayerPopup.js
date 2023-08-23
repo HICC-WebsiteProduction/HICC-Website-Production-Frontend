@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import { noticeType } from '../../constants/NoticeType';
@@ -30,9 +30,12 @@ function NoticeLayerPopup() {
     });
   };
 
-  useEffect(() => {
-    console.log(notice);
-  }, [notice]);
+  // 알림 모두 읽음 처리
+  const AllReadNotice = () => {
+    setNotice(prev => {
+      return prev.map(notice => ({ ...notice, state: 'read' }));
+    });
+  };
 
   return (
     <NoticeLayerPopupContainer>
@@ -60,6 +63,9 @@ function NoticeLayerPopup() {
           </NoticeContent>
         ))}
       </NoticeSection>
+      <ButtonContainer>
+        <AllReadButton onClick={AllReadNotice}>전체 알림 읽기</AllReadButton>
+      </ButtonContainer>
     </NoticeLayerPopupContainer>
   );
 }
@@ -70,12 +76,12 @@ const NoticeLayerPopupContainer = styled.div`
   display: flex;
   position: absolute;
   top: 50px;
-  left: -280px;
+  left: -332px;
   z-index: 100;
   flex-direction: column;
   align-items: center;
-  width: 347px;
-  height: 300px;
+  width: 400px;
+  height: 340px;
   padding: 20px 25px;
   padding-bottom: 0;
   border: 2px solid ${theme.colors.blue};
@@ -132,7 +138,6 @@ const Header = styled.header`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin-top: 20px;
   margin-bottom: 15px;
   color: ${theme.colors.white};
   font-family: 'Pretendard';
@@ -145,6 +150,7 @@ const Title = styled.div``;
 
 const NoticeSection = styled.section`
   width: 100%;
+  height: 230px;
 
   overflow-y: scroll;
   &::-webkit-scrollbar {
@@ -154,7 +160,7 @@ const NoticeSection = styled.section`
   &::after {
     content: '';
     position: absolute;
-    bottom: 0;
+    bottom: 10%;
     left: 20px;
     width: 90%;
     height: ${props => (props.showGradient ? '100px' : '0')};
@@ -165,7 +171,7 @@ const NoticeSection = styled.section`
   &::before {
     content: '';
     position: absolute;
-    top: 30%;
+    top: 21%;
     left: 20px;
     z-index: 100;
     width: 90%;
@@ -220,4 +226,23 @@ const NoticeTime = styled.div`
   font-size: ${theme.fontSizes.font_small};
   font-weight: 300;
   line-height: 150%;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+`;
+
+const AllReadButton = styled.div`
+  color: ${theme.colors.white};
+  font-family: 'Pretendard';
+  font-size: ${theme.fontSizes.font_normal};
+  font-weight: 300;
+  line-height: 150%;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;

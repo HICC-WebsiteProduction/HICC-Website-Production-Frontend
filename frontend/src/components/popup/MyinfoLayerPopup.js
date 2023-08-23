@@ -5,7 +5,7 @@ import Button from '../util/Button';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { user } from '../../atom/user';
 import { useNavigate } from 'react-router';
-import { memberRole } from './../../constants/MemberRole';
+import { memberRole, rolePriority } from './../../constants/MemberRole';
 
 // 내 정보를 클릭했을 때 실행되는 팝업
 function MyinfoLayerPopup() {
@@ -13,8 +13,14 @@ function MyinfoLayerPopup() {
   const reset = useResetRecoilState(user); // 로그아웃을 위해
   const navigate = useNavigate();
 
+  const isExecutive = rolePriority[userinfo.role] <= 2;
+
   const goMyPage = () => {
     navigate('/mypage');
+  };
+
+  const goManagePage = () => {
+    navigate('/manage');
   };
 
   // 리코일 상태 리셋, 홈으로 이동
@@ -43,6 +49,13 @@ function MyinfoLayerPopup() {
         buttonType="button"
         onClick={logout}
       />
+      {isExecutive ? (
+        <ManageButton
+          buttonName="관리페이지"
+          buttonType="button"
+          onClick={goManagePage}
+        />
+      ) : null}
     </MyinfoLayerPopupContainer>
   );
 }
@@ -58,7 +71,6 @@ const MyinfoLayerPopupContainer = styled.div`
   flex-direction: column;
   align-items: center;
   width: 347px;
-  height: 300px;
   padding: 20px 25px;
   border: 2px solid ${theme.colors.blue};
   border-radius: 20px;
@@ -157,5 +169,13 @@ const LogoutButton = styled(Button)`
   width: 306px;
   height: 60px;
   background-color: ${theme.colors.cancleRed};
+  line-height: 150%;
+`;
+
+const ManageButton = styled(Button)`
+  margin-top: 14px;
+  width: 306px;
+  height: 60px;
+  background-color: ${theme.colors.green};
   line-height: 150%;
 `;

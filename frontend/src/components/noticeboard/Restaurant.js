@@ -1,17 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Map, MapMarker } from 'react-kakao-maps-sdk';
+import { Map } from 'react-kakao-maps-sdk';
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import Button from '../util/Button';
 import EachReviewCard from '../eachItem/EachReviewCard';
 import useScrollGradient from '../../hook/useScrollGradient';
 import useFetch from '../../hook/useFetch';
+import EachMarker from '../eachItem/EachMarker';
+import { useRecoilValue } from 'recoil';
+import placeId from '../../atom/placeId';
 
 // 일단은 별도의 페이지로 제작한 후 나중에 협의하에 게시판 안으로 밀어넣어보자
 function Restaurant(props) {
   const [map, setMap] = useState();
   const [restaurantList, setRestaurantList] = useState([]); // id, placeid, lat, lng, star, name
   const [reviewContent, setReviewContent] = useState([]);
+  const currentPlaceId = useRecoilValue(placeId);
 
   const scrollRef = useRef(null);
   const { showGradient, showGradientTop } = useScrollGradient(scrollRef);
@@ -26,21 +30,18 @@ function Restaurant(props) {
     }
   }, [data]);
 
-  const markerClick = placeid => {
+  useEffect(() => {
     const currentRestaurant = restaurantList.filter(
-      restaurant => restaurant.placeid === placeid,
+      restaurant => restaurant.placeid === currentPlaceId,
     );
-
-    console.log(currentRestaurant);
-
-    // fetch 해당 장소에 대한 리뷰 요청
     setReviewContent(currentRestaurant);
-  };
+  }, [currentPlaceId]);
 
   return (
     <RestaurantContainer>
       <MapContainer>
         <Header>맛집 지도</Header>
+        <EnrollButton buttonName="맛집 등록" />
         <Map
           /* 디폴트는 학교의 위도 경도 */
           center={{
@@ -55,11 +56,10 @@ function Restaurant(props) {
         >
           {restaurantList.length > 0 &&
             restaurantList.map(restaurant => (
-              <MapMarker
-                key={`restaurant${restaurant.id}`}
+              <EachMarker
+                key={`EventMarkerContainer-${restaurant.lat}-${restaurant.lng}`}
                 position={{ lat: restaurant.lat, lng: restaurant.lng }}
-                onClick={() => markerClick(restaurant.placeid)}
-                clickable={true}
+                restaurant={restaurant}
               />
             ))}
         </Map>
@@ -99,6 +99,7 @@ const Header = styled.h1`
 `;
 
 const MapContainer = styled.div`
+  position: relative;
   width: 600px;
 `;
 
@@ -144,6 +145,14 @@ const WriteButton = styled(Button)`
   position: absolute;
   top: 0;
   right: 0;
+  width: 140px;
+  height: 40px;
+`;
+
+const EnrollButton = styled(Button)`
+  position: absolute;
+  top: 0;
+  right: 20px;
   width: 140px;
   height: 40px;
 `;
