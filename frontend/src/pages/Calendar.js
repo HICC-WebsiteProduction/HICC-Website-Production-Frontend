@@ -1,13 +1,15 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
-import data from '../data/data.json';
+import data2 from '../mocks/data/calendar.json';
 import theme from '../styles/Theme';
 import ScheduleModal from '../components/popup/ScheduleModal';
 import Title from '../components/header/Title';
 import Header from '../components/header/Header';
 import useModal from '../hook/useModal';
 import ScheduleModalSaved from '../components/popup/ScheduleModalSaved';
+import useFetch from '../hook/useFetch';
+import Loading from '../components/util/Loading';
 
 const ScheduleEnum = {
   학술: 'academic',
@@ -51,7 +53,13 @@ function CalendarBox(props) {
     }
   };
 
-  const dayPlans = data.filter(plan => moment(plan.date).date() === props.date);
+  // const dayPlans = data2.filter(
+  //   plan => moment(plan.date).date() === props.date,
+  // );
+  const dayPlans = props.data.filter(
+    plan => moment(plan.date).date() === props.date,
+  );
+  // const dayPlans = data.filter(plan => moment(plan.date).date() === props.date);
 
   if (dayPlans.length > 5) {
     // console.log('full');
@@ -134,6 +142,8 @@ function Calendar() {
   const dayArray = ['일', '월', '화', '수', '목', '금', '토']; //요일
   const days = [];
 
+  const { data, loading, error } = useFetch('/calendar');
+
   for (let i = 0; i < firstDayOfMonth; i++) {
     days.push('');
   }
@@ -166,16 +176,26 @@ function Calendar() {
           {modalOpen && <ScheduleModal closeModal={closeModal} />}
         </AddScheduleModal>
       </CalendarTop>
-      <CalendarMain>
-        {dayArray.map((day, idx) => (
-          <CalendarDay isSunday={idx === 0}>{day}</CalendarDay>
-        ))}
-        {days.map((day, idx) => (
-          <CalendearRows>
-            <CalendarBox date={day} isSunday={idx % 7 === 0}></CalendarBox>
-          </CalendearRows>
-        ))}
-      </CalendarMain>
+      {loading ? (
+        <LoadingDiv>
+          <Loading />
+        </LoadingDiv>
+      ) : (
+        <CalendarMain>
+          {dayArray.map((day, idx) => (
+            <CalendarDay isSunday={idx === 0}>{day}</CalendarDay>
+          ))}
+          {days.map((day, idx) => (
+            <CalendearRows>
+              <CalendarBox
+                date={day}
+                isSunday={idx % 7 === 0}
+                data={data}
+              ></CalendarBox>
+            </CalendearRows>
+          ))}
+        </CalendarMain>
+      )}
     </MainContainer>
   );
 }
@@ -317,17 +337,8 @@ const CalendarPlanButton = styled.button`
   cursor: pointer;
 `;
 
-const Backdrop = styled.div`
-  display: ${props => (props.view ? 'block' : 'none')};
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 99;
-
-  &:hover {
-    cursor: alias;
-  }
+const LoadingDiv = styled.div`
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
 `;
