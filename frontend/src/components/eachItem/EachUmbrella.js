@@ -5,6 +5,7 @@ import { umbrella, umbrellaModal } from '../../atom/umbrella';
 import { request } from '../../utils/axios';
 import useConfirm from '../../hook/useConfirm';
 import moment from 'moment';
+import ConfirmMessage from '../../constants/ConfirmMessage';
 
 // 우산 대여페이지에서 사용하는 우산들
 function EachUmbrella({ eachUmbrella }) {
@@ -49,7 +50,7 @@ function EachUmbrella({ eachUmbrella }) {
 
   // 우산 반납 확인 창을 띄우는 함수
   const returnUmbrella = useConfirm(
-    '정말 반납하시겠습니까?',
+    ConfirmMessage.returnItem,
     confirmGrant,
     '반납처리가 완료되었습니다.',
   );

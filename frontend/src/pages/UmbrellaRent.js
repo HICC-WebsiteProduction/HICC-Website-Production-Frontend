@@ -1,7 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUmbrella } from '@fortawesome/free-solid-svg-icons';
 import theme from '../styles/Theme';
 import EachUmbrella from '../components/eachItem/EachUmbrella';
 import Caution from './../constants/Caution';
@@ -73,9 +71,6 @@ export default function UmbrellaRent(props) {
 
       <UmbrellaCurrentState>
         <UmbrellaListHeader>
-          <UmbrellaIcon>
-            <FontAwesomeIcon icon={faUmbrella} />
-          </UmbrellaIcon>
           <UmbrellaListHeaderText>우산 목록</UmbrellaListHeaderText>
         </UmbrellaListHeader>
         <UmbrellaGrid>
@@ -130,10 +125,6 @@ const UmbrellaListHeader = styled.header`
   font-weight: 500;
   font-size: ${theme.fontSizes.title};
   line-height: 100%;
-`;
-
-const UmbrellaIcon = styled.div`
-  margin-right: 20px;
 `;
 
 const UmbrellaListHeaderText = styled.h1``;

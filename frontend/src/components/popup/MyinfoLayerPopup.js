@@ -66,7 +66,7 @@ const MyinfoLayerPopupContainer = styled.div`
   display: flex;
   position: absolute;
   top: 50px;
-  left: -290px;
+  left: -266px;
   z-index: 100;
   flex-direction: column;
   align-items: center;

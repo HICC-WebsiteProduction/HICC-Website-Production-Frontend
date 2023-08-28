@@ -4,6 +4,7 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import { cabinet, cabinetModal } from '../../atom/cabinet';
 import useConfirm from '../../hook/useConfirm';
 import { request } from '../../utils/axios';
+import ConfirmMessage from '../../constants/ConfirmMessage';
 
 // 사물함 대여페이지에서 사용하는 사물함들
 function EachCabinet({ eachCabinet }) {
@@ -47,7 +48,7 @@ function EachCabinet({ eachCabinet }) {
 
   // 반납할 때 확인 창을 띄우는 함수 (useConfirm custom hook)
   const returnCabinet = useConfirm(
-    '정말 반납하시겠습니까?',
+    ConfirmMessage.returnItem,
     confirmGrant,
     '반납처리가 완료되었습니다.',
   );

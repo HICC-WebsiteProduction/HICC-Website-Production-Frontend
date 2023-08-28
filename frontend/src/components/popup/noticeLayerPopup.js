@@ -187,7 +187,8 @@ const NoticeContent = styled.div`
   padding: 15px 0;
   border-bottom: 1px solid ${theme.colors.white};
 
-  color: ${props => (props.isRead ? theme.colors.purple : theme.colors.white)};
+  color: ${props => (props.isRead ? theme.colors.grey : theme.colors.white)};
+  text-decoration: ${props => (props.isRead ? 'line-through' : 'none')};
 
   &:hover {
     cursor: pointer;

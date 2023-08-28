@@ -7,6 +7,7 @@ import useCloseModal from '../../hook/useCloseModal';
 import { applyType } from '../../constants/ApplyType';
 import useConfirm from '../../hook/useConfirm';
 import { request } from '../../utils/axios';
+import ConfirmMessage from '../../constants/ConfirmMessage';
 
 // 대여 신청 팝업 창
 /*
@@ -102,7 +103,7 @@ export default function ApplyModal(props) {
 
   // 신청 확인 창을 띄운다.
   const apply = useConfirm(
-    '정말 신청하시겠습니까?',
+    ConfirmMessage.rentItem,
     confirmGrant,
     '정상적으로 신청되었습니다.',
   );
@@ -155,6 +156,7 @@ const ApplyCabinetModalContainer = styled.div`
   height: 400px;
   padding: 32px 64px;
   background-color: ${theme.colors.black};
+  border-radius: 20px;
 `;
 
 const Header = styled.header`
