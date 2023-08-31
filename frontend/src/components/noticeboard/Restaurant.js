@@ -9,6 +9,8 @@ import useFetch from '../../hook/useFetch';
 import EachMarker from '../eachItem/EachMarker';
 import { useRecoilValue } from 'recoil';
 import placeId from '../../atom/placeId';
+import useModal from './../../hook/useModal';
+import EnrollRestaurant from '../popup/EnrollRestaurant';
 
 // 일단은 별도의 페이지로 제작한 후 나중에 협의하에 게시판 안으로 밀어넣어보자
 function Restaurant(props) {
@@ -19,6 +21,9 @@ function Restaurant(props) {
 
   const scrollRef = useRef(null);
   const { showGradient, showGradientTop } = useScrollGradient(scrollRef);
+
+  const enrollModal = useRef(null);
+  const [enrollOpen, close] = useModal(enrollModal);
 
   const kakao = window.kakao;
 
@@ -41,7 +46,10 @@ function Restaurant(props) {
     <RestaurantContainer>
       <MapContainer>
         <Header>맛집 지도</Header>
-        <EnrollButton buttonName="맛집 등록" />
+        <EnrollButton ref={enrollModal}>
+          맛집 등록
+          {enrollOpen && <EnrollRestaurant />}
+        </EnrollButton>
         <Map
           /* 디폴트는 학교의 위도 경도 */
           center={{
@@ -149,10 +157,22 @@ const WriteButton = styled(Button)`
   height: 40px;
 `;
 
-const EnrollButton = styled(Button)`
+const EnrollButton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
   top: 0;
   right: 20px;
   width: 140px;
   height: 40px;
+
+  background-color: ${theme.colors.blue};
+  border: none;
+  border-radius: 20px;
+  color: ${theme.colors.white};
+  font-family: 'Pretendard', sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: ${theme.fontSizes.label};
 `;

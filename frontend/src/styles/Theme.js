@@ -31,6 +31,8 @@ const colors = {
   purple: '#9747FF',
   cancleRed: '#FF8764',
   green: '#3CDA5B',
+  darkblack: '#1E1E1E',
+  lightgray: 'rgba(44, 44, 51, 0.20)',
 };
 
 const flexbox = {
