@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
-import data2 from '../mocks/data/calendar.json';
 import theme from '../styles/Theme';
 import ScheduleModal from '../components/popup/ScheduleModal';
 import Title from '../components/header/Title';
@@ -10,6 +9,10 @@ import useModal from '../hook/useModal';
 import ScheduleModalSaved from '../components/popup/ScheduleModalSaved';
 import useFetch from '../hook/useFetch';
 import Loading from '../components/util/Loading';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { user } from '../atom/user';
+import { request } from '../utils/axios';
+import { useNavigate } from 'react-router-dom';
 
 const ScheduleEnum = {
   학술: 'academic',
@@ -35,6 +38,7 @@ function CalenderPlan2(props) {
           scheduleType={props.scheduleType}
           date={props.date}
           description={props.description}
+          role={props.role}
         />
       )}
     </CalendarPlan>
@@ -72,6 +76,7 @@ function CalendarBox(props) {
             scheduleType={plan.scheduleType}
             date={plan.date}
             description={plan.description}
+            role={props.role}
           />
         ))}
         {!planModalOpen && (
@@ -89,6 +94,7 @@ function CalendarBox(props) {
                 scheduleType={plan.scheduleType}
                 date={plan.date}
                 description={plan.description}
+                role={props.role}
               />
             ))}
         {planModalOpen && (
@@ -124,6 +130,7 @@ function CalendarBox(props) {
           scheduleType={plan.scheduleType}
           date={plan.date}
           description={plan.description}
+          role={props.role}
         />
       ))}
     </CalendarBox2>
@@ -144,6 +151,26 @@ function Calendar() {
 
   const { data, loading, error } = useFetch('/calendar');
 
+  const userinfo = useRecoilValue(user); // 유저 정보
+
+  // const onSubmit = async data => {
+  //   try {
+  //     const response = await request('post', '/calendar/addPlan', {
+  //       date: data.date,
+  //       title: data.title,
+  //       scheduleType: data.scheduleType,
+  //       description: data.description,
+  //     });
+  //     navigate('/');
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  // console.log(data.ID);
+  // const navigate = useNavigate();
+
+  const role = userinfo.role === 'PRESIDENT';
+
   for (let i = 0; i < firstDayOfMonth; i++) {
     days.push('');
   }
@@ -159,7 +186,6 @@ function Calendar() {
   const goToNextMonth = () => {
     setDate(moment(date).add(1, 'month'));
   };
-
   return (
     <MainContainer>
       <Header />
@@ -171,10 +197,18 @@ function Calendar() {
           {date.year()}년 {date.month() + 1}월
           <CalendarButton onClick={goToNextMonth}>{'>'}</CalendarButton>
         </CalendarTopContent>
-        <AddScheduleModal ref={modalRef}>
-          {`일정추가 +`}
-          {modalOpen && <ScheduleModal closeModal={closeModal} />}
-        </AddScheduleModal>
+        {role && (
+          <AddScheduleModal ref={modalRef}>
+            {`일정추가 +`}
+            {modalOpen && (
+              <ScheduleModal
+                closeModal={closeModal}
+                data={data}
+                // onSubmit={onSubmit()}
+              />
+            )}
+          </AddScheduleModal>
+        )}
       </CalendarTop>
       {loading ? (
         <LoadingDiv>
@@ -191,6 +225,7 @@ function Calendar() {
                 date={day}
                 isSunday={idx % 7 === 0}
                 data={data}
+                role={role}
               ></CalendarBox>
             </CalendearRows>
           ))}

@@ -14,11 +14,12 @@ export default function ScheduleModal(props) {
 
   const onChangeSelect = event => {
     setSelectOption(event.target.value);
+    props.data.scheduleType = event.target.value;
   };
 
-  const onSubmit = event => {
-    event.preventDefault();
-  };
+  // const onSubmit = event => {
+  //   event.preventDefault();
+  // };
 
   const selectDate = useRecoilValue(date); // 선택된 날짜 가져오기
 
@@ -54,21 +55,21 @@ export default function ScheduleModal(props) {
           </SelectScheduleTypeOption>
         </SelectScheduleType>
       </ScheduleModalHeader>
-      <ScheduleInputContainer onSubmit={onSubmit}>
+      <ScheduleInputContainer onSubmit={props.onSubmit}>
         <InputRow>
           <InputRowLable>일정 제목</InputRowLable>
-          <Input required height={30} />
+          <Input required height={30} input={props.data.title} />
         </InputRow>
         <InputRow>
           <InputRowLable>날짜</InputRowLable>
           <DatePickerContainer>
-            <CustomDatePicker />
+            <CustomDatePicker input={props.data.date} />
             <DateIcon icon={faCalendarDays} />
           </DatePickerContainer>
         </InputRow>
         <InputRow>
           <InputRowLable>세부사항</InputRowLable>
-          <Input required height={78} />
+          <Input required height={78} input={props.data.description} />
         </InputRow>
         <ButtonContainer>
           <CancleButton buttonName="취소" onClick={props.closeModal} />

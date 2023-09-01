@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import CustomDatePicker from './../datePicker/datePicker';
 import Button from './../util/Button';
+import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { useRecoilValue } from 'recoil';
 // import { date } from '../../atom/date';
 
@@ -64,17 +66,20 @@ export default function ScheduleModal(props) {
         <InputRow>
           <InputRowLable>날짜</InputRowLable>
           <Input type="date" value={props.date} disabled required height={30} />
-          <DatePickerContainer>
-            <CustomDatePicker />
-          </DatePickerContainer>
+          {props.role && (
+            <DatePickerContainer>
+              <CustomDatePicker />
+              <DateIcon icon={faCalendarDays} />
+            </DatePickerContainer>
+          )}
         </InputRow>
         <InputRow>
           <InputRowLable>세부사항</InputRowLable>
           <Input required height={78} defaultValue={props.description}></Input>
         </InputRow>
         <ButtonContainer>
-          <CancleButton buttonName="취소" onClick={onClose} />
-          <SubmitButton buttonType="submit" buttonName="수정" />
+          {props.role && <CancleButton buttonName="취소" onClick={onClose} />}
+          {props.role && <SubmitButton buttonType="submit" buttonName="수정" />}
         </ButtonContainer>
       </ScheduleInputContainer>
     </ScheduleModalContainer>
@@ -180,6 +185,14 @@ const ButtonContainer = styled.div`
   width: 100%;
   margin-top: 74px;
   justify-content: flex-end;
+`;
+
+const DateIcon = styled(FontAwesomeIcon)`
+  color: ${theme.colors.purple};
+  font-size: 20px;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const CancleButton = styled(Button)`
