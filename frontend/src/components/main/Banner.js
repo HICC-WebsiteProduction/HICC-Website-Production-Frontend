@@ -35,7 +35,13 @@ const BannerFrame = styled.div`
   margin: 0 auto;
   place-content: center;
   z-index: -1;
-  background-image: url('${logo}');
+  background-image: linear-gradient(
+      rgba(0, 0, 0, 0),
+      rgba(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0)
+    ),
+    url('${logo}');
+  //background-image: url('${logo}');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
