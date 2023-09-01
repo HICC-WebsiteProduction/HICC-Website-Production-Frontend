@@ -52,7 +52,7 @@ export default function Login(props) {
 
   return (
     <LoginContainer>
-      <Header />
+      <Header background={true} />
       <Title titleName="로그인" />
       <InputForm onSubmit={handleSubmit(onSubmit)}>
         <InputMemberInfo

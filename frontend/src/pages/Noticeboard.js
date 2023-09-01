@@ -31,7 +31,7 @@ function Noticeboard() {
 
   return (
     <NoticeBoardContainer>
-      <Header />
+      <Header background={true} />
       <Tab
         ancestorMenuTree={ancestorMenuTree}
         currentTabContents={currentTabContents}

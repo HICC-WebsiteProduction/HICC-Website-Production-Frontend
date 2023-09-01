@@ -6,6 +6,7 @@ import Pretendard_SemiBold from './fonts/Pretendard/Pretendard-SemiBold.woff2';
 import Pretendard_Light from './fonts/Pretendard/Pretendard-Light.woff2';
 import Pretendard_Medium from './fonts/Pretendard/Pretendard-Medium.woff2';
 import SCDream8 from './fonts/SCDream/SCDream8.woff2';
+import GmarketSansMedium from './fonts/GmarketSans/GmarketSansMedium.woff2';
 
 const GlobalStyle = createGlobalStyle`
     ${reset};
@@ -40,9 +41,9 @@ const GlobalStyle = createGlobalStyle`
 
     @font-face {
         font-family: 'GmarketSansMedium';
-        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
-        font-weight: normal;
-        font-style: normal;
+        src: local('GmarketSansMedium'),
+        url(${GmarketSansMedium}) format('woff2');
+        font-weight: 500;
     }
 
     *{

@@ -1,7 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import theme from '../styles/Theme';
 import EachCabinet from '../components/eachItem/EachCabinet';
 import ApplyModal from '../components/popup/ApplyModal';
@@ -55,16 +53,13 @@ export default function CabinetRent(props) {
 
   return (
     <CabinetRentContainer>
-      <Header />
+      <Header background={true} />
       <Navigation
         ancestorMenuTree={ancestorMenuTree}
         currentTabContents={currentTabContents}
       />
       <CabinetCurrentState>
         <CabinetListHeader>
-          <CabinetIcon>
-            <FontAwesomeIcon icon={faCartShopping} />
-          </CabinetIcon>
           <CabinetListHeaderText>사물함 목록</CabinetListHeaderText>
         </CabinetListHeader>
         <CabinetGrid>
@@ -118,10 +113,6 @@ const CabinetListHeader = styled.header`
   font-weight: 500;
   font-size: ${theme.fontSizes.title};
   line-height: 100%;
-`;
-
-const CabinetIcon = styled.div`
-  margin-right: 20px;
 `;
 
 const CabinetListHeaderText = styled.h1``;

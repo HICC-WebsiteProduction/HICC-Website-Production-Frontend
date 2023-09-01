@@ -12,12 +12,17 @@ const useAlert = () => {
 
     mySwal.fire({
       title: <Title>{message}</Title>,
-      icon: isError ? 'error' : 'success',
-      background: theme.colors.white,
+      html: ' ',
+      background: theme.colors.black,
       confirmButtonColor: theme.colors.blue,
-      confirmButtonText: <ConfirmText>{`ok`}</ConfirmText>,
+      confirmButtonText: <ConfirmText>{`확인`}</ConfirmText>,
       customClass: {
-        icon: 'custom-icon-class',
+        container: 'confirm',
+        popup: 'popup',
+        title: 'title',
+        htmlContainer: 'body',
+        actions: 'buttonContainer',
+        confirmButton: 'confirm-button',
       },
     });
   };
@@ -26,12 +31,12 @@ const useAlert = () => {
 };
 
 const Title = styled.div`
-  margin: 120px 0 20px 0;
-  color: ${theme.colors.black};
+  color: ${theme.colors.white};
 
-  font-family: 'Pretendard';
-  font-weight: 600;
-  line-height: 160%;
+  font-size: ${theme.fontSizes.subtitle};
+  font-family: 'GmarketSansMedium';
+  font-weight: 500;
+  text-align: center;
   white-space: pre-line;
 `;
 
