@@ -64,7 +64,9 @@ function Profile() {
         </>
         <ButtonContainer>
           {isEditing ? (
-            <EditButton onClick={handleSaveButtonClick}>저장</EditButton>
+            <EditButton type="submit" onClick={handleSaveButtonClick}>
+              저장
+            </EditButton>
           ) : (
             <>
               <EditButton onClick={handleEditButtonClick}>수정</EditButton>

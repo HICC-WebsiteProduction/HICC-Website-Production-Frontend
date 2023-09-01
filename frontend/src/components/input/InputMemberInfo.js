@@ -9,7 +9,7 @@ export default function InputMemberInfo(props) {
   return (
     <InputRow width={props.width}>
       <Label>{props.labelName}</Label>
-      <InputRowContent error={props.errors}>
+      <InputRowContent>
         <Input
           name={props.name}
           type={props.type}

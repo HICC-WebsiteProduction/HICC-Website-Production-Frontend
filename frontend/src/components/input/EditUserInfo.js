@@ -20,6 +20,7 @@ export default function EditUserInfo(props) {
 
   const onSubmit = data => {
     console.log(data);
+    alert(JSON.stringify(data));
   };
   return (
     <EditUserInfoWrapper>
@@ -73,6 +74,7 @@ export default function EditUserInfo(props) {
           value={'컴퓨터공학과'}
           authorityCheck={false}
         />
+        <button type="submit">수정</button>
       </InputForm>
     </EditUserInfoWrapper>
   );
