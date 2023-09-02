@@ -10,8 +10,8 @@ import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import { cabinet, cabinetModal, currentCabinetIndex } from '../atom/cabinet';
 import Header from '../components/header/Header';
 import Navigation from '../components/header/Navigation';
-import { request } from '../utils/axios';
 import useFetch from '../hook/useFetch';
+import { user } from '../atom/user';
 
 // 사물함 대여 페이지
 export default function CabinetRent(props) {
@@ -20,16 +20,14 @@ export default function CabinetRent(props) {
   const currentIndex = useRecoilValue(currentCabinetIndex); // 모달 백드롭 때문에
 
   const resetCabinet = useResetRecoilState(cabinet); // 사물함 상태 초기화
-
-  const myName = '김진호';
-
+  const userinfo = useRecoilValue(user); // 내 정보 가져오기 위해
   const checkMyRent = useMyRent(); // 내가 대여 처리
 
   const { data, loading, error } = useFetch('/locker');
 
   useEffect(() => {
     if (data) {
-      const cabinetListIncludeMyRent = checkMyRent(data, myName);
+      const cabinetListIncludeMyRent = checkMyRent(data, userinfo.name);
       setInit(cabinetListIncludeMyRent);
       setCabinetList(init);
     }
@@ -76,7 +74,7 @@ export default function CabinetRent(props) {
                 <ApplyModal
                   itemName={`사물함`}
                   itemNumber={item.cabinetNumber}
-                  lender={myName}
+                  lender={userinfo.name}
                   startDay={moment(new Date()).format('yyyy-MM-DD')}
                   endDay={undefined}
                   startDayDisabled={true}
@@ -130,11 +128,11 @@ const CabinetGrid = styled.div`
 const ViewApplyModal = styled.div`
   display: ${props => (props.view ? 'block' : 'none')};
   position: fixed;
-
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  left: 0px;
-  top: 0px;
+
   background-color: rgba(0, 0, 0, 0.6);
-  z-index: 1;
+  z-index: 101;
 `;

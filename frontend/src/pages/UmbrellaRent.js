@@ -15,6 +15,7 @@ import moment from 'moment';
 import Header from '../components/header/Header';
 import Navigation from '../components/header/Navigation';
 import useFetch from '../hook/useFetch';
+import { user } from '../atom/user';
 
 /*
 currentTabContents는 현재 탭의 정보로
@@ -28,7 +29,7 @@ export default function UmbrellaRent(props) {
   const currentIndex = useRecoilValue(currentUmbrellaIndex); // 현재 인덱스 (모달)
   const resetUmbrella = useResetRecoilState(umbrella); // 우산 상태 초기화
 
-  const myName = '김진호';
+  const userinfo = useRecoilValue(user); // 내 정보 가져오기 위해
 
   const checkMyRent = useMyRent(); // 내가 대여 처리
 
@@ -36,7 +37,7 @@ export default function UmbrellaRent(props) {
 
   useEffect(() => {
     if (data) {
-      const umbrellaListIncludeMyRent = checkMyRent(data, myName);
+      const umbrellaListIncludeMyRent = checkMyRent(data, userinfo.name);
       setInit(umbrellaListIncludeMyRent);
       setUmbrellaList(init);
     }
@@ -90,7 +91,7 @@ export default function UmbrellaRent(props) {
                 <ApplyModal
                   itemName={`우산`}
                   itemNumber={item.umbrellaNumber}
-                  lender={myName}
+                  lender={userinfo.name}
                   startDay={moment(new Date()).format('yyyy-MM-DD')}
                   endDay={moment(sevenDaysAgo).format('yyyy-MM-DD')}
                   startDayDisabled={true}
@@ -142,11 +143,11 @@ const UmbrellaGrid = styled.div`
 const ViewApplyModal = styled.div`
   display: ${props => (props.view ? 'block' : 'none')};
   position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 
-  width: 100vw;
-  height: 100vh;
-  left: 0px;
-  top: 0px;
   background-color: rgba(0, 0, 0, 0.6);
-  z-index: 1;
+  z-index: 101;
 `;
