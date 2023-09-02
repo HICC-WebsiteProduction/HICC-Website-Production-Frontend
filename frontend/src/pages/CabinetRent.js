@@ -35,6 +35,7 @@ export default function CabinetRent(props) {
     return () => {
       resetCabinet();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   const modalRef = useRef(null);
@@ -75,10 +76,8 @@ export default function CabinetRent(props) {
                   itemName={`사물함`}
                   itemNumber={item.cabinetNumber}
                   lender={userinfo.name}
-                  startDay={moment(new Date()).format('yyyy-MM-DD')}
+                  startDay={moment(new Date())}
                   endDay={undefined}
-                  startDayDisabled={true}
-                  endDayDisabled={false}
                 />
               ),
           )}

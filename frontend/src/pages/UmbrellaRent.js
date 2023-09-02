@@ -45,6 +45,7 @@ export default function UmbrellaRent(props) {
     return () => {
       resetUmbrella();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   const now = new Date(); //  오늘 날짜
@@ -92,10 +93,8 @@ export default function UmbrellaRent(props) {
                   itemName={`우산`}
                   itemNumber={item.umbrellaNumber}
                   lender={userinfo.name}
-                  startDay={moment(new Date()).format('yyyy-MM-DD')}
-                  endDay={moment(sevenDaysAgo).format('yyyy-MM-DD')}
-                  startDayDisabled={true}
-                  endDayDisabled={true}
+                  startDay={moment(new Date())}
+                  endDay={sevenDaysAgo}
                 />
               ),
           )}
