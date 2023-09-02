@@ -33,7 +33,7 @@ export default function ApplyModal(props) {
   const closeModalFunc = useResetRecoilState(applyType[itemName].index);
   // 모달 창 종료를 위해 모달 오픈 여부를 모두 false로 리셋함
   const modalRef = useRef(null);
-  const closeModal = useCloseModal(modalRef, closeModalFunc); // 모달 창 닫음을 수행
+  useCloseModal(modalRef, closeModalFunc); // 모달 창 닫음을 수행
 
   const [itemList, setItemList] = useRecoilState(applyType[itemName].item); // 대여 상태 변환
   const [date, setDate] = useState(); // 날짜 선택을 위해
@@ -56,7 +56,7 @@ export default function ApplyModal(props) {
       // 사물함일 경우 승인 대기 상태로 전환
       if (itemName === '사물함') {
         try {
-          const response = request('post', '/locker/rent', body);
+          request('post', '/locker/rent', body);
           const updatedList = itemList.map(cabinet => {
             if (cabinet.cabinetNumber === itemNumber) {
               return {
@@ -77,7 +77,7 @@ export default function ApplyModal(props) {
       } else {
         // 우산일 경우 내가 대여 상태로 변환
         try {
-          const response = request('post', '/umbrella/rent', body);
+          request('post', '/umbrella/rent', body);
           const updatedList = itemList.map(umbrella => {
             if (umbrella.umbrellaNumber === itemNumber) {
               return {
@@ -123,7 +123,12 @@ export default function ApplyModal(props) {
           </InputRow>
           <InputRow>
             <Label>대여일자</Label>
-            <Input type="date" value={startDay} disabled={startDayDisabled} />
+            <Input
+              type="date"
+              value={startDay}
+              disabled={startDayDisabled}
+              required
+            />
           </InputRow>
           <InputRow>
             <Label>반납일자</Label>
@@ -132,6 +137,7 @@ export default function ApplyModal(props) {
               value={endDay !== undefined ? endDay : date || ''}
               onChange={onChange}
               disabled={endDayDisabled}
+              required
             />
           </InputRow>
         </ApplyCabinetModalContent>
@@ -146,7 +152,7 @@ const ApplyCabinetModalContainer = styled.div`
   flex-direction: column;
   align-items: center;
 
-  position: fixed;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);

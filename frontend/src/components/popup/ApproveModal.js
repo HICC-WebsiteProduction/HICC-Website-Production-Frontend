@@ -101,7 +101,7 @@ const ApplyCabinetModalContainer = styled.div`
   flex-direction: column;
   align-items: center;
 
-  position: fixed;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -111,6 +111,7 @@ const ApplyCabinetModalContainer = styled.div`
   height: 400px;
   padding: 32px 64px;
   background-color: ${theme.colors.black};
+  border-radius: 20px;
 `;
 
 const Header = styled.header`
