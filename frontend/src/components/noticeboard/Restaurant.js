@@ -48,7 +48,11 @@ function Restaurant(props) {
         <Header>맛집 지도</Header>
         <EnrollButton ref={enrollModal}>
           맛집 등록
-          {enrollOpen && <EnrollRestaurant />}
+          {enrollOpen && (
+            <ViewModal view={enrollOpen ? 1 : 0}>
+              <EnrollRestaurant close={close} />
+            </ViewModal>
+          )}
         </EnrollButton>
         <Map
           /* 디폴트는 학교의 위도 경도 */
@@ -175,4 +179,16 @@ const EnrollButton = styled.div`
   font-style: normal;
   font-weight: 600;
   font-size: ${theme.fontSizes.label};
+`;
+
+const ViewModal = styled.div`
+  display: ${props => (props.view ? 'block' : 'none')};
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 101;
 `;

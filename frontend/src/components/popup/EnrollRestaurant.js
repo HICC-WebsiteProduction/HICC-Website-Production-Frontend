@@ -9,6 +9,7 @@ import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import { useRecoilState } from 'recoil';
 import curEnrollRestaurant from '../../atom/curEnrollRestaurant';
 import useScrollGradient from '../../hook/useScrollGradient';
+import useCloseModal from '../../hook/useCloseModal';
 
 function EnrollRestaurant(props) {
   const { kakao } = window;
@@ -16,6 +17,9 @@ function EnrollRestaurant(props) {
   const [places, setPlaces] = useState([]);
   const [keyword, setKeyword] = useInput('');
   const [current, setCurrent] = useRecoilState(curEnrollRestaurant);
+
+  const modalRef = useRef(null);
+  useCloseModal(modalRef, props.close);
 
   const scrollRef = useRef(null);
   const { showGradient, showGradientTop } = useScrollGradient(scrollRef);
@@ -64,7 +68,7 @@ function EnrollRestaurant(props) {
   }, [current]);
 
   return (
-    <Container>
+    <Container ref={modalRef}>
       <SearchSection>
         <Header>
           <Title>장소 검색</Title>
@@ -141,7 +145,7 @@ export default EnrollRestaurant;
 
 const Container = styled.div`
   display: flex;
-  position: fixed;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
