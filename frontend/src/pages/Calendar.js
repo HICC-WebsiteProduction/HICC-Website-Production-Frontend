@@ -163,7 +163,11 @@ function Calendar() {
         </CalendarTopContent>
         <AddScheduleModal ref={modalRef}>
           {`일정추가 +`}
-          {modalOpen && <ScheduleModal closeModal={closeModal} />}
+          {modalOpen && (
+            <ViewModal view={modalOpen}>
+              <ScheduleModal closeModal={closeModal} />
+            </ViewModal>
+          )}
         </AddScheduleModal>
       </CalendarTop>
       <CalendarMain>
@@ -237,10 +241,6 @@ const AddScheduleModal = styled.div`
   font-weight: 600;
   font-size: ${theme.fontSizes.subtitle};
   line-height: 36px;
-
-  &:hover {
-    cursor: pointer;
-  }
 `;
 
 const CalendarMain = styled.div`
@@ -317,17 +317,14 @@ const CalendarPlanButton = styled.button`
   cursor: pointer;
 `;
 
-const Backdrop = styled.div`
+const ViewModal = styled.div`
   display: ${props => (props.view ? 'block' : 'none')};
   position: fixed;
-  top: 0;
-  left: 0;
+
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 99;
-
-  &:hover {
-    cursor: alias;
-  }
+  left: 0px;
+  top: 0px;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 101;
 `;

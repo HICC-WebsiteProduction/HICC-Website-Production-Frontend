@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DatePicker, { CalendarContainer } from 'react-datepicker';
 import { ko } from 'date-fns/esm/locale';
 import styled from 'styled-components';
@@ -28,15 +28,29 @@ export default function CustomDatePicker(props) {
     setSelectedDate(date);
   };
 
-  const datePickerClose = () => {
+  // cancel button
+  const datePickerCancel = () => {
     resetSelectedDate();
+    props.setIsOpen(false);
   };
+
+  const datePickerSelect = () => {
+    props.setIsOpen(false);
+  };
+
+  useEffect(() => {
+    return () => {
+      resetSelectedDate();
+    };
+  }, [resetSelectedDate]);
 
   return (
     <DatePickerWrapper
       locale={ko}
       dateFormat="yyyy-MM-dd"
       selected={selectedDate}
+      open={props.isOpen}
+      minDate={new Date()}
       onChange={date => handleDaySelect(date)}
       shouldCloseOnSelect={false}
       onMonthChange={handleMonthChange}
@@ -51,11 +65,11 @@ export default function CustomDatePicker(props) {
         nextMonthButtonDisabled,
       }) => (
         <CustomHeaderContainer>
-          <MonthButton onClick={decreaseMonth}>{`<`}</MonthButton>
+          <MonthButton type="button" onClick={decreaseMonth}>{`<`}</MonthButton>
           <ShowSelectYearAndMonth>
             {`${getYear(date)}.${('0' + (getMonth(date) + 1)).slice(-2)}`}
           </ShowSelectYearAndMonth>
-          <MonthButton onClick={increaseMonth}>{`>`}</MonthButton>
+          <MonthButton type="button" onClick={increaseMonth}>{`>`}</MonthButton>
         </CustomHeaderContainer>
       )}
       calendarClassName="custom-calender"
@@ -66,10 +80,12 @@ export default function CustomDatePicker(props) {
       }
     >
       <DatePickerFooter>
-        <SelectButton type="button" onClick={datePickerClose}>
+        <CancelButton type="button" onClick={datePickerCancel}>
           취소
+        </CancelButton>
+        <SelectButton type="button" onClick={datePickerSelect}>
+          확인
         </SelectButton>
-        <SelectButton type="button">확인</SelectButton>
       </DatePickerFooter>
     </DatePickerWrapper>
   );
@@ -115,15 +131,40 @@ const DatePickerFooter = styled.div`
   display: flex;
   justify-content: flex-end;
   height: 100px;
-  padding: 0 70px;
+  padding: 0 20px;
   padding-top: 36px;
   background-color: ${theme.colors.black};
 `;
 
+const CancelButton = styled.button`
+  width: 120px;
+  height: 50px;
+  border-radius: 10px;
+  border: none;
+  background-color: ${theme.colors.cancleRed};
+
+  color: ${theme.colors.white};
+  font-family: 'Pretendard';
+  font-size: ${theme.fontSizes.paragraph};
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+`;
+
 const SelectButton = styled.button`
-  width: 70px;
-  height: 30px;
+  width: 120px;
+  height: 50px;
   margin-left: 10px;
+  border-radius: 10px;
+  border: none;
+  background-color: ${theme.colors.blue};
+
+  color: ${theme.colors.white};
+  font-family: 'Pretendard';
+  font-size: ${theme.fontSizes.paragraph};
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
 `;
 
 const CustomHeaderContainer = styled.div`
@@ -147,7 +188,15 @@ const MonthButton = styled.button`
 `;
 
 const ShowSelectYearAndMonth = styled.div`
-  color: white;
+  color: ${theme.colors.white};
+  text-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
+  padding-top: 6px;
+
+  font-family: 'Pretendard';
+  font-size: ${theme.fontSizes.paragraph};
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
 `;
 
 // date picker top
@@ -160,11 +209,26 @@ const DatePickerTop = styled.div`
 `;
 
 const ShowYear = styled.div`
-  font-size: 20px;
+  margin-bottom: 10px;
+  color: ${theme.colors.pureBlack};
+
+  font-family: 'Pretendard';
+  font-size: ${theme.fontSizes.paragraph};
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  text-align: left;
 `;
 
 const ShowDate = styled.div`
-  font-size: 30px;
+  color: ${theme.colors.pureBlack};
+
+  font-family: 'Pretendard';
+  font-size: ${theme.fontSizes.tab};
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  text-align: left;
 `;
 
 const DatePickerBody = styled.div`
@@ -173,10 +237,12 @@ const DatePickerBody = styled.div`
 
 const DatePickerInner = styled(CalendarContainer)`
   position: fixed;
-  top: 0;
+  top: 5%;
   left: 50%;
   z-index: 1000;
   transform: translateX(-50%);
+
+  border: none;
 `;
 
 const DatePickerContainer = styled.div`
