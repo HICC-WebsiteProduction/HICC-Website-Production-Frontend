@@ -12,7 +12,6 @@ import {
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import ApplyModal from '../components/popup/ApplyModal';
 import moment from 'moment';
-import Header from '../components/header/Header';
 import Navigation from '../components/header/Navigation';
 import useFetch from '../hook/useFetch';
 import { user } from '../atom/user';
@@ -65,7 +64,6 @@ export default function UmbrellaRent(props) {
 
   return (
     <UmbrellaRentContainer>
-      <Header background={true} />
       <Navigation
         ancestorMenuTree={ancestorMenuTree}
         currentTabContents={currentTabContents}
@@ -107,7 +105,7 @@ export default function UmbrellaRent(props) {
 
 const UmbrellaRentContainer = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 100%;
 `;
 
 const UmbrellaCurrentState = styled.div`

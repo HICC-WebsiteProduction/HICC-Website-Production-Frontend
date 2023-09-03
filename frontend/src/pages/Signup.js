@@ -9,7 +9,6 @@ import { useNavigate } from 'react-router-dom';
 import useAlert from '../hook/useAlert';
 import ConfirmMessage from '../constants/ConfirmMessage';
 import { request } from '../utils/axios';
-import Header from '../components/header/Header';
 import Title from '../components/header/Title';
 import { useRecoilValue } from 'recoil';
 import agree from '../atom/agree';
@@ -76,7 +75,6 @@ function Signup(props) {
 
   return (
     <SignupContainer>
-      <Header background={true} />
       <Title titleName="회원가입" />
       <InputForm onSubmit={handleSubmit(onSubmit)}>
         <JoinAnnouncementMent>모든 항목에 응답해주세요</JoinAnnouncementMent>
@@ -183,7 +181,7 @@ export default Signup;
 
 const SignupContainer = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 100%;
 `;
 
 const InputForm = styled.form`

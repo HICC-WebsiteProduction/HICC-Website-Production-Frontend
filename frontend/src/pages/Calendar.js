@@ -5,7 +5,6 @@ import data from '../data/data.json';
 import theme from '../styles/Theme';
 import ScheduleModal from '../components/popup/ScheduleModal';
 import Title from '../components/header/Title';
-import Header from '../components/header/Header';
 import useModal from '../hook/useModal';
 import ScheduleModalSaved from '../components/popup/ScheduleModalSaved';
 
@@ -152,7 +151,6 @@ function Calendar() {
 
   return (
     <MainContainer>
-      <Header background={true} />
       <Title titleName="일정 캘린더" />
       <CalendarTop>
         <Blank />
@@ -200,7 +198,7 @@ const CalendarButton = styled.button`
 const MainContainer = styled.div`
   position: relative;
   width: ${theme.componentSize.maxWidth};
-  height: 100vh;
+  height: 100%;
   margin: 0 auto;
   place-items: center;
   align-items: center;

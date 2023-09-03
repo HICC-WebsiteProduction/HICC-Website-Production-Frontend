@@ -8,7 +8,6 @@ import moment from 'moment';
 import useMyRent from '../hook/useMyRent';
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import { cabinet, cabinetModal, currentCabinetIndex } from '../atom/cabinet';
-import Header from '../components/header/Header';
 import Navigation from '../components/header/Navigation';
 import useFetch from '../hook/useFetch';
 import { user } from '../atom/user';
@@ -52,7 +51,6 @@ export default function CabinetRent(props) {
 
   return (
     <CabinetRentContainer>
-      <Header background={true} />
       <Navigation
         ancestorMenuTree={ancestorMenuTree}
         currentTabContents={currentTabContents}
@@ -92,7 +90,7 @@ export default function CabinetRent(props) {
 const CabinetRentContainer = styled.div`
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 100%;
 `;
 
 const CabinetCurrentState = styled.div`
