@@ -95,25 +95,23 @@ export default function NewPost(props) {
         <InputLabel>제목</InputLabel>
         <Input value={title} maxLength="50" onChange={handleTitleChange} />
       </InputBox>
-      <CKEditor
-        editor={ClassicEditor}
-        data="<p>Hello from CKEditor&nbsp;5!</p>"
-        onReady={editor => {
-          // You can store the "editor" and use when it is needed.
-          console.log('Editor is ready to use!', editor);
-        }}
-        onChange={(event, editor) => {
-          const data = editor.getData();
-          console.log({ event, editor, data });
-        }}
-        onBlur={(event, editor) => {
-          console.log('Blur.', editor);
-        }}
-        onFocus={(event, editor) => {
-          console.log('Focus.', editor);
-        }}
-      />
-
+      <EditorContainer>
+        <CKEditor
+          editor={ClassicEditor}
+          config={{
+            placeholder: '내용을 입력하세요.',
+          }}
+          data="<p>Hello from CKEditor&nbsp;5!</p>"
+          onReady={editor => {
+            console.log('Editor is ready to use!', editor);
+          }}
+          onChange={(event, editor) => {
+            const data = editor.getData();
+            console.log({ event, editor, data });
+            setContent(data);
+          }}
+        />
+      </EditorContainer>
       <Button onClick={handleSaveClick}>저장</Button>
     </NewPostContainer>
   );
@@ -163,5 +161,11 @@ const Button = styled.button`
   color: ${theme.colors.white};
   &:hover {
     cursor: pointer;
+  }
+`;
+const EditorContainer = styled.div`
+  .ck-editor__editable {
+    min-height: 400px; // 원하는 높이로 설정하세요.
+    margin-bottom
   }
 `;
