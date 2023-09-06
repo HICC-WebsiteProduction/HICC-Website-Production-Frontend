@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import UserInfo from './UserInfo';
 import theme from '../../styles/Theme';
+import Button from '../../components/util/Button';
 import EditUserInfo from './../input/EditUserInfo';
+import ViewMemberInfo from '../input/ViewMemberInfo';
 
 // 내 정보를 보여준다
 function Profile() {
@@ -21,14 +23,16 @@ function Profile() {
   const [nickname, setNickname] = useState('최세호');
   const [phone, setPhone] = useState('010-1234-5678');
 
-  const handleNicknameChange = event => {
-    const newNickname = event.target.value;
+  const handleNicknameChange = nick => {
+    const newNickname = nick;
     setNickname(newNickname);
+    console.log('닉 변경');
   };
 
-  const handlePhoneChange = event => {
-    const newPhone = event.target.value;
+  const handlePhoneChange = num => {
+    const newPhone = num;
     setPhone(newPhone);
+    console.log('폰 변경');
   };
 
   const handleEditButtonClick = () => {
@@ -44,16 +48,54 @@ function Profile() {
       <ProfileWrapper>
         <ProfileImageContainer>
           <ProfilePicture src={profileImage} alt="프로필 사진" />
-          <ProfileInput type="file" onChange={handleProfileImageChange} />
+          <ProfileInput>사진 선택</ProfileInput>
         </ProfileImageContainer>
         <>
           {isEditing ? (
-            <EditUserInfo
-              nickname={nickname}
-              phone={phone}
-              onNicknameChange={handleNicknameChange}
-              onPhoneChange={handlePhoneChange}
-            />
+            <UserInfoWrapper>
+              <InputRow>
+                <Label>닉네임</Label>
+                <InputRowContent>
+                  <Input
+                    type="text"
+                    value={nickname}
+                    onChange={e => setNickname(e.target.value)}
+                  />
+                  <CheckDuplicate buttonName="중복 확인" buttonType="button" />
+                </InputRowContent>
+              </InputRow>
+              <ViewMemberInfo
+                labelName="등급"
+                type="text"
+                width={540}
+                value="일반회원"
+                authorityCheck={true}
+              />
+              <InputRow>
+                <Label>전화번호</Label>
+                <InputRowContent>
+                  <Input
+                    type="text"
+                    value={phone}
+                    onChange={e => setPhone(e.target.value)}
+                  />
+                </InputRowContent>
+              </InputRow>
+              <ViewMemberInfo
+                labelName="학번"
+                type="text"
+                width={540}
+                value="C011001"
+                authorityCheck={false}
+              />
+              <ViewMemberInfo
+                labelName="학과"
+                type="text"
+                width={540}
+                value="컴퓨터공학과"
+                authorityCheck={false}
+              />
+            </UserInfoWrapper>
           ) : (
             <UserInfo
               nickname={nickname}
@@ -68,8 +110,9 @@ function Profile() {
           {isEditing ? (
             <EditButton onClick={handleSaveButtonClick}>저장</EditButton>
           ) : (
-            <EditButton onClick={handleEditButtonClick}>정보 수정</EditButton>
+            <EditButton onClick={handleEditButtonClick}>수정</EditButton>
           )}
+          <WithdrawButton>회원 탈퇴 신청</WithdrawButton>
         </ButtonContainer>
       </ProfileWrapper>
     </>
@@ -88,6 +131,7 @@ const ProfileWrapper = styled.div`
 const ProfileImageContainer = styled.div`
   display: flex;
   flex-direction: column;
+  margin-right: 63px;
 `;
 
 const ProfilePicture = styled.img`
@@ -114,11 +158,122 @@ const EditButton = styled.button`
   &:hover {
     cursor: pointer;
   }
+  &:active {
+    opacity: 0.5;
+  }
 `;
 
-const ProfileInput = styled.input``;
+const ProfileInput = styled.button`
+  width: 180px;
+  height: 60px;
+  border-radius: 20px;
+  border: none;
+  margin-top: 40px;
+  background: ${theme.colors.blue};
+  color: ${theme.colors.white};
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%; /* 36px */
+  &:hover {
+    cursor: pointer;
+  }
+  &:active {
+    opacity: 0.5;
+  }
+`;
 
 const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   position: absolute;
   top: 540px;
+`;
+const WithdrawButton = styled.button`
+  display: flex;
+  width: 786px;
+  padding: 12px 307px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 20px;
+  border: none;
+  margin-bottom: 140px;
+
+  background: #ff9494;
+  color: #edf0f8;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%; /* 36px */
+  &:hover {
+    cursor: pointer;
+  }
+  &:active {
+    opacity: 0.5;
+  }
+`;
+
+const InputRow = styled.div`
+  ${theme.flexbox.flex};
+  position: relative;
+  justify-content: flex-start;
+  width: 540px;
+  margin-bottom: ${theme.margin.margin_component};
+`;
+
+const Label = styled.label`
+  width: 204px;
+  color: ${theme.colors.white};
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%;
+  font-size: ${theme.fontSizes.label};
+`;
+
+const InputRowContent = styled.div`
+  ${theme.flexbox.flex};
+  justify-content: flex-start;
+  width: 582px;
+  height: 60px;
+  background-color: ${theme.colors.white};
+  border-radius: 20px;
+`;
+
+const Input = styled.input`
+  width: 50%;
+  height: 24px;
+  margin: 18px 24px;
+  background-color: ${theme.colors.white};
+  border: none;
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 600;
+  font-size: ${theme.fontSizes.font_normal};
+  &:focus {
+    outline: none;
+  }
+`;
+const CheckDuplicate = styled(Button)`
+  width: 120px;
+  height: 46px;
+  margin-right: 12px;
+  border-radius: 20px;
+
+  color: ${theme.colors.white};
+  font-family: 'Pretendard';
+  font-weight: 600;
+  font-size: ${theme.fontSizes.font_normal};
+  &:active {
+    opacity: 0.5;
+  }
+`;
+const UserInfoWrapper = styled.div`
+  width: 540px;
 `;

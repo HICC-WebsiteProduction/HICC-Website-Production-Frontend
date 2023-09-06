@@ -8,15 +8,20 @@ import Regex from './../../constants/Regex';
 
 // 내 정보에서 유저 정보를 수정할 때 보여줌
 // react-hook-form 라이브러리를 활용하였음
-export default function EditUserInfo(props) {
+export default function EditUserInfo({
+  nickname,
+  phone,
+  onNicknameChange,
+  onPhoneChange,
+}) {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      nickname: props.nickname,
-      call: props.phone,
+      nickname: nickname,
+      call: phone,
     },
   });
 
@@ -41,6 +46,8 @@ export default function EditUserInfo(props) {
           maxLength={16}
           pattern={Regex.nickname.pattern}
           width={540}
+          value={nickname}
+          onChange={onNicknameChange}
         />
         <ViewMemberInfo
           labelName="등급"
@@ -62,6 +69,8 @@ export default function EditUserInfo(props) {
           maxLength={13}
           pattern={Regex.call.pattern}
           width={540}
+          value={phone}
+          onChange={onPhoneChange}
         />
         <ViewMemberInfo
           labelName="학번"
