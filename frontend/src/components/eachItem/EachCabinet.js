@@ -1,13 +1,16 @@
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { cabinet, cabinetModal } from '../../atom/cabinet';
 import useConfirm from '../../hook/useConfirm';
 import { request } from '../../utils/axios';
+import ConfirmMessage from '../../constants/ConfirmMessage';
+import { user } from '../../atom/user';
 
 // 사물함 대여페이지에서 사용하는 사물함들
 function EachCabinet({ eachCabinet }) {
-  const myName = '김진호'; // 추후에 user atom에서 가져와서 사용할 예정
+  const userinfo = useRecoilValue(user);
+  const myName = userinfo.name;
   const approveManagerMent = `관리자 승인 후\n사용 가능합니다.`;
 
   const setCurrentIndex = useSetRecoilState(cabinetModal); // 모달 창 작동을 위해
@@ -20,7 +23,7 @@ function EachCabinet({ eachCabinet }) {
       targetId: 'B731070',
     };
     try {
-      const response = await request('post', '/locker/return', body);
+      await request('post', '/locker/return', body);
 
       // 선택한 사물함을 반납함 (myRent -> unrent)
       const updatedList = cabinetList.map(cabinet => {
@@ -47,7 +50,7 @@ function EachCabinet({ eachCabinet }) {
 
   // 반납할 때 확인 창을 띄우는 함수 (useConfirm custom hook)
   const returnCabinet = useConfirm(
-    '정말 반납하시겠습니까?',
+    ConfirmMessage.returnItem,
     confirmGrant,
     '반납처리가 완료되었습니다.',
   );

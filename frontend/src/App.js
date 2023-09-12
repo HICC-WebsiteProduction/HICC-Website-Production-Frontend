@@ -1,29 +1,30 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Main from './pages/Main';
-import Signup from './pages/Signup';
-import Calendar from './pages/Calendar';
-import MyPage from './pages/MyPage';
-import Manage from './pages/Manage';
-import Noticeboard from './pages/Noticeboard';
-import MemberDetail from './components/manage/MemberDetail';
-import Login from './pages/Login';
-import CabinetRent from './pages/CabinetRent';
-import UmbrellaRent from './pages/UmbrellaRent';
+import { Route, Routes } from 'react-router-dom';
+import Layout from './components/layout/Layout';
 import { useRecoilValue } from 'recoil';
 import { user } from './atom/user';
+import Main from './pages/Main';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
 import TOS from './pages/TOS';
-import PresidentRoute from './permissionRoute/PresidentRoute';
-import AdminRoute from './permissionRoute/AdminRoute';
+import Calendar from './pages/Calendar';
 import PrivateRoute from './permissionRoute/PrivateRoute';
+import Mypage from './pages/MyPage';
+import AdminRoute from './permissionRoute/AdminRoute';
+import Manage from './pages/Manage';
+import Noticeboard from './pages/Noticeboard';
+import PresidentRoute from './permissionRoute/PresidentRoute';
+import MemberDetail from './components/manage/MemberDetail';
 import UndergraduateRoute from './permissionRoute/UndergraduateRoute';
+import UmbrellaRent from './pages/UmbrellaRent';
+import CabinetRent from './pages/CabinetRent';
 
-function Router() {
+function App() {
   const isLogin = useRecoilValue(user).accessToken;
   const role = useRecoilValue(user).role;
   return (
-    <BrowserRouter>
-      <Routes>
+    <Routes>
+      <Route element={<Layout />}>
         <Route path="/" element={<Main />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
@@ -35,7 +36,7 @@ function Router() {
             <PrivateRoute
               authenticated={isLogin}
               permission={role}
-              component={<MyPage />}
+              component={<Mypage />}
             />
           }
         />
@@ -89,9 +90,9 @@ function Router() {
             />
           }
         />
-      </Routes>
-    </BrowserRouter>
+      </Route>
+    </Routes>
   );
 }
 
-export default Router;
+export default App;

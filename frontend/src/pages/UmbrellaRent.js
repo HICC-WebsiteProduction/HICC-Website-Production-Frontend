@@ -1,7 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUmbrella } from '@fortawesome/free-solid-svg-icons';
 import theme from '../styles/Theme';
 import EachUmbrella from '../components/eachItem/EachUmbrella';
 import Caution from './../constants/Caution';
@@ -14,9 +12,9 @@ import {
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import ApplyModal from '../components/popup/ApplyModal';
 import moment from 'moment';
-import Header from '../components/header/Header';
 import Navigation from '../components/header/Navigation';
 import useFetch from '../hook/useFetch';
+import { user } from '../atom/user';
 
 /*
 currentTabContents는 현재 탭의 정보로
@@ -30,7 +28,7 @@ export default function UmbrellaRent(props) {
   const currentIndex = useRecoilValue(currentUmbrellaIndex); // 현재 인덱스 (모달)
   const resetUmbrella = useResetRecoilState(umbrella); // 우산 상태 초기화
 
-  const myName = '김진호';
+  const userinfo = useRecoilValue(user); // 내 정보 가져오기 위해
 
   const checkMyRent = useMyRent(); // 내가 대여 처리
 
@@ -38,7 +36,7 @@ export default function UmbrellaRent(props) {
 
   useEffect(() => {
     if (data) {
-      const umbrellaListIncludeMyRent = checkMyRent(data, myName);
+      const umbrellaListIncludeMyRent = checkMyRent(data, userinfo.name);
       setInit(umbrellaListIncludeMyRent);
       setUmbrellaList(init);
     }
@@ -46,6 +44,7 @@ export default function UmbrellaRent(props) {
     return () => {
       resetUmbrella();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   const now = new Date(); //  오늘 날짜
@@ -65,7 +64,6 @@ export default function UmbrellaRent(props) {
 
   return (
     <UmbrellaRentContainer>
-      <Header />
       <Navigation
         ancestorMenuTree={ancestorMenuTree}
         currentTabContents={currentTabContents}
@@ -73,9 +71,6 @@ export default function UmbrellaRent(props) {
 
       <UmbrellaCurrentState>
         <UmbrellaListHeader>
-          <UmbrellaIcon>
-            <FontAwesomeIcon icon={faUmbrella} />
-          </UmbrellaIcon>
           <UmbrellaListHeaderText>우산 목록</UmbrellaListHeaderText>
         </UmbrellaListHeader>
         <UmbrellaGrid>
@@ -95,11 +90,9 @@ export default function UmbrellaRent(props) {
                 <ApplyModal
                   itemName={`우산`}
                   itemNumber={item.umbrellaNumber}
-                  lender={myName}
-                  startDay={moment(new Date()).format('yyyy-MM-DD')}
-                  endDay={moment(sevenDaysAgo).format('yyyy-MM-DD')}
-                  startDayDisabled={true}
-                  endDayDisabled={true}
+                  lender={userinfo.name}
+                  startDay={moment(new Date())}
+                  endDay={sevenDaysAgo}
                 />
               ),
           )}
@@ -112,7 +105,7 @@ export default function UmbrellaRent(props) {
 
 const UmbrellaRentContainer = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 100%;
 `;
 
 const UmbrellaCurrentState = styled.div`
@@ -132,10 +125,6 @@ const UmbrellaListHeader = styled.header`
   line-height: 100%;
 `;
 
-const UmbrellaIcon = styled.div`
-  margin-right: 20px;
-`;
-
 const UmbrellaListHeaderText = styled.h1``;
 
 const UmbrellaGrid = styled.div`
@@ -151,11 +140,11 @@ const UmbrellaGrid = styled.div`
 const ViewApplyModal = styled.div`
   display: ${props => (props.view ? 'block' : 'none')};
   position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 
-  width: 100vw;
-  height: 100vh;
-  left: 0px;
-  top: 0px;
   background-color: rgba(0, 0, 0, 0.6);
-  z-index: 1;
+  z-index: 101;
 `;

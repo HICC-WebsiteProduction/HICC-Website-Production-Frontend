@@ -59,7 +59,7 @@ function NoticeLayerPopup() {
               {notificationMessage(notice.type, notice.payload)}
             </NoticeTitle>
             <NoticeDesc>안녕하세요</NoticeDesc>
-            <NoticeTime>{`${calculateDueDate(notice.time)} 전`}</NoticeTime>
+            <NoticeTime>{`${calculateDueDate(notice.time)}`}</NoticeTime>
           </NoticeContent>
         ))}
       </NoticeSection>
@@ -187,7 +187,8 @@ const NoticeContent = styled.div`
   padding: 15px 0;
   border-bottom: 1px solid ${theme.colors.white};
 
-  color: ${props => (props.isRead ? theme.colors.purple : theme.colors.white)};
+  color: ${props => (props.isRead ? theme.colors.grey : theme.colors.white)};
+  text-decoration: ${props => (props.isRead ? 'line-through' : 'none')};
 
   &:hover {
     cursor: pointer;

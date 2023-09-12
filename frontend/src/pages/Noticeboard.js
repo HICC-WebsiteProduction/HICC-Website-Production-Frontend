@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import theme from './../styles/Theme';
 import Post from './../components/noticeboard/Post';
-import Header from '../components/header/Header';
 import Tab from '../components/header/Tab';
 import Restaurant from '../components/noticeboard/Restaurant';
 
@@ -31,7 +30,6 @@ function Noticeboard() {
 
   return (
     <NoticeBoardContainer>
-      <Header />
       <Tab
         ancestorMenuTree={ancestorMenuTree}
         currentTabContents={currentTabContents}
@@ -57,7 +55,7 @@ export default Noticeboard;
 
 const NoticeBoardContainer = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 100%;
 `;
 
 const BoardBox = styled.div`

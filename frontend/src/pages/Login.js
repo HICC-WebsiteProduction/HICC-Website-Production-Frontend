@@ -12,7 +12,6 @@ import { request } from '../utils/axios';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { user } from '../atom/user';
 import Title from '../components/header/Title';
-import Header from '../components/header/Header';
 import agree from '../atom/agree';
 
 // 로그인
@@ -52,7 +51,6 @@ export default function Login(props) {
 
   return (
     <LoginContainer>
-      <Header />
       <Title titleName="로그인" />
       <InputForm onSubmit={handleSubmit(onSubmit)}>
         <InputMemberInfo
@@ -101,7 +99,7 @@ export default function Login(props) {
 
 const LoginContainer = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 100%;
 `;
 
 const InputForm = styled.form`

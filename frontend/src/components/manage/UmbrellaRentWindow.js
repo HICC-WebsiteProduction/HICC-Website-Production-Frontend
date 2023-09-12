@@ -7,6 +7,7 @@ import EachUmbrellaManage from '../eachItem/EachUmbrellaManage';
 import Button from '../util/Button';
 import useConfirm from '../../hook/useConfirm';
 import useFetch from '../../hook/useFetch';
+import ConfirmMessage from '../../constants/ConfirmMessage';
 
 // 우산 관리 페이지를 담당
 function UmbrellaRentWindow(props) {
@@ -28,8 +29,6 @@ function UmbrellaRentWindow(props) {
   // 우산 상태를 저장하는 기능
   // 아직 백엔드 통신 코드는 작성하지 않음
   const confirmGrant = () => {
-    console.log('반영 성공');
-
     // 정상적인 결과는 resolve로 1을 전달해준다.
     return new Promise(resolve => resolve(1));
   };
@@ -42,7 +41,7 @@ function UmbrellaRentWindow(props) {
 
   // 저장 버튼을 누르면 실행되는 확인 창
   const saveState = useConfirm(
-    '저장하시겠습니까?',
+    ConfirmMessage.saveState,
     confirmGrant,
     '저장 성공',
     confirmDismiss,

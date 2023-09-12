@@ -1,19 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
-import Header from '../components/header/Header';
 import Banner from '../components/main/Banner';
 import Activity from '../components/main/Activity';
 import NumberTable from '../components/main/NumberTable';
 import HongMap from '../components/main/HongMap';
 import JoinHICC from '../components/main/JoinHICC';
-import Footer from '../components/main/Footer';
 import Projects from '../components/main/Projects';
 import RecentNews from '../components/main/RecentNews';
 
 function Main() {
   return (
     <MainContainer>
-      <Header />
       <Banner />
       <Activity />
       <NumberTable />
@@ -21,7 +18,6 @@ function Main() {
       <Projects />
       <HongMap />
       <JoinHICC />
-      <Footer />
     </MainContainer>
   );
 }
@@ -29,7 +25,7 @@ function Main() {
 export default Main;
 
 const MainContainer = styled.div`
-  height: 100vh;
+  height: 100%;
   width: 100%;
   margin: 0 auto;
   place-items: center;

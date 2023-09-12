@@ -8,6 +8,7 @@ import EachCabinetManage from '../eachItem/EachCabinetManage';
 import ApproveModal from '../popup/ApproveModal';
 import useConfirm from '../../hook/useConfirm';
 import useFetch from '../../hook/useFetch';
+import ConfirmMessage from '../../constants/ConfirmMessage';
 
 // 사물함 관리 페이지를 담당
 function CabinetRentWindow(props) {
@@ -48,7 +49,7 @@ function CabinetRentWindow(props) {
 
   // 저장 버튼을 누르면 실행되는 확인 창
   const saveState = useConfirm(
-    '저장하시겠습니까?',
+    ConfirmMessage.saveState,
     confirmGrant,
     '저장 성공',
     confirmDismiss,
@@ -161,5 +162,5 @@ const ViewApplyModal = styled.div`
   left: 0px;
   top: 0px;
   background-color: rgba(0, 0, 0, 0.6);
-  z-index: 1;
+  z-index: 101;
 `;

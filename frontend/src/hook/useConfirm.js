@@ -7,14 +7,19 @@ import useAlert from './useAlert';
 
 /*
   useConfirm
-  title: 확인 창에서 보여지는 메시지 : string
+  message: 확인 창에서 보여지는 메시지 : string object
   confirm: 확인을 누를 때 실행되는 함수 : function
   confirmSuccessMessage: 실행이 성공적으로 됐을 때 보여지는 메시지 : string
   dismiss: 확인 창에서 취소를 누를 때 실행되는 함수 : function | null (없어도 된다.)
 
   확인을 누르고 정상적으로 실행된 후 확인을 누르면 페이지 새로고침 이벤트 일어남
 */
-const useConfirm = (title, confirm, confirmSuccessMessage, dismiss = null) => {
+const useConfirm = (
+  message,
+  confirm,
+  confirmSuccessMessage,
+  dismiss = null,
+) => {
   const errorAlert = useAlert();
   if (!confirm || typeof confirm !== 'function') return;
 
@@ -23,35 +28,48 @@ const useConfirm = (title, confirm, confirmSuccessMessage, dismiss = null) => {
 
     mySwal
       .fire({
-        background: theme.colors.white,
-        title: <Title>{title}</Title>,
+        background: theme.colors.black,
+        title: <Title>{message.title}</Title>,
+        html: <Body>{message.body}</Body>,
         heightAuto: false,
         showCancelButton: true,
         allowOutsideClick: false,
         confirmButtonColor: theme.colors.blue,
-        confirmButtonText: <ConfirmText>{`네`}</ConfirmText>,
-        cancelButtonColor: theme.colors.cancleRed,
-        cancelButtonText: <ConfirmText>{`아니오`}</ConfirmText>,
+        confirmButtonText: <ConfirmText>{`확인`}</ConfirmText>,
+        cancelButtonColor: theme.colors.grey,
+        cancelButtonText: <ConfirmText>{`취소`}</ConfirmText>,
+        customClass: {
+          container: 'confirm',
+          popup: 'popup',
+          title: 'title',
+          closeButton: 'closeButton',
+          htmlContainer: 'body',
+          actions: 'buttonContainer',
+          confirmButton: 'confirm-button',
+          cancelButton: 'cancel-button',
+        },
       })
       .then(result => {
         if (result.isConfirmed) {
           const result = confirm();
           result.then(res => {
-            console.log(res);
             // confirm의 반환 타입이 string이 아니라면 (정상적으로 confirm이 실행)
             // 대표 값으로 1을 리턴하도록 정했음
             // 아니라면 반환된 메시지를 errorAlert에 넣어서 실행 (중간에 오류를 터뜨림)
             if (typeof res !== 'string') {
               mySwal
                 .fire({
-                  title: <AlertTitle>{confirmSuccessMessage}</AlertTitle>,
+                  title: <Title>{confirmSuccessMessage}</Title>,
                   html: '',
-                  icon: 'success',
                   heightAuto: false,
                   confirmButtonColor: theme.colors.blue,
                   customClass: {
-                    title: 'custom-title-class',
-                    icon: 'custom-icon-class',
+                    container: 'confirm',
+                    popup: 'popup',
+                    title: 'title',
+                    htmlContainer: 'body',
+                    actions: 'buttonContainer',
+                    confirmButton: 'confirm-button',
                   },
                 })
                 .then(() => {
@@ -72,32 +90,39 @@ const useConfirm = (title, confirm, confirmSuccessMessage, dismiss = null) => {
 };
 
 const Title = styled.div`
-  padding: 20px 0;
-  color: ${theme.colors.black};
+  color: ${theme.colors.white};
 
+  font-size: ${theme.fontSizes.subtitle};
+  font-family: 'GmarketSansMedium';
+  font-weight: 500;
+  text-align: center;
+  white-space: pre-line;
+`;
+
+const Body = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 100%;
+
+  color: ${theme.colors.white};
+  font-size: ${theme.fontSizes.paragraph};
   font-family: 'Pretendard';
   font-weight: 600;
-  line-height: 160%;
+  line-height: 150%;
+
+  text-align: center;
   white-space: pre-line;
 `;
 
 const ConfirmText = styled.div`
-  font-size: ${theme.fontSizes.label};
+  font-size: ${theme.fontSizes.paragraph};
   color: ${theme.colors.white};
 
   font-family: 'Pretendard';
-  line-height: 160%;
   font-weight: 600;
-`;
-
-const AlertTitle = styled.div`
-  margin: 80px 0 20px 0;
-  color: ${theme.colors.black};
-
-  font-family: 'Pretendard';
-  font-weight: 600;
-  line-height: 160%;
-  white-space: pre-line;
 `;
 
 export default useConfirm;

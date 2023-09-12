@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import theme from '../styles/Theme';
 import { TabContentByIndexMypage } from '../constants/TabContentByIndexMypage';
 import Tab from '../components/header/Tab';
-import Header from '../components/header/Header';
 
 function Mypage() {
   const MyComments = () => {
@@ -38,7 +37,6 @@ function Mypage() {
 
   return (
     <MypageContainer>
-      <Header />
       <Tab
         ancestorMenuTree={ancestorMenuTree}
         currentTabContents={currentTabContents}
@@ -54,6 +52,6 @@ export default Mypage;
 
 const MypageContainer = styled.div`
   width: ${theme.componentSize.maxWidth};
-  height: 100vh;
+  height: 1000px;
   margin: 0 auto;
 `;

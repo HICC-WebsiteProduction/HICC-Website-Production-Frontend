@@ -3,18 +3,18 @@ import DatePicker, { CalendarContainer } from 'react-datepicker';
 import { ko } from 'date-fns/esm/locale';
 import styled from 'styled-components';
 import { getYear, getMonth } from 'date-fns';
-import '../../styles/datepicker.css';
+import '../../styles/datepickerRent.css';
 
 import theme from '../../styles/Theme';
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
-import { date } from './../../atom/date';
+import { endSelect } from './../../atom/endSelect';
 require('react-datepicker/dist/react-datepicker.css');
 
 // 날짜 선택창을 직접 만들기를 요청하여
 // react-datepicker 라이브러리를 활용하여 제작
-export default function CustomDatePicker(props) {
-  const [selectedDate, setSelectedDate] = useRecoilState(date); // 현재 선택한 날짜
-  const resetSelectedDate = useResetRecoilState(date); // 선택 초기화
+export default function CustomDatePickerRent(props) {
+  const [selectedDate, setSelectedDate] = useRecoilState(endSelect); // 현재 선택한 날짜
+  const resetSelectedDate = useResetRecoilState(endSelect); // 선택 초기화
   const [month, setMonth] = useState(new Date().getMonth() + 1); // 현재 선택한 월
 
   // 월을 바꿀 때 일어나는 함수
@@ -51,6 +51,7 @@ export default function CustomDatePicker(props) {
       selected={selectedDate}
       open={props.isOpen}
       minDate={new Date()}
+      disabled={props.disabled}
       onChange={date => handleDaySelect(date)}
       shouldCloseOnSelect={false}
       onMonthChange={handleMonthChange}
@@ -80,12 +81,12 @@ export default function CustomDatePicker(props) {
       }
     >
       <DatePickerFooter>
-        <CancelButton type="button" onClick={datePickerCancel}>
-          취소
-        </CancelButton>
         <SelectButton type="button" onClick={datePickerSelect}>
           확인
         </SelectButton>
+        <CancelButton type="button" onClick={datePickerCancel}>
+          취소
+        </CancelButton>
       </DatePickerFooter>
     </DatePickerWrapper>
   );
@@ -94,18 +95,14 @@ export default function CustomDatePicker(props) {
 const DatePickerWrapper = styled(DatePicker)`
   border: none;
   background-color: transparent;
-
-  color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 300;
-
+  color: transparent;
   outline: none;
+
+  width: 0;
 `;
 
 function MyContainer({ className, children }) {
-  const selectedDate = useRecoilValue(date);
+  const selectedDate = useRecoilValue(endSelect);
   const week = ['일', '월', '화', '수', '목', '금', '토'];
 
   // 날짜 선택 창 상단에 보이는 부분
@@ -130,18 +127,23 @@ function MyContainer({ className, children }) {
 const DatePickerFooter = styled.div`
   display: flex;
   justify-content: flex-end;
-  height: 100px;
-  padding: 0 20px;
+  width: 100%;
+  height: 130px;
+  padding: 0 130px;
   padding-top: 36px;
   background-color: ${theme.colors.black};
+
+  border: none;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
 `;
 
 const CancelButton = styled.button`
-  width: 120px;
-  height: 50px;
-  border-radius: 10px;
+  width: 100px;
+  height: 40px;
+  border-radius: 20px;
   border: none;
-  background-color: ${theme.colors.cancleRed};
+  background-color: ${theme.colors.grey};
 
   color: ${theme.colors.white};
   font-family: 'Pretendard';
@@ -152,10 +154,10 @@ const CancelButton = styled.button`
 `;
 
 const SelectButton = styled.button`
-  width: 120px;
-  height: 50px;
-  margin-left: 10px;
-  border-radius: 10px;
+  width: 100px;
+  height: 40px;
+  margin-right: 20px;
+  border-radius: 20px;
   border: none;
   background-color: ${theme.colors.blue};
 
@@ -206,6 +208,8 @@ const DatePickerTop = styled.div`
   height: 130px;
   padding: 30px 20px;
   background-color: ${theme.colors.white};
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
 `;
 
 const ShowYear = styled.div`
@@ -217,7 +221,7 @@ const ShowYear = styled.div`
   font-style: normal;
   font-weight: 300;
   line-height: normal;
-  text-align: left;
+  text-align: center;
 `;
 
 const ShowDate = styled.div`
@@ -228,7 +232,7 @@ const ShowDate = styled.div`
   font-style: normal;
   font-weight: 600;
   line-height: normal;
-  text-align: left;
+  text-align: center;
 `;
 
 const DatePickerBody = styled.div`
@@ -237,7 +241,7 @@ const DatePickerBody = styled.div`
 
 const DatePickerInner = styled(CalendarContainer)`
   position: fixed;
-  top: 5%;
+  top: -30%;
   left: 50%;
   z-index: 1000;
   transform: translateX(-50%);

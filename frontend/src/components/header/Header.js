@@ -15,7 +15,7 @@ import { notice, unreadNotice } from '../../atom/notice';
 import { request } from '../../utils/axios';
 
 // 페이지의 헤더를 담당
-export default function Header() {
+export default function Header({ background }) {
   const noticeButtonRef = useRef(null); // 알림 창 버튼
   const myInfoButtonRef = useRef(null); // 내 정보 버튼
 
@@ -45,7 +45,7 @@ export default function Header() {
   }, []);
 
   return (
-    <HeaderContainer>
+    <HeaderContainer background={background ? 1 : 0}>
       <Logo to={'/'} />
       <NavigationAndUser>
         <Navigation>
@@ -95,7 +95,8 @@ const HeaderContainer = styled.header`
   margin: 0 auto;
   padding: 0 ${theme.margin.margin_content};
   transform: rotate(-0.05deg);
-  background-color: ${theme.colors.black};
+  background-color: ${props =>
+    props.background ? theme.colors.black : 'transperent'};
 `;
 
 const Logo = styled(Link)`
