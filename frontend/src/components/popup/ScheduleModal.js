@@ -19,6 +19,11 @@ export default function ScheduleModal(props) {
   const [isOpen, setIsOpen] = useState(false);
 
   const selectDay = useRecoilValue(date);
+  
+  const onChangeSelect = event => {
+    setSelectOption(event.target.value);
+    props.data.scheduleType = event.target.value;
+  };
 
   // 일정 저장하는 함수
   const onSubmit = async event => {
@@ -71,21 +76,21 @@ export default function ScheduleModal(props) {
           </SelectScheduleTypeOption>
         </SelectScheduleType>
       </ScheduleModalHeader>
-      <ScheduleInputContainer onSubmit={onSubmit}>
+      <ScheduleInputContainer onSubmit={props.onSubmit}>
         <InputRow>
           <InputRowLable>일정 제목</InputRowLable>
-          <Input required height={30} value={title} onChange={setTitle} />
+          <Input required height={30} input={props.data.title} value={title} onChange={setTitle} />
         </InputRow>
         <InputRow>
           <InputRowLable>날짜</InputRowLable>
           <DatePickerContainer>
-            <CustomDatePicker isOpen={isOpen} setIsOpen={setIsOpen} />
+            <CustomDatePicker input={props.data.date} isOpen={isOpen} setIsOpen={setIsOpen} />
             <DateIcon icon={faCalendarDays} onClick={openDatePicker} />
           </DatePickerContainer>
         </InputRow>
         <InputRow>
           <InputRowLable>세부사항</InputRowLable>
-          <TextArea required height={120} value={desc} onChange={setDesc} />
+          <Input required height={120} input={props.data.description} value={desc} onChange={setDesc} />
         </InputRow>
         <ButtonContainer>
           <CancleButton buttonName="취소" onClick={props.closeModal} />
