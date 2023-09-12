@@ -59,7 +59,7 @@ function NoticeLayerPopup() {
               {notificationMessage(notice.type, notice.payload)}
             </NoticeTitle>
             <NoticeDesc>안녕하세요</NoticeDesc>
-            <NoticeTime>{`${calculateDueDate(notice.time)} 전`}</NoticeTime>
+            <NoticeTime>{`${calculateDueDate(notice.time)}`}</NoticeTime>
           </NoticeContent>
         ))}
       </NoticeSection>

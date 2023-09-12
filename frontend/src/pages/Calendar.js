@@ -5,7 +5,6 @@ import data from '../data/data.json';
 import theme from '../styles/Theme';
 import ScheduleModal from '../components/popup/ScheduleModal';
 import Title from '../components/header/Title';
-import Header from '../components/header/Header';
 import useModal from '../hook/useModal';
 import ScheduleModalSaved from '../components/popup/ScheduleModalSaved';
 
@@ -152,7 +151,6 @@ function Calendar() {
 
   return (
     <MainContainer>
-      <Header background={true} />
       <Title titleName="일정 캘린더" />
       <CalendarTop>
         <Blank />
@@ -163,7 +161,11 @@ function Calendar() {
         </CalendarTopContent>
         <AddScheduleModal ref={modalRef}>
           {`일정추가 +`}
-          {modalOpen && <ScheduleModal closeModal={closeModal} />}
+          {modalOpen && (
+            <ViewModal view={modalOpen}>
+              <ScheduleModal closeModal={closeModal} />
+            </ViewModal>
+          )}
         </AddScheduleModal>
       </CalendarTop>
       <CalendarMain>
@@ -196,7 +198,7 @@ const CalendarButton = styled.button`
 const MainContainer = styled.div`
   position: relative;
   width: ${theme.componentSize.maxWidth};
-  height: 100vh;
+  height: 100%;
   margin: 0 auto;
   place-items: center;
   align-items: center;
@@ -237,10 +239,6 @@ const AddScheduleModal = styled.div`
   font-weight: 600;
   font-size: ${theme.fontSizes.subtitle};
   line-height: 36px;
-
-  &:hover {
-    cursor: pointer;
-  }
 `;
 
 const CalendarMain = styled.div`
@@ -317,17 +315,14 @@ const CalendarPlanButton = styled.button`
   cursor: pointer;
 `;
 
-const Backdrop = styled.div`
+const ViewModal = styled.div`
   display: ${props => (props.view ? 'block' : 'none')};
   position: fixed;
-  top: 0;
-  left: 0;
+
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 99;
-
-  &:hover {
-    cursor: alias;
-  }
+  left: 0px;
+  top: 0px;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 101;
 `;

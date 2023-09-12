@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import theme from '../styles/Theme';
-import Header from '../components/header/Header';
 import Title from '../components/header/Title';
 import Checkbox from '../components/util/Checkbox';
 import { TOSMessage } from '../constants/TOSMessage';
@@ -47,7 +46,6 @@ function TOS() {
 
   return (
     <TOSContainer>
-      <Header background={true} />
       <Title titleName="회원가입" />
       <HeadNumber>
         {`아직 HICC의 회원이 아닌 경우, 홈페이지 회원가입에 앞서 회장에게 연락하고
@@ -86,7 +84,7 @@ export default TOS;
 
 const TOSContainer = styled.div`
   width: ${theme.componentSize.maxWidth};
-  height: 100vh;
+  height: 100%;
   margin: 0 auto;
 `;
 
