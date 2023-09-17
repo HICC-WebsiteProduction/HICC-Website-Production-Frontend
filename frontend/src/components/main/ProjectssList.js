@@ -9,9 +9,9 @@ function Slide({ sliders }) {
     <Container>
       {/*<SlideTitle>프로젝트 둘러보기</SlideTitle>*/}
       <StyledSlider {...settings}>
-        {sliders.map(({ name, image }) => {
+        {sliders.map(({ name, image }, index) => {
           return (
-            <CardBox>
+            <CardBox key={`slider-${index}`}>
               <CardImg alt="인기 서비스" src={image} />
               {/*<CardText>{name}</CardText>*/}
             </CardBox>

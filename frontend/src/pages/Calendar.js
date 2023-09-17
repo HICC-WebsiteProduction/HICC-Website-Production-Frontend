@@ -203,7 +203,7 @@ function Calendar() {
                 <ScheduleModal
                   closeModal={closeModal}
                   data={data}
-                // onSubmit={onSubmit()}
+                  // onSubmit={onSubmit()}
                 />
               </ViewModal>
             )}
