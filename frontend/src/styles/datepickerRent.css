@@ -2,6 +2,9 @@
   position: fixed;
 }
 
+.react-datepicker__input-container {
+  width: 0;
+}
 
 .react-datepicker-popper {
   position: fixed !important;
@@ -30,7 +33,7 @@
 }
 
 .react-datepicker__day-names .react-datepicker__day-name {
-  margin: 0 15px !important;
+  margin: 0 14px !important;
   color: rgba(237, 240, 248, 0.7) !important;
 }
 
@@ -46,8 +49,11 @@
 }
 
 .react-datepicker__day {
-  margin: 5px 15px !important;
+  margin: 0 10px !important;
   color: #edf0f8 !important;
+  width: 35px;
+  height: 35px;
+  padding-top: 5px;
 
   text-align: center;
   font-family: 'Pretendard';

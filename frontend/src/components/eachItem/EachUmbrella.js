@@ -1,15 +1,17 @@
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { umbrella, umbrellaModal } from '../../atom/umbrella';
 import { request } from '../../utils/axios';
 import useConfirm from '../../hook/useConfirm';
 import moment from 'moment';
 import ConfirmMessage from '../../constants/ConfirmMessage';
+import { user } from '../../atom/user';
 
 // 우산 대여페이지에서 사용하는 우산들
 function EachUmbrella({ eachUmbrella }) {
-  const myName = '김진호'; // 추후에 user atom에서 가져와서 사용할 예정
+  const userinfo = useRecoilValue(user);
+  const myName = userinfo.name;
 
   const setCurrentIndex = useSetRecoilState(umbrellaModal); // 모달 창 관리를 위해
   const [umbrellaList, setUmbrellaList] = useRecoilState(umbrella); // 우산 정보를 변경하기 위해

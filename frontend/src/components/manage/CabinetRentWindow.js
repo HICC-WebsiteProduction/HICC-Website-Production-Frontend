@@ -162,5 +162,5 @@ const ViewApplyModal = styled.div`
   left: 0px;
   top: 0px;
   background-color: rgba(0, 0, 0, 0.6);
-  z-index: 1;
+  z-index: 101;
 `;

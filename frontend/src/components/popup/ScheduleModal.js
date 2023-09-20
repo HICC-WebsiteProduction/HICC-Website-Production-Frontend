@@ -7,20 +7,42 @@ import { useRecoilValue } from 'recoil';
 import { date } from '../../atom/date';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
+import { request } from '../../utils/axios';
+import useSelect from './../../hook/useSelect';
+import useInput from './../../hook/useInput';
 
 // 일정 캘린더 내 일정 작성을 누를 때 뜨는 팝업창
 export default function ScheduleModal(props) {
-  const [selectOption, setSelectOption] = useState('default'); // 학술, 친목, 학교행사 선택
+  const [selectOption, setSelectOption] = useSelect('default'); // 학술, 친목, 학교행사 선택
+  const [title, setTitle] = useInput(''); // 일정제목
+  const [desc, setDesc] = useInput(''); // 세부내용
+  const [isOpen, setIsOpen] = useState(false);
+
+  const selectDay = useRecoilValue(date);
 
   const onChangeSelect = event => {
     setSelectOption(event.target.value);
+    props.data.scheduleType = event.target.value;
   };
 
-  const onSubmit = event => {
-    event.preventDefault();
+  // 일정 저장하는 함수
+  const onSubmit = async event => {
+    const body = {
+      title,
+      date: selectDay,
+      option: selectOption,
+      desc,
+    };
+    try {
+      await request('post', '/calendar', body);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const selectDate = useRecoilValue(date); // 선택된 날짜 가져오기
+  const openDatePicker = () => {
+    setIsOpen(true);
+  };
 
   return (
     <ScheduleModalContainer>
@@ -29,7 +51,7 @@ export default function ScheduleModal(props) {
         <SelectScheduleType
           value={selectOption}
           color={theme.scheduleTypeColor[selectOption]}
-          onChange={onChangeSelect}
+          onChange={setSelectOption}
         >
           <SelectScheduleTypeOption value="default" style={{ display: 'none' }}>
             일정 종류
@@ -54,21 +76,37 @@ export default function ScheduleModal(props) {
           </SelectScheduleTypeOption>
         </SelectScheduleType>
       </ScheduleModalHeader>
-      <ScheduleInputContainer onSubmit={onSubmit}>
+      <ScheduleInputContainer onSubmit={props.onSubmit}>
         <InputRow>
           <InputRowLable>일정 제목</InputRowLable>
-          <Input required height={30} />
+          <Input
+            required
+            height={30}
+            input={props.data.title}
+            value={title}
+            onChange={setTitle}
+          />
         </InputRow>
         <InputRow>
           <InputRowLable>날짜</InputRowLable>
           <DatePickerContainer>
-            <CustomDatePicker />
-            <DateIcon icon={faCalendarDays} />
+            <CustomDatePicker
+              input={props.data.date}
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+            />
+            <DateIcon icon={faCalendarDays} onClick={openDatePicker} />
           </DatePickerContainer>
         </InputRow>
         <InputRow>
           <InputRowLable>세부사항</InputRowLable>
-          <Input required height={78} />
+          <Input
+            required
+            height={120}
+            input={props.data.description}
+            value={desc}
+            onChange={setDesc}
+          />
         </InputRow>
         <ButtonContainer>
           <CancleButton buttonName="취소" onClick={props.closeModal} />
@@ -84,7 +122,7 @@ const ScheduleModalContainer = styled.div`
   top: 50%;
   left: 50%;
   z-index: 100;
-  transform: translate(-50%, 0);
+  transform: translate(-50%, -50%);
   width: 620px;
   height: 750px;
   background-color: ${theme.colors.black};
@@ -102,6 +140,8 @@ const ScheduleModalHeader = styled.div`
 
 const ScheduleModalTitle = styled.div`
   padding: 20px;
+  color: ${theme.colors.black};
+
   font-family: 'GmarketSansMedium';
   font-weight: 500;
   font-size: 30px;
@@ -160,6 +200,21 @@ const Input = styled.input`
   border: none;
   border-bottom: 1px solid rgba(237, 240, 248, 0.7);
   outline: none;
+
+  color: ${theme.colors.white};
+  font-family: 'Pretendard';
+  font-size: 20px;
+  font-weight: 300;
+`;
+
+const TextArea = styled.textarea`
+  width: 580px;
+  height: ${props => `${props.height}px`};
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(237, 240, 248, 0.7);
+  outline: none;
+  resize: none;
 
   color: ${theme.colors.white};
   font-family: 'Pretendard';

@@ -1,13 +1,17 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
-import data from '../data/data.json';
 import theme from '../styles/Theme';
 import ScheduleModal from '../components/popup/ScheduleModal';
 import Title from '../components/header/Title';
-import Header from '../components/header/Header';
 import useModal from '../hook/useModal';
 import ScheduleModalSaved from '../components/popup/ScheduleModalSaved';
+import useFetch from '../hook/useFetch';
+import Loading from '../components/util/Loading';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { user } from '../atom/user';
+import { request } from '../utils/axios';
+import { useNavigate } from 'react-router-dom';
 
 const ScheduleEnum = {
   학술: 'academic',
@@ -33,6 +37,7 @@ function CalenderPlan2(props) {
           scheduleType={props.scheduleType}
           date={props.date}
           description={props.description}
+          role={props.role}
         />
       )}
     </CalendarPlan>
@@ -51,7 +56,13 @@ function CalendarBox(props) {
     }
   };
 
-  const dayPlans = data.filter(plan => moment(plan.date).date() === props.date);
+  // const dayPlans = data2.filter(
+  //   plan => moment(plan.date).date() === props.date,
+  // );
+  const dayPlans = props.data.filter(
+    plan => moment(plan.date).date() === props.date,
+  );
+  // const dayPlans = data.filter(plan => moment(plan.date).date() === props.date);
 
   if (dayPlans.length > 5) {
     // console.log('full');
@@ -64,6 +75,7 @@ function CalendarBox(props) {
             scheduleType={plan.scheduleType}
             date={plan.date}
             description={plan.description}
+            role={props.role}
           />
         ))}
         {!planModalOpen && (
@@ -81,6 +93,7 @@ function CalendarBox(props) {
                 scheduleType={plan.scheduleType}
                 date={plan.date}
                 description={plan.description}
+                role={props.role}
               />
             ))}
         {planModalOpen && (
@@ -116,6 +129,7 @@ function CalendarBox(props) {
           scheduleType={plan.scheduleType}
           date={plan.date}
           description={plan.description}
+          role={props.role}
         />
       ))}
     </CalendarBox2>
@@ -134,6 +148,28 @@ function Calendar() {
   const dayArray = ['일', '월', '화', '수', '목', '금', '토']; //요일
   const days = [];
 
+  const { data, loading, error } = useFetch('/calendar');
+
+  const userinfo = useRecoilValue(user); // 유저 정보
+
+  // const onSubmit = async data => {
+  //   try {
+  //     const response = await request('post', '/calendar/addPlan', {
+  //       date: data.date,
+  //       title: data.title,
+  //       scheduleType: data.scheduleType,
+  //       description: data.description,
+  //     });
+  //     navigate('/');
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  // console.log(data.ID);
+  // const navigate = useNavigate();
+
+  const role = userinfo.role === 'PRESIDENT';
+
   for (let i = 0; i < firstDayOfMonth; i++) {
     days.push('');
   }
@@ -149,10 +185,8 @@ function Calendar() {
   const goToNextMonth = () => {
     setDate(moment(date).add(1, 'month'));
   };
-
   return (
     <MainContainer>
-      <Header background={true} />
       <Title titleName="일정 캘린더" />
       <CalendarTop>
         <Blank />
@@ -161,21 +195,42 @@ function Calendar() {
           {date.year()}년 {date.month() + 1}월
           <CalendarButton onClick={goToNextMonth}>{'>'}</CalendarButton>
         </CalendarTopContent>
-        <AddScheduleModal ref={modalRef}>
-          {`일정추가 +`}
-          {modalOpen && <ScheduleModal closeModal={closeModal} />}
-        </AddScheduleModal>
+        {role && (
+          <AddScheduleModal ref={modalRef}>
+            {`일정추가 +`}
+            {modalOpen && (
+              <ViewModal view={modalOpen}>
+                <ScheduleModal
+                  closeModal={closeModal}
+                  data={data}
+                  // onSubmit={onSubmit()}
+                />
+              </ViewModal>
+            )}
+          </AddScheduleModal>
+        )}
       </CalendarTop>
-      <CalendarMain>
-        {dayArray.map((day, idx) => (
-          <CalendarDay isSunday={idx === 0}>{day}</CalendarDay>
-        ))}
-        {days.map((day, idx) => (
-          <CalendearRows>
-            <CalendarBox date={day} isSunday={idx % 7 === 0}></CalendarBox>
-          </CalendearRows>
-        ))}
-      </CalendarMain>
+      {loading ? (
+        <LoadingDiv>
+          <Loading />
+        </LoadingDiv>
+      ) : (
+        <CalendarMain>
+          {dayArray.map((day, idx) => (
+            <CalendarDay isSunday={idx === 0}>{day}</CalendarDay>
+          ))}
+          {days.map((day, idx) => (
+            <CalendearRows>
+              <CalendarBox
+                date={day}
+                isSunday={idx % 7 === 0}
+                data={data}
+                role={role}
+              ></CalendarBox>
+            </CalendearRows>
+          ))}
+        </CalendarMain>
+      )}
     </MainContainer>
   );
 }
@@ -196,7 +251,7 @@ const CalendarButton = styled.button`
 const MainContainer = styled.div`
   position: relative;
   width: ${theme.componentSize.maxWidth};
-  height: 100vh;
+  height: 100%;
   margin: 0 auto;
   place-items: center;
   align-items: center;
@@ -237,10 +292,6 @@ const AddScheduleModal = styled.div`
   font-weight: 600;
   font-size: ${theme.fontSizes.subtitle};
   line-height: 36px;
-
-  &:hover {
-    cursor: pointer;
-  }
 `;
 
 const CalendarMain = styled.div`
@@ -317,17 +368,20 @@ const CalendarPlanButton = styled.button`
   cursor: pointer;
 `;
 
-const Backdrop = styled.div`
+const LoadingDiv = styled.div`
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+`;
+
+const ViewModal = styled.div`
   display: ${props => (props.view ? 'block' : 'none')};
   position: fixed;
-  top: 0;
-  left: 0;
+
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 99;
-
-  &:hover {
-    cursor: alias;
-  }
+  left: 0px;
+  top: 0px;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 101;
 `;
