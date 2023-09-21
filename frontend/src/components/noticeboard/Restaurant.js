@@ -124,9 +124,7 @@ const RestaurantContainer = styled.div`
 const Header = styled.h1`
   margin-bottom: 32px;
   color: ${theme.colors.white};
-  font-family: 'GmarketSansMedium';
-  font-size: ${theme.fontSizes.title};
-  font-weight: 500;
+  ${theme.fontstyle.head2};
 `;
 
 const MapContainer = styled.div`
@@ -194,10 +192,7 @@ const EnrollButton = styled.div`
   border: none;
   border-radius: 20px;
   color: ${theme.colors.white};
-  font-family: 'Pretendard', sans-serif;
-  font-style: normal;
-  font-weight: 600;
-  font-size: ${theme.fontSizes.label};
+  ${theme.fontstyle.body1};
 `;
 
 const ViewModal = styled.div`
@@ -220,7 +215,5 @@ const GuideMent = styled.div`
   height: 700px;
 
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.paragraph};
-  font-weight: 600;
+  ${theme.fontstyle.body3};
 `;

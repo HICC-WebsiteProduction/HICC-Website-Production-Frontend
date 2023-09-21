@@ -44,11 +44,7 @@ const HeaderTabContainer = styled.div`
 const AncestorMenu = styled.nav`
   margin-top: 36px;
   text-align: center;
-  font-family: 'GmarketSansMedium', sans-serif;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 120%;
+  ${theme.fontstyle.head7};
   text-decoration: none;
 `;
 
@@ -73,12 +69,7 @@ const CurrentMenuTabContents = styled.span`
   border-left: 1px solid ${theme.colors.white};
 
   color: ${theme.colors.white};
-  font-family: ${props => (props.accent ? `GmarketSansMedium` : 'Pretendard')},
-    sans-serif;
-  font-style: normal;
-  font-weight: ${props => (props.accent ? 500 : 300)};
-  font-size: 30px;
-  line-height: 120%;
+  ${props => (props.accent ? theme.fontstyle.head4 : theme.fontstyle.head5)};
   text-decoration: none;
   &:hover {
     cursor: pointer;

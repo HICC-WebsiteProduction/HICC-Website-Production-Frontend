@@ -138,24 +138,18 @@ const UserInfo = styled.div`
 const Nickname = styled.div`
   margin-bottom: 10px;
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.label};
-  font-weight: 600;
+  ${theme.fontstyle.body1};
 `;
 
 const Grade = styled.div`
   margin-bottom: 10px;
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.font_normal};
-  font-weight: 600;
+  ${theme.fontstyle.body10};
 `;
 
 const Name = styled.div`
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.font_normal};
-  font-weight: 600;
+  ${theme.fontstyle.body10};
 `;
 
 const MyPageButton = styled(Button)`

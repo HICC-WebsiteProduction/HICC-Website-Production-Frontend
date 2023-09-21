@@ -65,25 +65,22 @@ export default function InputMemberInfo(props) {
 }
 
 const InputRow = styled.div`
-  ${theme.flexbox.flex};
-  position: relative;
+  display: flex;
   justify-content: flex-start;
+  align-items: center;
+  position: relative;
   width: ${props => `${props.width}px`};
-  margin-bottom: ${theme.margin.margin_component};
+  margin-bottom: 25px;
 `;
 
 const Label = styled.label`
   width: 204px;
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-style: normal;
-  font-weight: 600;
-  line-height: 150%;
-  font-size: ${theme.fontSizes.label};
+  ${theme.fontstyle.body1};
 `;
 
 const InputRowContent = styled.div`
-  ${theme.flexbox.flex};
+  display: flex;
   justify-content: flex-start;
   width: 582px;
   height: 60px;
@@ -97,10 +94,8 @@ const Input = styled.input`
   margin: 18px 24px;
   background-color: ${theme.colors.white};
   border: none;
-  font-family: 'Pretendard';
-  font-style: normal;
-  font-weight: 600;
-  font-size: ${theme.fontSizes.font_normal};
+  ${theme.fontstyle.body10};
+
   &:focus {
     outline: none;
   }
@@ -109,23 +104,20 @@ const Input = styled.input`
 const CheckDuplicate = styled(Button)`
   width: 120px;
   height: 46px;
-  margin-right: 12px;
+  margin: 7px 12px;
   border-radius: 20px;
 
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-weight: 600;
-  font-size: ${theme.fontSizes.font_normal};
+  ${theme.fontstyle.body10};
 `;
 
 const ErrorMessage = styled.span`
   position: absolute;
-  top: 10%;
+  top: 21%;
   right: -50px;
-  color: #ff9494;
-  font-family: 'Pretendard', sans-serif;
-  font-weight: 300;
-  line-height: 150%;
-  font-size: ${theme.fontSizes.subtitle};
+  ${theme.colors.error};
+  ${theme.fontstyle.head3};
+  font-weight: 900;
+
   white-space: nowrap;
 `;

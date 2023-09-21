@@ -131,11 +131,7 @@ const UmbrellaNumber = styled.div`
   width: 21px;
   margin: 25px;
   color: ${props => theme.itemColorByState.number[props.status]};
-  font-family: 'GmarketSansMedium', sans-serif;
-  font-style: normal;
-  font-weight: 500;
-  font-size: ${theme.fontSizes.subtitle};
-  line-height: 100%;
+  ${theme.fontstyle.head3};
 `;
 
 const UmbrellaDesc = styled.div`
@@ -166,11 +162,7 @@ const UmbrellaRentStatusMent = styled.div`
   padding-top: 3px;
   color: ${props => theme.itemColorByState.itemStatus[props.status]};
 
-  font-family: 'GmarketSansMedium', sans-serif;
-  font-style: normal;
-  font-weight: 500;
-  font-size: ${theme.fontSizes.label};
-  line-height: 24px;
+  ${theme.fontstyle.head6};
 `;
 
 const DayInfo = styled.div`
@@ -178,11 +170,7 @@ const DayInfo = styled.div`
   top: 10px;
   right: 0px;
   margin: 8px 0;
-  font-family: 'Pretendard';
-  font-style: normal;
-  font-weight: 300;
-  font-size: ${theme.fontSizes.font_normal};
-  line-height: 100%;
+  ${theme.fontstyle.body12};
 `;
 
 const EndDay = styled.div`
@@ -200,9 +188,8 @@ const RentButton = styled.div`
   border-radius: 20px;
 
   color: ${theme.colors.white};
-  font-weight: 300;
-  font-size: ${theme.fontSizes.font_normal};
-  line-height: 21px;
+  ${theme.fontstyle.body9};
+  text-align: center;
 
   &:hover {
     cursor: pointer;
@@ -212,14 +199,13 @@ const RentButton = styled.div`
 const Lender = styled.div`
   width: 248px;
   height: 40px;
-  padding-top: 9px;
+  padding-top: 6px;
   background-color: ${theme.colors.grey};
   border-radius: 20px;
 
   color: ${props => (props.isOverDue ? theme.colors.red : theme.colors.black)};
-  font-weight: 300;
-  font-size: ${theme.fontSizes.font_normal};
-  line-height: 21px;
+  ${theme.fontstyle.body9};
+
   text-align: center;
 `;
 
@@ -231,11 +217,7 @@ const ReturnUmbrellaButton = styled.button`
   border: none;
   border-radius: 20px;
   color: ${theme.colors.white};
-  font-family: 'Pretendard', sans-serif;
-  font-style: normal;
-  font-weight: 300;
-  font-size: ${theme.fontSizes.font_normal};
-  line-height: 21px;
+  ${theme.fontstyle.body9};
 
   &:hover {
     cursor: pointer;

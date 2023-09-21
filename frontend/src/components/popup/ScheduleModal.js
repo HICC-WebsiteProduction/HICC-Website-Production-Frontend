@@ -245,7 +245,7 @@ const DateIcon = styled(FontAwesomeIcon)`
 `;
 
 const ButtonContainer = styled.div`
-  ${theme.flexbox.flex};
+  display: flex;
   width: 100%;
   margin-top: 74px;
   justify-content: flex-end;

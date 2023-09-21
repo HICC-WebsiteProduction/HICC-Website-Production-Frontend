@@ -140,10 +140,7 @@ const Header = styled.header`
   width: 100%;
   margin-bottom: 15px;
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.label};
-  font-weight: 600;
-  line-height: 150%;
+  ${theme.fontstyle.body1};
 `;
 
 const Title = styled.div``;
@@ -201,10 +198,7 @@ const NoticeContent = styled.div`
 
 const NoticeTitle = styled.div`
   width: 100%;
-  font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.font_normal};
-  font-weight: 600;
-  line-height: 150%;
+  ${theme.fontstyle.body10};
 
   // 초과한 글씨는 ...으로 처리
   white-space: nowrap;
@@ -213,20 +207,14 @@ const NoticeTitle = styled.div`
 `;
 
 const NoticeDesc = styled.div`
-  font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.font_small};
-  font-weight: 300;
-  line-height: 150%;
+  ${theme.fontstyle.body14};
 `;
 
 const NoticeTime = styled.div`
   position: absolute;
   top: 38px;
   right: 0;
-  font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.font_small};
-  font-weight: 300;
-  line-height: 150%;
+  ${theme.fontstyle.body14};
 `;
 
 const ButtonContainer = styled.div`
@@ -238,10 +226,7 @@ const ButtonContainer = styled.div`
 
 const AllReadButton = styled.div`
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.font_normal};
-  font-weight: 300;
-  line-height: 150%;
+  ${theme.fontstyle.body11};
 
   &:hover {
     cursor: pointer;

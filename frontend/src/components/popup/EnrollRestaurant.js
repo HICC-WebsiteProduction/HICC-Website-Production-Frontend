@@ -178,10 +178,7 @@ const Title = styled.h1`
   margin-bottom: 20px;
   color: ${theme.colors.white};
 
-  font-family: 'GmarketSansMedium';
-  font-size: ${theme.fontSizes.title};
-  font-weight: 500;
-  line-height: 100%;
+  ${theme.fontstyle.head2};
 `;
 
 const SearchWindow = styled.div`
@@ -202,10 +199,7 @@ const Input = styled.input`
   border: none;
   color: ${theme.colors.darkblack};
 
-  font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.font_normal};
-  font-weight: 600;
-  line-height: 150%;
+  ${theme.fontSizes.body9};
 
   &:focus {
     border: none;
@@ -279,11 +273,7 @@ const EnrollButton = styled.button`
   border-bottom-left-radius: 20px;
   color: #fff;
   text-align: center;
-  font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.paragraph};
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
+  ${theme.fontstyle.body3};
 
   &:hover {
     cursor: pointer;

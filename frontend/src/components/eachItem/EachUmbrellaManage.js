@@ -1,9 +1,9 @@
 import styled from 'styled-components';
-import theme from '../../styles/Theme';
 import useSelect from '../../hook/useSelect';
 import { useRecoilState } from 'recoil';
 import { umbrella } from '../../atom/umbrella';
 import moment from 'moment';
+import theme from './../../styles/Theme';
 
 // 우산 관리 페이지에서 사용하는 우산들
 function EachUmbrellaManage({ eachUmbrella }) {
@@ -116,11 +116,7 @@ const UmbrellaNumber = styled.div`
   width: 21px;
   margin: 25px;
   color: ${props => theme.itemColorByState.number[props.status]};
-  font-family: 'GmarketSansMedium', sans-serif;
-  font-style: normal;
-  font-weight: 500;
-  font-size: ${theme.fontSizes.subtitle};
-  line-height: 100%;
+  ${theme.fontstyle.head3};
 `;
 
 const UmbrellaDesc = styled.div`
@@ -135,7 +131,6 @@ const UmbrellaRentStatus = styled.div`
   margin: 9px 0;
 `;
 
-// color 테마에 넣어야한다.
 const CabinetRentCircleStatus = styled.div`
   width: 20px;
   height: 20px;
@@ -151,11 +146,7 @@ const UmbrellaRentStatusMent = styled.div`
   padding-top: 3px;
   color: ${props => theme.itemColorByState.itemStatus[props.status]};
 
-  font-family: 'GmarketSansMedium', sans-serif;
-  font-style: normal;
-  font-weight: 500;
-  font-size: ${theme.fontSizes.label};
-  line-height: 24px;
+  ${theme.fontstyle.head6};
 `;
 
 const DayInfo = styled.div`
@@ -163,11 +154,7 @@ const DayInfo = styled.div`
   top: 10px;
   right: 0px;
   margin: 8px 0;
-  font-family: 'Pretendard';
-  font-style: normal;
-  font-weight: 300;
-  font-size: ${theme.fontSizes.font_normal};
-  line-height: 100%;
+  ${theme.fontstyle.body12};
 `;
 
 const EndDay = styled.div`
@@ -189,9 +176,7 @@ const StateSelectButton = styled.select`
 
   color: ${props =>
     props.status === 'unrent' ? theme.colors.white : theme.colors.black};
-  font-weight: 300;
-  font-size: ${theme.fontSizes.font_normal};
-  line-height: 21px;
+  ${theme.fontstyle.body9};
   text-align: center;
 
   -webkit-appearance: none;
@@ -206,14 +191,13 @@ const StateSelectButton = styled.select`
 const Lender = styled.div`
   width: 248px;
   height: 40px;
-  padding-top: 9px;
+  padding-top: 7px;
   background-color: ${theme.colors.grey};
   border-radius: 20px;
 
   color: ${props => (props.isOverDue ? theme.colors.red : theme.colors.black)};
-  font-weight: 300;
-  font-size: ${theme.fontSizes.font_normal};
-  line-height: 21px;
+  ${theme.fontstyle.body9};
+
   text-align: center;
 `;
 
@@ -222,9 +206,7 @@ const StateOption = styled.option`
   height: 40px;
   background-color: ${theme.colors.white};
   color: ${theme.colors.black};
-  font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.font_normal};
-  font-weight: 300;
+  ${theme.fontstyle.body9};
 
   &:first-child {
     border-radius: 20px 20px 0px 0px;

@@ -98,16 +98,17 @@ function CabinetRentWindow(props) {
 
 export default CabinetRentWindow;
 
-const CabinetRentWindowContainer = styled.div``;
+const CabinetRentWindowContainer = styled.div`
+  width: 100%;
+  height: 100%;
+`;
 
 const CabinetRentTitle = styled.span`
   position: relative;
   padding-bottom: 10px;
   border-bottom: 3px solid ${theme.colors.green};
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-weight: 600;
-  font-size: ${theme.fontSizes.label};
+  ${theme.fontstyle.head9};
 `;
 
 const Indicator = styled.div`

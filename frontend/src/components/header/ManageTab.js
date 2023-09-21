@@ -51,29 +51,27 @@ const ManageTabContainer = styled.div`
 const Title = styled.h1`
   margin: 60px 0 24px 0;
   color: ${theme.colors.white};
-  font-family: 'GmarketSansMedium';
-  font-weight: 500;
-  font-size: ${theme.fontSizes.title};
+  ${theme.fontstyle.head2};
   text-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.25);
 `;
 
 const CurrentMenuTab = styled.nav`
   display: flex;
+  align-items: center;
   margin-top: 16px;
   padding: 26px 0;
-  border-top: 3px solid #3cda5b;
-  border-bottom: 1px solid #3cda5b;
+  border-top: 3px solid ${theme.colors.green};
+  border-bottom: 1px solid ${theme.colors.green};
 `;
 
 const CurrentMenuTabContents = styled.div`
   position: relative;
   margin-right: 50px;
   color: ${theme.colors.white};
-  font-family: 'Pretendard', sans-serif;
-  font-style: normal;
-  font-weight: ${props => (props.accent ? 600 : 300)};
-  font-size: ${theme.fontSizes.tab};
-  line-height: 120%;
+
+  ${props => (props.accent ? theme.fontstyle.head8 : theme.fontstyle.head10)};
+  line-height: 100%;
+
   text-decoration: none;
   &:hover {
     cursor: pointer;

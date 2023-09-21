@@ -30,11 +30,11 @@ export default function ViewMemberInfo(props) {
 }
 
 const InputRow = styled.div`
-  ${theme.flexbox.flex};
+  display: flex;
   position: relative;
   justify-content: flex-start;
   width: ${props => `${props.width}px`};
-  margin-bottom: ${theme.margin.margin_component};
+  margin-bottom: 25px;
 `;
 
 const Label = styled.label`
@@ -48,7 +48,7 @@ const Label = styled.label`
 `;
 
 const InputRowContent = styled.div`
-  ${theme.flexbox.flex};
+  display: flex;
   justify-content: flex-start;
   width: 582px;
   height: 60px;

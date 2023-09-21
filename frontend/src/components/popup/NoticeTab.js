@@ -31,10 +31,7 @@ const Tabs = styled.div`
   justify-content: space-between;
   align-items: center;
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.label};
-  font-weight: 600;
-  line-height: 150%;
+  ${theme.fontstyle.body1};
 `;
 
 const Tab = styled.div`

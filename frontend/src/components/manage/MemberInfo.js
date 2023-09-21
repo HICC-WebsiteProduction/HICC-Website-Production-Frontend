@@ -13,19 +13,18 @@ export default function MemberInfo(props) {
 }
 
 const InputRow = styled.div`
-  ${theme.flexbox.flex};
+  display: flex;
   justify-content: flex-start;
-  margin-bottom: ${theme.margin.margin_component};
+  align-items: center;
+  margin-bottom: 25px;
 `;
 
 const Label = styled.label`
   width: 90px;
-  margin-right: ${theme.margin.margin_content};
+  margin-right: 25px;
 
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-weight: 600;
-  font-size: ${theme.fontSizes.paragraph};
+  ${theme.fontstyle.head10};
 `;
 
 const Input = styled.input`
@@ -37,9 +36,7 @@ const Input = styled.input`
   background-color: transparent;
 
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-weight: 300;
-  font-size: ${theme.fontSizes.paragraph};
+  ${theme.fontstyle.body7};
   text-align: center;
   &:focus {
     outline: none;

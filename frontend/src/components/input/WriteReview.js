@@ -58,9 +58,7 @@ const User = styled.img`
 
 const Nickname = styled.div`
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.paragraph};
-  font-weight: 300;
+  ${theme.fontstyle.body5};
   text-align: center;
 `;
 
@@ -78,19 +76,13 @@ const Content = styled.textarea`
   border: 1px solid ${theme.colors.blue};
 
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.paragraph};
-  line-height: 150%;
+  ${theme.fontstyle.body3};
   resize: none;
   outline: none;
 
   &::placeholder {
     color: ${theme.colors.white};
-    font-family: 'Pretendard';
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 150%;
+    ${theme.fontstyle.body3};
   }
 `;
 

@@ -35,11 +35,7 @@ const CautionHeader = styled.header`
   align-items: center;
   margin-bottom: 40px;
 
-  font-size: ${theme.fontSizes.title};
-  font-family: 'GmarketSansMedium', sans-serif;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 100%;
+  ${theme.fontstyle.head2};
 `;
 
 const CautionTitle = styled.span`
@@ -57,10 +53,6 @@ const CautionLine = styled.li`
   list-style-type: circle;
 
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-style: normal;
-  font-weight: 300;
-  font-size: ${theme.fontSizes.paragraph};
-  line-height: 150%;
+  ${theme.fontstyle.body6};
   white-space: pre-line;
 `;

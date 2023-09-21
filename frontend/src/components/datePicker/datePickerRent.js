@@ -146,11 +146,7 @@ const CancelButton = styled.button`
   background-color: ${theme.colors.grey};
 
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.paragraph};
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
+  ${theme.fontstyle.body3};
 `;
 
 const SelectButton = styled.button`
@@ -162,11 +158,7 @@ const SelectButton = styled.button`
   background-color: ${theme.colors.blue};
 
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.paragraph};
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
+  ${theme.fontstyle.body3};
 `;
 
 const CustomHeaderContainer = styled.div`
@@ -194,11 +186,7 @@ const ShowSelectYearAndMonth = styled.div`
   text-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
   padding-top: 6px;
 
-  font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.paragraph};
-  font-style: normal;
-  font-weight: 300;
-  line-height: normal;
+  ${theme.fontstyle.body7};
 `;
 
 // date picker top
@@ -217,21 +205,13 @@ const ShowYear = styled.div`
   color: ${theme.colors.pureBlack};
 
   font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.paragraph};
-  font-style: normal;
-  font-weight: 300;
-  line-height: normal;
-  text-align: center;
+  ${theme.fontstyle.head11};
 `;
 
 const ShowDate = styled.div`
   color: ${theme.colors.pureBlack};
 
-  font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.tab};
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
+  ${theme.fontstyle.head12};
   text-align: center;
 `;
 
