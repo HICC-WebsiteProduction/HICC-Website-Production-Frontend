@@ -6,10 +6,11 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import EachSearchResult from '../eachItem/EachSearchResult';
 import useInput from './../../hook/useInput';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import curEnrollRestaurant from '../../atom/curEnrollRestaurant';
 import useScrollGradient from '../../hook/useScrollGradient';
 import useCloseModal from '../../hook/useCloseModal';
+import placeId from '../../atom/placeId';
 
 function EnrollRestaurant(props) {
   const { kakao } = window;
@@ -17,6 +18,7 @@ function EnrollRestaurant(props) {
   const [places, setPlaces] = useState([]);
   const [keyword, setKeyword] = useInput('');
   const [current, setCurrent] = useRecoilState(curEnrollRestaurant);
+  const setSelectPlaceId = useSetRecoilState(placeId);
 
   const modalRef = useRef(null);
   useCloseModal(modalRef, props.close);
@@ -53,6 +55,12 @@ function EnrollRestaurant(props) {
   const markerClick = (place, marker) => {
     map.panTo(marker.getPosition());
     setCurrent(place);
+  };
+
+  const selectPlace = () => {
+    setSelectPlaceId(current.id);
+    props.close();
+    props.writeMode(true);
   };
 
   useEffect(() => {
@@ -93,7 +101,7 @@ function EnrollRestaurant(props) {
               />
             ))}
         </SearchList>
-        <EnrollButton>장소 선택</EnrollButton>
+        <EnrollButton onClick={selectPlace}>장소 선택</EnrollButton>
       </SearchSection>
       <MapSection>
         <Map

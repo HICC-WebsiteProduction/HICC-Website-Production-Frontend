@@ -11,13 +11,17 @@ import { useRecoilValue } from 'recoil';
 import placeId from '../../atom/placeId';
 import useModal from './../../hook/useModal';
 import EnrollRestaurant from '../popup/EnrollRestaurant';
+import WriteReview from '../input/WriteReview';
+import useAlert from '../../hook/useAlert';
 
 // 일단은 별도의 페이지로 제작한 후 나중에 협의하에 게시판 안으로 밀어넣어보자
 function Restaurant(props) {
   const [map, setMap] = useState();
   const [restaurantList, setRestaurantList] = useState([]); // id, placeid, lat, lng, star, name
   const [reviewContent, setReviewContent] = useState([]);
+  const [isWrite, setIsWrite] = useState(false);
   const currentPlaceId = useRecoilValue(placeId);
+  const alert = useAlert();
 
   const scrollRef = useRef(null);
   const { showGradient, showGradientTop } = useScrollGradient(scrollRef);
@@ -28,6 +32,14 @@ function Restaurant(props) {
   const kakao = window.kakao;
 
   const { data, loading, error } = useFetch('/noticeboard/restaurant');
+
+  const writeReview = () => {
+    if (currentPlaceId === null) {
+      alert(true, '맛집을 먼저 선택해주세요.');
+      return;
+    }
+    setIsWrite(prev => !prev);
+  };
 
   useEffect(() => {
     if (data) {
@@ -50,7 +62,7 @@ function Restaurant(props) {
           맛집 등록
           {enrollOpen && (
             <ViewModal view={enrollOpen ? 1 : 0}>
-              <EnrollRestaurant close={close} />
+              <EnrollRestaurant close={close} writeMode={setIsWrite} />
             </ViewModal>
           )}
         </EnrollButton>
@@ -78,16 +90,23 @@ function Restaurant(props) {
       </MapContainer>
       <ReviewContainer>
         <Header>맛집 리뷰</Header>
-        <WriteButton buttonName="리뷰 쓰기" />
+        <WriteButton
+          buttonName={isWrite ? '리뷰 보기' : '리뷰 쓰기'}
+          onClick={writeReview}
+        />
+        {isWrite ? <WriteReview /> : null}
         <ReviewContent
           ref={scrollRef}
           showGradient={showGradient}
           showGradientTop={showGradientTop}
         >
-          {reviewContent &&
+          {reviewContent && reviewContent.length > 0 ? (
             reviewContent.map(restaurant => (
               <EachReviewCard key={restaurant.id} eachReview={restaurant} />
-            ))}
+            ))
+          ) : (
+            <GuideMent>{`가게를 선택하시면 리뷰를 볼 수 있습니다 :)`}</GuideMent>
+          )}
         </ReviewContent>
       </ReviewContainer>
     </RestaurantContainer>
@@ -191,4 +210,17 @@ const ViewModal = styled.div`
 
   background-color: rgba(0, 0, 0, 0.6);
   z-index: 101;
+`;
+
+const GuideMent = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 700px;
+
+  color: ${theme.colors.white};
+  font-family: 'Pretendard';
+  font-size: ${theme.fontSizes.paragraph};
+  font-weight: 600;
 `;
