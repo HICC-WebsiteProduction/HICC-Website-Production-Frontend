@@ -1,17 +1,21 @@
 import styled from 'styled-components';
 import RecentNewsContents from './RecentNewsContents';
+import useFetch from '../../hook/useFetch';
 
 export default function RecentNews() {
-  return (
-    <Frame>
-      <Title>최근 뉴스</Title>
-      <CenterContainer>
-        <RecentNewsContents></RecentNewsContents>
-        <RecentNewsContents></RecentNewsContents>
-        <RecentNewsContents></RecentNewsContents>
-      </CenterContainer>
-    </Frame>
-  );
+  const { data, loading, error } = useFetch(``);
+  if (loading === false) {
+    return (
+      <Frame>
+        <Title>최근 뉴스</Title>
+        <CenterContainer>
+          {data.map(data => {
+            return <RecentNewsContents data={data}></RecentNewsContents>;
+          })}
+        </CenterContainer>
+      </Frame>
+    );
+  }
 }
 
 const Frame = styled.div`
