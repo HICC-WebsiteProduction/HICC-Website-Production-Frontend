@@ -10,8 +10,6 @@ export const calendarHandlers = [
     const year = params.get('year');
     const month = params.get('month');
 
-    console.log(year, month);
-
     // 필터링할 연도와 월에 해당하는 데이터만 선택
     const filteredEvents = calendar.filter(event => {
       const eventYear = new Date(event.date).getFullYear();
