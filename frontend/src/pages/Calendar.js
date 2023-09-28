@@ -36,7 +36,7 @@ function CalenderPlan2(props) {
           title={props.title}
           scheduleType={props.scheduleType}
           date={props.date}
-          description={props.content}
+          content={props.content}
           role={props.role}
         />
       )}
@@ -74,7 +74,7 @@ function CalendarBox(props) {
             title={plan.title}
             scheduleType={plan.scheduleType}
             date={plan.date}
-            description={plan.description}
+            content={plan.content}
             role={props.role}
           />
         ))}
@@ -92,7 +92,7 @@ function CalendarBox(props) {
                 title={plan.title}
                 scheduleType={plan.scheduleType}
                 date={plan.date}
-                description={plan.description}
+                content={plan.content}
                 role={props.role}
               />
             ))}
@@ -128,7 +128,7 @@ function CalendarBox(props) {
           title={plan.title}
           scheduleType={plan.scheduleType}
           date={plan.date}
-          description={plan.description}
+          content={plan.content}
           role={props.role}
         />
       ))}
