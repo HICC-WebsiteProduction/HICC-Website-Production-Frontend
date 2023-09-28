@@ -3,7 +3,7 @@ import RecentNewsContents from './RecentNewsContents';
 import useFetch from '../../hook/useFetch';
 
 export default function RecentNews() {
-  const { data, loading, error } = useFetch(``);
+  const { data, loading, error } = useFetch(`/news`);
   if (loading === false) {
     return (
       <Frame>
