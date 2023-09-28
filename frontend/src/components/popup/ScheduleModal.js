@@ -28,13 +28,13 @@ export default function ScheduleModal(props) {
   // 일정 저장하는 함수
   const onSubmit = async event => {
     const body = {
-      title,
+      title: title,
       date: selectDay,
-      option: selectOption,
-      desc,
+      scheduleType: selectOption,
+      content: desc,
     };
     try {
-      await request('post', '/calendar', body);
+      await request('post', '/schedule', body);
     } catch (error) {
       console.log(error);
     }
@@ -110,7 +110,11 @@ export default function ScheduleModal(props) {
         </InputRow>
         <ButtonContainer>
           <CancleButton buttonName="취소" onClick={props.closeModal} />
-          <SubmitButton buttonType="submit" buttonName="저장" />
+          <SubmitButton
+            buttonType="submit"
+            buttonName="저장"
+            onClick={onSubmit}
+          />
         </ButtonContainer>
       </ScheduleInputContainer>
     </ScheduleModalContainer>
