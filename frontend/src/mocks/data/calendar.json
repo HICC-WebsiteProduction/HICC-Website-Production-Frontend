@@ -4,14 +4,14 @@
     "date": "2023-03-15",
     "title": "동아리 박람회",
     "scheduleType": "학교행사",
-    "description": "Discuss project scope and timeline"
+    "content": "Discuss project scope and timeline"
   },
   {
     "id": 2,
     "date": "2023-03-15",
     "title": "동아리 박람회2",
     "scheduleType": "학교행사",
-    "description": "Discuss project scope and timeline"
+    "content": "Discuss project scope and timeline"
   },
   {
     "id": 3,
