@@ -36,7 +36,7 @@ function CalenderPlan2(props) {
           title={props.title}
           scheduleType={props.scheduleType}
           date={props.date}
-          description={props.description}
+          description={props.content}
           role={props.role}
         />
       )}
@@ -138,7 +138,6 @@ function CalendarBox(props) {
 
 function Calendar() {
   const [date, setDate] = useState(moment());
-
   const modalRef = useRef(null);
   const [modalOpen, closeModal] = useModal(modalRef);
 
@@ -148,7 +147,9 @@ function Calendar() {
   const dayArray = ['일', '월', '화', '수', '목', '금', '토']; //요일
   const days = [];
 
-  const { data, loading, error } = useFetch('/calendar');
+  const { data, loading, error } = useFetch(
+    `/schedule/?year=${date.year()}&month=${date.month() + 1}`,
+  );
 
   const userinfo = useRecoilValue(user); // 유저 정보
 
@@ -203,7 +204,7 @@ function Calendar() {
                 <ScheduleModal
                   closeModal={closeModal}
                   data={data}
-                // onSubmit={onSubmit()}
+                  // onSubmit={onSubmit()}
                 />
               </ViewModal>
             )}

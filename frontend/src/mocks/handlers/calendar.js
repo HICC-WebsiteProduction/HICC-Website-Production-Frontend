@@ -5,12 +5,27 @@ import allMember from '../data/memberInfo.json';
 
 export const calendarHandlers = [
   // calendar 일정 조회
-  rest.get(`${BASE_URL}/calendar`, async (req, res, ctx) => {
-    const response = calendar;
-    return res(ctx.json(response));
+  rest.get(`${BASE_URL}/schedule`, async (req, res, ctx) => {
+    const params = new URLSearchParams(req.url.search);
+    const year = params.get('year');
+    const month = params.get('month');
+
+    console.log(year, month);
+
+    // 필터링할 연도와 월에 해당하는 데이터만 선택
+    const filteredEvents = calendar.filter(event => {
+      const eventYear = new Date(event.date).getFullYear();
+      const eventMonth = new Date(event.date).getMonth() + 1; // 월은 0부터 시작하므로 1을 더합니다.
+
+      return (
+        eventYear === parseInt(year, 10) && eventMonth === parseInt(month, 10)
+      );
+    });
+
+    return res(ctx.json(filteredEvents));
   }),
 
-  rest.post(`${BASE_URL}/calendar/addPlan`, async (req, res, ctx) => {
+  rest.post(`${BASE_URL}/schedule/addPlan`, async (req, res, ctx) => {
     const response = allMember.find(member => member.role === 'PRESIDENT');
     return res(ctx.json(response));
   }),

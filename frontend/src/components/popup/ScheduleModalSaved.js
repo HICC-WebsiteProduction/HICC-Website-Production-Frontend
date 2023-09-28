@@ -75,7 +75,7 @@ export default function ScheduleModal(props) {
         </InputRow>
         <InputRow>
           <InputRowLable>세부사항</InputRowLable>
-          <Input required height={78} defaultValue={props.description}></Input>
+          <Input required height={78} defaultValue={props.content}></Input>
         </InputRow>
         <ButtonContainer>
           {props.role && <CancleButton buttonName="취소" onClick={onClose} />}
