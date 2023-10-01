@@ -22,11 +22,6 @@ export default function ScheduleModal(props) {
 
   const selectDay = useRecoilValue(date);
 
-  const onChangeSelect = event => {
-    setSelectOption(event.target.value);
-    props.data.scheduleType = event.target.value;
-  };
-
   // 일정 등록
   const confirmGrant = () => {
     const body = {
