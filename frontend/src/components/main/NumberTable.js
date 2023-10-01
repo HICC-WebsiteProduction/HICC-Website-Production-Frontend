@@ -1,31 +1,44 @@
-import React from 'react';
+import { React, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import useScrollCount from '../../hook/useScrollCount';
+import useFetch from '../../hook/useFetch';
 
-const FIGURE_ITEMS = [
-  {
-    title: '창립년도',
-    number: 1972,
-    unit: '년',
-  },
-  {
-    title: '운영 기수',
-    number: 53,
-    unit: '기',
-  },
-  {
-    title: '회원 수',
-    number: 190,
-    unit: '+',
-  },
-];
+export default function NumberTable() {
+  const { data, loading } = useFetch('/table');
+  const [operations, setOperations] = useState(1);
+  const [members, setMembers] = useState(1);
 
-const NumberTable = () => {
+  useEffect(() => {
+    if (!loading) {
+      setOperations(data.operations);
+      setMembers(data.members);
+    }
+  }, [data, loading]);
+
   const countItem = {
     0: useScrollCount(1972, 1900, 1000),
-    1: useScrollCount(52, 0, 1200),
-    2: useScrollCount(190, 0, 1700),
+    1: useScrollCount(operations, 0, 0, 1200),
+    2: useScrollCount(members, 0, 1700),
   };
+
+  const FIGURE_ITEMS = [
+    {
+      title: '창립년도',
+      number: 1972,
+      unit: '년',
+    },
+    {
+      title: '운영 기수',
+      number: operations,
+      unit: '기',
+    },
+    {
+      title: '회원 수',
+      number: members,
+      unit: '+',
+    },
+  ];
+
   return (
     <NumberTableContainer>
       <NumberTitle>Number of HICC</NumberTitle>
@@ -42,9 +55,7 @@ const NumberTable = () => {
       </NumberContentContainer>
     </NumberTableContainer>
   );
-};
-
-export default NumberTable;
+}
 
 const NumberTableContainer = styled.div`
   position: relative;
