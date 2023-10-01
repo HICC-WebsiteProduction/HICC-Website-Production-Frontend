@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import RecentNewsContents from './RecentNewsContents';
 import useFetch from '../../hook/useFetch';
+import Loading from '../util/Loading';
+import React from 'react';
 
 export default function RecentNews() {
   const { data, loading, error } = useFetch(`/news`);
@@ -8,11 +10,17 @@ export default function RecentNews() {
     return (
       <Frame>
         <Title>최근 뉴스</Title>
-        <CenterContainer>
-          {data.map(data => {
-            return <RecentNewsContents data={data}></RecentNewsContents>;
-          })}
-        </CenterContainer>
+        {!loading ? (
+          <CenterContainer>
+            {data.map(data => {
+              return <RecentNewsContents data={data}></RecentNewsContents>;
+            })}
+          </CenterContainer>
+        ) : (
+          <LoadingDiv>
+            <Loading />
+          </LoadingDiv>
+        )}
       </Frame>
     );
   }
@@ -52,4 +60,10 @@ const Title = styled.div`
   letter-spacing: 0em;
   color: #edf0f8;
   text-align: left;
+`;
+
+const LoadingDiv = styled.div`
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
 `;
