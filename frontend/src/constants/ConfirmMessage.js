@@ -42,6 +42,10 @@ const ConfirmMessage = {
     title: '정말 대여하시겠습니까?',
     body: '대여 신청 완료 시 되돌릴 수 없습니다.',
   },
+  savePlan: {
+    title: '정말 일정을 저장하시겠습니까?',
+    body: '실수하신 부분은 없으신 거 맞죠?\n꼼꼼히 확인 하셨을거라 믿습니다.',
+  },
 };
 
 export default ConfirmMessage;
