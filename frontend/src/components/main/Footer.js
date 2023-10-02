@@ -11,7 +11,7 @@ export default function Footer() {
           <TextTop>
             홍익대학교 중앙 컴퓨터 동아리 HICC / Hongik Computer Club <br />
             <br />
-            동아리실 G429
+            동아리방 G429
           </TextTop>
           <TextBottom1>
             회장 {data.name} {data.phoneNumber}

@@ -45,11 +45,6 @@ export default function ScheduleModal(props) {
       scheduleType: selectOption,
       content: desc,
     };
-    console.log('id: ', body.id);
-    console.log('title: ', body.title);
-    console.log('date: ', body.date);
-    console.log('scheduletype: ', body.scheduleType);
-    console.log('content: ', body.content);
     if (
       body.title === '' ||
       body.scheduleType === 'default' ||
