@@ -66,7 +66,6 @@ function CalendarBox(props) {
   // const dayPlans = data.filter(plan => moment(plan.date).date() === props.date);
 
   if (dayPlans.length > 5) {
-    // console.log('full');
     return (
       <CalendarBox2>
         <CalendarDate isSunday={props.isSunday}>{props.date}</CalendarDate>
@@ -154,22 +153,6 @@ function Calendar() {
   );
 
   const userinfo = useRecoilValue(user); // 유저 정보
-
-  // const onSubmit = async data => {
-  //   try {
-  //     const response = await request('post', '/calendar/addPlan', {
-  //       date: data.date,
-  //       title: data.title,
-  //       scheduleType: data.scheduleType,
-  //       description: data.description,
-  //     });
-  //     navigate('/');
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  // console.log(data.ID);
-  // const navigate = useNavigate();
 
   const role = userinfo.role === 'PRESIDENT';
 
