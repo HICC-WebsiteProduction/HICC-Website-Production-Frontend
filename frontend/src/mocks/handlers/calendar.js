@@ -23,7 +23,12 @@ export const calendarHandlers = [
     return res(ctx.json(filteredEvents));
   }),
 
-  rest.post(`${BASE_URL}/schedule/addPlan`, async (req, res, ctx) => {
+  rest.post(`${BASE_URL}/schedule`, async (req, res, ctx) => {
+    const response = allMember.find(member => member.role === 'PRESIDENT');
+    return res(ctx.json(response));
+  }),
+
+  rest.patch(`${BASE_URL}/schedule`, async (req, res, ctx) => {
     const response = allMember.find(member => member.role === 'PRESIDENT');
     return res(ctx.json(response));
   }),

@@ -5,7 +5,7 @@ import theme from '../styles/Theme';
 import ScheduleModal from '../components/popup/ScheduleModal';
 import Title from '../components/header/Title';
 import useModal from '../hook/useModal';
-import ScheduleModalSaved from '../components/popup/ScheduleModalSaved';
+import ScheduleModalSaved from '../components/popup/ScheduleChangeModal';
 import useFetch from '../hook/useFetch';
 import Loading from '../components/util/Loading';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
@@ -33,6 +33,7 @@ function CalenderPlan2(props) {
       {modalOpen && (
         <ScheduleModalSaved
           closeModal={closeModal} // 모달을 닫는 동작
+          id={props.id}
           title={props.title}
           scheduleType={props.scheduleType}
           date={props.date}
@@ -75,6 +76,7 @@ function CalendarBox(props) {
             scheduleType={plan.scheduleType}
             date={plan.date}
             content={plan.content}
+            id={plan.id}
             role={props.role}
           />
         ))}
