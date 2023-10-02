@@ -92,6 +92,7 @@ export default function CustomDatePicker(props) {
 }
 
 const DatePickerWrapper = styled(DatePicker)`
+  margin-left: 25px;
   border: none;
   background-color: transparent;
 

@@ -5,7 +5,7 @@ import theme from '../styles/Theme';
 import ScheduleModal from '../components/popup/ScheduleModal';
 import Title from '../components/header/Title';
 import useModal from '../hook/useModal';
-import ScheduleModalSaved from '../components/popup/ScheduleModalSaved';
+import ScheduleModalSaved from '../components/popup/ScheduleChangeModal';
 import useFetch from '../hook/useFetch';
 import Loading from '../components/util/Loading';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
@@ -33,10 +33,11 @@ function CalenderPlan2(props) {
       {modalOpen && (
         <ScheduleModalSaved
           closeModal={closeModal} // 모달을 닫는 동작
+          id={props.id}
           title={props.title}
           scheduleType={props.scheduleType}
           date={props.date}
-          description={props.description}
+          content={props.content}
           role={props.role}
         />
       )}
@@ -74,7 +75,8 @@ function CalendarBox(props) {
             title={plan.title}
             scheduleType={plan.scheduleType}
             date={plan.date}
-            description={plan.description}
+            content={plan.content}
+            id={plan.id}
             role={props.role}
           />
         ))}
@@ -92,7 +94,7 @@ function CalendarBox(props) {
                 title={plan.title}
                 scheduleType={plan.scheduleType}
                 date={plan.date}
-                description={plan.description}
+                content={plan.content}
                 role={props.role}
               />
             ))}
@@ -128,7 +130,7 @@ function CalendarBox(props) {
           title={plan.title}
           scheduleType={plan.scheduleType}
           date={plan.date}
-          description={plan.description}
+          content={plan.content}
           role={props.role}
         />
       ))}
@@ -138,7 +140,6 @@ function CalendarBox(props) {
 
 function Calendar() {
   const [date, setDate] = useState(moment());
-
   const modalRef = useRef(null);
   const [modalOpen, closeModal] = useModal(modalRef);
 
@@ -148,7 +149,9 @@ function Calendar() {
   const dayArray = ['일', '월', '화', '수', '목', '금', '토']; //요일
   const days = [];
 
-  const { data, loading, error } = useFetch('/calendar');
+  const { data, loading, error } = useFetch(
+    `/schedule/?year=${date.year()}&month=${date.month() + 1}`,
+  );
 
   const userinfo = useRecoilValue(user); // 유저 정보
 

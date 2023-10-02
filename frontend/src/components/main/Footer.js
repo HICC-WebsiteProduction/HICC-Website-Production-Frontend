@@ -1,21 +1,27 @@
 import styled from 'styled-components';
 import logo from '../../images/fotter_instagram.svg';
+import useFetch from '../../hook/useFetch';
 
 export default function Footer() {
-  return (
-    <Frame>
-      <Content>
-        <TextTop>
-          홍익대학교 중앙 컴퓨터 동아리 HICC / Hongik Computer Club <br />
-          <br />
-          동아리실 G429
-        </TextTop>
-        <TextBottom1>회장 이지우</TextBottom1>
-        <TextBottom2>Copyrightⓒ2023.HICC. All rights reserved.</TextBottom2>
-        <Logo />
-      </Content>
-    </Frame>
-  );
+  const { data, loading, error } = useFetch(`/president`);
+  if (loading === false) {
+    return (
+      <Frame>
+        <Content>
+          <TextTop>
+            홍익대학교 중앙 컴퓨터 동아리 HICC / Hongik Computer Club <br />
+            <br />
+            동아리실 G429
+          </TextTop>
+          <TextBottom1>
+            회장 {data.name} {data.phoneNumber}
+          </TextBottom1>
+          <TextBottom2>Copyrightⓒ2023.HICC. All rights reserved.</TextBottom2>
+          <Logo />
+        </Content>
+      </Frame>
+    );
+  }
 }
 
 const Frame = styled.div`
@@ -42,7 +48,7 @@ const TextTop = styled.div`
 
 const TextBottom1 = styled.div`
   position: absolute;
-  width: 110px;
+  width: max-content;
   height: 36px;
   top: 278px;
   font-family: Pretendard;
