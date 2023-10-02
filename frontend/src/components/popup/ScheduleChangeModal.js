@@ -137,12 +137,19 @@ export default function ScheduleModal(props) {
         </InputRow>
         <InputRow>
           <InputRowLable>날짜</InputRowLable>
-          <Input type="date" value={props.date} disabled required height={30} />
-          {props.role && (
+          {props.role ? (
             <DatePickerContainer>
               <CustomDatePicker />
               <DateIcon icon={faCalendarDays} />
             </DatePickerContainer>
+          ) : (
+            <Input
+              type="date"
+              value={props.date}
+              disabled
+              required
+              height={30}
+            />
           )}
         </InputRow>
         <InputRow>
@@ -155,7 +162,7 @@ export default function ScheduleModal(props) {
           ></Input>
         </InputRow>
         <ButtonContainer>
-          {props.role && <CancleButton buttonName="취소" onClick={onClose} />}
+          {props.role && <CancelButton buttonName="취소" onClick={onClose} />}
           {props.role && <SubmitButton buttonType="submit" buttonName="수정" />}
         </ButtonContainer>
       </ScheduleInputContainer>
@@ -252,9 +259,9 @@ const Input = styled.input`
 `;
 
 const DatePickerContainer = styled.div`
-  position: absolute;
-  top: 35px;
-  right: 25px;
+  position: relative;
+  width: 580px;
+  display: flex;
 `;
 
 const ButtonContainer = styled.div`
@@ -265,6 +272,7 @@ const ButtonContainer = styled.div`
 `;
 
 const DateIcon = styled(FontAwesomeIcon)`
+  position: relative;
   color: ${theme.colors.purple};
   font-size: 20px;
   &:hover {
@@ -272,7 +280,7 @@ const DateIcon = styled(FontAwesomeIcon)`
   }
 `;
 
-const CancleButton = styled(Button)`
+const CancelButton = styled(Button)`
   width: 120px;
   height: 50px;
   margin-right: 20px;
