@@ -46,6 +46,10 @@ const ConfirmMessage = {
     title: '정말 일정을 저장하시겠습니까?',
     body: '실수하신 부분은 없으신 거 맞죠?\n꼼꼼히 확인 하셨을거라 믿습니다.',
   },
+  changePlan: {
+    title: '이대로 일정을 수정하시겠습니까?',
+    body: '실수하신 부분은 없으신 거 맞죠?\n꼼꼼히 확인 하셨을거라 믿습니다.',
+  },
 };
 
 export default ConfirmMessage;
