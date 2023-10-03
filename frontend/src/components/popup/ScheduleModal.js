@@ -10,6 +10,8 @@ import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
 import { request } from '../../utils/axios';
 import useSelect from './../../hook/useSelect';
 import useInput from './../../hook/useInput';
+import useConfirm from '../../hook/useConfirm';
+import ConfirmMessage from '../../constants/ConfirmMessage';
 
 // 일정 캘린더 내 일정 작성을 누를 때 뜨는 팝업창
 export default function ScheduleModal(props) {
@@ -20,24 +22,50 @@ export default function ScheduleModal(props) {
 
   const selectDay = useRecoilValue(date);
 
-  const onChangeSelect = event => {
-    setSelectOption(event.target.value);
-    props.data.scheduleType = event.target.value;
+  // 일정 등록
+  const confirmGrant = () => {
+    const body = {
+      title: title,
+      date: selectDay,
+      scheduleType: selectOption,
+      content: desc,
+    };
+    if (
+      body.title === '' ||
+      body.scheduleType === 'default' ||
+      body.content === ''
+    ) {
+      return new Promise(reject => {
+        reject('제목, 설명 혹은 일정 종류를 선택해주세요!');
+      });
+    } else {
+      try {
+        request('post', '/schedule', body);
+        return {
+          status: 'waiting',
+          title: body.title,
+          scheduleType: body.scheduleType,
+          content: body.content,
+        };
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    // 정상적인 결과는 resolve로 1을 전달해준다.
+    return new Promise(resolve => resolve(1));
   };
+
+  // 신청 확인 창을 띄운다.
+  const apply = useConfirm(
+    ConfirmMessage.savePlan,
+    confirmGrant,
+    '정상적으로 일정이 등록되었습니다.',
+  );
 
   // 일정 저장하는 함수
   const onSubmit = async event => {
-    const body = {
-      title,
-      date: selectDay,
-      option: selectOption,
-      desc,
-    };
-    try {
-      await request('post', '/calendar', body);
-    } catch (error) {
-      console.log(error);
-    }
+    event.preventDefault();
+    apply();
   };
 
   const openDatePicker = () => {
@@ -110,7 +138,11 @@ export default function ScheduleModal(props) {
         </InputRow>
         <ButtonContainer>
           <CancleButton buttonName="취소" onClick={props.closeModal} />
-          <SubmitButton buttonType="submit" buttonName="저장" />
+          <SubmitButton
+            buttonType="submit"
+            buttonName="저장"
+            onClick={onSubmit}
+          />
         </ButtonContainer>
       </ScheduleInputContainer>
     </ScheduleModalContainer>
