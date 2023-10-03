@@ -122,6 +122,7 @@ export default function ScheduleModal(props) {
               input={props.data.date}
               isOpen={isOpen}
               setIsOpen={setIsOpen}
+              calendar={true}
             />
             <DateIcon icon={faCalendarDays} onClick={openDatePicker} />
           </DatePickerContainer>

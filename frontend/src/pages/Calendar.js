@@ -90,6 +90,7 @@ function CalendarBox(props) {
             .slice(4, dayPlans.length)
             .map(plan => (
               <CalenderPlan2
+                id={plan.id}
                 title={plan.title}
                 scheduleType={plan.scheduleType}
                 date={plan.date}

@@ -17,11 +17,17 @@ import useSelect from '../../hook/useSelect';
 
 // 일정 캘린더 내 일정을 누를 때 뜨는 팝업창
 export default function ScheduleModal(props) {
+  const [isOpen, setIsOpen] = useState(false);
+
   const [selectOption, setSelectOption] = useSelect(props.scheduleType); // 학술, 친목, 학교행사 선택
   const [title, setTitle] = useInput(props.title); // 일정제목
   const [desc, setDesc] = useInput(props.content); // 세부내용
 
   const selectDay = useRecoilValue(date);
+
+  const openDatePicker = () => {
+    setIsOpen(true);
+  };
 
   // setSelectOption(props.role);
   // setTitle(props.title);
@@ -134,8 +140,12 @@ export default function ScheduleModal(props) {
           <InputRowLable>날짜</InputRowLable>
           {props.role ? (
             <DatePickerContainer>
-              <CustomDatePicker />
-              <DateIcon icon={faCalendarDays} />
+              <CustomDatePicker
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                calendar={true}
+              />
+              <DateIcon icon={faCalendarDays} onClick={openDatePicker} />
             </DatePickerContainer>
           ) : (
             <Input
