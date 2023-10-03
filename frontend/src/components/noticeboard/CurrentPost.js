@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComment } from '@fortawesome/free-solid-svg-icons';
 import NewPost from './NewPost';
 import { useParams } from 'react-router';
+import ReactHtmlParser from 'react-html-parser';
 
 const dummyComment = `홍익대학교가 세상을 만난 것은 1946년입니다.
 널리 세상을 이롭게 하는 홍익의 정신으로 미래를 선도하는 리더를 배출하는 홍익대학교.
@@ -103,7 +104,7 @@ export default function CurrentPost(props) {
                 </PostWriterDesc>
               </PostWriterContainer>
             </PostHeader>
-            <PostContent>{post.content}</PostContent>
+            <PostContent>{ReactHtmlParser(post.content)}</PostContent>
             <ButtonContainer>
               <Button onClick={() => navigate(-1)}>목록으로</Button>
               <ChangeDelete>
@@ -236,6 +237,7 @@ const PostContent = styled.p`
   font-weight: 300;
   font-size: ${theme.fontSizes.paragraph};
   line-height: 120%;
+  overflow: auto;
 `;
 const ButtonContainer = styled.div`
   display: flex;
