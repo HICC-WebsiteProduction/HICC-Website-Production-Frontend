@@ -24,6 +24,7 @@ export default function NoticeBoardTable(props) {
           >
             <EachPost
               post={post}
+              key={`eachPost${index}`}
               index={index}
               filteredPosts={props.filteredPosts}
               indexOfFirstPost={props.indexOfFirstPost}
@@ -43,9 +44,11 @@ const NoticeBoardTableContainer = styled.div`
 const NoticeBoardTableHeader = styled.div`
   display: flex;
   margin-top: 40px;
-  padding-bottom: 10px;
-  border-bottom: 2px solid ${theme.colors.white};
-
+  padding: 10px;
+  align-items: center;
+  gap: 20px;
+  border-top: 2px solid #edf0f8;
+  border-bottom: 1px solid #edf0f8;
   color: ${theme.colors.white};
   font-family: 'Pretendard';
   font-size: ${theme.fontSizes.paragraph};
@@ -92,5 +95,5 @@ const WriteDate = styled.div`
 
 const NoticeBoardTableBody = styled.div`
   padding: 20px 0;
-  border-bottom: 2px solid ${theme.colors.white};
+  border-bottom: 1px solid ${theme.colors.white};
 `;

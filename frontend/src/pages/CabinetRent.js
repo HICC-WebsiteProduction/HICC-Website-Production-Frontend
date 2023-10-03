@@ -1,25 +1,43 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import HeaderAndNavigation from '../components/header/HeaderAndNavigation';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import theme from '../styles/Theme';
-import { cabinetStatus } from './../dummy/cabinetStatus';
 import EachCabinet from '../components/eachItem/EachCabinet';
 import ApplyModal from '../components/popup/ApplyModal';
 import Caution from './../constants/Caution';
 import moment from 'moment';
 import useMyRent from '../hook/useMyRent';
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
+import { cabinet, cabinetModal, currentCabinetIndex } from '../atom/cabinet';
+import Navigation from '../components/header/Navigation';
+import useFetch from '../hook/useFetch';
+import { user } from '../atom/user';
 
+// 사물함 대여 페이지
 export default function CabinetRent(props) {
-  const [cabinetList, setCabinetList] = useState([]); // 사물함 리스트
-  const myName = '김진호';
+  const [init, setInit] = useRecoilState(cabinet); // 사물함 리스트
+  const [cabinetList, setCabinetList] = useRecoilState(cabinetModal); // 사물함 리스트 (모달 창)
+  const currentIndex = useRecoilValue(currentCabinetIndex); // 모달 백드롭 때문에
 
-  const cabinetListIncludeMyRent = useMyRent(cabinetStatus, myName);
+  const resetCabinet = useResetRecoilState(cabinet); // 사물함 상태 초기화
+  const userinfo = useRecoilValue(user); // 내 정보 가져오기 위해
+  const checkMyRent = useMyRent(); // 내가 대여 처리
+
+  const { data, loading, error } = useFetch('/locker');
 
   useEffect(() => {
-    setCabinetList(cabinetListIncludeMyRent);
-  }, []);
+    if (data) {
+      const cabinetListIncludeMyRent = checkMyRent(data, userinfo.name);
+      setInit(cabinetListIncludeMyRent);
+      setCabinetList(init);
+    }
+
+    return () => {
+      resetCabinet();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
+
+  const modalRef = useRef(null);
 
   // 상위 링크를 표시하기 위함
   const ancestorMenuTree = [
@@ -27,46 +45,43 @@ export default function CabinetRent(props) {
     { name: '대여', link: '/rent/umbrellarent' },
   ];
   const currentTabContents = [
-    { name: '우산 대여', link: '/rent/umbrellarent', accent: false },
-    { name: '사물함 대여', link: '/rent/cabinetrent', accent: true },
+    { name: '우산 대여', link: '/rent/umbrellarent', accent: 0 },
+    { name: '사물함 대여', link: '/rent/cabinetrent', accent: 1 },
   ];
 
   return (
     <CabinetRentContainer>
-      <HeaderAndNavigation
+      <Navigation
         ancestorMenuTree={ancestorMenuTree}
         currentTabContents={currentTabContents}
       />
       <CabinetCurrentState>
         <CabinetListHeader>
-          <CabinetIcon>
-            <FontAwesomeIcon icon={faCartShopping} />
-          </CabinetIcon>
           <CabinetListHeaderText>사물함 목록</CabinetListHeaderText>
         </CabinetListHeader>
         <CabinetGrid>
           {cabinetList.length > 0 &&
             cabinetList.map(cabinet => (
-              <EachCabinet key={cabinet.cabinetNumber} cabinet={cabinet} />
+              <EachCabinet key={cabinet.cabinetNumber} eachCabinet={cabinet} />
             ))}
         </CabinetGrid>
-        {/* 
-        <div ref={modalRef}>
-          {modalList.map(
+
+        <ViewApplyModal ref={modalRef} view={currentIndex !== -1}>
+          {cabinetList.map(
             item =>
               item.modalOpen && (
                 <ApplyModal
                   itemName={`사물함`}
-                  itemNumber={item.id}
-                  startDay={moment(new Date()).format('yyyy-MM-DD')}
-                  endDay={''}
-                  startDayDisabled={true}
-                  endDayDisabled={false}
+                  itemNumber={item.cabinetNumber}
+                  lender={userinfo.name}
+                  startDay={moment(new Date())}
+                  endDay={undefined}
                 />
               ),
           )}
-        </div> */}
-        <Caution />
+        </ViewApplyModal>
+
+        <Caution item="cabinet" />
       </CabinetCurrentState>
     </CabinetRentContainer>
   );
@@ -75,7 +90,7 @@ export default function CabinetRent(props) {
 const CabinetRentContainer = styled.div`
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 100%;
 `;
 
 const CabinetCurrentState = styled.div`
@@ -95,10 +110,6 @@ const CabinetListHeader = styled.header`
   line-height: 100%;
 `;
 
-const CabinetIcon = styled.div`
-  margin-right: 20px;
-`;
-
 const CabinetListHeaderText = styled.h1``;
 
 const CabinetGrid = styled.div`
@@ -109,4 +120,16 @@ const CabinetGrid = styled.div`
   grid-column-gap: 25px;
   width: 100%;
   height: 100%;
+`;
+
+const ViewApplyModal = styled.div`
+  display: ${props => (props.view ? 'block' : 'none')};
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 101;
 `;

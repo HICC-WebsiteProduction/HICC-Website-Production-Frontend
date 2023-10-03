@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import theme from './../styles/Theme';
 
-import HeaderAndTitle from './../components/header/HeaderAndTitle';
 import { useForm } from 'react-hook-form';
 import InputMemberInfo from '../components/input/InputMemberInfo';
 import Button from './../components/util/Button';
@@ -10,16 +9,21 @@ import Regex from './../constants/Regex';
 
 import { useNavigate } from 'react-router-dom';
 import { request } from '../utils/axios';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { user } from '../atom/user';
+import Title from '../components/header/Title';
+import agree from '../atom/agree';
 
+// 로그인
 export default function Login(props) {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const setUser = useSetRecoilState(user);
+
+  const setUser = useSetRecoilState(user); // 로그인 상태 저장을 위해
+
   const onSubmit = async data => {
     try {
       const response = await request('post', '/login', {
@@ -33,9 +37,21 @@ export default function Login(props) {
     }
   };
   const navigate = useNavigate();
+  const isAgree = useRecoilValue(agree);
+  const [goPage, setGoPage] = useState('/tos');
+
+  // 약관 동의를 했으면 회원가입 페이지로, 아니라면 약관동의 페이지로 셋팅
+  useEffect(() => {
+    if (!isAgree) {
+      setGoPage('/tos');
+    } else {
+      setGoPage('/signup');
+    }
+  }, [isAgree]);
+
   return (
     <LoginContainer>
-      <HeaderAndTitle titleName="로그인" />
+      <Title titleName="로그인" />
       <InputForm onSubmit={handleSubmit(onSubmit)}>
         <InputMemberInfo
           labelName="ID"
@@ -70,14 +86,10 @@ export default function Login(props) {
             buttonType="button"
             buttonName="가입신청"
             onClick={() => {
-              navigate('/signup');
+              navigate(goPage);
             }}
           />
-          <LoginButton
-            buttonType="submit"
-            buttonName="로그인"
-            onClick={onSubmit}
-          />
+          <LoginButton buttonType="submit" buttonName="로그인" />
           <InduceJoinMent>회원이 아니라면</InduceJoinMent>
         </ButtonContainer>
       </InputForm>
@@ -87,7 +99,7 @@ export default function Login(props) {
 
 const LoginContainer = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 100%;
 `;
 
 const InputForm = styled.form`

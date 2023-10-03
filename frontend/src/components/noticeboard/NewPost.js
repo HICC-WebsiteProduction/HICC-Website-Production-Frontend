@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import dummy from '../../dummy/posts.json';
 import { useParams } from 'react-router';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 // import ReactQuill from 'react-quill';
 // import 'react-quill/dist/quill.snow.css';
 
@@ -70,14 +72,24 @@ export default function NewPost(props) {
         <InputLabel>제목</InputLabel>
         <Input value={title} maxLength="50" onChange={handleTitleChange} />
       </InputBox>
-      <InputBox>
-        <InputLabel>내용</InputLabel>
-        <TextArea
-          value={content}
-          maxLength="1000"
-          onChange={handleContentChange}
+      <EditorContainer>
+        <CKEditor
+          editor={ClassicEditor}
+          config={{
+            placeholder: '내용을 입력하세요.',
+          }}
+          data="Hello from CKEditor&nbsp;8!"
+          onReady={editor => {
+            console.log('Editor is ready to use!', editor);
+          }}
+          onChange={(event, editor) => {
+            const data = editor.getData();
+            const pureText = data.replace(/<[^>]*>/g, ''); // HTML 태그 제거
+            console.log({ event, editor, data });
+            setContent(data);
+          }}
         />
-      </InputBox>
+      </EditorContainer>
       <Button onClick={handleSaveClick}>저장</Button>
     </NewPostContainer>
   );
@@ -123,5 +135,12 @@ const Button = styled.button`
   }
   &:active {
     opacity: 0.3;
+  }
+`;
+const EditorContainer = styled.div`
+  .ck-editor__editable {
+    min-height: 400px; 
+    max-height: 600px; 
+    margin-bottom
   }
 `;

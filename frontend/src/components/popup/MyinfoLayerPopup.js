@@ -5,16 +5,25 @@ import Button from '../util/Button';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { user } from '../../atom/user';
 import { useNavigate } from 'react-router';
+import { memberRole, rolePriority } from './../../constants/MemberRole';
 
+// 내 정보를 클릭했을 때 실행되는 팝업
 function MyinfoLayerPopup() {
-  const userinfo = useRecoilValue(user);
-  const reset = useResetRecoilState(user);
+  const userinfo = useRecoilValue(user); // 유저 정보
+  const reset = useResetRecoilState(user); // 로그아웃을 위해
   const navigate = useNavigate();
+
+  const isExecutive = rolePriority[userinfo.role] <= 2;
 
   const goMyPage = () => {
     navigate('/mypage');
   };
 
+  const goManagePage = () => {
+    navigate('/manage');
+  };
+
+  // 리코일 상태 리셋, 홈으로 이동
   const logout = () => {
     reset();
     navigate('/');
@@ -26,7 +35,7 @@ function MyinfoLayerPopup() {
         <Profile src="/images/profile.png" />
         <UserInfo>
           <Nickname>{userinfo.nickname}</Nickname>
-          <Grade>{userinfo.grade}</Grade>
+          <Grade>{memberRole[userinfo.role]}</Grade>
           <Name>{userinfo.name}</Name>
         </UserInfo>
       </Header>
@@ -40,6 +49,13 @@ function MyinfoLayerPopup() {
         buttonType="button"
         onClick={logout}
       />
+      {isExecutive ? (
+        <ManageButton
+          buttonName="관리페이지"
+          buttonType="button"
+          onClick={goManagePage}
+        />
+      ) : null}
     </MyinfoLayerPopupContainer>
   );
 }
@@ -50,12 +66,11 @@ const MyinfoLayerPopupContainer = styled.div`
   display: flex;
   position: absolute;
   top: 50px;
-  left: -290px;
+  left: -266px;
   z-index: 100;
   flex-direction: column;
   align-items: center;
   width: 347px;
-  height: 300px;
   padding: 20px 25px;
   border: 2px solid ${theme.colors.blue};
   border-radius: 20px;
@@ -106,6 +121,8 @@ const Triangle = styled.div`
 
 const Header = styled.header`
   display: flex;
+  width: 100%;
+  margin-bottom: 20px;
 `;
 
 const Profile = styled.img`
@@ -115,7 +132,7 @@ const Profile = styled.img`
 `;
 
 const UserInfo = styled.div`
-  margin: 0 20px 20px 20px;
+  margin: 5px 20px 20px 20px;
 `;
 
 const Nickname = styled.div`
@@ -152,5 +169,13 @@ const LogoutButton = styled(Button)`
   width: 306px;
   height: 60px;
   background-color: ${theme.colors.cancleRed};
+  line-height: 150%;
+`;
+
+const ManageButton = styled(Button)`
+  margin-top: 14px;
+  width: 306px;
+  height: 60px;
+  background-color: ${theme.colors.green};
   line-height: 150%;
 `;

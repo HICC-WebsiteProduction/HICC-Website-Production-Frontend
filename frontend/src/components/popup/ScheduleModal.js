@@ -5,20 +5,72 @@ import CustomDatePicker from './../datePicker/datePicker';
 import Button from './../util/Button';
 import { useRecoilValue } from 'recoil';
 import { date } from '../../atom/date';
-import moment from 'moment';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
+import { request } from '../../utils/axios';
+import useSelect from './../../hook/useSelect';
+import useInput from './../../hook/useInput';
+import useConfirm from '../../hook/useConfirm';
+import ConfirmMessage from '../../constants/ConfirmMessage';
 
+// 일정 캘린더 내 일정 작성을 누를 때 뜨는 팝업창
 export default function ScheduleModal(props) {
-  const [selectOption, setSelectOption] = useState('default');
+  const [selectOption, setSelectOption] = useSelect('default'); // 학술, 친목, 학교행사 선택
+  const [title, setTitle] = useInput(''); // 일정제목
+  const [desc, setDesc] = useInput(''); // 세부내용
+  const [isOpen, setIsOpen] = useState(false);
 
-  const onChangeSelect = event => {
-    setSelectOption(event.target.value);
+  const selectDay = useRecoilValue(date);
+
+  // 일정 등록
+  const confirmGrant = () => {
+    const body = {
+      title: title,
+      date: selectDay,
+      scheduleType: selectOption,
+      content: desc,
+    };
+    if (
+      body.title === '' ||
+      body.scheduleType === 'default' ||
+      body.content === ''
+    ) {
+      return new Promise(reject => {
+        reject('제목, 설명 혹은 일정 종류를 선택해주세요!');
+      });
+    } else {
+      try {
+        request('post', '/schedule', body);
+        return {
+          status: 'waiting',
+          title: body.title,
+          scheduleType: body.scheduleType,
+          content: body.content,
+        };
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    // 정상적인 결과는 resolve로 1을 전달해준다.
+    return new Promise(resolve => resolve(1));
   };
 
-  const onSubmit = event => {
+  // 신청 확인 창을 띄운다.
+  const apply = useConfirm(
+    ConfirmMessage.savePlan,
+    confirmGrant,
+    '정상적으로 일정이 등록되었습니다.',
+  );
+
+  // 일정 저장하는 함수
+  const onSubmit = async event => {
     event.preventDefault();
+    apply();
   };
 
-  const selectDate = useRecoilValue(date);
+  const openDatePicker = () => {
+    setIsOpen(true);
+  };
 
   return (
     <ScheduleModalContainer>
@@ -27,7 +79,7 @@ export default function ScheduleModal(props) {
         <SelectScheduleType
           value={selectOption}
           color={theme.scheduleTypeColor[selectOption]}
-          onChange={onChangeSelect}
+          onChange={setSelectOption}
         >
           <SelectScheduleTypeOption value="default" style={{ display: 'none' }}>
             일정 종류
@@ -52,38 +104,45 @@ export default function ScheduleModal(props) {
           </SelectScheduleTypeOption>
         </SelectScheduleType>
       </ScheduleModalHeader>
-      <ScheduleInputContainer onSubmit={onSubmit}>
+      <ScheduleInputContainer onSubmit={props.onSubmit}>
         <InputRow>
-          <InputRowLable>제목</InputRowLable>
-          <Input required />
+          <InputRowLable>일정 제목</InputRowLable>
+          <Input
+            required
+            height={30}
+            input={props.data.title}
+            value={title}
+            onChange={setTitle}
+          />
         </InputRow>
         <InputRow>
           <InputRowLable>날짜</InputRowLable>
-          <Input
-            type="date"
-            value={moment(selectDate).format('yyyy-MM-DD')}
-            disabled
-            required
-          />
           <DatePickerContainer>
-            <CustomDatePicker />
+            <CustomDatePicker
+              input={props.data.date}
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+            />
+            <DateIcon icon={faCalendarDays} onClick={openDatePicker} />
           </DatePickerContainer>
         </InputRow>
         <InputRow>
-          <InputRowLable>시간</InputRowLable>
-          <Input type="time" />
-        </InputRow>
-        <InputRow>
-          <InputRowLable>장소</InputRowLable>
-          <Input required />
-        </InputRow>
-        <InputRow>
           <InputRowLable>세부사항</InputRowLable>
-          <Input required />
+          <Input
+            required
+            height={120}
+            input={props.data.description}
+            value={desc}
+            onChange={setDesc}
+          />
         </InputRow>
         <ButtonContainer>
-          <CancleButton buttonName="취소" onClick={props.onClose} />
-          <SubmitButton buttonType="submit" buttonName="저장" />
+          <CancleButton buttonName="취소" onClick={props.closeModal} />
+          <SubmitButton
+            buttonType="submit"
+            buttonName="저장"
+            onClick={onSubmit}
+          />
         </ButtonContainer>
       </ScheduleInputContainer>
     </ScheduleModalContainer>
@@ -94,10 +153,12 @@ const ScheduleModalContainer = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, 0);
+  z-index: 100;
+  transform: translate(-50%, -50%);
   width: 620px;
   height: 750px;
   background-color: ${theme.colors.black};
+  z-index: 1080;
 `;
 
 const ScheduleModalHeader = styled.div`
@@ -111,6 +172,8 @@ const ScheduleModalHeader = styled.div`
 
 const ScheduleModalTitle = styled.div`
   padding: 20px;
+  color: ${theme.colors.black};
+
   font-family: 'GmarketSansMedium';
   font-weight: 500;
   font-size: 30px;
@@ -149,6 +212,7 @@ const ScheduleInputContainer = styled.form`
 
 const InputRow = styled.div`
   position: relative;
+  width: 580px;
   margin-bottom: 10px;
 `;
 
@@ -158,11 +222,12 @@ const InputRowLable = styled.div`
   font-family: 'Pretendard';
   font-size: 20px;
   font-weight: 300;
+  text-align: left;
 `;
 
 const Input = styled.input`
   width: 580px;
-  height: 40px;
+  height: ${props => `${props.height}px`};
   background-color: transparent;
   border: none;
   border-bottom: 1px solid rgba(237, 240, 248, 0.7);
@@ -174,10 +239,41 @@ const Input = styled.input`
   font-weight: 300;
 `;
 
-const DatePickerContainer = styled.div`
-  position: absolute;
-  top: 35px;
-  right: 25px;
+const TextArea = styled.textarea`
+  width: 580px;
+  height: ${props => `${props.height}px`};
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(237, 240, 248, 0.7);
+  outline: none;
+  resize: none;
+
+  color: ${theme.colors.white};
+  font-family: 'Pretendard';
+  font-size: 20px;
+  font-weight: 300;
+`;
+
+const DatePickerContainer = styled.label`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 580px;
+  height: 40px;
+
+  border-bottom: 1px solid rgba(237, 240, 248, 0.7);
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const DateIcon = styled(FontAwesomeIcon)`
+  color: ${theme.colors.purple};
+  font-size: 20px;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const ButtonContainer = styled.div`

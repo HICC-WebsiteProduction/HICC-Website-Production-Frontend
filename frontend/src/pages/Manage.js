@@ -1,30 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import HeaderAndManageTap from '../components/header/HeaderAndManageTap';
-import { TabContentByIndex } from '../components/header/TabContentByIndex';
+import { ManageMenu } from '../constants/ManageMenu';
 import theme from '../styles/Theme';
+import ManageTab from '../components/header/ManageTab';
+import { useRecoilValue } from 'recoil';
+import { manageTab } from '../atom/tab/manage';
 
+// 관리페이지
 function Manage(props) {
-  const [tabContentIndex, setTabContentIndex] = useState(0);
-
-  const changeTabContent = index => {
-    setTabContentIndex(index);
-  };
-
-  const currentTabContents = [
-    { name: '회원 승인', accent: tabContentIndex === 0 },
-    { name: '회원 정보', accent: tabContentIndex === 1 },
-    { name: '우산 대여', accent: tabContentIndex === 2 },
-    { name: '사물함 대여', accent: tabContentIndex === 3 },
-  ];
+  const menu = useRecoilValue(manageTab);
 
   return (
     <ManageContainer>
-      <HeaderAndManageTap
-        currentTabContents={currentTabContents}
-        changeTabContent={changeTabContent}
-      />
-      {TabContentByIndex[tabContentIndex]}
+      <ManageTab />
+      {ManageMenu[menu]}
     </ManageContainer>
   );
 }
@@ -33,6 +22,6 @@ export default Manage;
 
 const ManageContainer = styled.div`
   width: ${theme.componentSize.maxWidth};
-  height: 100vh;
+  height: 100%;
   margin: 0 auto;
 `;

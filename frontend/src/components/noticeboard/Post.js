@@ -181,9 +181,16 @@ export default function Post(props) {
       ) : (
         <>
           <PostsContainer>
-            {!props.isMypage && (
-              <NoticeBoardHeader>{props.filterCondition}</NoticeBoardHeader>
-            )}
+            <TitleContainer>
+              {!props.isMypage && (
+                <NoticeBoardHeader>{props.filterCondition}</NoticeBoardHeader>
+              )}
+              {props.showButton && (
+                <WriteButton onClick={() => setIsCreatingPost(true)}>
+                  글쓰기
+                </WriteButton>
+              )}
+            </TitleContainer>
             <NoticeBoardTable
               postList={currentPosts}
               filteredPosts={filteredPosts}
@@ -191,16 +198,13 @@ export default function Post(props) {
               handlePostClick={handlePostClick}
             />
           </PostsContainer>
-          {props.showButton && (
-            <WriteButton onClick={() => setIsCreatingPost(true)}>
-              글쓰기
-            </WriteButton>
-          )}
           <Paging
             page={currentPage}
+            pageSize={postsPerPage}
             count={filteredPostsCount}
             setPage={setPage}
           />
+          <Line />
           <FilterContainer>
             <Filter
               optionValue={filterOptionValue.period}
@@ -245,6 +249,10 @@ const WriteButton = styled.button`
 `;
 
 const PostsContainer = styled.div``;
+const TitleContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
 
 const NoticeBoardHeader = styled.h2`
   color: ${theme.colors.white};
@@ -299,4 +307,9 @@ const SearchButton = styled(Button)`
   &:active {
     opacity: 0.3;
   }
+`;
+
+const Line = styled.div`
+  border-bottom: 1px solid #edf0f8;
+  margin-top: 10px;
 `;

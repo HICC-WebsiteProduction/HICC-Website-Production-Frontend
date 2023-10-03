@@ -1,13 +1,13 @@
 import React from 'react';
 import Pagination from 'react-js-pagination';
 import '../../styles/paging.css';
-//페이징 라이브러리
-export default function Paging({ page, count, setPage }) {
+
+export default function Paging({ page, pageSize, count, setPage }) {
   return (
     <>
       <Pagination
         activePage={page}
-        itemsCountPerPage={10}
+        itemsCountPerPage={pageSize}
         totalItemsCount={count}
         pageRangeDisplayed={5}
         prevPageText={'<'}

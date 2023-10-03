@@ -8,7 +8,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComment } from '@fortawesome/free-solid-svg-icons';
 import NewPost from './NewPost';
 import { useParams } from 'react-router';
-import HeaderAndTap from '../header/HeaderAndTap';
 
 const dummyComment = `홍익대학교가 세상을 만난 것은 1946년입니다.
 널리 세상을 이롭게 하는 홍익의 정신으로 미래를 선도하는 리더를 배출하는 홍익대학교.
@@ -17,6 +16,8 @@ const dummyComment = `홍익대학교가 세상을 만난 것은 1946년입니�
 널리 세상을 이롭게 하는 홍익의 정신으로 미래를 선도하는 리더를 배출하는 홍익대학교.
 이제 당신을 만날 차례입니다.`;
 
+// 선택한 게시글을 보여주는 함수
+// 추후에 comment는 분리할 예정
 export default function CurrentPost(props) {
   const [currentBoard, setCurrentBoard] = useState('공지게시판');
   //게시판 변경 핸들러
@@ -83,11 +84,11 @@ export default function CurrentPost(props) {
     <>
       {post && (
         <>
-          <HeaderAndTap
+          {/* <HeaderAndTap
             ancestorMenuTree={ancestorMenuTree}
             currentTabContents={currentTabContents}
             handleBoardChange={handleBoardChange}
-          />
+          /> */}
           <PostContainer>
             <PostHeader>
               <PostTitle>{post.title}</PostTitle>

@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import HeaderAndTap from '../components/header/HeaderAndTap';
 import theme from './../styles/Theme';
 import Post from './../components/noticeboard/Post';
+import Tab from '../components/header/Tab';
+import Restaurant from '../components/noticeboard/Restaurant';
 
+// 게시판 페이지
 function Noticeboard() {
   const [currentBoard, setCurrentBoard] = useState('공지게시판');
   //게시판 변경 핸들러
@@ -28,18 +30,22 @@ function Noticeboard() {
 
   return (
     <NoticeBoardContainer>
-      <HeaderAndTap
+      <Tab
         ancestorMenuTree={ancestorMenuTree}
         currentTabContents={currentTabContents}
         handleBoardChange={handleBoardChange}
       />
       <BoardBox>
-        <Post
-          postFilter="board"
-          filterCondition={currentBoard}
-          showButton={true}
-          isMypage={false}
-        />
+        {currentBoard !== '맛집게시판' ? (
+          <Post
+            postFilter="board"
+            filterCondition={currentBoard}
+            showButton={true}
+            isMypage={false}
+          />
+        ) : (
+          <Restaurant />
+        )}
       </BoardBox>
     </NoticeBoardContainer>
   );
@@ -49,7 +55,7 @@ export default Noticeboard;
 
 const NoticeBoardContainer = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 100%;
 `;
 
 const BoardBox = styled.div`

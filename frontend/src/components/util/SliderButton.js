@@ -4,6 +4,8 @@ import styled from 'styled-components';
 // <!-- Rounded switch reference -->
 // https://www.w3schools.com/howto/howto_css_switch.asp
 
+// 제가 만든 기능이 아닙니다.
+// 홈페이지에서는 사용하지 않지만 어디엔가 쓰이겠죠...ㅋㅋ
 function SliderButton(props) {
   return (
     <SliderContainer>

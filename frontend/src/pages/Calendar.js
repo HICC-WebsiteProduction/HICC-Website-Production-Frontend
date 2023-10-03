@@ -1,32 +1,123 @@
-import React, { useEffect, useRef, useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import React, { useRef, useState } from 'react';
+import styled from 'styled-components';
 import moment from 'moment';
-import data from '../data/data.json';
-import HeaderAndTitle from '../components/header/HeaderAndTitle';
 import theme from '../styles/Theme';
 import ScheduleModal from '../components/popup/ScheduleModal';
+import Title from '../components/header/Title';
+import useModal from '../hook/useModal';
+import ScheduleModalSaved from '../components/popup/ScheduleChangeModal';
+import useFetch from '../hook/useFetch';
+import Loading from '../components/util/Loading';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { user } from '../atom/user';
+import { request } from '../utils/axios';
+import { useNavigate } from 'react-router-dom';
+
+const ScheduleEnum = {
+  학술: 'academic',
+  학교행사: 'hongikEvent',
+  친목: 'amity',
+};
+
+function CalenderPlan2(props) {
+  const modalRef = useRef(null);
+  const [modalOpen, closeModal] = useModal(modalRef);
+
+  return (
+    <CalendarPlan
+      key="{plan}"
+      background={ScheduleEnum[props.scheduleType]}
+      ref={modalRef}
+    >
+      {props.title}
+      {modalOpen && (
+        <ScheduleModalSaved
+          closeModal={closeModal} // 모달을 닫는 동작
+          id={props.id}
+          title={props.title}
+          scheduleType={props.scheduleType}
+          date={props.date}
+          content={props.content}
+          role={props.role}
+        />
+      )}
+    </CalendarPlan>
+  );
+}
 
 function CalendarBox(props) {
-  const plans = [];
-
-  const dayPlans = data.filter(plan => moment(plan.date).date() === props.date);
-  if (dayPlans.length > 5) {
-    console.log('full');
-    for (let i = 0; i < 4; i++) {
-      plans.push(
-        <CalendarPlan key={props.date * 10 + i}>
-          {dayPlans[i].title}
-        </CalendarPlan>,
-      );
+  const modalRef = useRef(null);
+  const [modalOpen, _] = useModal(modalRef);
+  const [planModalOpen, setModalOpen] = useState(false);
+  const showModal = () => {
+    if (planModalOpen === false) {
+      setModalOpen(true);
+    } else {
+      setModalOpen(false);
     }
-    plans.push(
-      <CalendarPlan key={`load${props.date}`}>{'· · · · ·'}</CalendarPlan>,
-    );
+  };
+
+  // const dayPlans = data2.filter(
+  //   plan => moment(plan.date).date() === props.date,
+  // );
+  const dayPlans = props.data.filter(
+    plan => moment(plan.date).date() === props.date,
+  );
+  // const dayPlans = data.filter(plan => moment(plan.date).date() === props.date);
+
+  if (dayPlans.length > 5) {
     return (
       <CalendarBox2>
         <CalendarDate isSunday={props.isSunday}>{props.date}</CalendarDate>
-        {plans}
+        {dayPlans.slice(0, 4).map(plan => (
+          <CalenderPlan2
+            title={plan.title}
+            scheduleType={plan.scheduleType}
+            date={plan.date}
+            content={plan.content}
+            id={plan.id}
+            role={props.role}
+          />
+        ))}
+        {!planModalOpen && (
+          <CalendarPlanButton onClick={showModal}>
+            {'+'}
+            {dayPlans.length - 4}
+          </CalendarPlanButton>
+        )}
+        {planModalOpen &&
+          dayPlans
+            .slice(4, dayPlans.length)
+            .map(plan => (
+              <CalenderPlan2
+                title={plan.title}
+                scheduleType={plan.scheduleType}
+                date={plan.date}
+                content={plan.content}
+                role={props.role}
+              />
+            ))}
+        {planModalOpen && (
+          <CalendarPlanButton onClick={showModal}>{'△'}</CalendarPlanButton>
+        )}
+        {/*{dayPlans.length > 4 && (*/}
+        {/*  <CalendarPlan key="{plan}">{'· · · · ·'}</CalendarPlan>*/}
+        {/*)}*/}
       </CalendarBox2>
+      // <CalendarBox2>
+      //   <CalendarDate isSunday={props.isSunday}>{props.date}</CalendarDate>
+      //   {dayPlans.slice(0, 4).map(plan => (
+      //     <CalenderPlan2
+      //       title={plan.title}
+      //       scheduleType={plan.scheduleType}
+      //       date={plan.date}
+      //       description={plan.description}
+      //     />
+      //   ))}
+      //   {dayPlans.length > 4 && (
+      //     <CalendarPlan key="{plan}">{'· · · · ·'}</CalendarPlan>
+      //   )}
+      // </CalendarBox2>
     );
   }
 
@@ -34,49 +125,36 @@ function CalendarBox(props) {
     <CalendarBox2>
       <CalendarDate isSunday={props.isSunday}>{props.date}</CalendarDate>
       {dayPlans.map(plan => (
-        <CalendarPlan key="{plan}">{plan.title}</CalendarPlan>
+        <CalenderPlan2
+          title={plan.title}
+          scheduleType={plan.scheduleType}
+          date={plan.date}
+          content={plan.content}
+          role={props.role}
+        />
       ))}
     </CalendarBox2>
   );
 }
 
-function Modal() {
-  return (
-    <ModalDiv>
-      <h4>제목</h4>
-      <p>날짜</p>
-      <p>상세내용</p>
-    </ModalDiv>
-  );
-}
-
 function Calendar() {
   const [date, setDate] = useState(moment());
-
   const modalRef = useRef(null);
-  const [modalOpen, setModalOpen] = useState(false);
-
-  useEffect(() => {
-    const handleClickOutside = event => {
-      if (
-        modalRef.current == null ||
-        !modalRef.current.contains(event.target)
-      ) {
-        setModalOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [modalRef]);
+  const [modalOpen, closeModal] = useModal(modalRef);
 
   const daysInMonth = date.daysInMonth(); //달의 마지막날
   const firstDayOfMonth = moment(date).startOf('month').format('d'); //달의 시작날 수
 
   const dayArray = ['일', '월', '화', '수', '목', '금', '토']; //요일
-
   const days = [];
+
+  const { data, loading, error } = useFetch(
+    `/schedule/?year=${date.year()}&month=${date.month() + 1}`,
+  );
+
+  const userinfo = useRecoilValue(user); // 유저 정보
+
+  const role = userinfo.role === 'PRESIDENT';
 
   for (let i = 0; i < firstDayOfMonth; i++) {
     days.push('');
@@ -85,7 +163,6 @@ function Calendar() {
   for (let d = 1; d <= daysInMonth; d++) {
     days.push(d);
   }
-  console.log(days);
 
   const goToPrevMonth = () => {
     setDate(moment(date).subtract(1, 'month'));
@@ -94,10 +171,9 @@ function Calendar() {
   const goToNextMonth = () => {
     setDate(moment(date).add(1, 'month'));
   };
-
   return (
     <MainContainer>
-      <HeaderAndTitle titleName="일정 캘린더" />
+      <Title titleName="일정 캘린더" />
       <CalendarTop>
         <Blank />
         <CalendarTopContent>
@@ -105,21 +181,42 @@ function Calendar() {
           {date.year()}년 {date.month() + 1}월
           <CalendarButton onClick={goToNextMonth}>{'>'}</CalendarButton>
         </CalendarTopContent>
-        <AddScheduleButton
-          onClick={() => setModalOpen(!modalOpen)}
-        >{`일정추가 +`}</AddScheduleButton>
+        {role && (
+          <AddScheduleModal ref={modalRef}>
+            {`일정추가 +`}
+            {modalOpen && (
+              <ViewModal view={modalOpen}>
+                <ScheduleModal
+                  closeModal={closeModal}
+                  data={data}
+                  // onSubmit={onSubmit()}
+                />
+              </ViewModal>
+            )}
+          </AddScheduleModal>
+        )}
       </CalendarTop>
-      <CalendarMain>
-        {dayArray.map((day, idx) => (
-          <CalendarDay isSunday={idx === 0}>{day}</CalendarDay>
-        ))}
-        {days.map((day, idx) => (
-          <CalendarBox date={day} isSunday={idx % 7 === 0}></CalendarBox>
-        ))}
-      </CalendarMain>
-      <div ref={modalRef}>
-        {modalOpen && <ScheduleModal onClose={() => setModalOpen(false)} />}
-      </div>
+      {loading ? (
+        <LoadingDiv>
+          <Loading />
+        </LoadingDiv>
+      ) : (
+        <CalendarMain>
+          {dayArray.map((day, idx) => (
+            <CalendarDay isSunday={idx === 0}>{day}</CalendarDay>
+          ))}
+          {days.map((day, idx) => (
+            <CalendearRows>
+              <CalendarBox
+                date={day}
+                isSunday={idx % 7 === 0}
+                data={data}
+                role={role}
+              ></CalendarBox>
+            </CalendearRows>
+          ))}
+        </CalendarMain>
+      )}
     </MainContainer>
   );
 }
@@ -140,7 +237,7 @@ const CalendarButton = styled.button`
 const MainContainer = styled.div`
   position: relative;
   width: ${theme.componentSize.maxWidth};
-  height: 100vh;
+  height: 100%;
   margin: 0 auto;
   place-items: center;
   align-items: center;
@@ -173,9 +270,7 @@ const CalendarTopContent = styled.div`
   transform: translate(-50%, 0);
 `;
 
-const AddScheduleButton = styled.button`
-  background-color: transparent;
-  border: none;
+const AddScheduleModal = styled.div`
   color: ${theme.colors.white};
 
   font-family: 'Pretendard';
@@ -183,19 +278,21 @@ const AddScheduleButton = styled.button`
   font-weight: 600;
   font-size: ${theme.fontSizes.subtitle};
   line-height: 36px;
-
-  &:hover {
-    cursor: pointer;
-  }
 `;
 
 const CalendarMain = styled.div`
   display: grid;
-  grid-template-columns: repeat(7, minmax(171px, 171px));
-  grid-template-rows: 1fr repeat(6, minmax(200px, 200px));
-  place-items: center;
-  align-items: center;
-  justify-content: center;
+  grid-template-columns: repeat(7, minmax(170px, 170px));
+  //grid-template-rows: 1fr repeat(6, min(240px, 400px));
+  //place-items: center;
+  //align-items: center;
+  //justify-content: center;
+`;
+
+const CalendearRows = styled.div`
+  //display: flex;
+  grid-template-rows: 1fr repeat(6, min(230px));
+  margin-bottom: 10px;
 `;
 
 const CalendarDay = styled.div`
@@ -211,7 +308,7 @@ const CalendarDay = styled.div`
 
 const CalendarBox2 = styled.div`
   width: 171px;
-  height: 200px;
+  min-height: 200px;
   border-top: 3px solid ${theme.colors.white};
 `;
 
@@ -226,21 +323,51 @@ const CalendarDate = styled.div`
 `;
 
 const CalendarPlan = styled.div`
+  position: relative;
   margin-top: 3%;
   margin-left: 0.7%;
   width: 99.2%;
-  height: 14%;
+  height: 30px;
   font-weight: 400;
   border-radius: 9px;
-  background-color: #f95a5a;
+  background-color: ${props => theme.scheduleTypeColor[props.background]};
   color: white;
   text-align: center;
-  line-height: 160%;
+  line-height: 30px;
+  cursor: pointer;
 `;
 
-const ModalDiv = styled.div`
-  margin-top: 20px;
-  padding: 20px;
-  background-color: #61dafb;
-  text-align: left;
+const CalendarPlanButton = styled.button`
+  position: relative;
+  margin-top: 3%;
+  margin-left: 0.7%;
+  width: 99.2%;
+  height: 30px;
+  font-weight: 700;
+  font-size: medium;
+  border-radius: 9px;
+  background-color: #2c2c33;
+  color: white;
+  text-align: center;
+  line-height: 30px;
+  border: none;
+  cursor: pointer;
+`;
+
+const LoadingDiv = styled.div`
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+`;
+
+const ViewModal = styled.div`
+  display: ${props => (props.view ? 'block' : 'none')};
+  position: fixed;
+
+  width: 100%;
+  height: 100%;
+  left: 0px;
+  top: 0px;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 101;
 `;

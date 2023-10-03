@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import theme from '../styles/Theme';
-import HeaderAndTap from '../components/header/HeaderAndTap';
-import { TabContentByIndexMypage } from '../components/header/TabContentByIndexMypage';
+import { TabContentByIndexMypage } from '../constants/TabContentByIndexMypage';
+import Tab from '../components/header/Tab';
 
 function Mypage() {
   const [currentTab, setCurrentTab] = useState('내 정보');
@@ -23,7 +23,7 @@ function Mypage() {
 
   return (
     <MypageContainer>
-      <HeaderAndTap
+      <Tab
         ancestorMenuTree={ancestorMenuTree}
         currentTabContents={currentTabContents}
         handleBoardChange={handleTabChange}
@@ -38,6 +38,6 @@ export default Mypage;
 
 const MypageContainer = styled.div`
   width: ${theme.componentSize.maxWidth};
-  height: 100vh;
+  height: 1000px;
   margin: 0 auto;
 `;

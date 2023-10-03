@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
 
+// 게시글 목록 한 줄을 표시해주는 기능을 한다.
 function EachPost(props) {
   const { post, index, filteredPosts, indexOfFirstPost, handlePostClick } =
     props;
