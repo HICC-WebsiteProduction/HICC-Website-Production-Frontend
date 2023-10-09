@@ -1,20 +1,46 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Slider from 'react-slick';
 import styled from 'styled-components';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import etc from '../../images/etc.png';
+import coding from '../../images/coding.png';
+import hongmap from '../../images/HongMap.png';
+import CardBoxes from './CardImg';
 
-function Slide({ sliders }) {
+function Slide() {
+  const sliders = [
+    {
+      name: '프로젝트 1',
+      image: etc,
+      description: '프로젝트 1에 대한 설명',
+    },
+    {
+      name: '프로젝트 2',
+      image: coding,
+      description: '프로젝트 2에 대한 설명',
+    },
+    {
+      name: '프로젝트 3',
+      image: hongmap,
+      description:
+        '프로젝트 3에 대한 설명, 좀 더 길어지는 설명은 어떻게 보일까요?',
+    },
+    // ... 더 많은 서비스 추가
+  ];
+
   return (
     <Container>
       {/*<SlideTitle>프로젝트 둘러보기</SlideTitle>*/}
       <StyledSlider {...settings}>
-        {sliders.map(({ name, image }, index) => {
+        {sliders.map(({ name, image, description }, index) => {
           return (
-            <CardBox key={`slider-${index}`}>
-              <CardImg alt="인기 서비스" src={image} />
-              {/*<CardText>{name}</CardText>*/}
-            </CardBox>
+            <CardBoxes
+              key={`slider-${index}`}
+              src={image}
+              name={name}
+              desc={description}
+            ></CardBoxes>
           );
         })}
       </StyledSlider>
@@ -102,9 +128,9 @@ const CardImg = styled.img`
   margin: auto;
 `;
 
-// const CardText = styled.p`
-//   padding: 20px;
-//   font-size: 20px;
-//   font-weight: bolder;
-//   text-align: center;
-// `;
+const CardText = styled.p`
+  padding: 20px;
+  font-size: 20px;
+  font-weight: bolder;
+  text-align: center;
+`;
