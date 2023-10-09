@@ -252,6 +252,7 @@ const CalendarTopContent = styled.div`
 
 const AddScheduleModal = styled.div`
   color: ${theme.colors.white};
+  cursor: pointer;
 
   font-family: 'Pretendard';
   font-style: normal;
