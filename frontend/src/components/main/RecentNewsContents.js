@@ -75,7 +75,7 @@ const SubDate = styled.div`
 const SubContent = styled.div`
   position: absolute;
   width: 457px;
-  height: 124px;
+  //height: 120px;
   top: 61px;
   left: 316px;
   font-family: Pretendard;
@@ -85,4 +85,9 @@ const SubContent = styled.div`
   letter-spacing: 0em;
   text-align: left;
   color: #edf0f8;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
 `;

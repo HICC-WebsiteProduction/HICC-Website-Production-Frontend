@@ -226,7 +226,7 @@ const InputRowLable = styled.div`
   text-align: left;
 `;
 
-const Input = styled.input`
+const Input = styled.textarea`
   width: 580px;
   height: ${props => `${props.height}px`};
   background-color: transparent;
