@@ -1,38 +1,33 @@
-import React, { useEffect, useRef } from 'react';
-import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
-import { cabinet, cabinetModal, currentCabinetIndex } from '../../atom/cabinet';
+import React, { useEffect } from 'react';
+import { useRecoilState, useResetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import Button from '../util/Button';
-import EachCabinetManage from '../eachItem/EachCabinetManage';
-import ApproveModal from '../popup/ApproveModal';
 import useConfirm from '../../hook/useConfirm';
 import useFetch from '../../hook/useFetch';
 import ConfirmMessage from '../../constants/ConfirmMessage';
+import { locker } from '../../atom/locker';
+import EachLockerManage from '../eachItem/EachLockerManage';
 
 // 사물함 관리 페이지를 담당
-function CabinetRentWindow(props) {
-  const [init, setInit] = useRecoilState(cabinet); // 서버에서 가져온 사물함 상태들
-  const [cabinetList, setCabinetList] = useRecoilState(cabinetModal); // 사물함 리스트 (모달 창 포함)
-  const currentIndex = useRecoilValue(currentCabinetIndex); // 모달 백드롭 때문에
+function LockerRentWindow(props) {
+  const [lockerList, setLockerList] = useRecoilState(locker); // 사물함 리스트 (모달 창 포함)
+  const resetLocker = useResetRecoilState(locker); // 사물함 상태 초기화
 
-  const resetCabinet = useResetRecoilState(cabinet); // 사물함 상태 초기화
-
-  const { data, loading, error } = useFetch('/locker');
+  const { data, loading, error } = useFetch(`/rental?itemType=locker`);
 
   // setInit에 서버의 상태 저장, 모달 창에 대한 상태는 다른 곳에 저장
   useEffect(() => {
     if (data) {
-      setInit(data);
-      setCabinetList(init);
+      setLockerList(data);
     }
 
     return () => {
-      resetCabinet();
+      resetLocker();
     };
-  }, [data]);
+  }, [data, resetLocker, setLockerList]);
 
-  const confirmGrant = () => {
+  const confirmGrant = async () => {
     console.log('반영 성공');
 
     // 정상적인 결과는 resolve로 1을 전달해준다.
@@ -43,7 +38,7 @@ function CabinetRentWindow(props) {
   // 리코일 저장소를 리셋하고, 페이지를 리로드한다.
   // 그렇게 되면 서버에서 다시 fetch하게되어 서버의 상태로 되돌아갈 수 있다.
   const confirmDismiss = () => {
-    resetCabinet();
+    resetLocker();
     window.location.reload();
   };
 
@@ -55,55 +50,36 @@ function CabinetRentWindow(props) {
     confirmDismiss,
   );
 
-  const modalRef = useRef(null);
-
   return (
-    <CabinetRentWindowContainer>
-      <CabinetRentTitle>
+    <LockerRentWindowContainer>
+      <LockerRentTitle>
         사물함 목록
         <Indicator />
-      </CabinetRentTitle>
-      <CabinetCurrentState>
-        <CabinetGrid>
-          {cabinetList.length > 0 &&
-            cabinetList.map(cabinet => (
-              <EachCabinetManage
-                key={cabinet.cabinetNumber}
-                eachCabinet={cabinet}
-              />
+      </LockerRentTitle>
+      <LockerCurrentState>
+        <LockerGrid>
+          {lockerList !== undefined &&
+            lockerList.length > 0 &&
+            lockerList.map(locker => (
+              <EachLockerManage key={locker.id} eachLocker={locker} />
             ))}
-        </CabinetGrid>
-        <ViewApplyModal ref={modalRef} view={currentIndex !== -1}>
-          {cabinetList.map(
-            item =>
-              item.modalOpen && (
-                <ApproveModal
-                  key={`canbinetModal`}
-                  itemName={`사물함`}
-                  itemNumber={item.cabinetNumber}
-                  lender={item.lender}
-                  start={item.start}
-                  end={item.end}
-                />
-              ),
-          )}
-        </ViewApplyModal>
-      </CabinetCurrentState>
+        </LockerGrid>
+      </LockerCurrentState>
       <SaveButtonContainer>
         <SaveButton buttonName="저장" onClick={saveState} />
       </SaveButtonContainer>
-    </CabinetRentWindowContainer>
+    </LockerRentWindowContainer>
   );
 }
 
-export default CabinetRentWindow;
+export default LockerRentWindow;
 
-const CabinetRentWindowContainer = styled.div`
+const LockerRentWindowContainer = styled.div`
   width: 100%;
   height: 100%;
 `;
 
-const CabinetRentTitle = styled.span`
+const LockerRentTitle = styled.span`
   position: relative;
   padding-bottom: 10px;
   border-bottom: 3px solid ${theme.colors.green};
@@ -123,7 +99,7 @@ const Indicator = styled.div`
   border-right: 10px solid transparent;
 `;
 
-const CabinetCurrentState = styled.div`
+const LockerCurrentState = styled.div`
   width: ${theme.componentSize.maxWidth};
   margin: 64px auto;
 `;
@@ -144,7 +120,7 @@ const SaveButton = styled(Button)`
   background-color: ${theme.colors.green};
 `;
 
-const CabinetGrid = styled.div`
+const LockerGrid = styled.div`
   display: grid;
   grid-template-rows: repeat(4, 1fr);
   grid-template-columns: repeat(4, 1fr);
@@ -152,16 +128,4 @@ const CabinetGrid = styled.div`
   grid-column-gap: 25px;
   width: 100%;
   height: 100%;
-`;
-
-const ViewApplyModal = styled.div`
-  display: ${props => (props.view ? 'block' : 'none')};
-  position: fixed;
-
-  width: 100%;
-  height: 100%;
-  left: 0px;
-  top: 0px;
-  background-color: rgba(0, 0, 0, 0.6);
-  z-index: 101;
 `;

@@ -1,11 +1,9 @@
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import Button from '../util/Button';
-import { useRecoilState, useResetRecoilState } from 'recoil';
-import { useRef } from 'react';
+import { useRecoilState } from 'recoil';
 import useCloseModal from '../../hook/useCloseModal';
-import { applyType } from '../../constants/ApplyType';
-import { cabinet } from '../../atom/cabinet';
+import { locker } from '../../atom/locker';
 
 // 대여 승인 팝업 창
 /*
@@ -16,67 +14,65 @@ import { cabinet } from '../../atom/cabinet';
   endDay: 대여 반납일
 */
 export default function ApproveModal(props) {
-  const { itemName, itemNumber, lender, start, end } = props;
+  const { modalRef, closeModal, itemName, itemNumber, lender, start, end } =
+    props;
 
-  const closeModalFunc = useResetRecoilState(applyType[itemName].index);
-  // 모달 창 종료를 위해 모달 오픈 여부를 모두 false로 리셋함
+  useCloseModal(modalRef, closeModal); // 모달 창 닫음을 수행
 
-  const modalRef = useRef(null);
-  const closeModal = useCloseModal(modalRef, closeModalFunc); // 모달 창 닫음을 수행
+  const [lockerList, setLockerList] = useRecoilState(locker); // 사물함 상태 변환 (승인은 사물함 밖에 없음)
 
-  const [cabinetList, setCabinetList] = useRecoilState(cabinet); // 사물함 상태 변환 (승인은 사물함 밖에 없음)
-
-  // 신청 거절 - unrent 상태로 전환
+  // 신청 거절 - available 상태로 전환
   const RejectApply = () => {
-    const updatedState = cabinetList.map(cabinet => {
-      if (cabinet.cabinetNumber === itemNumber) {
+    const updatedState = lockerList.map(locker => {
+      if (locker.id === itemNumber) {
         return {
-          ...cabinet,
-          status: 'unrent',
+          ...locker,
+          rentalStatus: 'available',
           start: null,
           end: null,
-          lender: null,
+          member: null,
         };
       } else {
-        return cabinet;
+        return locker;
       }
     });
 
-    setCabinetList(updatedState);
+    setLockerList(updatedState);
 
-    closeModalFunc();
+    closeModal();
   };
 
-  // 신청 수락 - rent 상태로 전환
+  // 신청 수락 - rented 상태로 전환
   const ApproveApply = () => {
-    const updatedState = cabinetList.map(cabinet => {
-      if (cabinet.cabinetNumber === itemNumber) {
+    const updatedState = lockerList.map(locker => {
+      if (locker.id === itemNumber) {
         return {
-          ...cabinet,
-          status: 'rent',
+          ...locker,
+          rentalStatus: 'rented',
+          member: lender,
         };
       } else {
-        return cabinet;
+        return locker;
       }
     });
 
-    setCabinetList(updatedState);
+    setLockerList(updatedState);
 
-    closeModalFunc();
+    closeModal();
   };
 
   return (
     <>
-      <ApplyCabinetModalContainer ref={modalRef}>
+      <Container ref={modalRef}>
         <Header>{itemName} 대여 신청</Header>
-        <ApplyCabinetModalContent>
+        <Content>
           <InputRow>
             <Label>{itemName} 번호</Label>
             <Input value={itemNumber} disabled />
           </InputRow>
           <InputRow>
             <Label>대여 신청자</Label>
-            <Input value={lender} disabled />
+            <Input value={lender.nickname} disabled />
           </InputRow>
           <InputRow>
             <Label>대여 신청 일자</Label>
@@ -86,17 +82,17 @@ export default function ApproveModal(props) {
             <Label>반납 일자</Label>
             <Input type="date" value={end} disabled />
           </InputRow>
-        </ApplyCabinetModalContent>
+        </Content>
         <ButtonContainer>
           <RejectButton buttonName="승인 거부" onClick={RejectApply} />
           <ApproveButton buttonName="승인 허용" onClick={ApproveApply} />
         </ButtonContainer>
-      </ApplyCabinetModalContainer>
+      </Container>
     </>
   );
 }
 
-const ApplyCabinetModalContainer = styled.div`
+const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -120,7 +116,7 @@ const Header = styled.header`
   text-align: center;
 `;
 
-const ApplyCabinetModalContent = styled.div`
+const Content = styled.div`
   width: 340px;
   margin: 32px 0;
   padding: 8px 0px;

@@ -1,21 +1,16 @@
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { umbrella, umbrellaModal } from '../../atom/umbrella';
 import { request } from '../../utils/axios';
 import useConfirm from '../../hook/useConfirm';
 import moment from 'moment';
 import ConfirmMessage from '../../constants/ConfirmMessage';
-import { user } from '../../atom/user';
+import { UmbrellaStatusMent } from '../../constants/RentalStatus';
+import { useRef } from 'react';
+import useModal from '../../hook/useModal';
+import ApplyModal from '../popup/ApplyModal';
 
 // 우산 대여페이지에서 사용하는 우산들
 function EachUmbrella({ eachUmbrella }) {
-  const userinfo = useRecoilValue(user);
-  const myName = userinfo.name;
-
-  const setCurrentIndex = useSetRecoilState(umbrellaModal); // 모달 창 관리를 위해
-  const [umbrellaList, setUmbrellaList] = useRecoilState(umbrella); // 우산 정보를 변경하기 위해
-
   const isOverDue = moment(eachUmbrella.end).isBefore(new Date());
 
   // 우산 반납 처리
@@ -25,24 +20,7 @@ function EachUmbrella({ eachUmbrella }) {
       targetId: 'B731070',
     };
     try {
-      const response = await request('post', '/umbrella/return', body);
-
-      // 우산을 프론트에서 반납처리한다.
-      const updatedList = umbrellaList.map(umbrella => {
-        if (umbrella.umbrellaNumber === eachUmbrella.umbrellaNumber) {
-          return {
-            ...umbrella,
-            status: 'unrent',
-            start: null,
-            end: null,
-            lender: null,
-          };
-        } else {
-          return umbrella;
-        }
-      });
-      setUmbrellaList(updatedList);
-
+      await request('post', '/umbrella/return', body);
       // 정상적인 결과는 resolve로 1을 전달해준다.
       return new Promise(resolve => resolve(1));
     } catch (error) {
@@ -56,63 +34,77 @@ function EachUmbrella({ eachUmbrella }) {
     confirmGrant,
     '반납처리가 완료되었습니다.',
   );
+
+  const modalRef = useRef(null);
+  const [modalOpen, closeModal, changeModalState] = useModal(modalRef);
+  const name = 'jinokim';
+
+  const now = new Date(); //  오늘 날짜
+  const sevenDaysAgo = new Date(now.setDate(now.getDate() + 7)); // 우산 반납은 7일 후로 고정
+
   return (
-    <Umbrella
-      key={`umbrella${eachUmbrella.umbrellaNumber}`}
-      status={eachUmbrella.status}
-    >
-      <UmbrellaNumber status={eachUmbrella.status}>
-        {eachUmbrella.umbrellaNumber}
-      </UmbrellaNumber>
-      <UmbrellaDesc>
-        <UmbrellaRentStatus>
-          <CabinetRentCircleStatus status={eachUmbrella.status} />
-          <UmbrellaRentStatusMent status={eachUmbrella.status}>
-            {eachUmbrella.status === 'myRent'
-              ? '내가 대여'
-              : eachUmbrella.status === 'rent'
-              ? '대여 중'
-              : eachUmbrella.status === 'unavailable'
-              ? '대여 불가'
-              : '대여 가능'}
-          </UmbrellaRentStatusMent>
-        </UmbrellaRentStatus>
-        {eachUmbrella.status === 'rent' || eachUmbrella.status === 'myRent' ? (
-          <>
-            <DayInfo>
-              <EndDay
-                myRent={eachUmbrella.lender === myName}
-              >{`${eachUmbrella.end} 까지`}</EndDay>
-            </DayInfo>
-            {eachUmbrella.lender === myName ? (
-              <ReturnUmbrellaButton onClick={returnUmbrella}>
-                반납하기
-              </ReturnUmbrellaButton>
-            ) : (
-              <Lender isOverDue={isOverDue ? 1 : 0}>
-                {eachUmbrella.lender}
-              </Lender>
-            )}
-          </>
-        ) : eachUmbrella.status === 'unavailable' ? (
-          <Lender>
-            {eachUmbrella.unavailableReason === 'stolen'
-              ? '도난 상태'
-              : '분실 상태'}
-          </Lender>
-        ) : (
-          <>
-            <RentButton
-              onClick={() => setCurrentIndex(eachUmbrella.umbrellaNumber)}
-            >
-              대여 신청하기
-            </RentButton>
-          </>
+    <>
+      <Umbrella
+        key={`umbrella${eachUmbrella.id}`}
+        status={eachUmbrella.rentalStatus}
+      >
+        <UmbrellaNumber status={eachUmbrella.rentalStatus}>
+          {eachUmbrella.id}
+        </UmbrellaNumber>
+        <UmbrellaDesc>
+          <UmbrellaRentStatus>
+            <CabinetRentCircleStatus status={eachUmbrella.rentalStatus} />
+            <UmbrellaRentStatusMent status={eachUmbrella.rentalStatus}>
+              {UmbrellaStatusMent(eachUmbrella.rentalStatus)}
+            </UmbrellaRentStatusMent>
+          </UmbrellaRentStatus>
+          {eachUmbrella.rentalStatus === 'rented' ||
+          eachUmbrella.rentalStatus === 'myRent' ? (
+            <>
+              <DayInfo>
+                <EndDay
+                  myRent={eachUmbrella.rentalStatus === 'myRent'}
+                >{`${eachUmbrella.end} 까지`}</EndDay>
+              </DayInfo>
+              {eachUmbrella.rentalStatus === 'myRent' ? (
+                <ReturnUmbrellaButton onClick={returnUmbrella}>
+                  반납하기
+                </ReturnUmbrellaButton>
+              ) : (
+                <Lender isOverDue={isOverDue ? 1 : 0}>
+                  {eachUmbrella.member.nickname}
+                </Lender>
+              )}
+            </>
+          ) : eachUmbrella.rentalStatus === 'under_maintenance' ? (
+            <Lender>도난 상태</Lender>
+          ) : eachUmbrella.rentalStatus === 'lost' ? (
+            <Lender>분실 상태</Lender>
+          ) : (
+            <>
+              <RentButton onClick={changeModalState}>대여 신청하기</RentButton>
+            </>
+          )}
+        </UmbrellaDesc>
+      </Umbrella>
+      <ViewApplyModal ref={modalRef} view={modalOpen ? 1 : 0}>
+        {modalOpen && (
+          <ApplyModal
+            modalRef={modalRef}
+            closeModal={closeModal}
+            itemName={`우산`}
+            itemNumber={eachUmbrella.id}
+            lender={name}
+            startDay={moment(new Date())}
+            endDay={sevenDaysAgo}
+          />
         )}
-      </UmbrellaDesc>
-    </Umbrella>
+      </ViewApplyModal>
+    </>
   );
 }
+
+export default EachUmbrella;
 
 const Umbrella = styled.div`
   display: flex;
@@ -224,4 +216,14 @@ const ReturnUmbrellaButton = styled.button`
   }
 `;
 
-export default EachUmbrella;
+const ViewApplyModal = styled.div`
+  display: ${props => (props.view ? 'block' : 'none')};
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 101;
+`;

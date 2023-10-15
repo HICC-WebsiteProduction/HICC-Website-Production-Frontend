@@ -14,6 +14,10 @@ export default function useModal(modalRef) {
     setModalOpen(false);
   }, []);
 
+  const changeModalState = useCallback(() => {
+    setModalOpen(prev => !prev);
+  }, []);
+
   useEffect(() => {
     const handleClickOutside = event => {
       if (
@@ -32,5 +36,5 @@ export default function useModal(modalRef) {
     };
   }, [modalRef]);
 
-  return [modalOpen, closeModal];
+  return [modalOpen, closeModal, changeModalState];
 }

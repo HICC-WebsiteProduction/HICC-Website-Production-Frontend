@@ -1,10 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
 
 // ancestorMenuTree 상위 메뉴를 받아와 링크로 만들어준다.
 export default function Navigation(props) {
+  const location = useLocation();
+
   return (
     <NavigationContainer>
       <AncestorMenu>
@@ -23,7 +25,7 @@ export default function Navigation(props) {
             <CurrentMenuTabContents
               to={menu.link}
               key={`current${idx}`}
-              accent={menu.accent}
+              accent={location.pathname === menu.link}
             >
               {menu.name}
             </CurrentMenuTabContents>
