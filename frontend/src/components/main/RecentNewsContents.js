@@ -1,9 +1,15 @@
 import styled from 'styled-components';
 import etc from '../../images/etc.png';
+import { useNavigate } from 'react-router-dom';
 
 export default function RecentNewsContents(props) {
+  const navigate = useNavigate();
   return (
-    <ContentContainer>
+    <ContentContainer
+      onClick={() => {
+        navigate(props.data.url);
+      }}
+    >
       <Image src={etc}></Image>
       <SubTitleContainer>
         <SubTitle>{props.data.title}</SubTitle>
@@ -18,6 +24,7 @@ const ContentContainer = styled.div`
   position: relative;
   width: 786px;
   height: 200px;
+  cursor: pointer;
 `;
 
 const Image = styled.img`
