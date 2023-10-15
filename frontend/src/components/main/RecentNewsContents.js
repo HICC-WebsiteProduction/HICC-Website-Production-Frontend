@@ -1,16 +1,16 @@
 import styled from 'styled-components';
-import etc from '../../images/etc.png';
 import { useNavigate } from 'react-router-dom';
 
 export default function RecentNewsContents(props) {
   const navigate = useNavigate();
+  console.log(props.data.img);
   return (
     <ContentContainer
       onClick={() => {
         navigate(props.data.url);
       }}
     >
-      <Image src={etc}></Image>
+      <Image src={props.data.img}></Image>
       <SubTitleContainer>
         <SubTitle>{props.data.title}</SubTitle>
         <SubDate>{props.data.date}</SubDate>
