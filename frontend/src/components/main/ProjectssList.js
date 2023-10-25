@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Slider from 'react-slick';
 import styled from 'styled-components';
 import 'slick-carousel/slick/slick.css';
@@ -31,7 +31,6 @@ function Slide() {
 
   return (
     <Container>
-      {/*<SlideTitle>프로젝트 둘러보기</SlideTitle>*/}
       <StyledSlider {...settings}>
         {sliders.map(({ name, image, description }, index) => {
           return (
@@ -62,25 +61,6 @@ const settings = {
   centerMode: true,
   centerPadding: '400px', // 0px 하면 슬라이드 끝쪽 이미지가 안잘림
 };
-
-// const SlideTitle = styled.h2`
-//   //padding: 60px 0px 50px 0px;
-//   //text-align: center;
-//   //font-size: 30px;
-//   //font-weight: bolder;
-//   position: absolute;
-//   width: 325px;
-//   height: 48px;
-//   top: 200px;
-//   margin-left: 0;
-//   font-family: GmarketSansMedium;
-//   font-size: 40px;
-//   font-weight: 500;
-//   line-height: 48px;
-//   letter-spacing: 0em;
-//   text-align: left;
-//   color: #edf0f8;
-// `;
 
 const Container = styled.div`
   width: 1200px;
@@ -116,21 +96,4 @@ const StyledSlider = styled(Slider)`
   .slick-track {
     overflow-x: hidden;
   }
-`;
-
-const CardBox = styled.div`
-  cursor: pointer;
-`;
-
-const CardImg = styled.img`
-  width: 350px;
-  height: 230px;
-  margin: auto;
-`;
-
-const CardText = styled.p`
-  padding: 20px;
-  font-size: 20px;
-  font-weight: bolder;
-  text-align: center;
 `;

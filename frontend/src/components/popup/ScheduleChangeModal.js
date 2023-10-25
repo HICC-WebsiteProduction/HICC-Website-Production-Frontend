@@ -249,7 +249,7 @@ const InputRowLable = styled.div`
   text-align: left;
 `;
 
-const Input = styled.input`
+const Input = styled.textarea`
   width: 580px;
   height: ${props => `${props.height}px`};
   background-color: transparent;
@@ -261,6 +261,8 @@ const Input = styled.input`
   font-family: 'Pretendard';
   font-size: 20px;
   font-weight: 300;
+
+  resize: none;
 `;
 
 const DatePickerContainer = styled.div`

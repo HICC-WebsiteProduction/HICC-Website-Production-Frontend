@@ -1,10 +1,16 @@
 import styled from 'styled-components';
-import etc from '../../images/etc.png';
+import { useNavigate } from 'react-router-dom';
 
 export default function RecentNewsContents(props) {
+  const navigate = useNavigate();
+  console.log(props.data.img);
   return (
-    <ContentContainer>
-      <Image src={etc}></Image>
+    <ContentContainer
+      onClick={() => {
+        navigate(props.data.url);
+      }}
+    >
+      <Image src={props.data.img}></Image>
       <SubTitleContainer>
         <SubTitle>{props.data.title}</SubTitle>
         <SubDate>{props.data.date}</SubDate>
@@ -18,6 +24,7 @@ const ContentContainer = styled.div`
   position: relative;
   width: 786px;
   height: 200px;
+  cursor: pointer;
 `;
 
 const Image = styled.img`
@@ -75,7 +82,7 @@ const SubDate = styled.div`
 const SubContent = styled.div`
   position: absolute;
   width: 457px;
-  height: 124px;
+  //height: 120px;
   top: 61px;
   left: 316px;
   font-family: Pretendard;
@@ -85,4 +92,9 @@ const SubContent = styled.div`
   letter-spacing: 0em;
   text-align: left;
   color: #edf0f8;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
 `;
