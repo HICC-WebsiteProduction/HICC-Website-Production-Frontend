@@ -261,6 +261,8 @@ const Input = styled.textarea`
   font-family: 'Pretendard';
   font-size: 20px;
   font-weight: 300;
+
+  resize: none;
 `;
 
 const DatePickerContainer = styled.div`
