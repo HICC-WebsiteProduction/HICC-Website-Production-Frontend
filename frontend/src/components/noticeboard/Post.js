@@ -234,12 +234,13 @@ const PostBox = styled.div`
 `;
 
 const WriteButton = styled.button`
-  width: 102px;
-  height: 40px;
+  width: 100px;
+  height: 45px;
   background-color: ${theme.colors.blue};
   border: none;
-  border-radius: 10px;
+  border-radius: 40px;
   color: ${theme.colors.white};
+  ${theme.fontstyle.body4};
   &:hover {
     cursor: pointer;
   }
@@ -256,9 +257,7 @@ const TitleContainer = styled.div`
 
 const NoticeBoardHeader = styled.h2`
   color: ${theme.colors.white};
-  font-family: 'GmarketSansMedium';
-  font-weight: 500;
-  font-size: ${theme.fontSizes.title};
+  ${theme.fontstyle.head2};
 `;
 
 const FilterContainer = styled.div`
@@ -283,10 +282,7 @@ const KeywordSearch = styled.input`
   outline: none;
 
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-weight: 300;
-  font-size: ${theme.fontSizes.paragraph};
-  line-height: 150%;
+  ${theme.fontstyle.body6};
 
   &::placeholder {
     color: ${theme.colors.white};
@@ -300,10 +296,7 @@ const SearchButton = styled(Button)`
 
   border-radius: 40px;
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-weight: 500;
-  font-size: ${theme.fontSizes.paragraph};
-  line-height: 150%;
+  ${theme.fontstyle.body4};
   &:active {
     opacity: 0.3;
   }

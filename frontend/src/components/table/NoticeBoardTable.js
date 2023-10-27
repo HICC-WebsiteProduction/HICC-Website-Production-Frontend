@@ -50,9 +50,7 @@ const NoticeBoardTableHeader = styled.div`
   border-top: 2px solid #edf0f8;
   border-bottom: 1px solid #edf0f8;
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.paragraph};
-  line-height: 150%;
+  ${theme.fontstyle.body4};
 
   text-align: center;
 `;
@@ -62,8 +60,6 @@ const No = styled.div`
   justify-content: center;
   align-items: center;
   width: 50px;
-  line-height: 150%;
-  font-weight: 500;
 `;
 
 const Title = styled.div`
@@ -71,8 +67,6 @@ const Title = styled.div`
   justify-content: center;
   align-items: center;
   width: 770px;
-  line-height: 150%;
-  font-weight: 500;
 `;
 
 const Writer = styled.div`
@@ -80,8 +74,6 @@ const Writer = styled.div`
   justify-content: center;
   align-items: center;
   width: 200px;
-  line-height: 150%;
-  font-weight: 300;
 `;
 
 const WriteDate = styled.div`
@@ -89,8 +81,6 @@ const WriteDate = styled.div`
   justify-content: center;
   align-items: center;
   width: 100px;
-  line-height: 150%;
-  font-weight: 300;
 `;
 
 const NoticeBoardTableBody = styled.div`

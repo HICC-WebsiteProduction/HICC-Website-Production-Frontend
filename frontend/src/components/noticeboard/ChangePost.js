@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-const pixelToRem = size => `${size / 16}rem`;
-
 // 새 글 작성 컴포넌트
 export default function ChangePost(props) {
   const [title, setTitle] = useState('');
@@ -67,7 +65,7 @@ export default function ChangePost(props) {
 const NewPostContainer = styled.div`
   width: 80%;
   margin: 0 auto;
-  padding: ${pixelToRem(20)};
+  padding: 20px;
   border: 1px solid ${theme.colors.gray};
 `;
 // 새 글 작성 제목
@@ -76,7 +74,7 @@ const NewPostTitle = styled.h2`
 `;
 // 입력 박스
 const InputBox = styled.div`
-  margin-bottom: ${pixelToRem(10)};
+  margin-bottom: 10px;
 `;
 // 입력 라벨
 const InputLabel = styled.label`
@@ -89,15 +87,15 @@ const Input = styled.input`
 // 텍스트 영역
 const TextArea = styled.textarea`
   width: 100%;
-  height: ${pixelToRem(200)};
+  height: 200px;
 `;
 // 버튼
 const Button = styled.button`
-  width: ${pixelToRem(102)};
-  height: ${pixelToRem(40)};
+  width: 102px;
+  height: 40px;
   background-color: ${theme.colors.blue};
   border: none;
-  border-radius: ${pixelToRem(10)};
+  border-radius: 10px;
   color: ${theme.colors.white};
   &:hover {
     cursor: pointer;

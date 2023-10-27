@@ -26,10 +26,7 @@ const FilterContainer = styled.select`
   outline: none;
 
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-weight: 500;
-  font-size: ${theme.fontSizes.paragraph};
-  line-height: 150%;
+  ${theme.fontstyle.body3};
 `;
 
 const Option = styled.option`
@@ -38,8 +35,5 @@ const Option = styled.option`
   padding: 10px;
 
   color: ${theme.colors.black};
-  font-family: 'Pretendard';
-  font-weight: 300;
-  font-size: ${theme.fontSizes.paragraph};
-  line-height: 150%;
+  ${theme.fontstyle.body6};
 `;

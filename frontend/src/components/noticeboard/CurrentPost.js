@@ -108,8 +108,8 @@ export default function CurrentPost(props) {
             <ButtonContainer>
               <Button onClick={() => navigate(-1)}>목록으로</Button>
               <ChangeDelete>
-                <Button onClick={() => changingPost()}>수정</Button>
-                <Button onClick={() => deletePost(id)}>삭제</Button>
+                <MCButton onClick={() => changingPost()}>수정</MCButton>
+                <MCButton onClick={() => deletePost(id)}>삭제</MCButton>
               </ChangeDelete>
             </ButtonContainer>
           </PostContainer>
@@ -173,10 +173,7 @@ const PostTitle = styled.h1`
   margin-bottom: 1rem;
 
   color: ${theme.colors.white};
-  font-size: ${theme.fontSizes.subtitle};
-  font-family: 'GmarketSansMedium';
-  font-weight: 500;
-  line-height: 120%;
+  ${theme.fontstyle.head3};
 `;
 
 const PostWriterContainer = styled.div`
@@ -203,26 +200,17 @@ const PostWriterInfo = styled.div``;
 
 const PostWriterNickname = styled.div`
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-weight: 600;
-  font-size: ${theme.fontSizes.label};
-  line-height: 150%;
+  ${theme.fontstyle.body1};
 `;
 
 const PostWriterGrade = styled.div`
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-weight: 300;
-  font-size: ${theme.fontSizes.font_normal};
-  line-height: 150%;
+  ${theme.fontstyle.body11};
 `;
 
 const PostModifyTime = styled.div`
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-weight: 300;
-  font-size: ${theme.fontSizes.font_normal};
-  line-height: 150%;
+  ${theme.fontstyle.body11};
 `;
 
 const PostContent = styled.p`
@@ -233,27 +221,43 @@ const PostContent = styled.p`
   border-radius: 0px 0px 20px 20px;
 
   color: #000;
-  font-family: 'Pretendard';
-  font-weight: 300;
-  font-size: ${theme.fontSizes.paragraph};
-  line-height: 120%;
+  ${theme.fontstyle.body6};
   overflow: auto;
 `;
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-top: 20px;
 `;
 const ChangeDelete = styled.div`
   flex-direction: row;
 `;
 
 const Button = styled.button`
-  width: 102px;
+  width: 125px;
   height: 40px;
-  background-color: ${theme.colors.blue};
+  background-color: ${theme.colors.white};
   border: none;
-  border-radius: 10px;
-  color: ${theme.colors.white};
+  border-radius: 40px;
+  color: ${theme.colors.black};
+  ${theme.fontstyle.body6};
+  &:hover {
+    cursor: pointer;
+  }
+  &:active {
+    opacity: 0.3;
+  }
+`;
+
+const MCButton = styled.button`
+  width: 85px;
+  height: 40px;
+  background-color: ${theme.colors.white};
+  margin-left: 10px;
+  border: none;
+  border-radius: 40px;
+  color: ${theme.colors.black};
+  ${theme.fontstyle.body6};
   &:hover {
     cursor: pointer;
   }
@@ -270,10 +274,7 @@ const CommentContainer = styled.div`
 const Header = styled.h1`
   display: flex;
   color: ${theme.colors.white};
-  font-family: 'GmarketSansMedium';
-  font-weight: 500;
-  font-size: ${theme.fontSizes.title};
-  line-height: 100%;
+  ${theme.fontstyle.head2};
 `;
 
 const Icon = styled.div`
@@ -305,10 +306,7 @@ const Writer = styled.div`
   margin-right: 10px;
   color: ${theme.colors.white};
 
-  font-family: 'Pretendard';
-  font-weight: 500;
-  font-size: ${theme.fontSizes.paragraph};
-  line-height: 150%;
+  ${theme.fontstyle.body8};
 `;
 
 const WriterGrade = styled.div`
@@ -316,10 +314,7 @@ const WriterGrade = styled.div`
   border: 1px solid ${theme.colors.white};
   color: ${theme.colors.white};
 
-  font-family: 'Pretendard';
-  font-weight: 300;
-  font-size: ${theme.fontSizes.font_normal};
-  line-height: 150%;
+  ${theme.fontstyle.body11};
 `;
 
 const WriteInput = styled.textarea`
@@ -335,11 +330,7 @@ const WriteInput = styled.textarea`
   resize: none;
 
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-weight: 300;
-  font-size: ${theme.fontSizes.paragraph};
-  line-height: 150%;
-
+  ${theme.fontstyle.body9};
   &::placeholder {
     color: ${theme.colors.blue};
   }
@@ -359,11 +350,6 @@ const EnrollButton = styled.button`
   border: none;
 
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-weight: 300;
-  font-size: ${theme.fontSizes.paragraph};
-  line-height: 150%;
-
   &:hover {
     cursor: pointer;
   }
@@ -372,9 +358,13 @@ const EnrollButton = styled.button`
   }
 `;
 
-const NumOfCharacter = styled.div``;
+const NumOfCharacter = styled.div`
+  ${theme.fontstyle.body9};
+`;
 
-const EnrollMent = styled.div``;
+const EnrollMent = styled.div`
+  ${theme.fontstyle.body3};
+`;
 
 const ListWrapper = styled.div`
   display: flex;
@@ -387,18 +377,12 @@ const ListContainer = styled.div``;
 const WritenTime = styled.div`
   margin-left: 10px;
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-weight: 300;
-  font-size: ${theme.fontSizes.paragraph};
-  line-height: 150%;
+  ${theme.fontstyle.body9};
 `;
 
 const Content = styled.p`
   margin-top: 8px;
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-weight: 300;
-  font-size: ${theme.fontSizes.paragraph};
-  line-height: 150%;
+  ${theme.fontstyle.body9};
   white-space: pre-line;
 `;

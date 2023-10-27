@@ -142,30 +142,30 @@ const ProfilePicture = styled.img`
   border-radius: 50%;
 `;
 
-const SelectProfile = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 180px;
-  height: 60px;
-  background: ${theme.colors.blue};
-  border-radius: 20px;
-  margin-top: 30px;
-  outline: none;
+// const SelectProfile = styled.button`
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   width: 180px;
+//   height: 60px;
+//   background: ${theme.colors.blue};
+//   border-radius: 20px;
+//   margin-top: 30px;
+//   outline: none;
 
-  color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-weight: 600;
-  font-size: ${theme.fontSizes.label};
-  line-height: 150%;
+//   color: ${theme.colors.white};
+//   font-family: 'Pretendard';
+//   font-weight: 600;
+//   font-size: ${theme.fontSizes.label};
+//   line-height: 150%;
 
-  &:hover {
-    cursor: pointer;
-  }
-  &:active {
-    opacity: 0.3;
-  }
-`;
+//   &:hover {
+//     cursor: pointer;
+//   }
+//   &:active {
+//     opacity: 0.3;
+//   }
+// `;
 
 const ButtonContainer = styled.div`
   position: absolute;
@@ -183,10 +183,7 @@ const EditButton = styled.button`
   outline: none;
 
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-weight: 600;
-  font-size: ${theme.fontSizes.label};
-  line-height: 150%;
+  ${theme.fontstyle.body1};
 
   &:hover {
     cursor: pointer;
@@ -195,28 +192,28 @@ const EditButton = styled.button`
     opacity: 0.5;
   }
 `;
-const WithdrawalButton = styled.button`
-  width: 786px;
-  height: 60px;
-  margin-bottom: 50px;
-  border: none;
-  border-radius: 20px;
-  background: ${theme.colors.cancleRed};
-  outline: none;
+// const WithdrawalButton = styled.button`
+//   width: 786px;
+//   height: 60px;
+//   margin-bottom: 50px;
+//   border: none;
+//   border-radius: 20px;
+//   background: ${theme.colors.cancleRed};
+//   outline: none;
 
-  color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-weight: 600;
-  font-size: ${theme.fontSizes.label};
-  line-height: 150%;
+//   color: ${theme.colors.white};
+//   font-family: 'Pretendard';
+//   font-weight: 600;
+//   font-size: ${theme.fontSizes.label};
+//   line-height: 150%;
 
-  &:hover {
-    cursor: pointer;
-  }
-  &:active {
-    opacity: 0.3;
-  }
-`;
+//   &:hover {
+//     cursor: pointer;
+//   }
+//   &:active {
+//     opacity: 0.3;
+//   }
+// `;
 
 const ProfileInput = styled.button`
   width: 180px;
@@ -227,11 +224,7 @@ const ProfileInput = styled.button`
   background: ${theme.colors.blue};
   color: ${theme.colors.white};
   text-align: center;
-  font-family: Pretendard;
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 150%; /* 36px */
+  ${theme.fontstyle.body1};
   &:hover {
     cursor: pointer;
   }
@@ -262,11 +255,7 @@ const WithdrawButton = styled.button`
   background: #ff9494;
   color: #edf0f8;
   text-align: center;
-  font-family: Pretendard;
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 150%; /* 36px */
+  ${theme.fontstyle.body1};
   &:hover {
     cursor: pointer;
   }
@@ -286,11 +275,7 @@ const InputRow = styled.div`
 const Label = styled.label`
   width: 204px;
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-style: normal;
-  font-weight: 600;
-  line-height: 150%;
-  font-size: ${theme.fontSizes.label};
+  ${theme.fontstyle.body1};
 `;
 
 const InputRowContent = styled.div`
@@ -308,10 +293,7 @@ const Input = styled.input`
   margin: 18px 24px;
   background-color: ${theme.colors.white};
   border: none;
-  font-family: 'Pretendard';
-  font-style: normal;
-  font-weight: 600;
-  font-size: ${theme.fontSizes.font_normal};
+  ${theme.fontstyle.body10};
   &:focus {
     outline: none;
   }
@@ -323,9 +305,7 @@ const CheckDuplicate = styled(Button)`
   border-radius: 20px;
 
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-weight: 600;
-  font-size: ${theme.fontSizes.font_normal};
+  ${theme.fontstyle.body11};
   &:active {
     opacity: 0.5;
   }
