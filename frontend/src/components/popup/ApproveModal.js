@@ -116,9 +116,7 @@ const ApplyCabinetModalContainer = styled.div`
 
 const Header = styled.header`
   color: ${theme.colors.white};
-  font-family: 'GmarketSansMedium';
-  font-weight: 500;
-  font-size: 32px;
+  ${theme.fontstyle.head3};
   text-align: center;
 `;
 
@@ -138,9 +136,7 @@ const Label = styled.div`
   width: 126px;
   margin-right: 20px;
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-weight: 300;
-  font-size: ${theme.fontSizes.font_normal};
+  ${theme.fontstyle.body12};
 `;
 
 const Input = styled.input`
@@ -150,9 +146,7 @@ const Input = styled.input`
   border: none;
   outline: none;
 
-  font-family: 'Pretendard';
-  font-weight: 500;
-  font-size: ${theme.fontSizes.font_normal};
+  ${theme.fontstyle.body10};
   text-align: left;
 `;
 

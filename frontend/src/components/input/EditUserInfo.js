@@ -99,7 +99,11 @@ const EditUserInfoWrapper = styled.div`
 `;
 
 const InputForm = styled.form`
-  ${theme.flexbox.flexCenterColumn}
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
   position: relative;
   width: 540px;
   margin: 0 auto;

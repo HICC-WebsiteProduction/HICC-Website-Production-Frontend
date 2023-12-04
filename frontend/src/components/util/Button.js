@@ -22,10 +22,7 @@ const ButtonDesign = styled.button`
   border: none;
   border-radius: 20px;
   color: ${theme.colors.white};
-  font-family: 'Pretendard', sans-serif;
-  font-style: normal;
-  font-weight: 600;
-  font-size: ${theme.fontSizes.label};
+  ${theme.fontstyle.body1};
   &:hover {
     cursor: pointer;
   }

@@ -1,12 +1,12 @@
 import { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
-import theme from './Theme';
 
 import Pretendard_SemiBold from './fonts/Pretendard/Pretendard-SemiBold.woff2';
 import Pretendard_Light from './fonts/Pretendard/Pretendard-Light.woff2';
 import Pretendard_Medium from './fonts/Pretendard/Pretendard-Medium.woff2';
 import SCDream8 from './fonts/SCDream/SCDream8.woff2';
 import GmarketSansMedium from './fonts/GmarketSans/GmarketSansMedium.woff2';
+import GmarketSansLight from './fonts/GmarketSans/GmarketSansLight.woff2';
 
 const GlobalStyle = createGlobalStyle`
     ${reset};
@@ -33,17 +33,24 @@ const GlobalStyle = createGlobalStyle`
     }
 
     @font-face {
-        font-family: 'SCDream';
-        src: local('SCDream 800'),
+        font-family: 'S-Core Dream';
+        src: local('SCDream'),
         url(${SCDream8}) format('woff2');
         font-weight: 800;
     }
 
     @font-face {
-        font-family: 'GmarketSansMedium';
+        font-family: 'Gmarket Sans';
         src: local('GmarketSansMedium'),
         url(${GmarketSansMedium}) format('woff2');
         font-weight: 500;
+    }
+
+    @font-face {
+        font-family: 'Gmarket Sans';
+        src: local('GmarketSansLight'),
+        url(${GmarketSansLight}) format('woff2');
+        font-weight: 300;
     }
 
     *{

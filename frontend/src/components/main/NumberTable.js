@@ -2,22 +2,23 @@ import { React, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import useScrollCount from '../../hook/useScrollCount';
 import useFetch from '../../hook/useFetch';
+import moment from 'moment';
 
 export default function NumberTable() {
   const { data, loading } = useFetch('/table');
-  const [operations, setOperations] = useState(1);
   const [members, setMembers] = useState(1);
+
+  const operations = moment().year() - 1971;
 
   useEffect(() => {
     if (!loading) {
-      setOperations(data.operations);
       setMembers(data.members);
     }
   }, [data, loading]);
 
   const countItem = {
     0: useScrollCount(1972, 1900, 1000),
-    1: useScrollCount(operations, 0, 0, 1200),
+    1: useScrollCount(operations, 0, 1000),
     2: useScrollCount(members, 0, 1700),
   };
 

@@ -121,7 +121,7 @@ function MemberAuthorizeWindow(props) {
             <td>이름</td>
             <td>학번</td>
             <td>전공</td>
-            <td>닉네임</td>
+            <Nickname>닉네임</Nickname>
             <td>연락처</td>
             <td>
               <Checkbox
@@ -165,7 +165,7 @@ export default MemberAuthorizeWindow;
 
 const MemberAuthorizeContainer = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 100%;
 `;
 
 const MemberAuthorizeListTitle = styled.span`
@@ -173,9 +173,7 @@ const MemberAuthorizeListTitle = styled.span`
   padding-bottom: 10px;
   border-bottom: 3px solid #3cda5b;
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-weight: 600;
-  font-size: ${theme.fontSizes.label};
+  ${theme.fontstyle.head9};
 `;
 
 const Indicator = styled.div`
@@ -201,8 +199,6 @@ const WaitingMemberContainer = styled.table`
   td {
     text-align: center;
     vertical-align: middle;
-
-    font-size: ${theme.fontSizes.paragraph};
   }
 `;
 
@@ -211,10 +207,11 @@ const WaitingMemberHeader = styled.thead`
   border-bottom: 1px solid ${theme.colors.white};
   color: ${theme.colors.white};
 
-  font-family: 'Pretendard';
-  font-weight: 600;
-  text-align: center;
-  font-size: ${theme.fontSizes.paragraph};
+  ${theme.fontstyle.body5};
+`;
+
+const Nickname = styled.td`
+  opacity: 0.7;
 `;
 
 const WaitingMemberList = styled.tbody``;
@@ -233,11 +230,9 @@ const ActionButtonContainer = styled.div`
     margin: 60px;
     border: 0;
     border-radius: 10px;
-    color: white;
+    color: ${theme.colors.white};
 
-    font-family: 'Pretendard';
-    font-weight: 600;
-    font-size: ${theme.fontSizes.label};
+    ${theme.fontstyle.body1};
   }
 `;
 

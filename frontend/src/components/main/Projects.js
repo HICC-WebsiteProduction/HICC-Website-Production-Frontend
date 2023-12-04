@@ -1,27 +1,13 @@
 import styled from 'styled-components';
-import LeftArrow from '../../images/LeftButton.svg';
-import RightArrow from '../../images/RightButton.svg';
 import React from 'react';
 import Slide from './ProjectssList';
-import etc from '../../images/etc.png';
 
 export default function Projects() {
-  const sliders = [
-    {
-      name: '프로젝트 1',
-      image: etc,
-    },
-    {
-      name: '프로젝트 2',
-      image: etc,
-    },
-    // ... 더 많은 서비스 추가
-  ];
   return (
     <Frame>
       <Title>프로젝트 둘러보기</Title>
       <CenterContainer>
-        <Slide sliders={sliders} />
+        <Slide />
       </CenterContainer>
     </Frame>
   );

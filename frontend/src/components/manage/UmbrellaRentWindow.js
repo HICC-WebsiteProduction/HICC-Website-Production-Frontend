@@ -14,7 +14,7 @@ function UmbrellaRentWindow(props) {
   const [umbrellaList, setUmbrellaList] = useRecoilState(umbrella); // 우산 리스트
   const resetUmbrella = useResetRecoilState(umbrella); // 우산 상태 초기화
 
-  const { data, loading, error } = useFetch('/umbrella');
+  const { data } = useFetch('/umbrella');
 
   useEffect(() => {
     if (data) {
@@ -73,16 +73,17 @@ function UmbrellaRentWindow(props) {
 
 export default UmbrellaRentWindow;
 
-const UmbrellaRentWindowContainer = styled.div``;
+const UmbrellaRentWindowContainer = styled.div`
+  width: 100%;
+  height: 100%;
+`;
 
 const UmbrellaRentTitle = styled.span`
   position: relative;
   padding-bottom: 10px;
   border-bottom: 3px solid ${theme.colors.green};
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-weight: 600;
-  font-size: ${theme.fontSizes.label};
+  ${theme.fontstyle.head9};
 `;
 
 const Indicator = styled.div`

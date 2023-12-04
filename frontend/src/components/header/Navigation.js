@@ -39,17 +39,13 @@ export default function Navigation(props) {
 
 const NavigationContainer = styled.div`
   width: 100%;
-  height: 160px;
+  height: 100px;
 `;
 
 const AncestorMenu = styled.nav`
   margin-top: 36px;
   text-align: center;
-  font-family: 'GmarketSansMedium', sans-serif;
-  font-style: normal;
-  font-weight: 500;
-  font-size: ${theme.fontSizes.paragraph};
-  line-height: 120%;
+  ${theme.fontstyle.head7};
   text-decoration: none;
 `;
 
@@ -70,19 +66,12 @@ const CurrentMenuTab = styled.nav`
 
 const CurrentMenuTabContents = styled(Link)`
   color: ${theme.colors.white};
-  font-family: ${props => (props.accent ? `GmarketSansMedium` : 'Pretendard')},
-    sans-serif;
-  font-style: normal;
-  font-weight: ${props => (props.accent ? 500 : 300)};
-  font-size: ${theme.fontSizes.title};
-  line-height: 120%;
+  ${props => (props.accent ? theme.fontstyle.head4 : theme.fontstyle.head5)};
   text-decoration: none;
 `;
 
 const VeticalBar = styled.span`
   color: ${theme.colors.white};
-  font-family: sans-serif;
-  font-weight: 100;
-  font-size: ${theme.fontSizes.title};
+  ${theme.fontstyle.head5};
   text-decoration: none;
 `;

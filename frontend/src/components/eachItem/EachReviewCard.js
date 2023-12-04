@@ -48,9 +48,7 @@ const User = styled.img`
 
 const Nickname = styled.div`
   color: ${theme.colors.black};
-  font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.paragraph};
-  font-weight: 300;
+  ${theme.fontstyle.body5};
   text-align: center;
 `;
 
@@ -61,9 +59,6 @@ const ReviewContent = styled.div`
 const Content = styled.p`
   margin: 8px 6px;
   color: ${theme.colors.black};
-  font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.paragraph};
-  font-weight: 600;
-  line-height: 140%;
+  ${theme.fontstyle.body3};
   white-space: pre-line;
 `;

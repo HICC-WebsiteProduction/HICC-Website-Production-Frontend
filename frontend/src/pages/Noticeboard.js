@@ -60,6 +60,6 @@ const NoticeBoardContainer = styled.div`
 
 const BoardBox = styled.div`
   width: ${theme.componentSize.maxWidth};
-  height: 100vh;
+  height: 100%;
   margin: 0 auto;
 `;

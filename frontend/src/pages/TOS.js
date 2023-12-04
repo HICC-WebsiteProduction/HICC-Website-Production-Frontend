@@ -22,13 +22,7 @@ function TOS() {
   // 처음 클릭 전에는 경고 알림 보이지 않게 하기위해
   const setIsAgree = useSetRecoilState(agree); // 약관 동의 상태 설정
 
-  const {
-    checkboxList,
-    setCheckboxList,
-    checkAll,
-    checkAllHandler,
-    checkHandler,
-  } = useCheckbox([
+  const { checkboxList, checkAll, checkHandler } = useCheckbox([
     { id: 'head', isChecked: false },
     { id: 'agree', isChecked: false },
   ]);
@@ -92,10 +86,7 @@ const HeadNumber = styled.div`
   width: 783px;
   margin: 40px auto;
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.label};
-  font-weight: 300;
-  line-height: 150%;
+  ${theme.fontstyle.body2};
 `;
 
 const Confirm = styled.div`
@@ -111,21 +102,14 @@ const AlertIcon = styled.div`
   display: ${props => (props.view ? 'block' : 'none')};
   position: absolute;
   right: -40px;
-  color: #ff9494;
-  font-family: 'Pretendard', sans-serif;
-  font-weight: 300;
-  line-height: 150%;
-  font-size: ${theme.fontSizes.label};
+  color: ${theme.colors.error};
+  ${theme.fontstyle.body1};
   white-space: nowrap;
 `;
 
 const Text = styled.div`
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.label};
-
-  font-weight: 600;
-  line-height: 150%;
+  ${theme.fontstyle.body1};
 `;
 
 const TOSDesc = styled.div`
@@ -136,9 +120,7 @@ const TOSDesc = styled.div`
   background-color: ${theme.colors.white};
   border-radius: 20px;
 
-  font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.font_normal};
-  font-weight: 300;
+  ${theme.fontstyle.body11};
 
   white-space: pre-line;
   line-height: 150%;

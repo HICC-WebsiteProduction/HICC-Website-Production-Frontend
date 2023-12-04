@@ -57,13 +57,9 @@ function CalendarBox(props) {
     }
   };
 
-  // const dayPlans = data2.filter(
-  //   plan => moment(plan.date).date() === props.date,
-  // );
   const dayPlans = props.data.filter(
     plan => moment(plan.date).date() === props.date,
   );
-  // const dayPlans = data.filter(plan => moment(plan.date).date() === props.date);
 
   if (dayPlans.length > 5) {
     return (
@@ -90,6 +86,7 @@ function CalendarBox(props) {
             .slice(4, dayPlans.length)
             .map(plan => (
               <CalenderPlan2
+                id={plan.id}
                 title={plan.title}
                 scheduleType={plan.scheduleType}
                 date={plan.date}
@@ -100,24 +97,7 @@ function CalendarBox(props) {
         {planModalOpen && (
           <CalendarPlanButton onClick={showModal}>{'△'}</CalendarPlanButton>
         )}
-        {/*{dayPlans.length > 4 && (*/}
-        {/*  <CalendarPlan key="{plan}">{'· · · · ·'}</CalendarPlan>*/}
-        {/*)}*/}
       </CalendarBox2>
-      // <CalendarBox2>
-      //   <CalendarDate isSunday={props.isSunday}>{props.date}</CalendarDate>
-      //   {dayPlans.slice(0, 4).map(plan => (
-      //     <CalenderPlan2
-      //       title={plan.title}
-      //       scheduleType={plan.scheduleType}
-      //       date={plan.date}
-      //       description={plan.description}
-      //     />
-      //   ))}
-      //   {dayPlans.length > 4 && (
-      //     <CalendarPlan key="{plan}">{'· · · · ·'}</CalendarPlan>
-      //   )}
-      // </CalendarBox2>
     );
   }
 
@@ -272,6 +252,7 @@ const CalendarTopContent = styled.div`
 
 const AddScheduleModal = styled.div`
   color: ${theme.colors.white};
+  cursor: pointer;
 
   font-family: 'Pretendard';
   font-style: normal;

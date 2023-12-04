@@ -140,11 +140,7 @@ const CabinetNumber = styled.div`
   width: 26px;
   margin: 60px 16px;
   color: ${props => theme.itemColorByState.number[props.status]};
-  font-family: 'GmarketSansMedium', sans-serif;
-  font-style: normal;
-  font-weight: 500;
-  font-size: ${theme.fontSizes.subtitle};
-  line-height: 100%;
+  ${theme.fontstyle.head3};
 `;
 
 const CabinetDesc = styled.div`
@@ -158,7 +154,6 @@ const CabinetRentStatus = styled.div`
   margin-bottom: 8px;
 `;
 
-// color 테마에 넣어야한다.
 const CabinetRentCircleStatus = styled.div`
   width: 20px;
   height: 20px;
@@ -173,20 +168,12 @@ const CabinetRentStatusMent = styled.div`
   width: 133px;
   padding-top: 3px;
   color: ${props => theme.itemColorByState.itemStatus[props.status]};
-  font-family: 'GmarketSansMedium', sans-serif;
-  font-style: normal;
-  font-weight: 500;
-  font-size: ${theme.fontSizes.label};
-  line-height: 24px;
+  ${theme.fontstyle.head6};
 `;
 
 const DayInfo = styled.div`
   margin: 8px 0;
-  font-family: 'Pretendard';
-  font-style: normal;
-  font-weight: 300;
-  font-size: ${theme.fontSizes.font_normal};
-  line-height: 100%;
+  ${theme.fontstyle.body12};
 `;
 
 const StartDay = styled.div`
@@ -202,11 +189,8 @@ const EndDay = styled.div`
 const ApproveManager = styled.div`
   margin-bottom: 8px;
   color: ${props => theme.itemColorByState.itemStatus[props.status]};
-  font-family: 'Pretendard';
-  font-style: normal;
-  font-weight: 300;
-  font-size: ${theme.fontSizes.font_normal};
-  line-height: 110%;
+  ${theme.fontstyle.body12};
+
   text-align: center;
   white-space: pre-line;
 `;
@@ -221,9 +205,7 @@ const RentButton = styled.div`
   border-radius: 20px;
 
   color: ${theme.colors.white};
-  font-weight: 300;
-  font-size: ${theme.fontSizes.font_normal};
-  line-height: 21px;
+  ${theme.fontstyle.body9};
 
   &:hover {
     cursor: pointer;
@@ -233,30 +215,26 @@ const RentButton = styled.div`
 const Lender = styled.div`
   width: 160px;
   height: 40px;
-  padding-top: 9px;
+  padding-top: 6px;
   background-color: ${theme.colors.grey};
   border-radius: 20px;
 
   color: ${theme.colors.black};
-  font-family: 'Pretendard';
-  font-weight: 300;
-  font-size: ${theme.fontSizes.font_normal};
-  line-height: 21px;
+  ${theme.fontstyle.body9};
+
   text-align: center;
 `;
 
 const WaitingApprove = styled.div`
   width: 160px;
   height: 40px;
-  padding-top: 9px;
+  padding-top: 6px;
   background-color: ${theme.itemColorByState.button.wating};
   border-radius: 20px;
 
   color: ${theme.colors.black};
-  font-family: 'Pretendard';
-  font-weight: 300;
-  font-size: ${theme.fontSizes.font_normal};
-  line-height: 21px;
+  ${theme.fontstyle.body9};
+
   text-align: center;
 `;
 
@@ -268,11 +246,7 @@ const ReturnCabinetButton = styled.button`
   border: none;
   border-radius: 20px;
   color: ${theme.colors.white};
-  font-family: 'Pretendard', sans-serif;
-  font-style: normal;
-  font-weight: 300;
-  font-size: ${theme.fontSizes.font_normal};
-  line-height: 21px;
+  ${theme.fontstyle.body9};
 
   &:hover {
     cursor: pointer;

@@ -34,7 +34,7 @@ const Frame = styled.div`
 
 const Content = styled.div`
   position: absolute;
-  width: 1200px;
+  width: 100%;
   height: 400px;
 `;
 

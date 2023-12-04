@@ -20,7 +20,7 @@ function EachWaitingMember(props) {
       <td>{name}</td>
       <td>{id}</td>
       <td>{major}</td>
-      <td>{nickname}</td>
+      <Nickname>{nickname}</Nickname>
       <td>{phoneNumber}</td>
       <td>
         <Checkbox value={id} checked={isChecked} onChange={changeSelect} />
@@ -34,10 +34,12 @@ const MemberPresenter = styled.tr`
   border-bottom: 1px solid ${theme.colors.white};
 
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-weight: 300;
-  font-size: ${theme.fontSizes.paragraph};
+  ${theme.fontstyle.body7};
   text-align: center;
+`;
+
+const Nickname = styled.td`
+  opacity: 0.7;
 `;
 
 export default EachWaitingMember;

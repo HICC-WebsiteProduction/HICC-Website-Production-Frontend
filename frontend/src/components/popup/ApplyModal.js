@@ -189,9 +189,7 @@ const ApplyCabinetModalContainer = styled.div`
 
 const Header = styled.header`
   color: ${theme.colors.white};
-  font-family: 'GmarketSansMedium';
-  font-weight: 500;
-  font-size: 32px;
+  ${theme.fontstyle.head3};
   text-align: center;
 `;
 
@@ -213,9 +211,7 @@ const Label = styled.div`
   width: 126px;
   margin-right: 20px;
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-weight: 300;
-  font-size: ${theme.fontSizes.font_normal};
+  ${theme.fontstyle.body12};
 `;
 
 const Input = styled.input`
@@ -225,9 +221,7 @@ const Input = styled.input`
   border: none;
   outline: none;
 
-  font-family: 'Pretendard';
-  font-weight: 500;
-  font-size: ${theme.fontSizes.font_normal};
+  ${theme.fontstyle.body10};
   text-align: left;
 `;
 
@@ -245,11 +239,7 @@ const DateShow = styled.div`
 
   width: 100%;
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.font_normal};
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
+  ${theme.fontstyle.body10};
 `;
 
 const Day = styled.span`
@@ -259,11 +249,7 @@ const Day = styled.span`
   background: ${props => (!props.end ? theme.colors.white : 'transperent')};
 
   color: ${props => (!props.end ? theme.colors.pureBlack : theme.colors.blue)};
-  font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.font_normal};
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
+  ${theme.fontstyle.body10};
 `;
 
 const DatePickerButton = styled.button`

@@ -165,7 +165,7 @@ function MemberInfoWindow(props) {
             <td>이름</td>
             <td>학번</td>
             <td>전공</td>
-            <td>닉네임</td>
+            <Nickname>닉네임</Nickname>
             <td>연락처</td>
             <td>
               <Checkbox
@@ -221,16 +221,17 @@ function MemberInfoWindow(props) {
 
 export default MemberInfoWindow;
 
-const MemberInfoContainer = styled.div``;
+const MemberInfoContainer = styled.div`
+  width: 100%;
+  height: 100%;
+`;
 
 const MemberListTitle = styled.span`
   position: relative;
   padding-bottom: 10px;
   border-bottom: 3px solid ${theme.colors.green};
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-weight: 600;
-  font-size: ${theme.fontSizes.label};
+  ${theme.fontstyle.head9};
 `;
 
 const Indicator = styled.div`
@@ -256,8 +257,6 @@ const MemberContainer = styled.table`
   td {
     text-align: center;
     vertical-align: middle;
-
-    font-size: ${theme.fontSizes.paragraph};
   }
 `;
 
@@ -266,10 +265,11 @@ const MemberHeader = styled.thead`
   border-bottom: 1px solid ${theme.colors.white};
   color: ${theme.colors.white};
 
-  font-family: 'Pretendard';
-  font-weight: 600;
-  text-align: center;
-  font-size: ${theme.fontSizes.paragraph};
+  ${theme.fontstyle.body5};
+`;
+
+const Nickname = styled.td`
+  opacity: 0.7;
 `;
 
 const MemberList = styled.tbody``;
@@ -290,9 +290,7 @@ const ActionButtonContainer = styled.div`
     border-radius: 10px;
     color: white;
 
-    font-family: 'Pretendard';
-    font-weight: 600;
-    font-size: ${theme.fontSizes.label};
+    ${theme.fontstyle.body1};
   }
 `;
 
@@ -309,9 +307,7 @@ const ChangeGradeSelect = styled.select`
 
 const GradeOption = styled.option`
   color: ${theme.colors.black};
-  font-family: 'Pretendard';
-  font-weight: 600;
-  font-size: ${theme.fontSizes.label};
+  ${theme.fontstyle.body1};
 `;
 
 const ModifyButton = styled.button`
@@ -345,10 +341,7 @@ const KeywordSearch = styled.input`
   outline: none;
 
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-weight: 300;
-  font-size: ${theme.fontSizes.paragraph};
-  line-height: 150%;
+  ${theme.fontstyle.body6};
 
   &::placeholder {
     color: ${theme.colors.white};
@@ -363,8 +356,5 @@ const SearchButton = styled(Button)`
   background-color: ${theme.colors.green};
   border-radius: 40px;
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-weight: 500;
-  font-size: ${theme.fontSizes.paragraph};
-  line-height: 150%;
+  ${theme.fontstyle.body4};
 `;

@@ -103,13 +103,17 @@ const LoginContainer = styled.div`
 `;
 
 const InputForm = styled.form`
-  ${theme.flexbox.flexCenterColumn}
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
   width: 786px;
   margin: 0 auto;
 `;
 
 const ButtonContainer = styled.div`
-  ${theme.flexbox.flex};
+  display: flex;
   position: relative;
   width: 786px;
   margin-top: 74px;
@@ -121,10 +125,7 @@ const InduceJoinMent = styled.span`
   position: absolute;
   top: -30px;
   color: rgba(237, 240, 248, 0.4);
-  font-family: 'Pretendard', sans-serif;
-  font-style: normal;
-  font-weight: 600;
-  font-size: ${theme.fontSizes.font_normal};
+  ${theme.fontstyle.body10};
 `;
 
 const JoinButton = styled(Button)`

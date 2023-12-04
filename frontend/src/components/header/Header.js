@@ -83,17 +83,18 @@ export default function Header({ background }) {
 }
 
 const HeaderContainer = styled.header`
-  ${theme.flexbox.flex};
+  display: flex;
   position: sticky;
   top: 0;
   left: 0;
   right: 0;
   z-index: 100;
   justify-content: space-between;
+
   width: ${theme.componentSize.maxWidth};
   height: 74px;
   margin: 0 auto;
-  padding: 0 ${theme.margin.margin_content};
+  padding: 0 24px;
   transform: rotate(-0.05deg);
   background-color: ${props =>
     props.background ? theme.colors.black : 'transperent'};
@@ -122,17 +123,14 @@ const Menu = styled(Link)`
   margin: 0 6px;
   padding: 0 20px;
   color: ${theme.colors.white};
-  font-size: ${theme.fontSizes.navigation_menu};
-  font-family: 'Pretendard', sans-serif;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 150%;
+  ${theme.fontstyle.body8};
+
   text-decoration: none;
   white-space: nowrap;
 `;
 
 const UserContainer = styled.div`
-  ${theme.flexbox.flex};
+  display: flex;
   justify-content: flex-end;
   align-items: center;
 `;
@@ -141,10 +139,7 @@ const UnreadNoticeCount = styled.div`
   display: ${props => (props.existUnreadNotice ? 'block' : 'none')};
   margin-right: 4px;
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.navigation_menu};
-  font-weight: 600;
-  line-height: 150%;
+  ${theme.fontstyle.body8};
 `;
 
 const NoticeLayerPopupWrapper = styled.div`
@@ -157,11 +152,8 @@ const LoginLink = styled(Link)`
   background-color: transparent;
   border: none;
   color: ${theme.colors.white};
-  font-family: 'Pretendard', sans-serif;
-  font-size: ${theme.fontSizes.navigation_menu};
-  font-style: normal;
-  font-weight: 600;
-  line-height: 150%;
+  ${theme.fontstyle.body8};
+
   text-decoration: none;
   white-space: nowrap;
   &:hover {
@@ -188,11 +180,8 @@ const NoticeIcon = styled(FontAwesomeIcon)`
 
 const MyInfoButton = styled.div`
   color: ${theme.colors.white};
-  font-family: 'Pretendard', sans-serif;
-  font-size: ${theme.fontSizes.navigation_menu};
-  font-style: normal;
-  font-weight: 600;
-  line-height: 150%;
+  ${theme.fontstyle.body8};
+
   text-decoration: none;
   white-space: nowrap;
   &:hover {

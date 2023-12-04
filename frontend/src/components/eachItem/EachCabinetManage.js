@@ -123,11 +123,7 @@ const CabinetNumber = styled.div`
   width: 26px;
   margin: 60px 16px;
   color: ${props => theme.itemColorByState.number[props.status]};
-  font-family: 'GmarketSansMedium', sans-serif;
-  font-style: normal;
-  font-weight: 500;
-  font-size: ${theme.fontSizes.subtitle};
-  line-height: 100%;
+  ${theme.fontstyle.head3};
 `;
 
 const CabinetDesc = styled.div`
@@ -141,7 +137,6 @@ const CabinetRentStatus = styled.div`
   margin-bottom: 8px;
 `;
 
-// color 테마에 넣어야한다.
 const CabinetRentCircleStatus = styled.div`
   width: 20px;
   height: 20px;
@@ -156,20 +151,12 @@ const CabinetRentStatusMent = styled.div`
   width: 133px;
   padding-top: 3px;
   color: ${props => theme.itemColorByState.itemStatus[props.status]};
-  font-family: 'GmarketSansMedium', sans-serif;
-  font-style: normal;
-  font-weight: 500;
-  font-size: ${theme.fontSizes.label};
-  line-height: 24px;
+  ${theme.fontstyle.head6};
 `;
 
 const DayInfo = styled.div`
   margin: 8px 0;
-  font-family: 'Pretendard';
-  font-style: normal;
-  font-weight: 300;
-  font-size: ${theme.fontSizes.font_normal};
-  line-height: 100%;
+  ${theme.fontstyle.body12};
 `;
 
 const StartDay = styled.div`
@@ -188,11 +175,8 @@ const ApproveManager = styled.div`
   margin-bottom: 8px;
   color: ${props =>
     props.status === 'waiting' ? theme.colors.black : theme.colors.grey};
-  font-family: 'Pretendard';
-  font-style: normal;
-  font-weight: 300;
-  font-size: ${theme.fontSizes.font_normal};
-  line-height: 110%;
+  ${theme.fontstyle.body12};
+
   text-align: center;
   white-space: pre-line;
 `;
@@ -206,38 +190,32 @@ const NoWaitingMent = styled.div`
   height: 35px;
   margin-bottom: 8px;
   color: ${theme.colors.black};
-  font-family: 'Pretendard';
-  font-weight: 300;
-  font-size: ${theme.fontSizes.font_normal};
+  ${theme.fontstyle.body12};
   text-align: center;
 `;
 
 const Lender = styled.div`
   width: 160px;
   height: 40px;
-  padding-top: 9px;
+  padding-top: 6px;
   background-color: ${theme.colors.grey};
   border-radius: 20px;
 
   color: ${theme.colors.black};
-  font-family: 'Pretendard';
-  font-weight: 300;
-  font-size: ${theme.fontSizes.font_normal};
+  ${theme.fontstyle.body9};
   text-align: center;
-  line-height: 21px;
 `;
 
 const WaitingApprove = styled(Button)`
   width: 160px;
   height: 40px;
+  padding-top: 2px;
   background-color: ${theme.itemColorByState.button.wating};
   border-radius: 20px;
 
   color: ${theme.colors.black};
-  font-family: 'Pretendard';
-  font-weight: 300;
-  font-size: ${theme.fontSizes.font_normal};
-  line-height: 21px;
+  ${theme.fontstyle.body9};
+
   text-align: center;
 `;
 
@@ -254,9 +232,8 @@ const StateSelectButton = styled.select`
 
   color: ${props =>
     props.status === 'unrent' ? theme.colors.white : theme.colors.black};
-  font-weight: 300;
-  font-size: ${theme.fontSizes.font_normal};
-  line-height: 21px;
+  ${theme.fontstyle.body9};
+
   text-align: center;
 
   -webkit-appearance: none;
@@ -273,9 +250,7 @@ const StateOption = styled.option`
   height: 40px;
   background-color: ${theme.colors.white};
   color: ${theme.colors.black};
-  font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.font_normal};
-  font-weight: 300;
+  ${theme.fontstyle.body12};
 
   &:first-child {
     border-radius: 20px 20px 0px 0px;

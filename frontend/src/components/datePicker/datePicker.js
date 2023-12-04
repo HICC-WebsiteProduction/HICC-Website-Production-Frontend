@@ -44,13 +44,17 @@ export default function CustomDatePicker(props) {
     };
   }, [resetSelectedDate]);
 
+  if (!props.calendar) {
+    props.calendar = new Date();
+  }
+
   return (
     <DatePickerWrapper
       locale={ko}
       dateFormat="yyyy-MM-dd"
       selected={selectedDate}
       open={props.isOpen}
-      minDate={new Date()}
+      minDate={props.calendar}
       onChange={date => handleDaySelect(date)}
       shouldCloseOnSelect={false}
       onMonthChange={handleMonthChange}
@@ -97,10 +101,7 @@ const DatePickerWrapper = styled(DatePicker)`
   background-color: transparent;
 
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 300;
+  ${theme.fontstyle.body7};
 
   outline: none;
 `;
@@ -145,11 +146,7 @@ const CancelButton = styled.button`
   background-color: ${theme.colors.cancleRed};
 
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.paragraph};
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
+  ${theme.fontstyle.body3};
 `;
 
 const SelectButton = styled.button`
@@ -161,11 +158,7 @@ const SelectButton = styled.button`
   background-color: ${theme.colors.blue};
 
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.paragraph};
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
+  ${theme.fontstyle.body3};
 `;
 
 const CustomHeaderContainer = styled.div`
@@ -193,11 +186,7 @@ const ShowSelectYearAndMonth = styled.div`
   text-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
   padding-top: 6px;
 
-  font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.paragraph};
-  font-style: normal;
-  font-weight: 300;
-  line-height: normal;
+  ${theme.fontstyle.body7};
 `;
 
 // date picker top
@@ -213,22 +202,14 @@ const ShowYear = styled.div`
   margin-bottom: 10px;
   color: ${theme.colors.pureBlack};
 
-  font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.paragraph};
-  font-style: normal;
-  font-weight: 300;
-  line-height: normal;
+  ${theme.fontstyle.body7};
   text-align: left;
 `;
 
 const ShowDate = styled.div`
   color: ${theme.colors.pureBlack};
 
-  font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.tab};
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
+  ${theme.fontstyle.head8};
   text-align: left;
 `;
 

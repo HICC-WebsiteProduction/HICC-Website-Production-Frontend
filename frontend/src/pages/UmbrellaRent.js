@@ -118,11 +118,7 @@ const UmbrellaListHeader = styled.header`
   align-items: center;
   margin-bottom: 40px;
   color: ${theme.colors.white};
-  font-family: 'GmarketSansMedium', sans-serif;
-  font-style: normal;
-  font-weight: 500;
-  font-size: ${theme.fontSizes.title};
-  line-height: 100%;
+  ${theme.fontstyle.head2};
 `;
 
 const UmbrellaListHeaderText = styled.h1``;

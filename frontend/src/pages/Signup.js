@@ -27,6 +27,9 @@ function Signup(props) {
 
   const isAgree = useRecoilValue(agree);
 
+  const joinAnnouncementMent = `모든 항목에 응답해주세요.
+  허위로 응답할 시 불이익이 있을 수 있습니다.`;
+
   // 약관동의를 하지 않은 상태에서 바로 회원가입 페이지 접근을 막음
   useEffect(() => {
     if (!isAgree) {
@@ -77,7 +80,7 @@ function Signup(props) {
     <SignupContainer>
       <Title titleName="회원가입" />
       <InputForm onSubmit={handleSubmit(onSubmit)}>
-        <JoinAnnouncementMent>모든 항목에 응답해주세요</JoinAnnouncementMent>
+        <JoinAnnouncementMent>{joinAnnouncementMent}</JoinAnnouncementMent>
         <InputMemberInfo
           labelName="ID"
           name="ID"
@@ -185,7 +188,11 @@ const SignupContainer = styled.div`
 `;
 
 const InputForm = styled.form`
-  ${theme.flexbox.flexCenterColumn}
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
   position: relative;
   width: 786px;
   margin: 0 auto;
@@ -193,18 +200,16 @@ const InputForm = styled.form`
 
 const JoinAnnouncementMent = styled.span`
   position: absolute;
-  top: -35px;
-  right: 0px;
+  top: -85px;
+  right: 32%;
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-style: normal;
-  font-weight: 300;
-  font-size: ${theme.fontSizes.font_normal};
-  line-height: 150%;
+  ${theme.fontstyle.body11};
+  white-space: pre-line;
+  text-align: center;
 `;
 
 const ButtonContainer = styled.div`
-  ${theme.flexbox.flex};
+  display: flex;
   width: 786px;
   margin-top: 74px;
   margin-bottom: 210px;

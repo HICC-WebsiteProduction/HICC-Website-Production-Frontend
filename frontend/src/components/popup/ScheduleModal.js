@@ -122,6 +122,7 @@ export default function ScheduleModal(props) {
               input={props.data.date}
               isOpen={isOpen}
               setIsOpen={setIsOpen}
+              calendar={true}
             />
             <DateIcon icon={faCalendarDays} onClick={openDatePicker} />
           </DatePickerContainer>
@@ -225,7 +226,7 @@ const InputRowLable = styled.div`
   text-align: left;
 `;
 
-const Input = styled.input`
+const Input = styled.textarea`
   width: 580px;
   height: ${props => `${props.height}px`};
   background-color: transparent;
@@ -277,7 +278,7 @@ const DateIcon = styled(FontAwesomeIcon)`
 `;
 
 const ButtonContainer = styled.div`
-  ${theme.flexbox.flex};
+  display: flex;
   width: 100%;
   margin-top: 74px;
   justify-content: flex-end;
