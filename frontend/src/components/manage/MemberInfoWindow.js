@@ -44,7 +44,7 @@ function MemberInfoWindow(props) {
     checkHandler,
   } = useCheckbox([]);
 
-  const { data, loading, error } = useFetch('/admin/member');
+  const { data, loading, error } = useFetch(`/admin/members`);
 
   // 정보 로드
   useEffect(() => {

@@ -17,7 +17,7 @@ import PresidentRoute from './permissionRoute/PresidentRoute';
 import MemberDetail from './components/manage/MemberDetail';
 import UndergraduateRoute from './permissionRoute/UndergraduateRoute';
 import UmbrellaRent from './pages/UmbrellaRent';
-import CabinetRent from './pages/CabinetRent';
+import LockerRent from './pages/LockerRent';
 import CurrentPost from './components/noticeboard/CurrentPost';
 
 function App() {
@@ -74,7 +74,7 @@ function App() {
           }
         />
         <Route
-          path="/rent/umbrellarent"
+          path="/rent/umbrella"
           element={
             <UndergraduateRoute
               authenticated={isLogin}
@@ -84,12 +84,12 @@ function App() {
           }
         />
         <Route
-          path="/rent/cabinetrent"
+          path="/rent/locker"
           element={
             <UndergraduateRoute
               authenticated={isLogin}
               permission={role}
-              component={<CabinetRent />}
+              component={<LockerRent />}
             />
           }
         />

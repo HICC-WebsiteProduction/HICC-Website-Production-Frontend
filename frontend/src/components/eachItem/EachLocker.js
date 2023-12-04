@@ -1,20 +1,17 @@
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { cabinet, cabinetModal } from '../../atom/cabinet';
 import useConfirm from '../../hook/useConfirm';
 import { request } from '../../utils/axios';
 import ConfirmMessage from '../../constants/ConfirmMessage';
-import { user } from '../../atom/user';
+import { LockerStatusMent } from '../../constants/RentalStatus';
+import { useRef } from 'react';
+import useModal from './../../hook/useModal';
+import ApplyModal from '../popup/ApplyModal';
+import moment from 'moment';
 
 // 사물함 대여페이지에서 사용하는 사물함들
-function EachCabinet({ eachCabinet }) {
-  const userinfo = useRecoilValue(user);
-  const myName = userinfo.name;
+function EachLocker({ eachLocker }) {
   const approveManagerMent = `관리자 승인 후\n사용 가능합니다.`;
-
-  const setCurrentIndex = useSetRecoilState(cabinetModal); // 모달 창 작동을 위해
-  const [cabinetList, setCabinetList] = useRecoilState(cabinet); // 사물함 상태 변경을 위해
 
   // 사물함 반납 처리
   // 대여자의 id를 넘긴다. 추후에 백엔드 개발자와 협의할 예정
@@ -24,23 +21,6 @@ function EachCabinet({ eachCabinet }) {
     };
     try {
       await request('post', '/locker/return', body);
-
-      // 선택한 사물함을 반납함 (myRent -> unrent)
-      const updatedList = cabinetList.map(cabinet => {
-        if (cabinet.cabinetNumber === eachCabinet.cabinetNumber) {
-          return {
-            ...cabinet,
-            status: 'unrent',
-            start: null,
-            end: null,
-            lender: null,
-          };
-        } else {
-          return cabinet;
-        }
-      });
-      setCabinetList(updatedList);
-
       // 정상적인 결과는 resolve로 1을 전달해준다.
       return new Promise(resolve => resolve(1));
     } catch (error) {
@@ -49,81 +29,88 @@ function EachCabinet({ eachCabinet }) {
   };
 
   // 반납할 때 확인 창을 띄우는 함수 (useConfirm custom hook)
-  const returnCabinet = useConfirm(
+  const returnLocker = useConfirm(
     ConfirmMessage.returnItem,
     confirmGrant,
     '반납처리가 완료되었습니다.',
   );
 
+  const modalRef = useRef(null);
+  const [modalOpen, closeModal, changeModalState] = useModal(modalRef);
+  const name = 'jinokim';
+
   return (
-    <Cabinet
-      key={`cabinet${eachCabinet.cabinetNumber}`}
-      status={eachCabinet.status}
-    >
-      <CabinetNumber status={eachCabinet.status}>
-        {eachCabinet.cabinetNumber}
-      </CabinetNumber>
-      <CabinetDesc>
-        <CabinetRentStatus>
-          <CabinetRentCircleStatus status={eachCabinet.status} />
-          <CabinetRentStatusMent status={eachCabinet.status}>
-            {eachCabinet.status === 'myRent'
-              ? '내가 대여'
-              : eachCabinet.status === 'rent'
-              ? '대여 중'
-              : eachCabinet.status === 'waiting'
-              ? '승인 대기 중'
-              : eachCabinet.status === 'unavailable'
-              ? '대여 불가'
-              : '대여 가능'}
-          </CabinetRentStatusMent>
-        </CabinetRentStatus>
-        {eachCabinet.status === 'rent' || eachCabinet.status === 'myRent' ? (
-          <>
-            <DayInfo>
-              <StartDay
-                myRent={eachCabinet.lender === myName}
-              >{`대여일자 | ${eachCabinet.start}`}</StartDay>
-              <EndDay
-                myRent={eachCabinet.lender === myName}
-              >{`반납일자 | ${eachCabinet.end}`}</EndDay>
-            </DayInfo>
-            {eachCabinet.lender === myName ? (
-              <ReturnCabinetButton onClick={returnCabinet}>
-                반납하기
-              </ReturnCabinetButton>
-            ) : (
-              <Lender>{eachCabinet.lender}</Lender>
-            )}
-          </>
-        ) : (
-          <>
-            <ApproveManager status={eachCabinet.status}>
-              {approveManagerMent}
-            </ApproveManager>
-            {eachCabinet.status === 'waiting' ? (
-              <WaitingApprove>{eachCabinet.lender}</WaitingApprove>
-            ) : eachCabinet.status === 'unavailable' ? (
-              <WaitingApprove>-</WaitingApprove>
-            ) : (
-              <>
-                <RentButton
-                  onClick={() => setCurrentIndex(eachCabinet.cabinetNumber)}
-                >
-                  대여 신청하기
-                </RentButton>
-              </>
-            )}
-          </>
+    <>
+      <Locker key={`locker${eachLocker.id}`} status={eachLocker.rentalStatus}>
+        <LockerNumber status={eachLocker.rentalStatus}>
+          {eachLocker.id}
+        </LockerNumber>
+        <LockerDesc>
+          <LockerRentStatus>
+            <LockerRentCircleStatus status={eachLocker.rentalStatus} />
+            <LockerRentStatusMent status={eachLocker.rentalStatus}>
+              {LockerStatusMent(eachLocker.rentalStatus)}
+            </LockerRentStatusMent>
+          </LockerRentStatus>
+          {eachLocker.rentalStatus === 'rented' ||
+          eachLocker.rentalStatus === 'myRent' ? (
+            <>
+              <DayInfo>
+                <StartDay
+                  myRent={eachLocker.rentalStatus === 'myRent'}
+                >{`대여일자 | ${eachLocker.start}`}</StartDay>
+                <EndDay
+                  myRent={eachLocker.rentalStatus === 'myRent'}
+                >{`반납일자 | ${eachLocker.end}`}</EndDay>
+              </DayInfo>
+              {eachLocker.rentalStatus === 'myRent' ? (
+                <ReturnLockerButton onClick={returnLocker}>
+                  반납하기
+                </ReturnLockerButton>
+              ) : (
+                <Lender>{eachLocker.member.nickname}</Lender>
+              )}
+            </>
+          ) : (
+            <>
+              <ApproveManager status={eachLocker.rentalStatus}>
+                {approveManagerMent}
+              </ApproveManager>
+              {eachLocker.rentalStatus === 'waiting' ? (
+                <WaitingApprove>{eachLocker.member.nickname}</WaitingApprove>
+              ) : eachLocker.rentalStatus === 'under_maintenance' ? (
+                <WaitingApprove>-</WaitingApprove>
+              ) : (
+                <>
+                  <RentButton onClick={changeModalState}>
+                    대여 신청하기
+                  </RentButton>
+                </>
+              )}
+            </>
+          )}
+        </LockerDesc>
+      </Locker>
+      <ViewApplyModal ref={modalRef} view={modalOpen ? 1 : 0}>
+        {modalOpen && (
+          <ApplyModal
+            modalRef={modalRef}
+            closeModal={closeModal}
+            itemName={`사물함`}
+            itemNumber={eachLocker.id}
+            lender={name}
+            startDay={moment(new Date())}
+            endDay={undefined}
+          />
         )}
-      </CabinetDesc>
-    </Cabinet>
+      </ViewApplyModal>
+    </>
   );
 }
 
-export default EachCabinet;
+export default EachLocker;
 
-const Cabinet = styled.div`
+const Locker = styled.div`
   display: flex;
   width: 280px;
   height: 170px;
@@ -133,7 +120,7 @@ const Cabinet = styled.div`
   background-color: ${props => theme.itemColorByState.background[props.status]};
 `;
 
-const CabinetNumber = styled.div`
+const LockerNumber = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -143,18 +130,18 @@ const CabinetNumber = styled.div`
   ${theme.fontstyle.head3};
 `;
 
-const CabinetDesc = styled.div`
+const LockerDesc = styled.div`
   margin: 23px 0;
   margin-right: 28px;
 `;
 
-const CabinetRentStatus = styled.div`
+const LockerRentStatus = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 8px;
 `;
 
-const CabinetRentCircleStatus = styled.div`
+const LockerRentCircleStatus = styled.div`
   width: 20px;
   height: 20px;
   margin-right: 10px;
@@ -164,7 +151,7 @@ const CabinetRentCircleStatus = styled.div`
   border-radius: 50%;
 `;
 
-const CabinetRentStatusMent = styled.div`
+const LockerRentStatusMent = styled.div`
   width: 133px;
   padding-top: 3px;
   color: ${props => theme.itemColorByState.itemStatus[props.status]};
@@ -239,7 +226,7 @@ const WaitingApprove = styled.div`
 `;
 
 // disable를 넣기 위해 따로 생성
-const ReturnCabinetButton = styled.button`
+const ReturnLockerButton = styled.button`
   width: 160px;
   height: 40px;
   background-color: ${theme.colors.purple};
@@ -251,4 +238,16 @@ const ReturnCabinetButton = styled.button`
   &:hover {
     cursor: pointer;
   }
+`;
+
+const ViewApplyModal = styled.div`
+  display: ${props => (props.view ? 'block' : 'none')};
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 101;
 `;

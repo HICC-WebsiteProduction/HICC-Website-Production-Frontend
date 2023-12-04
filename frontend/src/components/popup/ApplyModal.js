@@ -1,10 +1,9 @@
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import Button from '../util/Button';
-import { useRecoilState, useResetRecoilState } from 'recoil';
-import { useEffect, useRef, useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { useEffect, useState } from 'react';
 import useCloseModal from '../../hook/useCloseModal';
-import { applyType } from '../../constants/ApplyType';
 import useConfirm from '../../hook/useConfirm';
 import { request } from '../../utils/axios';
 import ConfirmMessage from '../../constants/ConfirmMessage';
@@ -25,81 +24,42 @@ import moment from 'moment';
   endDayDisabled: 대여 반납일 선택불가여부 (사물함 선택 가능, 우산은 7일로 고정)
 */
 export default function ApplyModal(props) {
-  const { itemName, itemNumber, lender, startDay, endDay } = props;
+  const {
+    modalRef,
+    closeModal,
+    itemName,
+    itemNumber,
+    lender,
+    startDay,
+    endDay,
+  } = props;
 
-  const closeModalFunc = useResetRecoilState(applyType[itemName].index);
-  // 모달 창 종료를 위해 모달 오픈 여부를 모두 false로 리셋함
-  const modalRef = useRef(null);
-  useCloseModal(modalRef, closeModalFunc); // 모달 창 닫음을 수행
+  useCloseModal(modalRef, closeModal); // 모달 창 닫음을 수행
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
-
-  const [itemList, setItemList] = useRecoilState(applyType[itemName].item); // 대여 상태 변환
-
   const [end, setEnd] = useRecoilState(endSelect);
 
   useEffect(() => {
     if (endDay !== undefined) {
       setEnd(endDay);
     }
-  }, []);
+  }, [endDay, setEnd]);
 
   // 대여 신청
   // 한 사람 당 한 개만 신청할 수 있음
   const confirmGrant = () => {
-    if (itemList.find(item => item.lender === lender)) {
-      return new Promise(reject => {
-        reject('한 사람당 한 개만 신청하세요.');
-      });
-    } else {
-      const body = {
-        targetId: 'B731070',
-      };
-      // 사물함일 경우 승인 대기 상태로 전환
-      if (itemName === '사물함') {
-        try {
-          request('post', '/locker/rent', body);
-          const updatedList = itemList.map(cabinet => {
-            if (cabinet.cabinetNumber === itemNumber) {
-              return {
-                ...cabinet,
-                status: 'waiting',
-                start: startDay,
-                end,
-                lender,
-              };
-            } else {
-              return cabinet;
-            }
-          });
-          setItemList(updatedList);
-        } catch (error) {
-          console.log(error);
-        }
-      } else {
-        // 우산일 경우 내가 대여 상태로 변환
-        try {
-          request('post', '/umbrella/rent', body);
-          const updatedList = itemList.map(umbrella => {
-            if (umbrella.umbrellaNumber === itemNumber) {
-              return {
-                ...umbrella,
-                status: 'myRent',
-                start: startDay,
-                end: endDay,
-                lender,
-              };
-            } else {
-              return umbrella;
-            }
-          });
-          setItemList(updatedList);
-        } catch (error) {
-          console.log(error);
-        }
-      }
-      // 정상적인 결과는 resolve로 1을 전달해준다.
-      return new Promise(resolve => resolve(1));
+    const body = {
+      targetId: 'B731070',
+    };
+
+    try {
+      if (itemName === '사물함') request('post', '/locker/rent', body);
+      else request('post', '/umbrella/rent', body);
+    } catch (error) {
+      console.log(error);
     }
+
+    // 정상적인 결과는 resolve로 1을 전달해준다.
+    return new Promise(resolve => resolve(1));
   };
 
   const onSubmit = event => {
@@ -130,11 +90,9 @@ export default function ApplyModal(props) {
           <InputRow>
             <Label>대여일자</Label>
             <DateShow>
-              <Day>{props.startDay.year()}</Day>/
-              <Day>
-                {(props.startDay.month() + 1).toString().padStart(2, '0')}
-              </Day>
-              /<Day>{props.startDay.date().toString().padStart(2, '0')}</Day>
+              <Day>{startDay.year()}</Day>/
+              <Day>{(startDay.month() + 1).toString().padStart(2, '0')}</Day>/
+              <Day>{startDay.date().toString().padStart(2, '0')}</Day>
             </DateShow>
           </InputRow>
           <InputRow>

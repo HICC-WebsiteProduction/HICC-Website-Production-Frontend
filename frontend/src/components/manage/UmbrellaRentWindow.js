@@ -14,7 +14,7 @@ function UmbrellaRentWindow(props) {
   const [umbrellaList, setUmbrellaList] = useRecoilState(umbrella); // 우산 리스트
   const resetUmbrella = useResetRecoilState(umbrella); // 우산 상태 초기화
 
-  const { data } = useFetch('/umbrella');
+  const { data } = useFetch(`/rental?itemType=umbrella`);
 
   useEffect(() => {
     if (data) {
@@ -24,7 +24,7 @@ function UmbrellaRentWindow(props) {
     return () => {
       resetUmbrella();
     };
-  }, [data]);
+  }, [data, resetUmbrella, setUmbrellaList]);
 
   // 우산 상태를 저장하는 기능
   // 아직 백엔드 통신 코드는 작성하지 않음
@@ -55,7 +55,8 @@ function UmbrellaRentWindow(props) {
       </UmbrellaRentTitle>
       <UmbrellaCurrentState>
         <UmbrellaGrid>
-          {umbrellaList.length > 0 &&
+          {umbrellaList !== undefined &&
+            umbrellaList.length > 0 &&
             umbrellaList.map(umbrella => (
               <EachUmbrellaManage
                 key={umbrella.umbrellaNumber}

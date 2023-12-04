@@ -1,0 +1,286 @@
+[
+    {
+        "id": 0,
+        "itemType": "locker",
+        "rentalStatus": "rented",
+        "start": "2023-03-29",
+        "end": "2023-07-10",
+        "member": {
+            "id": 1,
+            "nickname": "함윤호",
+            "memberRole": "general"
+        }
+      },
+      {
+        "id": 1,
+        "itemType": "locker",
+        "rentalStatus": "waiting",
+        "start": "2023-07-22",
+        "end": "2023-09-30",
+        "member": {
+            "id": 2,
+            "nickname": "손기배",
+            "memberRole": "general"
+        }
+      },
+      {
+        "id": 2,
+        "itemType": "locker",
+        "rentalStatus": "under_maintenance",
+        "start": null,
+        "end": null,
+        "member": null
+      },
+      {
+        "id": 3,
+        "itemType": "locker",
+        "rentalStatus": "under_maintenance",
+        "start": null,
+        "end": null,
+        "member": null
+      },
+      {
+        "id": 4,
+        "itemType": "locker",
+        "rentalStatus": "rented",
+        "start": "2023-03-29",
+        "end": "2023-07-10",
+        "member": {
+            "id": 5,
+            "nickname": "윤찬호",
+            "memberRole": "general"
+        }
+      },
+      {
+        "id": 5,
+        "itemType": "locker",
+        "rentalStatus": "rented",
+        "start": "2023-03-29",
+        "end": "2023-07-10",
+        "member": {
+            "id": 6,
+            "nickname": "이지우",
+            "memberRole": "president"
+        }
+      },
+      {
+        "id": 6,
+        "itemType": "locker",
+        "rentalStatus": "rented",
+        "start": "2023-03-29",
+        "end": "2023-07-10",
+        "member": {
+            "id": 7,
+            "nickname": "김진호",
+            "memberRole": "general"
+        }
+      },
+      {
+        "id": 7,
+        "itemType": "locker",
+        "rentalStatus": "rented",
+        "start": "2023-03-29",
+        "end": "2023-07-10",
+        "member": {
+            "id": 8,
+            "nickname": "경수현",
+            "memberRole": "general"
+        }
+      },
+      {
+        "id": 8,
+        "itemType": "locker",
+        "rentalStatus": "available",
+        "start": null,
+        "end": null,
+        "member": null
+      },
+      {
+        "id": 9,
+        "itemType": "locker",
+        "rentalStatus": "available",
+        "start": null,
+        "end": null,
+        "member": null
+      },
+      {
+        "id": 10,
+        "itemType": "locker",
+        "rentalStatus": "rented",
+        "start": "2023-03-29",
+        "end": "2023-07-10",
+        "member": {
+            "id": 11,
+            "nickname": "오지현",
+            "memberRole": "general"
+        }
+      },
+      {
+        "id": 11,
+        "itemType": "locker",
+        "rentalStatus": "rented",
+        "start": "2023-03-29",
+        "end": "2023-07-10",
+        "member": {
+            "id": 12,
+            "nickname": "이윤서",
+            "memberRole": "general"
+        }
+      },
+      {
+        "id": 12,
+        "itemType": "locker",
+        "rentalStatus": "rented",
+        "start": "2023-03-29",
+        "end": "2023-07-10",
+        "member": {
+            "id": 13,
+            "nickname": "송현지",
+            "memberRole": "general"
+        }
+      },
+      {
+        "id": 13,
+        "itemType": "locker",
+        "rentalStatus": "rented",
+        "start": "2023-03-29",
+        "end": "2023-07-10",
+        "member": {
+            "id": 14,
+            "nickname": "구나영",
+            "memberRole": "general"
+        }
+      },
+      {
+        "id": 14,
+        "itemType": "locker",
+        "rentalStatus": "available",
+        "start": null,
+        "end": null,
+        "member": null
+      },
+      {
+        "id": 15,
+        "itemType": "locker",
+        "rentalStatus": "rented",
+        "start": "2023-03-29",
+        "end": "2023-07-10",
+        "member": {
+            "id": 16,
+            "nickname": "최세호",
+            "memberRole": "general"
+        }
+      },
+      {
+        "id": 0,
+        "itemType": "umbrella",
+        "rentalStatus": "rented",
+        "end": "2023-05-22",
+        "member": {
+            "id": 1,
+            "nickname": "이지우",
+            "memberRole": "general"
+        }
+      },
+      {
+        "id": 1,
+        "itemType": "umbrella",
+        "rentalStatus": "rented",
+        "end": "2023-05-22",
+        "member": {
+            "id": 2,
+            "nickname": "경수현",
+            "memberRole": "general"
+        }
+      },
+      {
+        "id": 2,
+        "itemType": "umbrella",
+        "rentalStatus": "under_maintenance",
+        "end": null,
+        "member": null
+      },
+      {
+        "id": 3,
+        "itemType": "umbrella",
+        "rentalStatus": "available",
+        "end": null,
+        "member": null
+      },
+      {
+        "id": 4,
+        "itemType": "umbrella",
+        "rentalStatus": "rented",
+        "end": "2023-05-22",
+        "member": {
+            "id": 2,
+            "nickname": "김진호",
+            "memberRole": "general"
+        }
+      },
+      {
+        "id": 5,
+        "itemType": "umbrella",
+        "rentalStatus": "rented",
+        "end": "2023-05-22",
+        "member": {
+            "id": 5,
+            "nickname": "신민서",
+            "memberRole": "general"
+        }
+      },
+      {
+        "id": 6,
+        "itemType": "umbrella",
+        "rentalStatus": "lost",
+        "end": null,
+        "member": null
+      },
+      {
+        "id": 7,
+        "itemType": "umbrella",
+        "rentalStatus": "available",
+        "end": null,
+        "member": null
+      },
+      {
+        "id": 8,
+        "itemType": "umbrella",
+        "rentalStatus": "rented",
+        "end": "2023-05-22",
+        "member": {
+            "id": 5,
+            "nickname": "안성민",
+            "memberRole": "general"
+        }
+      },
+      {
+        "id": 9,
+        "itemType": "umbrella",
+        "rentalStatus": "rented",
+        "end": "2023-05-22",
+        "member": {
+            "id": 5,
+            "nickname": "이승훈",
+            "memberRole": "general"
+        }
+      },
+      {
+        "id": 10,
+        "itemType": "umbrella",
+        "rentalStatus": "available",
+        "end": null,
+        "member": null
+      },
+      {
+        "id": 11,
+        "itemType": "umbrella",
+        "rentalStatus": "rented",
+        "end": "2023-05-22",
+        "member": {
+            "id": 5,
+            "nickname": "최서영",
+            "memberRole": "general"
+        }
+      }
+]

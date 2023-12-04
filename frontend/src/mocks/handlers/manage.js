@@ -15,7 +15,7 @@ export const manageHandlers = [
   }),
 
   // 모든 회원정보 조회
-  rest.get(`${BASE_URL}/admin/member`, async (req, res, ctx) => {
+  rest.get(`${BASE_URL}/admin/members`, async (req, res, ctx) => {
     const response = allMember;
     return res(ctx.json(response));
   }),
