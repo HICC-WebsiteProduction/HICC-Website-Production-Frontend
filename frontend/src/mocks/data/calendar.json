@@ -1,68 +1,121 @@
 [
-{
+  {
     "id": 1,
     "date": "2023-03-15",
     "title": "동아리 박람회",
     "scheduleType": "학교행사",
-    "description": "Discuss project scope and timeline"
-},
+    "content": "Discuss project scope and timeline"
+  },
   {
     "id": 2,
     "date": "2023-03-15",
     "title": "동아리 박람회2",
     "scheduleType": "학교행사",
-    "description": "Discuss project scope and timeline"
+    "content": "Discuss project scope and timeline"
   },
-{
-  "id": 3,
-  "date": "2023-03-16",
-  "title": "신입생 환영회",
-  "scheduleType": "친목",
-  "description": "Discuss project scope and timeline"
-},
-{
-  "id": 4,
-  "date": "2023-03-16",
-  "title": "C언어 세미나",
-  "scheduleType": "학술",
-  "description": "Discuss project scope and timeline"
-},
-{
-  "id": 5,
-  "date": "2023-03-16",
-  "title": "Meeting with client",
-  "scheduleType": "학술",
-  "description": "Discuss project scope and timeline1"
-}
-,
-{
-  "id": 6,
-  "date": "2023-03-16",
-  "title": "Meeting with client",
-  "scheduleType": "학술",
-  "description": "Discuss project scope and timeline2"
-}
-,
-{
-  "id": 7,
-  "date": "2023-03-16",
-  "title": "Meeting with client",
-  "scheduleType": "학술",
-  "description": "Discuss project scope and timeline1"
-}
-,
-{
-  "id": 8,
-  "date": "2023-03-16",
-  "title": "Meeting with client",
-  "scheduleType": "학술",
-  "description": "Discuss project scope and timeline2"
-},
-{
-  "id": 9,
-  "date": "2023-03-02",
-  "title": "Meeting with client",
-  "scheduleType": "학술",
-  "description": "Discuss project scope and timeline"
-}
+  {
+    "id": 3,
+    "date": "2023-03-16",
+    "title": "신입생 환영회",
+    "scheduleType": "친목",
+    "content": "Discuss project scope and timeline"
+  },
+  {
+    "id": 4,
+    "date": "2023-03-16",
+    "title": "C언어 세미나",
+    "scheduleType": "학술",
+    "content": "Discuss project scope and timeline"
+  },
+  {
+    "id": 5,
+    "date": "2023-03-16",
+    "title": "Meeting with client",
+    "scheduleType": "학술",
+    "content": "Discuss project scope and timeline1"
+  },
+  {
+    "id": 6,
+    "date": "2023-09-16",
+    "title": "Meeting with client",
+    "scheduleType": "학술",
+    "content": "Discuss project scope and timeline2"
+  },
+  {
+    "id": 7,
+    "date": "2023-08-16",
+    "title": "Meeting with client",
+    "scheduleType": "학술",
+    "content": "Discuss project scope and timeline1"
+  },
+  {
+    "id": 8,
+    "date": "2023-03-16",
+    "title": "Meeting with client",
+    "scheduleType": "학술",
+    "content": "Discuss project scope and timeline2"
+  },
+  {
+    "id": 9,
+    "date": "2023-03-02",
+    "title": "Meeting with client",
+    "scheduleType": "학술",
+    "content": "Discuss project scope and timeline"
+  },
+  {
+    "id": 10,
+    "date": "2023-09-29",
+    "title": "추석",
+    "scheduleType": "학교행사",
+    "content": "즐추~"
+  },
+  {
+    "id": 11,
+    "date": "2023-08-15",
+    "title": "광복절",
+    "scheduleType": "학교행사",
+    "content": "오늘은 광복절입니다."
+  },
+  {
+    "id": 12,
+    "date": "2023-09-15",
+    "title": "아무말 대잔치",
+    "scheduleType": "학교행사",
+    "content": "이건 정말로 설명이 매우 긴 일정입니다. 너무 설명이 긴 나머지 아무말 대잔치를 하고 있죠. 그래서 과연 이 일정은 깨지지 않고 잘 나올 수 있을까요?"
+  },
+  {
+    "id": 13,
+    "date": "2023-09-15",
+    "title": "아무말 일정",
+    "scheduleType": "학교행사",
+    "content": "이건 정말로 설명이 매우 긴 일정입니다. 너무 설명이 긴 나머지 아무말 대잔치를 하고 있죠. 그래서 과연 이 일정은 깨지지 않고 잘 나올 수 있을까요?"
+  },
+  {
+    "id": 14,
+    "date": "2023-09-15",
+    "title": "아무말 일정",
+    "scheduleType": "학교행사",
+    "content": "이건 정말로 설명이 매우 긴 일정입니다. 너무 설명이 긴 나머지 아무말 대잔치를 하고 있죠. 그래서 과연 이 일정은 깨지지 않고 잘 나올 수 있을까요?"
+  },
+  {
+    "id": 15,
+    "date": "2023-09-15",
+    "title": "아무말 대잔치",
+    "scheduleType": "학교행사",
+    "content": "이건 정말로 설명이 매우 긴 일정입니다. 너무 설명이 긴 나머지 아무말 대잔치를 하고 있죠. 그래서 과연 이 일정은 깨지지 않고 잘 나올 수 있을까요?"
+  },
+  {
+    "id": 16,
+    "date": "2023-09-15",
+    "title": "아무말 대잔치",
+    "scheduleType": "학교행사",
+    "content": "이건 정말로 설명이 매우 긴 일정입니다. 너무 설명이 긴 나머지 아무말 대잔치를 하고 있죠. 그래서 과연 이 일정은 깨지지 않고 잘 나올 수 있을까요?"
+  },
+  {
+    "id": 17,
+    "date": "2023-09-15",
+    "title": "아무말 대잔치",
+    "scheduleType": "학교행사",
+    "content": "과연 이 일정의 설명은 잘 보일까요?"
+  }
 ]
