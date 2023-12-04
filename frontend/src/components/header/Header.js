@@ -52,7 +52,7 @@ export default function Header({ background }) {
           <Menu to="/noticeboard">게시판</Menu>
           <Menu to="#">회계정보</Menu>
           <Menu to="/schedule">일정 캘린더</Menu>
-          <Menu to="/rent/umbrellarent">대여</Menu>
+          <Menu to="/rent/umbrella">대여</Menu>
         </Navigation>
         <UserContainer>
           {!isLogin ? (
