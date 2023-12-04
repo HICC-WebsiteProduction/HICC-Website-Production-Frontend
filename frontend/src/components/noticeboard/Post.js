@@ -8,8 +8,7 @@ import CurrentPost from './CurrentPost';
 import Paging from '../paging/Paging';
 import Filter from './../util/Filter';
 import Button from './../util/Button';
-import { filterOptionValue } from './../../constants/FilterOptionValue';
-import useSelect from '../../hook/useSelect';
+// import { filterOptionValue } from './../../constants/FilterOptionValue';
 
 export default function Post(props) {
   const [posts, setPosts] = useState(() => {
@@ -17,21 +16,35 @@ export default function Post(props) {
     return initialPosts;
   });
 
-  const [currentPost, setCurrentPost] = useState(null);
+  const [currentPost, setCurrentPost] = useState(null); //현재 선택한 게시글
   const [filteredPosts, setFilteredPosts] = useState(posts); // 현재 필터의 게시글 전체
   const [isCreatingPost, setIsCreatingPost] = useState(false);
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호
   const [postsPerPage, setPostsPerPage] = useState(10); // 페이지당 게시글 수
   const [filteredPostsCount, setFilteredPostsCount] = useState(0); // 현재 필터의 게시글 수
+  const [inputKeyword, setInputKeyword] = useState(''); //검색어 state로 저장
+  const filterOptionValue = {
+    period: {
+      whole: '전체기간',
+      oneMonth: '1개월',
+      HalfYear: '6개월',
+    },
+    index: {
+      writer: '작성자',
 
-  const [searchByPeriod, setSearchByPeriod] = useSelect(
+      title: '제목',
+      postId: '글번호',
+    },
+  };
+
+  const [searchByPeriod, setSearchByPeriod] = useState(
     filterOptionValue.period.whole,
   ); // 기간으로 검색
-  const [searchByIndex, setSearchByIndex] = useSelect(
+  const [searchByIndex, setSearchByIndex] = useState(
     filterOptionValue.index.writer,
   ); // 인덱스로 검색
-  const [searchByKeyword, setSearchByKeyword] = useSelect(''); // 키워드로 검색
-
+  const [searchByKeyword, setSearchByKeyword] = useState(''); // 키워드로 검색
+  // 더미로 초기값 설정
   useEffect(() => {
     const posts = dummy.posts || [];
     setPosts(posts);
@@ -43,15 +56,20 @@ export default function Post(props) {
     );
     setFilteredPosts(boardPosts.reverse());
     setFilteredPostsCount(boardPosts.length);
-    setCurrentPost(null);
+    // setCurrentPost(null);
     setIsCreatingPost(null);
     setCurrentPage(1);
   }, [props.filterCondition, posts]);
-
+  //게시글 선택 핸들러
   const handlePostClick = postId => {
     const post = dummy.posts.find(post => post.id === postId);
     setCurrentPost(post);
+    console.log('현재 post: ', post);
   };
+  //로그 확인
+  useEffect(() => {
+    console.log('현재2 post: ', currentPost);
+  }, [currentPost]);
 
   // 새 글 저장 후 실행할 함수
   const handleSave = newPost => {
@@ -60,57 +78,119 @@ export default function Post(props) {
     console.log('handleSave함수 실행됨');
 
     const updatedPosts = [...posts, newPost];
-    setPosts(updatedPosts);
     // const posts = dummy.posts || [];
-    // setPosts(posts);
+
+    setPosts(updatedPosts);
+  };
+  //게시글 업데이트
+  const updatePost = (postId, updatedData) => {
+    const updatedPosts = dummy.posts.map(post => {
+      if (post.id === postId) {
+        return {
+          ...post,
+          ...updatedData,
+        };
+      }
+      return post;
+    });
+    dummy.posts = updatedPosts;
   };
 
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
-  const pageNumbers = [];
+  const indexOfLastPost = currentPage * postsPerPage; //마지막 게시글 인덱스
+  const indexOfFirstPost = indexOfLastPost - postsPerPage; //첫번째 게시글 인덱스
+  const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost); //게시판에 해당하는 게시글
+  const pageNumbers = []; //페이징
   for (let i = 1; i <= Math.ceil(filteredPosts.length / postsPerPage); i++) {
     pageNumbers.push(i);
   }
 
-  // 페이지네이션 라이브러리에 페이지를 전달해주는 함수
   const setPage = error => {
+    //페이지 설정
     setCurrentPage(error);
+  };
+
+  const onChangeSearchByPeriod = event => {
+    setSearchByPeriod(event.target.value);
+  };
+
+  const onChangeSearchByIndex = event => {
+    setSearchByIndex(event.target.value);
+  };
+  // 검색 필터에 따라 검색 기능
+  const onChangeSearchByKeyword = keyword => {
+    // const keyword = event.target.value;
+    setSearchByKeyword(keyword);
+
+    // filterOptionValue.index 에 따라 검색 필터 설정
+    let filteredPostsByKeyword;
+    if (searchByIndex === filterOptionValue.index.writer) {
+      // 작성자로 검색
+      filteredPostsByKeyword = posts.filter(post =>
+        post.writer.toLowerCase().includes(keyword.toLowerCase()),
+      );
+    } else if (searchByIndex === filterOptionValue.index.title) {
+      // 제목으로 검색
+      filteredPostsByKeyword = posts.filter(post =>
+        post.title.toLowerCase().includes(keyword.toLowerCase()),
+      );
+    } else if (searchByIndex === filterOptionValue.index.postId) {
+      // 글번호로 검색
+      const postId = parseInt(keyword);
+      if (!isNaN(postId)) {
+        filteredPostsByKeyword = posts.filter(post => post.id === postId);
+      } else {
+        // 유효하지 않은 숫자를 입력한 경우
+        filteredPostsByKeyword = posts;
+      }
+    } else {
+      // 기타 경우는 전체 게시글을 보여줌
+      filteredPostsByKeyword = posts;
+    }
+
+    setFilteredPosts(filteredPostsByKeyword);
+    setFilteredPostsCount(filteredPostsByKeyword.length);
+  };
+  // 게시글 삭제
+  const deletePost = postId => {
+    const updatedPosts = dummy.posts.filter(post => post.id !== postId);
+    dummy.posts = updatedPosts;
+    setPosts(dummy.posts);
+    setCurrentPost(null);
+  };
+  const handleSearchButtonClick = () => {
+    onChangeSearchByKeyword(inputKeyword);
+  };
+  const handleOnKeyPress = e => {
+    if (e.key === 'Enter') {
+      onChangeSearchByKeyword(inputKeyword); // Enter 입력이 되면 클릭 이벤트 실행
+    }
   };
 
   return (
     <PostBox>
-      {currentPost ? (
-        <CurrentPost
-          currentPost={currentPost}
-          setCurrentPost={setCurrentPost}
-        />
-      ) : isCreatingPost ? (
+      {isCreatingPost ? (
         <>
           <NewPost
             board={props.filterCondition}
             writer="최세호"
             onSave={handleSave}
+            title={null}
+            content={null}
           />
-          <Button
-            onClick={() => {
-              const confirmed = window.confirm(
-                '         *정말로 취소하시겠습니까? \n (취소시 작성된 내용이 저장되지 않습니다)',
-              );
-              if (confirmed) {
-                setIsCreatingPost(null);
-              }
-            }}
-          >
-            취소
-          </Button>
         </>
       ) : (
         <>
           <PostsContainer>
-            {!props.isMypage && (
-              <NoticeBoardHeader>{props.filterCondition}</NoticeBoardHeader>
-            )}
+            <TitleContainer>
+              {!props.isMypage && (
+                <NoticeBoardHeader>{props.filterCondition}</NoticeBoardHeader>
+              )}
+              {props.showButton && (
+                <WriteButton onClick={() => setIsCreatingPost(true)}>
+                  글쓰기
+                </WriteButton>
+              )}
+            </TitleContainer>
             <NoticeBoardTable
               postList={currentPosts}
               filteredPosts={filteredPosts}
@@ -118,50 +198,30 @@ export default function Post(props) {
               handlePostClick={handlePostClick}
             />
           </PostsContainer>
-          {/* 글쓰기 버튼 추가 */}
-          {/* currentPost 상태를 true로 바꿔서 새 글 작성 컴포넌트가 보이게 함 */}
-          {/* writer는 임의로 설정함 */}
-          {/* 실제로는 로그인한 사용자의 정보를 받아와야 함 */}
-          {/* onSave에 handleSave 함수를 전달함 */}
-          {/* 새 글 저장 후 실행됨 */}
-          {props.showButton && (
-            <WriteButton onClick={() => setIsCreatingPost(true)}>
-              글쓰기
-            </WriteButton>
-          )}
-          {/* <Pagination>
-            {pageNumbers.map(number => (
-              <PageNumber
-                key={number}
-                active={number === currentPage}
-                onClick={() => setCurrentPage(number)}
-              >
-                {number}
-              </PageNumber>
-            ))}
-          </Pagination> */}
           <Paging
             page={currentPage}
             pageSize={postsPerPage}
             count={filteredPostsCount}
             setPage={setPage}
           />
+          <Line />
           <FilterContainer>
             <Filter
               optionValue={filterOptionValue.period}
-              onChange={setSearchByPeriod}
+              onChange={onChangeSearchByPeriod}
             />
             <Gap />
             <Filter
               optionValue={filterOptionValue.index}
-              onChange={setSearchByIndex}
+              onChange={onChangeSearchByIndex}
             />
             <Gap />
             <KeywordSearch
               placeholder="검색어를 입력하세요"
-              onChange={setSearchByKeyword}
+              onChange={e => setInputKeyword(e.target.value)}
+              onKeyPress={handleOnKeyPress}
             />
-            <SearchButton buttonName="검색" />
+            <SearchButton buttonName="검색" onClick={handleSearchButtonClick} />
           </FilterContainer>
         </>
       )}
@@ -174,24 +234,30 @@ const PostBox = styled.div`
 `;
 
 const WriteButton = styled.button`
-  width: 102px;
-  height: 40px;
+  width: 100px;
+  height: 45px;
   background-color: ${theme.colors.blue};
   border: none;
-  border-radius: 10px;
+  border-radius: 40px;
   color: ${theme.colors.white};
+  ${theme.fontstyle.body4};
   &:hover {
     cursor: pointer;
+  }
+  &:active {
+    opacity: 0.3;
   }
 `;
 
 const PostsContainer = styled.div``;
+const TitleContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
 
 const NoticeBoardHeader = styled.h2`
   color: ${theme.colors.white};
-  font-family: 'GmarketSansMedium';
-  font-weight: 500;
-  font-size: ${theme.fontSizes.title};
+  ${theme.fontstyle.head2};
 `;
 
 const FilterContainer = styled.div`
@@ -216,10 +282,7 @@ const KeywordSearch = styled.input`
   outline: none;
 
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-weight: 300;
-  font-size: ${theme.fontSizes.paragraph};
-  line-height: 150%;
+  ${theme.fontstyle.body6};
 
   &::placeholder {
     color: ${theme.colors.white};
@@ -233,8 +296,13 @@ const SearchButton = styled(Button)`
 
   border-radius: 40px;
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-weight: 500;
-  font-size: ${theme.fontSizes.paragraph};
-  line-height: 150%;
+  ${theme.fontstyle.body4};
+  &:active {
+    opacity: 0.3;
+  }
+`;
+
+const Line = styled.div`
+  border-bottom: 1px solid #edf0f8;
+  margin-top: 10px;
 `;

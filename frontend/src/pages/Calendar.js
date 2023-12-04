@@ -5,7 +5,7 @@ import theme from '../styles/Theme';
 import ScheduleModal from '../components/popup/ScheduleModal';
 import Title from '../components/header/Title';
 import useModal from '../hook/useModal';
-import ScheduleModalSaved from '../components/popup/ScheduleModalSaved';
+import ScheduleModalSaved from '../components/popup/ScheduleChangeModal';
 import useFetch from '../hook/useFetch';
 import Loading from '../components/util/Loading';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
@@ -33,10 +33,11 @@ function CalenderPlan2(props) {
       {modalOpen && (
         <ScheduleModalSaved
           closeModal={closeModal} // 모달을 닫는 동작
+          id={props.id}
           title={props.title}
           scheduleType={props.scheduleType}
           date={props.date}
-          description={props.description}
+          content={props.content}
           role={props.role}
         />
       )}
@@ -56,16 +57,11 @@ function CalendarBox(props) {
     }
   };
 
-  // const dayPlans = data2.filter(
-  //   plan => moment(plan.date).date() === props.date,
-  // );
   const dayPlans = props.data.filter(
     plan => moment(plan.date).date() === props.date,
   );
-  // const dayPlans = data.filter(plan => moment(plan.date).date() === props.date);
 
   if (dayPlans.length > 5) {
-    // console.log('full');
     return (
       <CalendarBox2>
         <CalendarDate isSunday={props.isSunday}>{props.date}</CalendarDate>
@@ -74,7 +70,8 @@ function CalendarBox(props) {
             title={plan.title}
             scheduleType={plan.scheduleType}
             date={plan.date}
-            description={plan.description}
+            content={plan.content}
+            id={plan.id}
             role={props.role}
           />
         ))}
@@ -89,34 +86,18 @@ function CalendarBox(props) {
             .slice(4, dayPlans.length)
             .map(plan => (
               <CalenderPlan2
+                id={plan.id}
                 title={plan.title}
                 scheduleType={plan.scheduleType}
                 date={plan.date}
-                description={plan.description}
+                content={plan.content}
                 role={props.role}
               />
             ))}
         {planModalOpen && (
           <CalendarPlanButton onClick={showModal}>{'△'}</CalendarPlanButton>
         )}
-        {/*{dayPlans.length > 4 && (*/}
-        {/*  <CalendarPlan key="{plan}">{'· · · · ·'}</CalendarPlan>*/}
-        {/*)}*/}
       </CalendarBox2>
-      // <CalendarBox2>
-      //   <CalendarDate isSunday={props.isSunday}>{props.date}</CalendarDate>
-      //   {dayPlans.slice(0, 4).map(plan => (
-      //     <CalenderPlan2
-      //       title={plan.title}
-      //       scheduleType={plan.scheduleType}
-      //       date={plan.date}
-      //       description={plan.description}
-      //     />
-      //   ))}
-      //   {dayPlans.length > 4 && (
-      //     <CalendarPlan key="{plan}">{'· · · · ·'}</CalendarPlan>
-      //   )}
-      // </CalendarBox2>
     );
   }
 
@@ -128,7 +109,7 @@ function CalendarBox(props) {
           title={plan.title}
           scheduleType={plan.scheduleType}
           date={plan.date}
-          description={plan.description}
+          content={plan.content}
           role={props.role}
         />
       ))}
@@ -138,7 +119,6 @@ function CalendarBox(props) {
 
 function Calendar() {
   const [date, setDate] = useState(moment());
-
   const modalRef = useRef(null);
   const [modalOpen, closeModal] = useModal(modalRef);
 
@@ -148,25 +128,11 @@ function Calendar() {
   const dayArray = ['일', '월', '화', '수', '목', '금', '토']; //요일
   const days = [];
 
-  const { data, loading, error } = useFetch('/calendar');
+  const { data, loading, error } = useFetch(
+    `/schedule/?year=${date.year()}&month=${date.month() + 1}`,
+  );
 
   const userinfo = useRecoilValue(user); // 유저 정보
-
-  // const onSubmit = async data => {
-  //   try {
-  //     const response = await request('post', '/calendar/addPlan', {
-  //       date: data.date,
-  //       title: data.title,
-  //       scheduleType: data.scheduleType,
-  //       description: data.description,
-  //     });
-  //     navigate('/');
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  // console.log(data.ID);
-  // const navigate = useNavigate();
 
   const role = userinfo.role === 'PRESIDENT';
 
@@ -286,6 +252,7 @@ const CalendarTopContent = styled.div`
 
 const AddScheduleModal = styled.div`
   color: ${theme.colors.white};
+  cursor: pointer;
 
   font-family: 'Pretendard';
   font-style: normal;

@@ -6,7 +6,7 @@ function EachPost(props) {
   const { post, index, filteredPosts, indexOfFirstPost, handlePostClick } =
     props;
   return (
-    <PostList key={post.id} onClick={() => handlePostClick(post.id)}>
+    <PostList key={post.id}>
       <No>{filteredPosts.length - indexOfFirstPost - index}</No>
       <PostTitle>{post.title}</PostTitle>
       <Writer>{post.writer}</Writer>
@@ -38,14 +38,13 @@ const No = styled.div`
   justify-content: center;
   align-items: center;
   width: 50px;
-  line-height: 150%;
-  font-weight: 500;
+  ${theme.fontstyle.body4};
 `;
 const PostTitle = styled.div`
   display: flex;
   align-items: center;
   width: 770px;
-  line-height: 150%;
+  ${theme.fontstyle.body4};
 `;
 
 const Writer = styled.div`
@@ -53,8 +52,7 @@ const Writer = styled.div`
   justify-content: center;
   align-items: center;
   width: 200px;
-  line-height: 150%;
-  font-weight: 300;
+  ${theme.fontstyle.body6};
 `;
 
 const WriteDate = styled.div`
@@ -62,8 +60,7 @@ const WriteDate = styled.div`
   justify-content: center;
   align-items: center;
   width: 100px;
-  line-height: 150%;
-  font-weight: 300;
+  ${theme.fontstyle.body6};
 `;
 
 export default EachPost;

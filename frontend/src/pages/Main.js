@@ -31,6 +31,4 @@ const MainContainer = styled.div`
   place-items: center;
   align-items: center;
   justify-content: center;
-  //display: flex;
-  //flex-direction: column;
 `;

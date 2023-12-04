@@ -18,6 +18,7 @@ import MemberDetail from './components/manage/MemberDetail';
 import UndergraduateRoute from './permissionRoute/UndergraduateRoute';
 import UmbrellaRent from './pages/UmbrellaRent';
 import LockerRent from './pages/LockerRent';
+import CurrentPost from './components/noticeboard/CurrentPost';
 
 function App() {
   const isLogin = useRecoilValue(user).accessToken;
@@ -29,7 +30,9 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/tos" element={<TOS />} />
-        <Route path="/calendar" element={<Calendar />} />
+        <Route path="/schedule" element={<Calendar />} />
+        <Route path="/post/:id" element={<CurrentPost />} />
+
         <Route
           path="/mypage"
           element={

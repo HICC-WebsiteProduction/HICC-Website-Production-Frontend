@@ -44,13 +44,17 @@ export default function CustomDatePicker(props) {
     };
   }, [resetSelectedDate]);
 
+  if (!props.calendar) {
+    props.calendar = new Date();
+  }
+
   return (
     <DatePickerWrapper
       locale={ko}
       dateFormat="yyyy-MM-dd"
       selected={selectedDate}
       open={props.isOpen}
-      minDate={new Date()}
+      minDate={props.calendar}
       onChange={date => handleDaySelect(date)}
       shouldCloseOnSelect={false}
       onMonthChange={handleMonthChange}
@@ -92,6 +96,7 @@ export default function CustomDatePicker(props) {
 }
 
 const DatePickerWrapper = styled(DatePicker)`
+  margin-left: 25px;
   border: none;
   background-color: transparent;
 

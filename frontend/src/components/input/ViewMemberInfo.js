@@ -40,11 +40,7 @@ const InputRow = styled.div`
 const Label = styled.label`
   width: 204px;
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-style: normal;
-  font-weight: 600;
-  line-height: 150%;
-  font-size: ${theme.fontSizes.label};
+  ${theme.fontstyle.body1};
 `;
 
 const InputRowContent = styled.div`
@@ -62,10 +58,7 @@ const Input = styled.input`
   margin: 18px 24px;
   background-color: ${theme.colors.white};
   border: none;
-  font-family: 'Pretendard';
-  font-style: normal;
-  font-weight: 600;
-  font-size: ${theme.fontSizes.font_normal};
+  ${theme.fontstyle.body10};
   &:focus {
     outline: none;
   }
@@ -77,8 +70,5 @@ const Input = styled.input`
 const DisableMessage = styled.span`
   color: ${theme.colors.red};
 
-  font-family: 'Pretendard';
-  font-weight: 300;
-  font-size: ${theme.fontSizes.font_normal};
-  line-height: 150%;
+  ${theme.fontstyle.body11};
 `;
