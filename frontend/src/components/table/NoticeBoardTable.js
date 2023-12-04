@@ -1,10 +1,12 @@
 import styled from 'styled-components';
 import theme from '../../styles/Theme';
 import EachPost from '../eachItem/EachPost';
+import { Link } from 'react-router-dom';
 
 /*
   10개 씩 컨텐츠를 전달해줘야합니다.
 */
+//게시글 목록 컴포넌트
 export default function NoticeBoardTable(props) {
   return (
     <NoticeBoardTableContainer>
@@ -16,14 +18,19 @@ export default function NoticeBoardTable(props) {
       </NoticeBoardTableHeader>
       <NoticeBoardTableBody>
         {props.postList.map((post, index) => (
-          <EachPost
-            post={post}
-            key={`eachPost${index}`}
-            index={index}
-            filteredPosts={props.filteredPosts}
-            indexOfFirstPost={props.indexOfFirstPost}
-            handlePostClick={props.handlePostClick}
-          />
+          <Link
+            to={`/post/${post.id}`}
+            onClick={() => props.handlePostClick(post.id)}
+          >
+            <EachPost
+              post={post}
+              key={`eachPost${index}`}
+              index={index}
+              filteredPosts={props.filteredPosts}
+              indexOfFirstPost={props.indexOfFirstPost}
+              handlePostClick={props.handlePostClick}
+            />
+          </Link>
         ))}
       </NoticeBoardTableBody>
     </NoticeBoardTableContainer>
@@ -37,13 +44,13 @@ const NoticeBoardTableContainer = styled.div`
 const NoticeBoardTableHeader = styled.div`
   display: flex;
   margin-top: 40px;
-  padding-bottom: 10px;
-  border-bottom: 2px solid ${theme.colors.white};
-
+  padding: 10px;
+  align-items: center;
+  gap: 20px;
+  border-top: 2px solid #edf0f8;
+  border-bottom: 1px solid #edf0f8;
   color: ${theme.colors.white};
-  font-family: 'Pretendard';
-  font-size: ${theme.fontSizes.paragraph};
-  line-height: 150%;
+  ${theme.fontstyle.body4};
 
   text-align: center;
 `;
@@ -53,8 +60,6 @@ const No = styled.div`
   justify-content: center;
   align-items: center;
   width: 50px;
-  line-height: 150%;
-  font-weight: 500;
 `;
 
 const Title = styled.div`
@@ -62,8 +67,6 @@ const Title = styled.div`
   justify-content: center;
   align-items: center;
   width: 770px;
-  line-height: 150%;
-  font-weight: 500;
 `;
 
 const Writer = styled.div`
@@ -71,8 +74,6 @@ const Writer = styled.div`
   justify-content: center;
   align-items: center;
   width: 200px;
-  line-height: 150%;
-  font-weight: 300;
 `;
 
 const WriteDate = styled.div`
@@ -80,11 +81,9 @@ const WriteDate = styled.div`
   justify-content: center;
   align-items: center;
   width: 100px;
-  line-height: 150%;
-  font-weight: 300;
 `;
 
 const NoticeBoardTableBody = styled.div`
   padding: 20px 0;
-  border-bottom: 2px solid ${theme.colors.white};
+  border-bottom: 1px solid ${theme.colors.white};
 `;

@@ -26,10 +26,14 @@ export default function InputMemberInfo(props) {
   return (
     <InputRow width={props.width}>
       <Label>{props.labelName}</Label>
-      <InputRowContent error={props.errors}>
+      <InputRowContent>
         <Input
           name={props.name}
           type={props.type}
+          // value={props.value} // 이 부분을 추가
+          onChange={e => {
+            props.onChange(e.target.value); // input 값이 변경될 때 값을 상위 컴포넌트로 전달
+          }}
           placeholder={`${
             props.specificPlaceholder ? props.specificPlaceholder : ''
           }`}
@@ -108,6 +112,12 @@ const CheckDuplicate = styled(Button)`
   border-radius: 20px;
 
   color: ${theme.colors.white};
+  font-family: 'Pretendard';
+  font-weight: 600;
+  font-size: ${theme.fontSizes.font_normal};
+  &:active {
+    opacity: 0.5;
+  }
   ${theme.fontstyle.body10};
 `;
 
