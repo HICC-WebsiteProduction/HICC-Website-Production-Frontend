@@ -18,7 +18,7 @@ function StarRating(props) {
       size={30}
       half={props.isHalf}
       color1="rgba(0, 0, 0, 0.2)"
-      color2={theme.colors.blue}
+      color2={props.color !== undefined ? props.color : theme.colors.blue}
     />
   );
 }
